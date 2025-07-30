@@ -95,6 +95,7 @@ GameObject:
   - component: {fileID: 4597918849068875847}
   - component: {fileID: 7550912710705187152}
   - component: {fileID: 3836313669444331856}
+  - component: {fileID: 8591741750409430861}
   m_Layer: 0
   m_Name: Tile_Spring_Corner_02
   m_TagString: Untagged
@@ -195,6 +196,20 @@ MonoBehaviour:
   - {fileID: 871295419119573776}
   - {fileID: 1622991047474523814, guid: 55a88296874ba9f45b2a60a1a5a35dcd, type: 3}
   - {fileID: 1123712064488121827, guid: 513ae863f6175da479a2a275d66359de, type: 3}
+--- !u!114 &8591741750409430861
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 871295419119573776}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 03bf9e11699470f4dac282306e1b16c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cellX: 3.6
+  cellY: 2.1
 --- !u!1 &1355644454610388016
 GameObject:
   m_ObjectHideFlags: 0
