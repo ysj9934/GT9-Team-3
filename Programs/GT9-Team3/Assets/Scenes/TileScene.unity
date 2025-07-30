@@ -131,6 +131,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 81428868}
+  - component: {fileID: 81428869}
   m_Layer: 0
   m_Name: GridManager
   m_TagString: Untagged
@@ -153,6 +154,21 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &81428869
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 81428867}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 870d85769f92fb84593f81e00f5d7c20, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  samplePrefab: {fileID: 1648578658134522860, guid: d4c4867eb3844ae4cacd9621fc7884de, type: 3}
+  startPosition: {x: 0, y: 6.3}
+  col: 3
 --- !u!1 &266231758
 GameObject:
   m_ObjectHideFlags: 0
@@ -245,89 +261,9 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &774007430
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 210424933416086887, guid: 58e9e364b74acd5408555eea8ecac0f1, type: 3}
-      propertyPath: m_Name
-      value: Tile_Spring_Corner_01
-      objectReference: {fileID: 0}
-    - target: {fileID: 2546406621568110087, guid: 58e9e364b74acd5408555eea8ecac0f1, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2546406621568110087, guid: 58e9e364b74acd5408555eea8ecac0f1, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2546406621568110087, guid: 58e9e364b74acd5408555eea8ecac0f1, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2546406621568110087, guid: 58e9e364b74acd5408555eea8ecac0f1, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2546406621568110087, guid: 58e9e364b74acd5408555eea8ecac0f1, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2546406621568110087, guid: 58e9e364b74acd5408555eea8ecac0f1, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2546406621568110087, guid: 58e9e364b74acd5408555eea8ecac0f1, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2546406621568110087, guid: 58e9e364b74acd5408555eea8ecac0f1, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2546406621568110087, guid: 58e9e364b74acd5408555eea8ecac0f1, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2546406621568110087, guid: 58e9e364b74acd5408555eea8ecac0f1, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 210424933416086887, guid: 58e9e364b74acd5408555eea8ecac0f1, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1983991789}
-  m_SourcePrefab: {fileID: 100100000, guid: 58e9e364b74acd5408555eea8ecac0f1, type: 3}
---- !u!1 &1983991788 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 210424933416086887, guid: 58e9e364b74acd5408555eea8ecac0f1, type: 3}
-  m_PrefabInstance: {fileID: 774007430}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1983991789
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1983991788}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 03bf9e11699470f4dac282306e1b16c6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  cellX: 3.6
-  cellY: 21
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 266231761}
-  - {fileID: 774007430}
   - {fileID: 81428868}
