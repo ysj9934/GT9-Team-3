@@ -2,10 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyTest : MonoBehaviour
+public class Enemy : MonoBehaviour
 {
     private float speed = 2f;  // 이동 속도 public으로 변경
-    private int hp = 3;
+    [SerializeField] int hp = 10;
     public Vector2 targetPosition;  // 목표 위치는 public으로 둠
 
     private Transform[] path; // 경로를 따라 이동할 때 사용 (예: Waypoint 시스템)
@@ -58,5 +58,11 @@ public class EnemyTest : MonoBehaviour
     private void Die()
     {
         Destroy(gameObject);
+    }
+
+    private void OnMouseDown()
+    {
+        Debug.Log(hp);
+        TakeDamage(1); // 클릭 시 데미지 1
     }
 }

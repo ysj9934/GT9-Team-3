@@ -16,7 +16,7 @@ public class EnemySpawnTest : MonoBehaviour
         GameObject enemy = SpawnEnemyAt(spawnPosition);
 
         // Enemy의 스크립트 컴포넌트 EnemyTest를 가져와 목표 위치를 설정
-        EnemyTest enemyScript = enemy.GetComponent<EnemyTest>();
+        Enemy enemyScript = enemy.GetComponent<Enemy>();
         enemyScript.targetPosition = targetPosition;
 
         Debug.Log("Enemy spawned at: " + spawnPosition + " → target: " + targetPosition);
