@@ -1,9 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class NewBehaviourScript : MonoBehaviour
 {
+    // 수정필요 사항 2025.07.30
+    // 1. 타일 위치 정리
+    // 2. 타일 교체
+    // 3. 타일 회전
+    // 4. 타일 배치 계산 정확하게
+    
     [SerializeField] private GameObject samplePrefab;
     [SerializeField] private GameObject samplePrefab2;
     [SerializeField] public Vector2 startPosition = Vector2.zero;
@@ -74,6 +81,7 @@ public class NewBehaviourScript : MonoBehaviour
                 {
                     Vector2 pos = startPosition2 + new Vector2((offset) * 3.6f + 7.2f * i, -row * 2.1f);
                     GameObject go = Instantiate(samplePrefab2, pos, Quaternion.identity);
+                    go.GetComponent<TextMeshPro>().text = (row + 1).ToString();
                     SpriteRenderer[] renderers = go.GetComponentsInChildren<SpriteRenderer>();
                     for (int j = 0; j < renderers.Length; j++)
                     {
@@ -87,6 +95,7 @@ public class NewBehaviourScript : MonoBehaviour
                 {
                     Vector2 pos = startPosition2 + new Vector2(offset * 3.6f + 7.2f * i, -row * 2.1f);
                     GameObject go = Instantiate(samplePrefab2, pos, Quaternion.identity);
+                    go.GetComponent<TextMeshPro>().text = (row + 1).ToString();
                     SpriteRenderer[] renderers = go.GetComponentsInChildren<SpriteRenderer>();
                     for (int j = 0; j < renderers.Length; j++)
                     {
