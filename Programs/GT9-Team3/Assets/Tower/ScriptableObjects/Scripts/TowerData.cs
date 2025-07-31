@@ -26,6 +26,9 @@ public class TowerData : ScriptableObject
     public ResourceType sellCost;   // 유저가 타워를 판매할 경우 돌려받는 자원의 종류를 정의하는 데이터
     public int sellValue;           // 타워를 짓는데 소모되는 자원의 수치를 정의하는 데이터
 
+    public int damage;             // 공격 데미지
+    public float attackSpeed;      // 초당 공격 횟수
+
 }
 
 public enum AttackType { Single, AreaOfEffect }

@@ -49,13 +49,13 @@ public class TowerPlacer : MonoBehaviour
         }
     }
 
-    bool CanPlaceTowerAt(Vector3Int cellPos)
+    public bool CanPlaceTowerAt(Vector3Int cellPos)
     {
         TileBase tile = groundTilemap.GetTile(cellPos);
         return tile != null && !occupiedCells.Contains(cellPos);
     }
 
-    void PlaceTower(Vector3 position, Vector3Int cellPos)
+    public void PlaceTower(Vector3 position, Vector3Int cellPos)
     {
         // 타워를 타일보다 약간 위에 배치
         position.y += 0.44f;

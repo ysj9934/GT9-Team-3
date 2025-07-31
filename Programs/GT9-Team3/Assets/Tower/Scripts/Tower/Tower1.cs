@@ -5,24 +5,35 @@ using UnityEngine;
 public class Tower1 : MonoBehaviour
 {
     public TowerData data;
-    private float attackCooldown;
+    private float cooldownTimer;
 
-    private void Start()
+    private void Update()
     {
-        //attackCooldown = 1f / data.attackRadius;
+        if (cooldownTimer > 0f)
+            cooldownTimer -= Time.deltaTime;
     }
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        // 적 유닛이면 공격 조건 확인
+        if (cooldownTimer > 0f) return;
+
+        Enemy1 enemy = collision.GetComponent<Enemy1>();
+        if (enemy != null)
+        {
+            Attack(enemy);
+            cooldownTimer = 1f / data.attackSpeed; // 다음 공격까지 쿨타임
+        }
+    }
+
+    void Attack(Enemy1 target)
+    {
+        Debug.Log($"[타워 공격] {target.name} 에게 {data.damage} 데미지");
+        target.TakeDamage(data.damage);
     }
 
     public void ApplyData(TowerData towerData)
     {
         data = towerData;
-
-        attackCooldown = 1f / data.attackRadius;
-        // 예: 사거리, 속도 등 초기화
-        // 추후 타겟팅 및 공격 로직에서 data를 참조함
+        cooldownTimer = 0f;
     }
 }
