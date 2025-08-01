@@ -1,23 +1,32 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Enemy : MonoBehaviour
 {
-    private float speed = 2f;  // ÀÌµ¿ ¼Óµµ publicÀ¸·Î º¯°æ
-    [SerializeField] int hp = 10;
-    public Vector2 targetPosition;  // ¸ñÇ¥ À§Ä¡´Â publicÀ¸·Î µÒ
+    public Vector2 targetPosition;  // ëª©í‘œ ìœ„ì¹˜ëŠ” publicìœ¼ë¡œ ë‘ 
 
-    private Transform[] path; // °æ·Î¸¦ µû¶ó ÀÌµ¿ÇÒ ¶§ »ç¿ë (¿¹: Waypoint ½Ã½ºÅÛ)
-    private int pathIndex = 0;  // °æ·Î¸¦ µû¶ó ÀÌµ¿ÇÒ ¶§ »ç¿ë
+    private Transform[] path; // ê²½ë¡œë¥¼ ë”°ë¼ ì´ë™í•  ë•Œ ì‚¬ìš© (ì˜ˆ: Waypoint ì‹œìŠ¤í…œ)
+    private int pathIndex = 0;  // ê²½ë¡œë¥¼ ë”°ë¼ ì´ë™í•  ë•Œ ì‚¬ìš©
+
+    //ì²´ë ¥ ê´€ë ¨
+    [SerializeField] Image healthBar;     // Foreground Image ì—°ê²°
+    [SerializeField] float hp = 10f;
+    private float currentHp;
+
+    //ì´ë™ ê´€ë ¨
+    private float speed = 2f;  // ì´ë™ ì†ë„ publicìœ¼ë¡œ ë³€ê²½
 
     void Start()
     {
+        currentHp = hp;
         Debug.Log("EnemyTest Initialized");
-        Debug.Log(" ¡æ target: " + targetPosition);
+        Debug.Log(" â†’ target: " + targetPosition);
+        UpdateHealthBar();
     }
 
-    // °æ·Î¸¦ ¼³Á¤ÇÏ´Â ÇÔ¼ö (¿¹: °æ·Î¸¦ µû¶ó ÀÌµ¿ÇÏ´Â ÀûÀ» ¸¸µé ¶§ »ç¿ë)
+    // ê²½ë¡œë¥¼ ì„¤ì •í•˜ëŠ” í•¨ìˆ˜ (ì˜ˆ: ê²½ë¡œë¥¼ ë”°ë¼ ì´ë™í•˜ëŠ” ì ì„ ë§Œë“¤ ë•Œ ì‚¬ìš©)
     //public void SetPath(Transform[] newPath)
     //{
     //    path = newPath;
@@ -25,34 +34,35 @@ public class Enemy : MonoBehaviour
 
     void Update()
     {
-        // ÀÌµ¿ Ã³¸®
+        // ì´ë™ ì²˜ë¦¬
         transform.position = Vector2.MoveTowards(transform.position, targetPosition, speed * Time.deltaTime);
     }
 
-    //Ãæµ¹ Ã³¸®
+    //ì¶©ëŒ ì²˜ë¦¬
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        // ÃÑ¾Ë¿¡ ¸ÂÀº °æ¿ì
+        // ì´ì•Œì— ë§ì€ ê²½ìš°
         if (collision.CompareTag("Bullet"))
         {
             Debug.Log("Enemy hit by Bullet");
-            TakeDamage(1); // ±âº» µ¥¹ÌÁö 1
-            Destroy(collision.gameObject); // ÃÑ¾Ë Á¦°Å
+            TakeDamage(1); // ê¸°ë³¸ ë°ë¯¸ì§€ 1
+            Destroy(collision.gameObject); // ì´ì•Œ ì œê±°
         }
 
-        // ÇÃ·¹ÀÌ¾î¿Í Ãæµ¹ÇÑ °æ¿ì
+        // í”Œë ˆì´ì–´ì™€ ì¶©ëŒí•œ ê²½ìš°
         else if (collision.CompareTag("Player"))
         {
             Debug.Log("Enemy collided with Player");
-            // ¿¹: ÇÃ·¹ÀÌ¾î¿¡ µ¥¹ÌÁö ÁÖ°Å³ª ÀÚÆø µî
-            Die(); // ÀÚÆøÇü ÀûÀÌ¶ó¸é
+            // ì˜ˆ: í”Œë ˆì´ì–´ì— ë°ë¯¸ì§€ ì£¼ê±°ë‚˜ ìí­ ë“±
+            Die(); // ìí­í˜• ì ì´ë¼ë©´
         }
     }
 
     public void TakeDamage(int damage)
     {
-        hp -= damage;
-        if (hp <= 0) Die();
+        currentHp -= damage;
+        UpdateHealthBar(); // ì—¬ê¸° ì¶”ê°€
+        if (currentHp <= 0) Die();
     }
 
     private void Die()
@@ -62,7 +72,17 @@ public class Enemy : MonoBehaviour
 
     private void OnMouseDown()
     {
+        TakeDamage(1); // í´ë¦­ ì‹œ ë°ë¯¸ì§€ 1
         Debug.Log(hp);
-        TakeDamage(1); // Å¬¸¯ ½Ã µ¥¹ÌÁö 1
+        if (healthBar != null)
+            Debug.Log(healthBar.fillAmount);
+        else
+            Debug.LogWarning("healthBar is null");
+    }
+
+    void UpdateHealthBar()
+    {
+        if (healthBar != null)
+            healthBar.fillAmount = currentHp / hp;
     }
 }
