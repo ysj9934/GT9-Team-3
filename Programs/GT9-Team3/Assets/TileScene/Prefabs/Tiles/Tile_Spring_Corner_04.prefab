@@ -94,7 +94,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2326230641676426290}
   - component: {fileID: 3051271997363411643}
-  - component: {fileID: -4662086519486729532}
+  - component: {fileID: 352219443880585258}
   m_Layer: 0
   m_Name: Tile_Spring_Corner_04
   m_TagString: Untagged
@@ -177,7 +177,7 @@ PolygonCollider2D:
       - {x: -3.65, y: 0.45}
       - {x: 0, y: 2.58}
   m_UseDelaunayMesh: 0
---- !u!114 &-4662086519486729532
+--- !u!114 &352219443880585258
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -186,15 +186,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1123712064488121827}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b018c4abb30deae4da392d3b0201e336, type: 3}
+  m_Script: {fileID: 11500000, guid: 03bf9e11699470f4dac282306e1b16c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentRotationIndex: 0
-  rotetedPrefabs:
-  - {fileID: 210424933416086887, guid: 58e9e364b74acd5408555eea8ecac0f1, type: 3}
-  - {fileID: 871295419119573776, guid: a700397f0c35dcd47af654d2b82ecd6e, type: 3}
-  - {fileID: 1622991047474523814, guid: 55a88296874ba9f45b2a60a1a5a35dcd, type: 3}
-  - {fileID: 1123712064488121827}
+  cellX: 3.6
+  cellY: 2.1
 --- !u!1 &2077906446278963008
 GameObject:
   m_ObjectHideFlags: 0

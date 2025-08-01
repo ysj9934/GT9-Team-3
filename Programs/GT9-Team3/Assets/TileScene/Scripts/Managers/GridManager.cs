@@ -1,10 +1,13 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class NewBehaviourScript : MonoBehaviour
+public class GridManager : MonoBehaviour
 {
+    private GameManager gameManager;
+    
     // 수정필요 사항 2025.07.30
     // 1. 타일 위치 정리
     // 2. 타일 교체
@@ -12,100 +15,96 @@ public class NewBehaviourScript : MonoBehaviour
     // 4. 타일 배치 계산 정확하게
     
     [SerializeField] private GameObject samplePrefab;
-    [SerializeField] private GameObject samplePrefab2;
     [SerializeField] public Vector2 startPosition = Vector2.zero;
-    [SerializeField] public Vector2 startPosition2 = Vector2.zero;
-    [SerializeField] private int col = 3;
-
-    // void Start()
-    // {
-    //     for (int y = 0; y < col; y++)
-    //     {
-    //         for (int x = 0; x < col; x++)
-    //         {
-    //             Vector2 spawnPos = startPosition + new Vector2(x * 7.2f, y * 4.2f);
-    //             Instantiate(samplePrefab, spawnPos, Quaternion.identity);
-    //         }
-    //     }
-    // }
     
+
+    [SerializeField] private List<GameObject> gridList = new List<GameObject>();
+    
+
+    private void Awake()
+    {
+        
+    }
+
     void Start()
     {
-        int[] blocksPerRow = {1, 2, 3, 4, 5, 4, 3, 2, 1};
+        gameManager = GameManager.Instance;
+        
+        InitGrid(gameManager.blockCount);
+    }
+    
+    // 그리드 초기 세팅  
+    public void InitGrid(int blockCount)
+    {
+        gameManager.blockCount = blockCount;
+        
+        // 그리드 타일 초기화
+        ResetGrid();
+        
+        CreateGrid(gameManager.blockCount);
 
-        for (int row = 0; row < blocksPerRow.Length; row++)
+    }
+
+    public void ResetGrid()
+    {
+        gameManager.DestroyOfType<TileGrid>();
+        gridList.Clear();
+    }
+
+    private void CreateGrid(int blockCount)
+    {
+        // 그리드 초기 배치
+        switch (blockCount)
         {
-            int count = blocksPerRow[row]; // 2
-            float offset = -(count - 1); // 1
+            case 5:
+                startPosition = new Vector2(0, 8.4f);
+                break;
+            case 7:
+                startPosition = new Vector2(0, 12.6f);
+                break;
+            case 9:
+                startPosition = new Vector2(0, 16.8f);
+                break;
+        }
+        
+        // 그리드 배열 맞추기
+        int[] gridRow = new int[blockCount * 2 - 1];
 
-            // 짝수 값 찾기
-            if (row % 2 != 0)
+        for (int i = 0; i < gridRow.Length; i++)
+        {
+            if (i < blockCount)
             {
-                for (int i = 0; i < count; i++) // count 4
-                {
-                    Vector2 pos = startPosition + new Vector2((offset) * 3.6f + 7.2f * i, -row * 2.1f);
-                    GameObject go = Instantiate(samplePrefab, pos, Quaternion.identity);
-                    SpriteRenderer[] renderers = go.GetComponentsInChildren<SpriteRenderer>();
-                    for (int j = 0; j < renderers.Length; j++)
-                    {
-                        renderers[j].sortingOrder += row * 10;
-                    }
-                }    
+                gridRow[i] = i + 1;    
             }
             else
             {
-                for (int i = 0; i < count; i++)
-                {
-                    Vector2 pos = startPosition + new Vector2(offset * 3.6f + 7.2f * i, -row * 2.1f);
-                    GameObject go = Instantiate(samplePrefab, pos, Quaternion.identity);
-                    SpriteRenderer[] renderers = go.GetComponentsInChildren<SpriteRenderer>();
-                    for (int j = 0; j < renderers.Length; j++)
-                    {
-                        renderers[j].sortingOrder += row * 10;
-                    }
-                }
+                gridRow[i] = gridRow.Length - i;
             }
         }
         
-        int[] blocksPerRow2 = {1, 2, 3, 2, 1};
-
-        for (int row = 0; row < blocksPerRow2.Length; row++)
+        for (int row = 0; row < gridRow.Length; row++)
         {
-            int count = blocksPerRow2[row]; // 2
+            int count = gridRow[row]; // 2
             float offset = -(count - 1); // 1
 
-            // 짝수 값 찾기
-            if (row % 2 != 0)
+            for (int i = 0; i < count; i++) // count 4
             {
-                for (int i = 0; i < count; i++) // count 4
+                Vector2 pos = startPosition + new Vector2(offset * 3.6f + 7.2f * i, -row * 2.1f);
+                GameObject go = GetGrid(samplePrefab, pos);
+                SpriteRenderer[] renderers = go.GetComponentsInChildren<SpriteRenderer>();
+                for (int j = 0; j < renderers.Length; j++)
                 {
-                    Vector2 pos = startPosition2 + new Vector2((offset) * 3.6f + 7.2f * i, -row * 2.1f);
-                    GameObject go = Instantiate(samplePrefab2, pos, Quaternion.identity);
-                    go.GetComponent<TextMeshPro>().text = (row + 1).ToString();
-                    SpriteRenderer[] renderers = go.GetComponentsInChildren<SpriteRenderer>();
-                    for (int j = 0; j < renderers.Length; j++)
-                    {
-                        renderers[j].sortingOrder += row * 10;
-                    }
-                }    
-            }
-            else
-            {
-                for (int i = 0; i < count; i++)
-                {
-                    Vector2 pos = startPosition2 + new Vector2(offset * 3.6f + 7.2f * i, -row * 2.1f);
-                    GameObject go = Instantiate(samplePrefab2, pos, Quaternion.identity);
-                    go.GetComponent<TextMeshPro>().text = (row + 1).ToString();
-                    SpriteRenderer[] renderers = go.GetComponentsInChildren<SpriteRenderer>();
-                    for (int j = 0; j < renderers.Length; j++)
-                    {
-                        renderers[j].sortingOrder += row * 10;
-                    }
+                    renderers[j].sortingOrder += row * 10 - 1000;
                 }
+
+                gridList.Add(go);
             }
         }
-        
-        
+    }
+
+    private GameObject GetGrid(GameObject prefab, Vector2 pos)
+    {
+        return Instantiate(prefab, pos, Quaternion.identity);
     }
 
 }

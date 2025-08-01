@@ -178,6 +178,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3654272457342920229}
   - component: {fileID: -2986128307060737527}
+  - component: {fileID: 1700940240404990540}
   m_Layer: 0
   m_Name: Tile_Spring_Cross_01
   m_TagString: Untagged
@@ -260,6 +261,20 @@ PolygonCollider2D:
       - {x: -3.65, y: 0.45}
       - {x: 0, y: 2.58}
   m_UseDelaunayMesh: 0
+--- !u!114 &1700940240404990540
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1805060984279100116}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 03bf9e11699470f4dac282306e1b16c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cellX: 3.6
+  cellY: 2.1
 --- !u!1 &2377744456257425920
 GameObject:
   m_ObjectHideFlags: 0

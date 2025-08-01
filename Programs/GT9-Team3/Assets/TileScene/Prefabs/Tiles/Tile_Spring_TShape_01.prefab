@@ -514,6 +514,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2912168506752091714}
   - component: {fileID: -6460405571929370663}
+  - component: {fileID: 3855793531012838772}
   m_Layer: 0
   m_Name: Tile_Spring_TShape_01
   m_TagString: Untagged
@@ -596,6 +597,20 @@ PolygonCollider2D:
       - {x: -3.65, y: 0.45}
       - {x: 0, y: 2.58}
   m_UseDelaunayMesh: 0
+--- !u!114 &3855793531012838772
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7615749690820656515}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 03bf9e11699470f4dac282306e1b16c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cellX: 3.6
+  cellY: 2.1
 --- !u!1 &7791565786658097280
 GameObject:
   m_ObjectHideFlags: 0
