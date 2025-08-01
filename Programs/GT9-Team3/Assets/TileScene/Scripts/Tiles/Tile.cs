@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class Tile : MonoBehaviour
 {
-    [SerializeField] private float cellX = 1f;
-    [SerializeField] private float cellY = 1f;
+    [SerializeField] private float[] cellSize = { 3.6f,  2.1f };
     
     void OnMouseDrag()
     {
@@ -20,8 +19,8 @@ public class Tile : MonoBehaviour
 
     Vector3 SnapToGrid(Vector3 pos)
     {
-        float x = Mathf.Round(pos.x / cellX) * cellX;
-        float y = Mathf.Round(pos.y / cellY) * cellY;
+        float x = Mathf.Round(pos.x / cellSize[0]) * cellSize[0];
+        float y = Mathf.Round(pos.y / cellSize[1]) * cellSize[1];
         return new Vector3(x, y, pos.z);
     }
 

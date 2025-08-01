@@ -23,23 +23,27 @@ public class TileManager : MonoBehaviour
         InitBaseTile(gameManager.blockCount);
     }
 
+    // 타일 초기 세팅
     public void InitBaseTile(int blockCount)
     {
+        // 타일 초기화
         ResetTile();
         
         // base tile setting
         CreateBaseTile(blockCount);
     }
 
+    // 타일 초기화
     public void ResetTile()
     {
         gameManager.DestroyOfType<Tile>();
         tileList.Clear();
     }
 
+    // 베이스 타일 생성
     private void CreateBaseTile(int blockCount)
     {
-        // 그리드 초기 배치
+        // 타일 위치 초기화
         switch (blockCount)
         {
             case 5:
@@ -53,6 +57,7 @@ public class TileManager : MonoBehaviour
                 break;
         }
         
+        // 타일 
         int[] blocksPerRow2 = {1, 2, 3, 2, 1};
         
         for (int row = 0; row < blocksPerRow2.Length; row++)
@@ -92,11 +97,13 @@ public class TileManager : MonoBehaviour
         }
     }
 
+    // base tile
     private GameObject GetBaseTile(GameObject prefab, Vector2 pos)
     {
         return Instantiate(prefab, pos, Quaternion.identity);
     }
 
+    // basic tile
     private GameObject GetTile(GameObject[] prefab, Vector2 pos)
     {
         return Instantiate(prefab[Random.Range(0, prefab.Length)], pos, Quaternion.identity);

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Cinemachine;
 using TMPro;
 using UnityEngine;
 
@@ -17,8 +18,9 @@ public class GridManager : MonoBehaviour
     [SerializeField] private GameObject samplePrefab;
     [SerializeField] public Vector2 startPosition = Vector2.zero;
     
-
     [SerializeField] private List<GameObject> gridList = new List<GameObject>();
+
+    [SerializeField] private CinemachineVirtualCamera[] gridCamera = new CinemachineVirtualCamera[3];
     
 
     private void Awake()
@@ -51,6 +53,7 @@ public class GridManager : MonoBehaviour
         gridList.Clear();
     }
 
+    // 그리드 생성
     private void CreateGrid(int blockCount)
     {
         // 그리드 초기 배치
@@ -58,12 +61,21 @@ public class GridManager : MonoBehaviour
         {
             case 5:
                 startPosition = new Vector2(0, 8.4f);
+                gridCamera[0].Priority = 10;
+                gridCamera[1].Priority = 0;
+                gridCamera[2].Priority = 0;
                 break;
             case 7:
                 startPosition = new Vector2(0, 12.6f);
+                gridCamera[0].Priority = 0;
+                gridCamera[1].Priority = 10;
+                gridCamera[2].Priority = 0;
                 break;
             case 9:
                 startPosition = new Vector2(0, 16.8f);
+                gridCamera[0].Priority = 0;
+                gridCamera[1].Priority = 0;
+                gridCamera[2].Priority = 10;
                 break;
         }
         
@@ -84,10 +96,10 @@ public class GridManager : MonoBehaviour
         
         for (int row = 0; row < gridRow.Length; row++)
         {
-            int count = gridRow[row]; // 2
-            float offset = -(count - 1); // 1
+            int count = gridRow[row];
+            float offset = -(count - 1);
 
-            for (int i = 0; i < count; i++) // count 4
+            for (int i = 0; i < count; i++)
             {
                 Vector2 pos = startPosition + new Vector2(offset * 3.6f + 7.2f * i, -row * 2.1f);
                 GameObject go = GetGrid(samplePrefab, pos);
