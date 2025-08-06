@@ -14,4 +14,9 @@ public class ProjectileData : ScriptableObject
     public float aoeRadius;
 
     public GameObject impactEffectPrefab;   // 타격 시 이펙트
+
+    public int armorDestroy;
+    public float slowEffect;
+    public float slowTime;
+    public float stunTime;
 }
