@@ -29,6 +29,9 @@ public class TowerData : ScriptableObject
     public int damage;             // 공격 데미지
     public float attackSpeed;      // 초당 공격 횟수
 
+    public GameObject projectilePrefab;     // 사용할 발사체 프리팹
+    public ProjectileData projectileData;   // 발사체 속성 정보
+
 }
 
 public enum AttackType { Single, AreaOfEffect }

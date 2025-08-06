@@ -20,16 +20,23 @@ public class Tower1 : MonoBehaviour
         Enemy1 enemy = collision.GetComponent<Enemy1>();
         if (enemy != null)
         {
-            Attack(enemy);
+            Shoot(enemy.transform);
             cooldownTimer = 1f / data.attackSpeed; // 다음 공격까지 쿨타임
         }
     }
 
-    void Attack(Enemy1 target)
+    void Shoot(Transform target)
     {
-        Debug.Log($"[타워 공격] {target.name} 에게 {data.damage} 데미지");
-        target.TakeDamage(data.damage);
+        GameObject projectileObj = Instantiate(data.projectilePrefab, transform.position, Quaternion.identity);
+        Projectile projectile = projectileObj.GetComponent<Projectile>();
+        projectile.Initialize(target, data.projectileData);
     }
+
+    //void Attack(Enemy1 target)
+    //{
+    //    Debug.Log($"[타워 공격] {target.name} 에게 {data.damage} 데미지");
+    //    target.TakeDamage(data.damage);
+    //}
 
     public void ApplyData(TowerData towerData)
     {
