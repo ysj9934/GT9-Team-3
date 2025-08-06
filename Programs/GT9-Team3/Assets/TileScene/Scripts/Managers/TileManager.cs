@@ -75,7 +75,7 @@ public class TileManager : MonoBehaviour
                     SpriteRenderer[] renderers = go.GetComponentsInChildren<SpriteRenderer>();
                     for (int j = 0; j < renderers.Length; j++)
                     {
-                        renderers[j].sortingOrder += row * 10 -1000;
+                        renderers[j].sortingOrder += row * 10 -500;
                     }
                 
                     tileList.Add(go);
@@ -88,7 +88,7 @@ public class TileManager : MonoBehaviour
                     SpriteRenderer[] renderers = go.GetComponentsInChildren<SpriteRenderer>();
                     for (int j = 0; j < renderers.Length; j++)
                     {
-                        renderers[j].sortingOrder += row * 10 -1000;
+                        renderers[j].sortingOrder += row * 10 -500;
                     }
                 
                     tileList.Add(go);
