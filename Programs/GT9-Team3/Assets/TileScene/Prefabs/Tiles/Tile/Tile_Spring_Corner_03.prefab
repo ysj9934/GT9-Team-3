@@ -97,6 +97,8 @@ GameObject:
   - component: {fileID: 3783968496870419289}
   - component: {fileID: 2537732755890344351}
   - component: {fileID: -4862867879361635636}
+  - component: {fileID: -3627738712292379551}
+  - component: {fileID: -4931476610701874026}
   m_Layer: 0
   m_Name: Tile_Spring_Corner_03
   m_TagString: Untagged
@@ -192,6 +194,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03bf9e11699470f4dac282306e1b16c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _tileRoadConnector: {fileID: -3627738712292379551}
   up: {fileID: 0}
   down: {fileID: 0}
   left: {fileID: 0}
@@ -237,6 +240,31 @@ MonoBehaviour:
   - {fileID: 871295419119573776, guid: a700397f0c35dcd47af654d2b82ecd6e, type: 3}
   - {fileID: 1622991047474523814}
   - {fileID: 1123712064488121827, guid: 513ae863f6175da479a2a275d66359de, type: 3}
+--- !u!114 &-3627738712292379551
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1622991047474523814}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfcc1333c3381fd4e9ea9c96b72b8497, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &-4931476610701874026
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1622991047474523814}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8f880fc989b70641bd611cb027047cf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tileUI: {fileID: 7785599503113483414}
 --- !u!1 &2196731619811125299
 GameObject:
   m_ObjectHideFlags: 0
@@ -1065,5 +1093,10 @@ PrefabInstance:
 --- !u!224 &332927668223461595 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6949227965044991617, guid: 4f5a54429a5043e42a78d44696afaa14, type: 3}
+  m_PrefabInstance: {fileID: 7272844940616167002}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &7785599503113483414 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 640167071227124428, guid: 4f5a54429a5043e42a78d44696afaa14, type: 3}
   m_PrefabInstance: {fileID: 7272844940616167002}
   m_PrefabAsset: {fileID: 0}

@@ -95,6 +95,7 @@ GameObject:
   - component: {fileID: 4292178599182484481}
   - component: {fileID: 1077136901040972948}
   - component: {fileID: -3716222064312718650}
+  - component: {fileID: 1242339876889468054}
   m_Layer: 0
   m_Name: Tile_Spring_Base_01
   m_TagString: Untagged
@@ -193,8 +194,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03bf9e11699470f4dac282306e1b16c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cellX: 3.6
-  cellY: 2.1
+  _tileRoadConnector: {fileID: 0}
+  up: {fileID: 0}
+  down: {fileID: 0}
+  left: {fileID: 0}
+  right: {fileID: 0}
+  cellSize:
+  - 3.6
+  - 2.1
+  tileSerialNumber: 0
+  col: 0
+  row: 0
+  connectedUp: 1
+  connectedDown: 1
+  connectedLeft: 1
+  connectedRight: 1
+  mapLevel: 1
+--- !u!114 &1242339876889468054
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1648578658134522860}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfcc1333c3381fd4e9ea9c96b72b8497, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1788098168564396996
 GameObject:
   m_ObjectHideFlags: 0

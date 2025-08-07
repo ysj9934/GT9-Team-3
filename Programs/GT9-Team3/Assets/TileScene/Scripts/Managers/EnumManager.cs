@@ -9,3 +9,11 @@ public enum TileRotation
     Degree_180,
     Degree_270,
 }
+
+public enum TileDir
+{
+    Up,
+    Down,
+    Left,
+    Right,
+}

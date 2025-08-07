@@ -24,6 +24,8 @@ public class TileManager : MonoBehaviour
     public TileRoad endTileRoad;
     
     public List<TileRoad> path = new List<TileRoad>();
+    public List<TileGrid> gridTileList = new List<TileGrid>();
+    public List<Vector2> spawnTransform = new List<Vector2>();
     
     private void Awake()
     {
@@ -82,10 +84,12 @@ public class TileManager : MonoBehaviour
                 Vector2 pos = new Vector3(col * 3.6f - (3.6f * row), (row + col) * -2.1f + 8.4f);
                 GameObject go = Instantiate(tileGridPrefab, pos, Quaternion.identity);
                 go.transform.SetParent(transform);
-                TileRoad tileRoad = go.GetComponent<TileRoad>();
-                tileRoad.Initialize(mapLevel, pos);
-                tileRoad.tileSerialNumber = tileNumber++;
-                tileMap[row, col] = tileRoad;
+                TileGrid tileGrid = go.GetComponent<TileGrid>();
+                // TileRoad tileRoad = go.GetComponent<TileRoad>();
+                // tileRoad.Initialize(mapLevel, pos);
+                // tileRoad.tileSerialNumber = tileNumber++;
+                
+                gridTileList.Add(tileGrid);
             }
         }
     }
@@ -98,6 +102,7 @@ public class TileManager : MonoBehaviour
         {
             for (int col = 0; col < 3; col++)
             {
+                // 주변 8타일
                 if (baseNumber != 5)
                 {
                     Vector2 pos = new Vector3(col * 3.6f - (3.6f * row), (row + col) * -2.1f + 4.2f);
@@ -106,9 +111,9 @@ public class TileManager : MonoBehaviour
                     TileRoad tileRoad = go.GetComponent<TileRoad>();
                     tileRoad.Initialize(mapLevel, pos);
                     
-                    // tileRoad.tileSerialNumber = tileNumber++;
-                    tileMap[row + 1, col + 1] = tileRoad;
+                    // tileMap[row + 1, col + 1] = tileRoad;
                 }
+                // 기지 타일
                 else
                 {
                     Vector2 pos = new Vector3(col * 3.6f - (3.6f * row), (row + col) * -2.1f + 4.2f);
@@ -116,8 +121,9 @@ public class TileManager : MonoBehaviour
                     go.transform.SetParent(transform);
                     TileRoad tileRoad = go.GetComponent<TileRoad>();
                     tileRoad.Initialize(mapLevel, pos);
-                    // tileRoad.tileSerialNumber = tileNumber++;
-                    tileMap[row + 1, col + 1] = tileRoad;
+                    
+                    // tileMap[row + 1, col + 1] = tileRoad;
+                    endTileRoad = tileRoad;
                 }
 
                 baseNumber++;
@@ -125,6 +131,120 @@ public class TileManager : MonoBehaviour
         }
     }
 
+    public void SetNeighbors()
+    {
+        for (int row = 0; row < cellSize; row++)
+        {
+            for (int col = 0; col < cellSize; col++)
+            {
+                if (tileMap[row, col] != null)
+                    tileMap[row, col].SetNeighbors(tileMap, cellSize, cellSize);
+            }
+        }
+    }
+
+    public void SetSpawnerPosition()
+    {
+        spawnTransform = new List<Vector2>();
+        ClearSpawner();
+        
+        switch (mapLevel)
+        {
+            case 1:
+                spawnTransform.Add(gridTileList[2].transform.position);
+                spawnTransform.Add(gridTileList[10].transform.position);
+                spawnTransform.Add(gridTileList[14].transform.position);
+                spawnTransform.Add(gridTileList[22].transform.position);
+                break;
+            case 2:
+                spawnTransform.Add(gridTileList[3].transform.position);
+                spawnTransform.Add(gridTileList[21].transform.position);
+                spawnTransform.Add(gridTileList[27].transform.position);
+                spawnTransform.Add(gridTileList[45].transform.position);
+                break;
+            case 3:
+                spawnTransform.Add(gridTileList[4].transform.position);
+                spawnTransform.Add(gridTileList[36].transform.position);
+                spawnTransform.Add(gridTileList[44].transform.position);
+                spawnTransform.Add(gridTileList[76].transform.position);
+                break;
+        }
+
+        CreateSpawner();
+    }
+
+    public void CreateSpawner()
+    {
+        if (spawnTransform.Count == 0)
+            return;
+        
+        Vector2 pos = spawnTransform[Random.Range(0, spawnTransform.Count)];
+        GameObject go = Instantiate(tileSpawnPrefab, pos, Quaternion.identity);
+        go.transform.SetParent(transform);
+        TileSpawner tileS = go.GetComponent<TileSpawner>();
+        TileRoad tile = go.GetComponent<TileRoad>();
+        
+        tile.Initialize(mapLevel, pos);
+
+        startTileRoad = tile;
+    }
+    
+    public void ClearSpawner()
+    {
+        _gameManager.DestroyOfType<TileSpawner>();
+    }
+
+    public void ShowConnectedPath()
+    {
+        SetNeighbors();
+
+        if (startTileRoad == null)
+        {
+            Debug.Log("startTileRoad is null");
+        }
+        else if (endTileRoad == null)
+        {
+            Debug.Log("endTileRoad is null");
+        }
+        else
+        {
+            path = FindConnectedPath(startTileRoad, endTileRoad);
+        } 
+    }
+
+    public List<TileRoad> FindConnectedPath(TileRoad startTile, TileRoad endTile)
+    {
+        Debug.Log("FindConnectedPath");
+        var visited = new HashSet<TileRoad>();
+        var path = new List<TileRoad>();
+
+        if (DFS(startTile, endTile, visited, path))
+            return path;
+        
+        return new List<TileRoad>();
+    }
+
+    private bool DFS(TileRoad current, TileRoad target, HashSet<TileRoad> visited, List<TileRoad> path)
+    {
+        Debug.Log("DFS");
+        if (current == null || visited.Contains(current))
+            return false;
+        
+        visited.Add(current);
+        path.Add(current);
+
+        if (current == target)
+            return true;
+
+        foreach (var (neighbor, _) in current._tileRoadConnector.GetConnectedNeighbors())
+        {
+            if (DFS(neighbor, target, visited, path))
+                return true;
+        }
+
+        path.Remove(current);
+        return false;
+    }
 
 
 

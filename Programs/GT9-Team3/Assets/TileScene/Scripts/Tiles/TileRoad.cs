@@ -7,6 +7,7 @@ public class TileRoad : MonoBehaviour
 {
     private GameManager _gameManager;
     private TileManager _tileManager;
+    public TileRoadConnector _tileRoadConnector;
 
     // 이웃한 타일 정보 (자동으로 수정)
     [Header("Tile Neighbors")] 
@@ -74,7 +75,7 @@ public class TileRoad : MonoBehaviour
         this.col = colIndex;
         this.row = rowIndex;
         
-        _tileManager.tileMap[colIndex, rowIndex] = this;
+        _tileManager.tileMap[rowIndex, colIndex] = this;
     }
 
     public void UpdateTileSerialNumber()
@@ -91,6 +92,26 @@ public class TileRoad : MonoBehaviour
         {
             spriteRenderers[i].sortingOrder = -1000 + (tileSerialNumber * 10) + i;
         }
+    }
+    
+    // 이웃한 타일 찾기
+    // Q. 매번 찾아야하는가? 
+    // Q. 길찾기 전에만 찾으면 되는건가?
+    public void SetNeighbors(TileRoad[,] map, int maxRow, int maxCol)
+    {
+        ClearNeighbors();
+        if (row > 0) up = map[row - 1, col];
+        if (row < maxRow - 1) down = map[row + 1, col];
+        if (col > 0) left = map[row, col - 1];
+        if (col < maxCol - 1) right = map[row, col + 1];
+    }
+
+    private void ClearNeighbors()
+    {
+        up = null;
+        down = null;
+        left = null;
+        right = null;
     }
 
 
