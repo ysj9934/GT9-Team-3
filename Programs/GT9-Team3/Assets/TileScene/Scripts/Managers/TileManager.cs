@@ -23,7 +23,7 @@ public class TileManager : MonoBehaviour
     public TileRoad startTileRoad;
     public TileRoad endTileRoad;
     
-    public List<TileRoad> path = new List<TileRoad>();
+    public List<TileRoad> path;
     public List<TileGrid> gridTileList = new List<TileGrid>();
     public List<Vector2> spawnTransform = new List<Vector2>();
     
@@ -73,7 +73,6 @@ public class TileManager : MonoBehaviour
 
     public void SetGridTile()
     {
-        
         tileMap = new TileRoad[cellSize, cellSize];
         int tileNumber = 1;
         
@@ -85,9 +84,7 @@ public class TileManager : MonoBehaviour
                 GameObject go = Instantiate(tileGridPrefab, pos, Quaternion.identity);
                 go.transform.SetParent(transform);
                 TileGrid tileGrid = go.GetComponent<TileGrid>();
-                // TileRoad tileRoad = go.GetComponent<TileRoad>();
-                // tileRoad.Initialize(mapLevel, pos);
-                // tileRoad.tileSerialNumber = tileNumber++;
+                tileGrid.Initialize(mapLevel, pos);
                 
                 gridTileList.Add(tileGrid);
             }
@@ -111,7 +108,7 @@ public class TileManager : MonoBehaviour
                     TileRoad tileRoad = go.GetComponent<TileRoad>();
                     tileRoad.Initialize(mapLevel, pos);
                     
-                    // tileMap[row + 1, col + 1] = tileRoad;
+                    tileMap[row + 1, col + 1] = tileRoad;
                 }
                 // 기지 타일
                 else
@@ -122,7 +119,7 @@ public class TileManager : MonoBehaviour
                     TileRoad tileRoad = go.GetComponent<TileRoad>();
                     tileRoad.Initialize(mapLevel, pos);
                     
-                    // tileMap[row + 1, col + 1] = tileRoad;
+                    tileMap[row + 1, col + 1] = tileRoad;
                     endTileRoad = tileRoad;
                 }
 
@@ -137,8 +134,13 @@ public class TileManager : MonoBehaviour
         {
             for (int col = 0; col < cellSize; col++)
             {
+                Debug.Log($"tileMap[{row},{col}]");
                 if (tileMap[row, col] != null)
+                {
                     tileMap[row, col].SetNeighbors(tileMap, cellSize, cellSize);
+                }
+                
+                Debug.Log($"tileMap : {tileMap[row, col]}");
             }
         }
     }
@@ -151,6 +153,7 @@ public class TileManager : MonoBehaviour
         switch (mapLevel)
         {
             case 1:
+                
                 spawnTransform.Add(gridTileList[2].transform.position);
                 spawnTransform.Add(gridTileList[10].transform.position);
                 spawnTransform.Add(gridTileList[14].transform.position);
@@ -196,6 +199,8 @@ public class TileManager : MonoBehaviour
 
     public void ShowConnectedPath()
     {
+        path = new List<TileRoad>();
+        
         SetNeighbors();
 
         if (startTileRoad == null)

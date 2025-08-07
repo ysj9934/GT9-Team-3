@@ -6,14 +6,25 @@ using UnityEngine;
 public class TileMove : MonoBehaviour
 {
     private TileRoad _tile;
+    private Collider2D _collider;
+
+    private Vector2 originalPosition;
 
     private void Awake()
     {
         _tile = GetComponent<TileRoad>();
+        _collider = GetComponent<PolygonCollider2D>();
+    }
+
+    private void OnMouseDown()
+    {
+        originalPosition = transform.position;
+        if (_collider != null)
+            _collider.enabled = false;
     }
 
     private void OnMouseDrag()
-    {
+    {   
         Plane plane = new Plane(Vector3.forward, 0);
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         
@@ -35,9 +46,25 @@ public class TileMove : MonoBehaviour
 
     private void OnMouseUp()
     {
-        UpdateGridPosition();
+        
+        
+        Collider2D hit = Physics2D.OverlapPoint(transform.position);
+        TileRoad tileRoad = hit != null ? hit.GetComponent<TileRoad>() : null;
+
+        if (tileRoad != null)
+        {
+            transform.position = originalPosition;
+            Debug.Log("this location already located");
+        }
+        else
+        {
+            UpdateGridPosition();    
+        }
+        
+        if (_collider != null)
+            _collider.enabled = true;
     }
-    
+
     private void UpdateGridPosition()
     {
         _tile.GetMapping(_tile.GetGridSize(_tile.mapLevel), transform.position);

@@ -96,6 +96,7 @@ GameObject:
   - component: {fileID: 1077136901040972948}
   - component: {fileID: -3716222064312718650}
   - component: {fileID: 1242339876889468054}
+  - component: {fileID: 2702432332181329574}
   m_Layer: 0
   m_Name: Tile_Spring_Base_01
   m_TagString: Untagged
@@ -175,12 +176,10 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: 3.65, y: 0.45}
-      - {x: 3.65, y: -0.45}
-      - {x: 0, y: -2.58}
-      - {x: -3.65, y: -0.45}
-      - {x: -3.65, y: 0.45}
-      - {x: 0, y: 2.58}
+    - - {x: 0, y: 2.57}
+      - {x: -3.6, y: 0.47}
+      - {x: 0, y: -1.62}
+      - {x: 3.6, y: 0.47}
   m_UseDelaunayMesh: 0
 --- !u!114 &-3716222064312718650
 MonoBehaviour:
@@ -194,7 +193,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03bf9e11699470f4dac282306e1b16c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _tileRoadConnector: {fileID: 0}
+  _tileRoadConnector: {fileID: 1242339876889468054}
   up: {fileID: 0}
   down: {fileID: 0}
   left: {fileID: 0}
@@ -205,6 +204,7 @@ MonoBehaviour:
   tileSerialNumber: 0
   col: 0
   row: 0
+  currentRotationIndex: 0
   connectedUp: 1
   connectedDown: 1
   connectedLeft: 1
@@ -220,6 +220,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: cfcc1333c3381fd4e9ea9c96b72b8497, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2702432332181329574
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1648578658134522860}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ca22cacb274a45428320567ea6b4446, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1788098168564396996

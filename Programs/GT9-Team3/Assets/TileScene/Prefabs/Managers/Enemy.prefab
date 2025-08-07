@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8005950914039702347}
-  - component: {fileID: 6670722569113481654}
+  - component: {fileID: 8539921857345079523}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Untagged
@@ -33,7 +33,7 @@ Transform:
   - {fileID: 7342830909432252546}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6670722569113481654
+--- !u!114 &8539921857345079523
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -42,12 +42,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1307033346310655290}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ec4972399456ec74faf3c9387fd543d0, type: 3}
+  m_Script: {fileID: 11500000, guid: 1a3b160190c376e49893470921c6b4c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _routeManager: []
-  moveSpeed: 2
-  isMove: 0
 --- !u!1 &7979929966278770422
 GameObject:
   m_ObjectHideFlags: 0
@@ -121,8 +118,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 2
-  m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b,
-    type: 3}
+  m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
   m_Color: {r: 1, g: 0, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0

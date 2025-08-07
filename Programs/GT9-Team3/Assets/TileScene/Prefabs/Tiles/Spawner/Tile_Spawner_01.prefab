@@ -324,7 +324,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 11
   m_Sprite: {fileID: 21300000, guid: 7990003ecdd5f5a43bde8b0526ca7b78, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -704,7 +704,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1134759104441408785}
   - {fileID: 4465905711803561492}
   - {fileID: 4293589352014090838}
   - {fileID: 6038322287407961616}
@@ -714,6 +713,7 @@ Transform:
   - {fileID: 207253774153793213}
   - {fileID: 8992947416770559575}
   - {fileID: 8263993376029651586}
+  - {fileID: 1134759104441408785}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &8626805657386028647
@@ -739,6 +739,7 @@ MonoBehaviour:
   tileSerialNumber: 0
   col: 0
   row: 0
+  currentRotationIndex: 0
   connectedUp: 1
   connectedDown: 1
   connectedLeft: 1

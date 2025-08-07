@@ -20,7 +20,8 @@ public class TileRoad : MonoBehaviour
     [SerializeField] public float[] cellSize = { 3.6f,  2.1f };    // 타일 사이즈
     [SerializeField] public int tileSerialNumber;                   // 타일 시리얼번호 (자동으로 수정)
     public int col, row;                                            // 타일 위치 정보 (자동으로 수정)
-    [SerializeField] public bool connectedUp, 
+    public TileRotation currentRotationIndex = TileRotation.Degree_0;
+    public bool connectedUp, 
         connectedDown, 
         connectedLeft, 
         connectedRight;
