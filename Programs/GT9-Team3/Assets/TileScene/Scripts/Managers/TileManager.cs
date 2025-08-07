@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Cinemachine;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -15,7 +16,9 @@ public class TileManager : MonoBehaviour
     [SerializeField] private GameObject tileBasePrefab; // 타일_기지 프리펩
     [SerializeField] private GameObject tileSpawnPrefab;// 타일_스포너 프리팹
 
-    private int mapLevel = 1;
+    [SerializeField] private CinemachineVirtualCamera[] levelCamera;
+
+    public int mapLevel = 1;
     private int cellSize = 5;
     private float cellPos;
     
@@ -24,8 +27,8 @@ public class TileManager : MonoBehaviour
     public TileRoad endTileRoad;
     
     public List<TileRoad> path;
-    public List<TileGrid> gridTileList = new List<TileGrid>();
-    public List<Vector2> spawnTransform = new List<Vector2>();
+    public List<TileGrid> gridTileList;
+    public List<Vector2> spawnTransform;
     
     private void Awake()
     {
@@ -40,6 +43,7 @@ public class TileManager : MonoBehaviour
     public void Initialize()
     {
         UpdateLevel(mapLevel);
+        CameraMove();
         ClearTiles();
         SetGridTile();
         SetBaseTile();
@@ -71,16 +75,28 @@ public class TileManager : MonoBehaviour
         _gameManager.DestroyOfType<TileRoad>();
     }
 
+    private void CameraMove()
+    {
+        foreach (var vcamera in levelCamera)
+        {
+            vcamera.Priority = 0;
+        }
+
+        levelCamera[mapLevel - 1].Priority = 20;
+    }
+
     public void SetGridTile()
     {
+        
+        gridTileList = new List<TileGrid>();
+        _gameManager.DestroyOfType<TileGrid>();
         tileMap = new TileRoad[cellSize, cellSize];
-        int tileNumber = 1;
         
         for (int row = 0; row < cellSize; row++)
         {
             for (int col = 0; col < cellSize; col++)
             {
-                Vector2 pos = new Vector3(col * 3.6f - (3.6f * row), (row + col) * -2.1f + 8.4f);
+                Vector2 pos = new Vector3(col * 3.6f - (3.6f * row), (row + col) * -2.1f + 4.2f + (4.2f * mapLevel));
                 GameObject go = Instantiate(tileGridPrefab, pos, Quaternion.identity);
                 go.transform.SetParent(transform);
                 TileGrid tileGrid = go.GetComponent<TileGrid>();
@@ -93,6 +109,7 @@ public class TileManager : MonoBehaviour
 
     public void SetBaseTile()
     {
+        _gameManager.DestroyOfType<TileRoad>();
         int baseNumber = 1;
 
         for (int row = 0; row < 3; row++)
@@ -108,7 +125,7 @@ public class TileManager : MonoBehaviour
                     TileRoad tileRoad = go.GetComponent<TileRoad>();
                     tileRoad.Initialize(mapLevel, pos);
                     
-                    tileMap[row + 1, col + 1] = tileRoad;
+                    tileMap[row + mapLevel, col + mapLevel] = tileRoad;
                 }
                 // 기지 타일
                 else
@@ -119,7 +136,7 @@ public class TileManager : MonoBehaviour
                     TileRoad tileRoad = go.GetComponent<TileRoad>();
                     tileRoad.Initialize(mapLevel, pos);
                     
-                    tileMap[row + 1, col + 1] = tileRoad;
+                    tileMap[row + mapLevel, col + mapLevel] = tileRoad;
                     endTileRoad = tileRoad;
                 }
 

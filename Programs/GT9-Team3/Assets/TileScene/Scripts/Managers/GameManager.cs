@@ -1,13 +1,16 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
+    public TileManager _tileManager;
 
-    public int blockCount = 5;
+    public int mapLevel = 1;
+    [SerializeField] private TextMeshProUGUI levelText;
 
     private void Awake()
     {
@@ -19,6 +22,20 @@ public class GameManager : MonoBehaviour
 
         Instance = this;
     }
+
+    private void Start()
+    {
+        _tileManager = TileManager.Instance;
+    }
+
+    public void UpdateMapLevel(int mapLevel)
+    {
+        this.mapLevel = mapLevel;
+
+        _tileManager.mapLevel = mapLevel;
+        levelText.text = $"{this.mapLevel}";
+    }
+
 
     public void DestroyOfType<T>() where T : Component
     {

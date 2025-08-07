@@ -62,7 +62,7 @@ public class TileRoad : MonoBehaviour
     public void GetMapping(int gridSize, Vector2 pos)
     {
         float originX = 0f;
-        float originY = 8.4f;
+        float originY = 4.2f + (4.2f * mapLevel);
 
         float dx = pos.x - originX;
         float dy = originY - pos.y;
