@@ -3288,13 +3288,17 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7448605062792393602, guid: 1309173f8e2f8cd43aacf64911676477, type: 3}
-      propertyPath: tileBasePrefab
+      propertyPath: levelCamera.Array.data[0]
       value: 
-      objectReference: {fileID: 1648578658134522860, guid: b6552e04540f4ac4e9d1d54ce10a615f, type: 3}
+      objectReference: {fileID: 639803725}
     - target: {fileID: 7448605062792393602, guid: 1309173f8e2f8cd43aacf64911676477, type: 3}
-      propertyPath: tileSpawnPrefab
+      propertyPath: levelCamera.Array.data[1]
       value: 
-      objectReference: {fileID: 7293273341129508085, guid: f43e9bdeb122bf24db08cb2810e60802, type: 3}
+      objectReference: {fileID: 1830166540}
+    - target: {fileID: 7448605062792393602, guid: 1309173f8e2f8cd43aacf64911676477, type: 3}
+      propertyPath: levelCamera.Array.data[2]
+      value: 
+      objectReference: {fileID: 720040137}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

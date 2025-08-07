@@ -25,7 +25,8 @@ public class TileManager : MonoBehaviour
     public TileRoad[,] tileMap;
     public TileRoad startTileRoad;
     public TileRoad endTileRoad;
-    
+
+    [SerializeField] private GameObject pathfinderPrefab;
     public List<TileRoad> path;
     public List<TileGrid> gridTileList;
     public List<Vector2> spawnTransform;
@@ -231,6 +232,7 @@ public class TileManager : MonoBehaviour
         else
         {
             path = FindConnectedPath(startTileRoad, endTileRoad);
+            GetPathfinder();
         } 
     }
 
@@ -241,8 +243,11 @@ public class TileManager : MonoBehaviour
         var path = new List<TileRoad>();
 
         if (DFS(startTile, endTile, visited, path))
-            return path;
-        
+        {
+            Debug.Log("The path is complete");
+            return path;    
+        }
+
         return new List<TileRoad>();
     }
 
@@ -265,7 +270,15 @@ public class TileManager : MonoBehaviour
         }
 
         path.Remove(current);
+        Debug.LogError("The path is invalid");
         return false;
+    }
+
+    public void GetPathfinder()
+    {
+        GameObject go = Instantiate(pathfinderPrefab, startTileRoad.transform);
+        Pathfinder pathfinder = go.GetComponent<Pathfinder>();
+        pathfinder.Initialize(path);
     }
 
 

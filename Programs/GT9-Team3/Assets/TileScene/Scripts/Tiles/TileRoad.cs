@@ -75,8 +75,19 @@ public class TileRoad : MonoBehaviour
 
         this.col = colIndex;
         this.row = rowIndex;
+
+        Vector2 originPosition = transform.position;
+        try
+        {
+            _tileManager.tileMap[rowIndex, colIndex] = this;
+        }
+        catch (IndexOutOfRangeException e)
+        {
+            Debug.Log($"{e}");
+
+            transform.position = originPosition;
+        }
         
-        _tileManager.tileMap[rowIndex, colIndex] = this;
     }
 
     public void UpdateTileSerialNumber()
