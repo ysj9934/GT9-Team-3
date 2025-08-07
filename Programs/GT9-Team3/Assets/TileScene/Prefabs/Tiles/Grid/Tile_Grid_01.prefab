@@ -93,7 +93,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4292178599182484481}
-  - component: {fileID: 4044880230498211988}
+  - component: {fileID: 5439331042282691006}
+  - component: {fileID: 6743043495386621519}
   m_Layer: 0
   m_Name: Tile_Grid_01
   m_TagString: Untagged
@@ -125,7 +126,33 @@ Transform:
   - {fileID: 2403574331052832503}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4044880230498211988
+--- !u!114 &5439331042282691006
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1648578658134522860}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 03bf9e11699470f4dac282306e1b16c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  up: {fileID: 0}
+  down: {fileID: 0}
+  left: {fileID: 0}
+  right: {fileID: 0}
+  cellSize:
+  - 3.6
+  - 2.1
+  tileSerialNumber: 0
+  col: 0
+  row: 0
+  connectedUp: 0
+  connectedDown: 0
+  connectedLeft: 0
+  connectedRight: 0
+--- !u!114 &6743043495386621519
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
