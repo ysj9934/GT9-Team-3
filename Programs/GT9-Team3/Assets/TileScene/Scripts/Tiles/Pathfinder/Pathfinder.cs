@@ -48,6 +48,13 @@ public class Pathfinder : MonoBehaviour
                     currentPathIndex++;
                 }    
             }
+            
+            if (currentPathIndex >= pathPoints.Length)
+            {
+                isMove = false;
+                Debug.Log("Pathfinder is finished");
+                gameObject.SetActive(false);
+            }
         }
     }
 

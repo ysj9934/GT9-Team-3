@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Cinemachine;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -170,8 +171,8 @@ public class TileManager : MonoBehaviour
         
         switch (mapLevel)
         {
+            // 계산식으로 변경하기
             case 1:
-                
                 spawnTransform.Add(gridTileList[2].transform.position);
                 spawnTransform.Add(gridTileList[10].transform.position);
                 spawnTransform.Add(gridTileList[14].transform.position);
@@ -232,47 +233,100 @@ public class TileManager : MonoBehaviour
         else
         {
             path = FindConnectedPath(startTileRoad, endTileRoad);
-            GetPathfinder();
+            if (path != null && path.Count > 0)
+            {
+                GetPathfinder();
+            }
+                
         } 
     }
 
     public List<TileRoad> FindConnectedPath(TileRoad startTile, TileRoad endTile)
     {
-        Debug.Log("FindConnectedPath");
+        Debug.Log("FindConnectedPath - Searching all paths");
+        var allPaths = new List<List<TileRoad>>();
         var visited = new HashSet<TileRoad>();
-        var path = new List<TileRoad>();
+        var currentPath = new List<TileRoad>();
 
-        if (DFS(startTile, endTile, visited, path))
+        DFSAllPaths(startTile, endTile, visited, currentPath, allPaths);
+
+        if (allPaths.Count == 0)
         {
-            Debug.Log("The path is complete");
-            return path;    
+            Debug.LogWarning("No valid paths found");
+            return new List<TileRoad>();
         }
 
-        return new List<TileRoad>();
+        // 가장 짧은 경로 선택
+        var shortestPath = allPaths.OrderBy(p => p.Count).First();
+        Debug.Log($"Shortest path length: {shortestPath.Count}");
+        return shortestPath;
     }
 
-    private bool DFS(TileRoad current, TileRoad target, HashSet<TileRoad> visited, List<TileRoad> path)
+    
+    private void DFSAllPaths(TileRoad current, TileRoad target, HashSet<TileRoad> visited,
+        List<TileRoad> currentPath, List<List<TileRoad>> allPaths)
     {
-        Debug.Log("DFS");
         if (current == null || visited.Contains(current))
-            return false;
-        
+            return;
+
         visited.Add(current);
-        path.Add(current);
+        currentPath.Add(current);
 
         if (current == target)
-            return true;
-
-        foreach (var (neighbor, _) in current._tileRoadConnector.GetConnectedNeighbors())
         {
-            if (DFS(neighbor, target, visited, path))
-                return true;
+            // 경로 복사해서 저장
+            allPaths.Add(new List<TileRoad>(currentPath));
+        }
+        else
+        {
+            foreach (var (neighbor, _) in current._tileRoadConnector.GetConnectedNeighbors())
+            {
+                DFSAllPaths(neighbor, target, visited, currentPath, allPaths);
+            }
         }
 
-        path.Remove(current);
-        Debug.LogError("The path is invalid");
-        return false;
+        // 백트래킹
+        visited.Remove(current);
+        currentPath.RemoveAt(currentPath.Count - 1);
     }
+    
+    // public List<TileRoad> FindConnectedPath(TileRoad startTile, TileRoad endTile)
+    // {
+    //     Debug.Log("FindConnectedPath");
+    //     var visited = new HashSet<TileRoad>();
+    //     var path = new List<TileRoad>();
+    //
+    //     if (DFS(startTile, endTile, visited, path))
+    //     {
+    //         Debug.Log("The path is complete");
+    //         return path;
+    //     }
+    //
+    //     return new List<TileRoad>();
+    // }
+
+    // private bool DFS(TileRoad current, TileRoad target, HashSet<TileRoad> visited, List<TileRoad> path)
+    // {
+    //     Debug.Log("DFS");
+    //     if (current == null || visited.Contains(current))
+    //         return false;
+    //     
+    //     visited.Add(current);
+    //     path.Add(current);
+    //
+    //     if (current == target)
+    //         return true;
+    //
+    //     foreach (var (neighbor, _) in current._tileRoadConnector.GetConnectedNeighbors())
+    //     {
+    //         if (DFS(neighbor, target, visited, path))
+    //             return true;
+    //     }
+    //
+    //     path.Remove(current);
+    //     Debug.LogError("The path is invalid");
+    //     return false;
+    // }
 
     public void GetPathfinder()
     {
@@ -280,142 +334,4 @@ public class TileManager : MonoBehaviour
         Pathfinder pathfinder = go.GetComponent<Pathfinder>();
         pathfinder.Initialize(path);
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    // private GameManager gameManager;
-    //
-    // [SerializeField] private GameObject baseTilePrefab;
-    // // [SerializeField] private GameObject[] tilePrefabs;
-    //
-    // [SerializeField] public Vector2 startPosition = Vector2.zero;
-    //
-    // [SerializeField] private List<GameObject> tileList = new List<GameObject>();
-    //
-    //
-    // private void Start()
-    // {
-    //     gameManager = GameManager.Instance;
-    //     
-    //     InitBaseTile(gameManager.blockCount);
-    // }
-    //
-    // // 타일 초기 세팅
-    // public void InitBaseTile(int blockCount)
-    // {
-    //     // 타일 초기화
-    //     ResetTile();
-    //     
-    //     // base tile setting
-    //     CreateBaseTile(blockCount);
-    // }
-    //
-    // // 타일 초기화
-    // public void ResetTile()
-    // {
-    //     gameManager.DestroyOfType<Tile>();
-    //     tileList.Clear();
-    // }
-    //
-    // // 베이스 타일 생성
-    // private void CreateBaseTile(int blockCount)
-    // {
-    //     // 타일 위치 초기화
-    //     switch (blockCount)
-    //     {
-    //         case 5:
-    //             startPosition = new Vector2(0, 4.2f);
-    //             break;
-    //         case 7:
-    //             startPosition = new Vector2(0, 8.4f);
-    //             break;
-    //         case 9:
-    //             startPosition = new Vector2(0, 12.6f);
-    //             break;
-    //     }
-    //     
-    //     // 타일 
-    //     int[] blocksPerRow2 = {1, 2, 3, 2, 1};
-    //     
-    //     for (int row = 0; row < blocksPerRow2.Length; row++)
-    //     {
-    //         int count = blocksPerRow2[row];
-    //         float offset = -(count - 1);
-    //         
-    //         for (int i = 0; i < count; i++)
-    //         {
-    //             // base tile
-    //             if (row == 2 && i == 1)
-    //             {
-    //                 Vector2 pos = startPosition + new Vector2(offset * 3.6f + 7.2f * i, -row * 2.1f);
-    //                 GameObject go = GetBaseTile(baseTilePrefab, pos);
-    //                 SpriteRenderer[] renderers = go.GetComponentsInChildren<SpriteRenderer>();
-    //                 for (int j = 0; j < renderers.Length; j++)
-    //                 {
-    //                     renderers[j].sortingOrder += row * 10 -500;
-    //                 }
-    //             
-    //                 tileList.Add(go);
-    //             }
-    //             // basic tile
-    //             else
-    //             {
-    //                 Vector2 pos = startPosition + new Vector2(offset * 3.6f + 7.2f * i, -row * 2.1f);
-    //                 GameObject go = GetTile(tilePrefabs, pos);
-    //                 SpriteRenderer[] renderers = go.GetComponentsInChildren<SpriteRenderer>();
-    //                 for (int j = 0; j < renderers.Length; j++)
-    //                 {
-    //                     renderers[j].sortingOrder += row * 10 -500;
-    //                 }
-    //             
-    //                 tileList.Add(go);
-    //             }
-    //         }
-    //     }
-    // }
-    //
-    // // base tile
-    // private GameObject GetBaseTile(GameObject prefab, Vector2 pos)
-    // {
-    //     return Instantiate(prefab, pos, Quaternion.identity);
-    // }
-    //
-    // // basic tile
-    // private GameObject GetTile(GameObject[] prefab, Vector2 pos)
-    // {
-    //     return Instantiate(prefab[Random.Range(0, prefab.Length)], pos, Quaternion.identity);
-    // }
-
 }
