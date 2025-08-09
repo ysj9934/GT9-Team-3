@@ -10,8 +10,8 @@ public class TowerPlacer : MonoBehaviour
     public GameObject towerPrefab;
     public TowerData towerData;
 
-    [SerializeField] private Tilemap groundTilemap; // Ground Å¸ÀÏ¸Ê ÂüÁ¶
-    public Grid grid; // Å¸¿ö Å¸ÀÏ À§¿¡ ¼³Ä¡ÇÏ±â
+    [SerializeField] private Tilemap groundTilemap; // Ground Å¸ï¿½Ï¸ï¿½ ï¿½ï¿½ï¿½ï¿½
+    public Grid grid; // Å¸ï¿½ï¿½ Å¸ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½Ï±ï¿½
 
     public GameObject previewPrefab;
     private GameObject currentPreview;
@@ -32,17 +32,17 @@ public class TowerPlacer : MonoBehaviour
         Vector3 snappedPos = grid.GetCellCenterWorld(cellPos);
         snappedPos.z = 0;
 
-        // ¹Ì¸®º¸±â À§Ä¡ °»½Å
+        // ï¿½Ì¸ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½ï¿½
         Vector3 previewPos = snappedPos;
         previewPos.y += 0.44f;
         currentPreview.transform.position = previewPos;
 
-        // ¼³Ä¡ °¡´É ¿©ºÎ¿¡ µû¶ó »ö»ó º¯°æ
+        // ï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Î¿ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         bool canPlace = CanPlaceTowerAt(cellPos);
         SpriteRenderer sr = currentPreview.GetComponent<SpriteRenderer>();
         sr.color = canPlace ? new Color(1, 1, 1, 0.5f) : new Color(1, 0, 0, 0.5f);
 
-        // Å¬¸¯ÇØ¼­ ¼³Ä¡
+        // Å¬ï¿½ï¿½ï¿½Ø¼ï¿½ ï¿½ï¿½Ä¡
         if (Input.GetMouseButtonDown(0) && canPlace) // && ResourceManager.Instance.CanAfford(...)
         {
             PlaceTower(snappedPos, cellPos);
@@ -51,13 +51,13 @@ public class TowerPlacer : MonoBehaviour
 
     public bool CanPlaceTowerAt(Vector3Int cellPos)
     {
-        TileBase tile = groundTilemap.GetTile(cellPos);
+        UnityEngine.Tilemaps.TileBase tile = groundTilemap.GetTile(cellPos);
         return tile != null && !occupiedCells.Contains(cellPos);
     }
 
     public void PlaceTower(Vector3 position, Vector3Int cellPos)
     {
-        // Å¸¿ö¸¦ Å¸ÀÏº¸´Ù ¾à°£ À§¿¡ ¹èÄ¡
+        // Å¸ï¿½ï¿½ï¿½ï¿½ Å¸ï¿½Ïºï¿½ï¿½ï¿½ ï¿½à°£ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡
         position.y += 0.44f;
 
         GameObject tower = Instantiate(towerPrefab, position, Quaternion.identity);
@@ -70,7 +70,7 @@ public class TowerPlacer : MonoBehaviour
         }
         else
         {
-            Debug.LogError("[¿À·ù] Tower1 ½ºÅ©¸³Æ®°¡ ÇÁ¸®ÆÕ¿¡ ¾øÀ½");
+            Debug.LogError("[ï¿½ï¿½ï¿½ï¿½] Tower1 ï¿½ï¿½Å©ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Õ¿ï¿½ ï¿½ï¿½ï¿½ï¿½");
         }
 
         ResourceManager.Instance.Spend(towerData.makeCost, towerData.makeValue);
