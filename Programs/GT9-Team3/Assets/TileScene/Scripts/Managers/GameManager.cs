@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class GameManager11 : MonoBehaviour
+public class GameManager : MonoBehaviour
 {
-    public static GameManager11 Instance { get; private set; }
+    public static GameManager Instance { get; private set; }
     public TileManager _tileManager;
 
     public int mapLevel = 1;

@@ -9,7 +9,7 @@ using Random = UnityEngine.Random;
 public class TileManager : MonoBehaviour
 {
     public static TileManager Instance { get; private set; }
-    private GameManager11 _gameManager11;
+    private GameManager _gameManager;
     
     [Header("Tile Prefabs")]
     [SerializeField] private GameObject[] tilePrefabs;  // 타일_길타입 프리팹
@@ -39,7 +39,7 @@ public class TileManager : MonoBehaviour
 
     private void Start()
     {
-        _gameManager11 = GameManager11.Instance;
+        _gameManager = GameManager.Instance;
     }
 
     public void Initialize()
@@ -74,7 +74,7 @@ public class TileManager : MonoBehaviour
 
     public void ClearTiles()
     {
-        _gameManager11.DestroyOfType<TileRoad>();
+        _gameManager.DestroyOfType<TileRoad>();
     }
 
     private void CameraMove()
@@ -91,7 +91,7 @@ public class TileManager : MonoBehaviour
     {
         
         gridTileList = new List<TileGrid>();
-        _gameManager11.DestroyOfType<TileGrid>();
+        _gameManager.DestroyOfType<TileGrid>();
         tileMap = new TileRoad[cellSize, cellSize];
         
         for (int row = 0; row < cellSize; row++)
@@ -111,7 +111,7 @@ public class TileManager : MonoBehaviour
 
     public void SetBaseTile()
     {
-        _gameManager11.DestroyOfType<TileRoad>();
+        _gameManager.DestroyOfType<TileRoad>();
         int baseNumber = 1;
 
         for (int row = 0; row < 3; row++)
@@ -213,7 +213,7 @@ public class TileManager : MonoBehaviour
     
     public void ClearSpawner()
     {
-        _gameManager11.DestroyOfType<TileSpawner>();
+        _gameManager.DestroyOfType<TileSpawner>();
     }
 
     public void ShowConnectedPath()
