@@ -11,7 +11,7 @@ public class Enemy : MonoBehaviour
     [SerializeField] Image healthBar;     // Foreground Image 연결
 
     //이동 관련
-    private float speed = 2f;  // 이동 속도 public으로 변경
+    [SerializeField] private float speed = 2f;  // 이동 속도 public으로 변경
 
     //공격 관련
     public int attackPower = 10;    //공격력
