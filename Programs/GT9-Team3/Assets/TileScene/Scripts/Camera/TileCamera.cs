@@ -5,10 +5,10 @@ using UnityEngine;
 
 public class TileCamera : MonoBehaviour
 {
-    private GameManager gameManager;
+    private GameManager11 _gameManager11;
 
     private void Start()
     {
-        gameManager = GameManager.Instance;
+        _gameManager11 = GameManager11.Instance;
     }
 }

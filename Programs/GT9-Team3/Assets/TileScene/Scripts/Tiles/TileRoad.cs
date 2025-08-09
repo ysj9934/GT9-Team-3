@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class TileRoad : MonoBehaviour
 {
-    private GameManager _gameManager;
+    private GameManager11 _gameManager11;
     private TileManager _tileManager;
     public TileRoadConnector _tileRoadConnector;
 
@@ -31,7 +31,7 @@ public class TileRoad : MonoBehaviour
 
     private void Awake()
     {
-        _gameManager = GameManager.Instance;
+        _gameManager11 = GameManager11.Instance;
         _tileManager = TileManager.Instance;
     }
 
