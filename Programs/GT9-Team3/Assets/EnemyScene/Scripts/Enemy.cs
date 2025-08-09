@@ -5,18 +5,23 @@ using UnityEngine.UI;
 
 public class Enemy : MonoBehaviour
 {
-    public Vector2 targetPosition;  // 목표 위치는 public으로 둠
-
-    private Transform[] path; // 경로를 따라 이동할 때 사용 (예: Waypoint 시스템)
-    private int pathIndex = 0;  // 경로를 따라 이동할 때 사용
-
     //체력 관련
-    [SerializeField] Image healthBar;     // Foreground Image 연결
     [SerializeField] float hp = 10f;
-    private float currentHp;
+    [SerializeField] private float currentHp;
+    [SerializeField] Image healthBar;     // Foreground Image 연결
 
     //이동 관련
     private float speed = 2f;  // 이동 속도 public으로 변경
+
+    //공격 관련
+    public int attackPower = 10;    //공격력
+    public float attackRange = 5f;  //공격 사거리
+    public float attackSpeed = 1f;  //공격 주기(초 단위)
+
+    public Vector2 targetPosition;  // 목표 위치는 public으로 둠
+
+    //private Transform[] path; // 경로를 따라 이동할 때 사용 (예: Waypoint 시스템)
+    //private int pathIndex = 0;  // 경로를 따라 이동할 때 사용
 
     void Start()
     {
