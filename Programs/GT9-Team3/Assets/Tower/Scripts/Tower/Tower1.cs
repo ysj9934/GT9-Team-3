@@ -56,28 +56,27 @@ public class Tower1 : MonoBehaviour
     private Enemy1 FindTarget()
     {
 
-
+        // 적 탐색
         Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, data.attackRange);
 
         List<Enemy1> enemies = new List<Enemy1>();
 
         foreach (var hit in hits)
         {
+
+            if (hit.gameObject == gameObject) continue;     // 자기자신 제외
+
             Enemy1 enemy = hit.GetComponent<Enemy1>();
+
             if (enemy != null)
             {
-                Debug.Log($"[타워] 적 감지됨: {enemy.name}");
                 enemies.Add(enemy);
-            }
-            else
-            {
-                Debug.Log($"[타워] Enemy1 컴포넌트 없음: {hit.name}");
             }
         }
 
         if (enemies.Count == 0)
         {
-            Debug.Log("[타워] 범위 내 적 없음");
+            return null;
         }
 
         foreach (var priority in data.targetOrder)
@@ -101,13 +100,12 @@ public class Tower1 : MonoBehaviour
             }
 
             if (selected != null)
-                Debug.Log($"[타워] 우선순위 {priority} 대상 선택됨: {selected.name}");
-            return selected;
+            {
+                return selected;
+            }
         }
 
-        Debug.Log("[타워] 유효한 타겟 없음");
         return null;
     }
-
 
 }
