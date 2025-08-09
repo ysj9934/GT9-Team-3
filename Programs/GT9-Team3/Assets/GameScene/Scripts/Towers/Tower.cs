@@ -47,7 +47,8 @@ public class Tower : MonoBehaviour
     private void Fire()
     {
         // 스캐너에 적을 포착 / 타워의 최대 총알 갯수(ObjectPool)
-        if (!_scanner.nearestTarget && _activeBullets.Count >= maxBullets) return;
+        if (_scanner.nearestTarget == null) return; 
+            if (_activeBullets.Count >= maxBullets) return;
         
         Transform bullet = _bulletPool.Get();
         if (bullet == null) return;

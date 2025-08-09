@@ -1,0 +1,62 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &3281838279918125319
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4618969997637024044}
+  - component: {fileID: 7448605062792393602}
+  m_Layer: 0
+  m_Name: TileManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4618969997637024044
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3281838279918125319}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7448605062792393602
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3281838279918125319}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 36189a6cc3ba635469b7b87d5c5995b1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tilePrefabs:
+  - {fileID: 2129590565652284986, guid: 35ca314a15f98134397221372554eea7, type: 3}
+  tileGridPrefab: {fileID: 1648578658134522860, guid: d4c4867eb3844ae4cacd9621fc7884de, type: 3}
+  tileBasePrefab: {fileID: 1648578658134522860, guid: b6552e04540f4ac4e9d1d54ce10a615f, type: 3}
+  tileSpawnPrefab: {fileID: 7293273341129508085, guid: f43e9bdeb122bf24db08cb2810e60802, type: 3}
+  levelCamera:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  mapLevel: 1
+  startTileRoad: {fileID: 0}
+  endTileRoad: {fileID: 0}
+  pathfinderPrefab: {fileID: 2678620220463419942, guid: 0d97ab2ba19e21947aeec62756e1ac53, type: 3}
+  path: []
+  gridTileList: []
+  spawnTransform: []
