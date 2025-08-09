@@ -1,10 +1,7 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
-// 일반형 타워 스펙입니다.
 public class Tower : MonoBehaviour
 {
     [Header("Bullet Info")]
