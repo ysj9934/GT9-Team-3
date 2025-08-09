@@ -334,4 +334,11 @@ public class TileManager : MonoBehaviour
         Pathfinder pathfinder = go.GetComponent<Pathfinder>();
         pathfinder.Initialize(path);
     }
+
+    public void CreateTile(int tileCode)
+    {
+        Vector2 pos = new Vector3(7.2f + (3.6f * mapLevel), -4.2f + (-1f * 2.1f * mapLevel));   
+        GameObject go = Instantiate(tilePrefabs[tileCode], pos, Quaternion.identity);
+        go.transform.SetParent(transform);
+    }
 }

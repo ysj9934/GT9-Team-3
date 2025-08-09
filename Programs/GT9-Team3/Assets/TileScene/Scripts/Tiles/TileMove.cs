@@ -61,6 +61,7 @@ public class TileMove : MonoBehaviour
             Vector2 rhorizontal = new Vector2(-7.2f, 0f);
             Vector2 vertical   = new Vector2(0f, 4.2f);
             Vector2 rvertical   = new Vector2(0f, -4.2f);
+            
 
             // 가장 가까운 방향 찾기
             Vector2[] directions = { diagUpRight, diagUpLeft, diagDownRight, diagDownLeft, horizontal, rhorizontal, vertical, rvertical };
