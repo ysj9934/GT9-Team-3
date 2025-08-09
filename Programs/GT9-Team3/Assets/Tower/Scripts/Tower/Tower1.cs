@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 public class Tower1 : MonoBehaviour
 {
@@ -10,18 +12,16 @@ public class Tower1 : MonoBehaviour
     private void Update()
     {
         if (cooldownTimer > 0f)
-            cooldownTimer -= Time.deltaTime;
-    }
-
-    private void OnTriggerStay2D(Collider2D collision)
-    {
-        if (cooldownTimer > 0f) return;
-
-        Enemy1 enemy = collision.GetComponent<Enemy1>();
-        if (enemy != null)
         {
-            Shoot(enemy.transform);
-            cooldownTimer = 1f / data.attackSpeed; // 다음 공격까지 쿨타임
+            cooldownTimer -= Time.deltaTime;
+            return;
+        }
+
+        Enemy1 target = FindTarget();
+        if (target != null)
+        {
+            Attack(target);
+            cooldownTimer = 1f / data.attackSpeed;
         }
     }
 
@@ -51,4 +51,63 @@ public class Tower1 : MonoBehaviour
         data = towerData;
         cooldownTimer = 0f;
     }
+
+    // 우선순위 
+    private Enemy1 FindTarget()
+    {
+
+
+        Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, data.attackRange);
+
+        List<Enemy1> enemies = new List<Enemy1>();
+
+        foreach (var hit in hits)
+        {
+            Enemy1 enemy = hit.GetComponent<Enemy1>();
+            if (enemy != null)
+            {
+                Debug.Log($"[타워] 적 감지됨: {enemy.name}");
+                enemies.Add(enemy);
+            }
+            else
+            {
+                Debug.Log($"[타워] Enemy1 컴포넌트 없음: {hit.name}");
+            }
+        }
+
+        if (enemies.Count == 0)
+        {
+            Debug.Log("[타워] 범위 내 적 없음");
+        }
+
+        foreach (var priority in data.targetOrder)
+        {
+            Enemy1 selected = null;
+
+            switch (priority)
+            {
+                case TargetPriority.Boss:
+                    selected = enemies.Find(e => e.CompareTag("Boss"));
+                    break;
+                case TargetPriority.Base_Range:
+                    selected = enemies.OrderBy(e => e.DistanceToBase).FirstOrDefault();
+                    break;
+                case TargetPriority.Lowest_HP:
+                    selected = enemies.OrderBy(e => e.CurrentHP).FirstOrDefault();
+                    break;
+                case TargetPriority.Closest:
+                    selected = enemies.OrderBy(e => Vector3.Distance(transform.position, e.transform.position)).FirstOrDefault();
+                    break;
+            }
+
+            if (selected != null)
+                Debug.Log($"[타워] 우선순위 {priority} 대상 선택됨: {selected.name}");
+            return selected;
+        }
+
+        Debug.Log("[타워] 유효한 타겟 없음");
+        return null;
+    }
+
+
 }

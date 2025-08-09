@@ -6,6 +6,15 @@ public class Enemy1 : MonoBehaviour
 {
     public int maxHP = 10;
     private int currentHP;
+    public int CurrentHP => currentHP;
+
+    public float DistanceToBase
+    {
+        get
+        {
+            return Vector3.Distance(transform.position, GameManager.Instance.BasePosition);
+        }
+    }
 
     private void Start()
     {
@@ -28,4 +37,5 @@ public class Enemy1 : MonoBehaviour
         Debug.Log($"[»ç¸Á] {gameObject.name}");
         Destroy(gameObject);
     }
+
 }
