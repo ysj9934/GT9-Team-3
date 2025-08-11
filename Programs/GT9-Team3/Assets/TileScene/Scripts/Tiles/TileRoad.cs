@@ -2,12 +2,14 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class TileRoad : MonoBehaviour
 {
     private GameManager _gameManager;
     private TileManager _tileManager;
     public TileRoadConnector _tileRoadConnector;
+    public TileRotate _tileRotate;
 
     // 이웃한 타일 정보 (자동으로 수정)
     [Header("Tile Neighbors")] 
@@ -17,7 +19,7 @@ public class TileRoad : MonoBehaviour
     public TileRoad right;
 
     [Header("Tile Info")]
-    [SerializeField] public float[] cellSize = { 3.6f,  2.1f };    // 타일 사이즈
+    public float[] cellSize = { 1.4475f,  0.84f };    // 타일 사이즈
     [SerializeField] public int tileSerialNumber;                   // 타일 시리얼번호 (자동으로 수정)
     public int col, row;                                            // 타일 위치 정보 (자동으로 수정)
     public TileRotation currentRotationIndex = TileRotation.Degree_0;
@@ -33,15 +35,15 @@ public class TileRoad : MonoBehaviour
     {
         _gameManager = GameManager.Instance;
         _tileManager = TileManager.Instance;
+        _tileRotate = GetComponent<TileRotate>();
     }
 
+    // tile initialize
     public void Initialize(int mapLevel, Vector2 pos)
     {
         this.mapLevel = mapLevel;
-        GetMapping(GetGridSize(this.mapLevel), pos);
+        UpdateMapping(GetGridSize(this.mapLevel), pos);
         UpdateTileSerialNumber();
-        // this.row = row;
-        // this.col = col;
     }
 
     public int GetGridSize(int mapLevel)
@@ -59,10 +61,11 @@ public class TileRoad : MonoBehaviour
         };
     }
 
-    public void GetMapping(int gridSize, Vector2 pos)
+    // Update Mapping
+    public void UpdateMapping(int gridSize, Vector2 pos)
     {
         float originX = 0f;
-        float originY = 4.2f + (4.2f * mapLevel);
+        float originY = cellSize[1] * 2 + (cellSize[1] * 2 * mapLevel);
 
         float dx = pos.x - originX;
         float dy = originY - pos.y;
@@ -83,8 +86,7 @@ public class TileRoad : MonoBehaviour
         }
         catch (IndexOutOfRangeException e)
         {
-            Debug.Log($"{e}");
-
+            Debug.LogError($"{e}");
             transform.position = originPosition;
         }
         
@@ -106,9 +108,6 @@ public class TileRoad : MonoBehaviour
         }
     }
     
-    // 이웃한 타일 찾기
-    // Q. 매번 찾아야하는가? 
-    // Q. 길찾기 전에만 찾으면 되는건가?
     public void SetNeighbors(TileRoad[,] map, int maxRow, int maxCol)
     {
         ClearNeighbors();
@@ -125,4 +124,23 @@ public class TileRoad : MonoBehaviour
         left = null;
         right = null;
     }
+
+    public BlockPlaceTower[] blocks = new BlockPlaceTower[9];
+
+    public void ReceiveBlockNumber(int blockNumber)
+    {
+        BlockInfo[] blockinfo1 = _tileRotate.rotatedPrefabs[1].GetComponentsInChildren<BlockInfo>();
+        blockinfo1[0].GetComponent<BlockPlaceTower>().PlaceTower();
+        BlockInfo[] blockinfo2 = _tileRotate.rotatedPrefabs[2].GetComponentsInChildren<BlockInfo>();
+        blockinfo2[6].GetComponent<BlockPlaceTower>().PlaceTower();
+        BlockInfo[] blockinfo3 = _tileRotate.rotatedPrefabs[3].GetComponentsInChildren<BlockInfo>();
+        blockinfo3[8]?.GetComponent<BlockPlaceTower>().PlaceTower();
+    }
+
+    public BlockPlaceTower GetBlockNumber(int blockNumber)
+    {
+        return blocks[blockNumber - 1];
+    }
+
+
 }

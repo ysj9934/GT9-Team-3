@@ -6,6 +6,7 @@ using UnityEngine.EventSystems;
 
 public class TileMove : MonoBehaviour
 {
+    private GameManager11 _gameManager;
     private TileRoad _tile;
     private Collider2D _collider;
 
@@ -15,6 +16,7 @@ public class TileMove : MonoBehaviour
 
     private void Awake()
     {
+        _gameManager = GameManager11.Instance;
         _tile = GetComponent<TileRoad>();
         _collider = GetComponent<PolygonCollider2D>();
         
@@ -31,6 +33,9 @@ public class TileMove : MonoBehaviour
         
         if (_collider != null)
             _collider.enabled = false;
+
+        _gameManager.tileRoad = _tile;
+        _gameManager.ShowTileInfo();
     }
 
     private void OnMouseDrag()
@@ -148,7 +153,7 @@ public class TileMove : MonoBehaviour
 
     private void UpdateGridPosition()
     {
-        _tile.GetMapping(_tile.GetGridSize(_tile.mapLevel), transform.position);
+        _tile.UpdateMapping(_tile.GetGridSize(_tile.mapLevel), transform.position);
         _tile.UpdateTileSerialNumber();
     }
 

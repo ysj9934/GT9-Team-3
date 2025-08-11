@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class TileGrid : MonoBehaviour
 {
-    [SerializeField] public float[] cellSize = { 3.6f,  2.1f };
+    [SerializeField] public float[] cellSize = { 1.4475f,  0.84f };
     public int col, row;
     [SerializeField] public int tileSerialNumber;
     private int mapLevel = 1;
@@ -35,7 +35,7 @@ public class TileGrid : MonoBehaviour
     private void GetMapping(int gridSize, Vector2 pos)
     {
         float originX = 0f;
-        float originY = 8.4f;
+        float originY = 3.36f;
 
         float dx = pos.x - originX;
         float dy = originY - pos.y;
