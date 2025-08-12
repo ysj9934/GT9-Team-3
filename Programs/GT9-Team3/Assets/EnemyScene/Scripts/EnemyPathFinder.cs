@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Pathfinder : MonoBehaviour
+public class EnemyPathfinder : MonoBehaviour
 {
     private List<TileRoad> pathManager;
     private Transform[] pathPoints;
@@ -31,7 +31,7 @@ public class Pathfinder : MonoBehaviour
 
     private void Update()
     {
-        //원본
+        //?�본
         //    if (!isMove) return;
 
         //    sec += Time.deltaTime;
@@ -41,7 +41,7 @@ public class Pathfinder : MonoBehaviour
         //        Vector3 dir = (target.position - transform.position).normalized;
         //        transform.position += dir * moveSpeed * Time.deltaTime;
 
-        //        // 목표 지점에 거의 도달했을 경우 다음 지점으로
+        //        // 목표 지?�에 거의 ?�달?�을 경우 ?�음 지?�으�?
         //        if (currentPathIndex < pathPoints.Length - 1)
         //        {
         //            if (Vector3.Distance(transform.position, target.position) < 0.01f)
@@ -70,10 +70,10 @@ public class Pathfinder : MonoBehaviour
 
         Transform target = pathPoints[currentPathIndex];
 
-        // MoveTowards를 사용해 목표점까지 정확히 이동
+        // MoveTowards�??�용??목표?�까지 ?�확???�동
         transform.position = Vector3.MoveTowards(transform.position, target.position, moveSpeed * Time.deltaTime);
 
-        // 목표점에 도달했으면 다음 지점으로 이동
+        // 목표?�에 ?�달?�으�??�음 지?�으�??�동
         if (Vector3.Distance(transform.position, target.position) < 0.01f)
         {
             currentPathIndex++;
