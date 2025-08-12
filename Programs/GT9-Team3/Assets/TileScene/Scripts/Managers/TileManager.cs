@@ -174,9 +174,9 @@ public class TileManager : MonoBehaviour
             // 계산식으로 변경하기
             case 1:
                 spawnTransform.Add(gridTileList[0].transform.position);
-                spawnTransform.Add(gridTileList[17].transform.position);
-                spawnTransform.Add(gridTileList[14].transform.position);
-                spawnTransform.Add(gridTileList[22].transform.position);
+                spawnTransform.Add(gridTileList[4].transform.position);
+                spawnTransform.Add(gridTileList[20].transform.position);
+                spawnTransform.Add(gridTileList[24].transform.position);
                 break;
             case 2:
                 spawnTransform.Add(gridTileList[3].transform.position);
@@ -289,44 +289,6 @@ public class TileManager : MonoBehaviour
         visited.Remove(current);
         currentPath.RemoveAt(currentPath.Count - 1);
     }
-    
-    // public List<TileRoad> FindConnectedPath(TileRoad startTile, TileRoad endTile)
-    // {
-    //     Debug.Log("FindConnectedPath");
-    //     var visited = new HashSet<TileRoad>();
-    //     var path = new List<TileRoad>();
-    //
-    //     if (DFS(startTile, endTile, visited, path))
-    //     {
-    //         Debug.Log("The path is complete");
-    //         return path;
-    //     }
-    //
-    //     return new List<TileRoad>();
-    // }
-
-    // private bool DFS(TileRoad current, TileRoad target, HashSet<TileRoad> visited, List<TileRoad> path)
-    // {
-    //     Debug.Log("DFS");
-    //     if (current == null || visited.Contains(current))
-    //         return false;
-    //     
-    //     visited.Add(current);
-    //     path.Add(current);
-    //
-    //     if (current == target)
-    //         return true;
-    //
-    //     foreach (var (neighbor, _) in current._tileRoadConnector.GetConnectedNeighbors())
-    //     {
-    //         if (DFS(neighbor, target, visited, path))
-    //             return true;
-    //     }
-    //
-    //     path.Remove(current);
-    //     Debug.LogError("The path is invalid");
-    //     return false;
-    // }
 
     public void GetPathfinder()
     {

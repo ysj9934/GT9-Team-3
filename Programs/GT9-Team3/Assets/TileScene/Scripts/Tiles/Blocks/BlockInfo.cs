@@ -5,7 +5,8 @@ using UnityEngine;
 
 public class BlockInfo : MonoBehaviour
 {
-    private TileRoad tileRoad;
+    private TileRoad _tileRoad;
+    private Tower_Tile[] _towerTile;
     
     [SerializeField] public int blockSerialNumber;
     [SerializeField] private BlockCategory blockCategory;
@@ -14,12 +15,13 @@ public class BlockInfo : MonoBehaviour
 
     private void Awake()
     {
-        tileRoad = GetComponentInParent<TileRoad>();
+        _tileRoad = GetComponentInParent<TileRoad>();
+        _towerTile = GetComponentsInChildren<Tower_Tile>();
     }
 
     public void CallNumber()
     {
-        tileRoad.ReceiveBlockNumber(blockSerialNumber);
+        _tileRoad.ReceiveBlockNumber(blockSerialNumber);
     }
 
     // 타워 신규 생성

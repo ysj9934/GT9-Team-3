@@ -7,7 +7,7 @@ using UnityEngine.EventSystems;
 public class TileMove : MonoBehaviour
 {
     private GameManager11 _gameManager;
-    private TileRoad _tile;
+    private TileRoad _tileRoad;
     private Collider2D _collider;
 
     private Vector2 originalPosition;
@@ -17,7 +17,7 @@ public class TileMove : MonoBehaviour
     private void Awake()
     {
         _gameManager = GameManager11.Instance;
-        _tile = GetComponent<TileRoad>();
+        _tileRoad = GetComponent<TileRoad>();
         _collider = GetComponent<PolygonCollider2D>();
         
         
@@ -25,6 +25,11 @@ public class TileMove : MonoBehaviour
 
     private void OnMouseDown()
     {
+        if (!_tileRoad.isEditMode)
+        {
+            
+        }
+
         if (EventSystem.current.IsPointerOverGameObject())
             return;
         originalPosition = transform.position;
@@ -34,7 +39,7 @@ public class TileMove : MonoBehaviour
         if (_collider != null)
             _collider.enabled = false;
 
-        _gameManager.tileRoad = _tile;
+        _gameManager.tileRoad = _tileRoad;
         _gameManager.ShowTileInfo();
     }
 
@@ -58,14 +63,14 @@ public class TileMove : MonoBehaviour
             Vector2 delta = point - originalPosition;
 
             // 기준 벡터들
-            Vector2 diagUpRight = new Vector2(_tile.cellSize[0], _tile.cellSize[1]);
-            Vector2 diagUpLeft  = new Vector2(-_tile.cellSize[0], _tile.cellSize[1]);
-            Vector2 diagDownRight = new Vector2(_tile.cellSize[0], -_tile.cellSize[1]);
-            Vector2 diagDownLeft  = new Vector2(-_tile.cellSize[0], -_tile.cellSize[1]);
-            Vector2 horizontal = new Vector2(_tile.cellSize[0] * 2, 0f);
-            Vector2 rhorizontal = new Vector2(-_tile.cellSize[0] * 2, 0f);
-            Vector2 vertical   = new Vector2(0f, _tile.cellSize[1] * 2);
-            Vector2 rvertical   = new Vector2(0f, -_tile.cellSize[1] * 2);
+            Vector2 diagUpRight = new Vector2(_tileRoad.cellSize[0], _tileRoad.cellSize[1]);
+            Vector2 diagUpLeft  = new Vector2(-_tileRoad.cellSize[0], _tileRoad.cellSize[1]);
+            Vector2 diagDownRight = new Vector2(_tileRoad.cellSize[0], -_tileRoad.cellSize[1]);
+            Vector2 diagDownLeft  = new Vector2(-_tileRoad.cellSize[0], -_tileRoad.cellSize[1]);
+            Vector2 horizontal = new Vector2(_tileRoad.cellSize[0] * 2, 0f);
+            Vector2 rhorizontal = new Vector2(-_tileRoad.cellSize[0] * 2, 0f);
+            Vector2 vertical   = new Vector2(0f, _tileRoad.cellSize[1] * 2);
+            Vector2 rvertical   = new Vector2(0f, -_tileRoad.cellSize[1] * 2);
             
 
             // 가장 가까운 방향 찾기
@@ -102,25 +107,6 @@ public class TileMove : MonoBehaviour
             else
                 sprite.color = Color.red;
         }
-
-
-        // Plane plane = new Plane(Vector3.forward, 0);
-        // Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        //
-        // if (plane.Raycast(ray, out float distance))
-        // {
-        //     Vector3 point = ray.GetPoint(distance);
-        //     transform.position = SnapToGrid(point);
-        // }
-    }
-    
-    // 그리드 크기에 맞춰 타일 움직임
-    private Vector3 SnapToGrid(Vector3 pos)
-    {
-        float x = Mathf.Round(pos.x / _tile.cellSize[0]) * _tile.cellSize[0];
-        float y = Mathf.Round(pos.y / _tile.cellSize[1]) * _tile.cellSize[1];
-        
-        return new Vector3(x, y, pos.z);
     }
 
     private void OnMouseUp()
@@ -153,8 +139,8 @@ public class TileMove : MonoBehaviour
 
     private void UpdateGridPosition()
     {
-        _tile.UpdateMapping(_tile.GetGridSize(_tile.mapLevel), transform.position);
-        _tile.UpdateTileSerialNumber();
+        _tileRoad.UpdateMapping(_tileRoad.GetGridSize(_tileRoad.mapLevel), transform.position);
+        _tileRoad.UpdateTileSerialNumber();
     }
 
     private bool IsValidPosition(Vector2 pos)

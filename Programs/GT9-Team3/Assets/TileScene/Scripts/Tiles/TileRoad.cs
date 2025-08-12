@@ -30,6 +30,8 @@ public class TileRoad : MonoBehaviour
 
     public int mapLevel = 1;
 
+    // 편집모드
+    public bool isEditMode = false;
 
     private void Awake()
     {
@@ -135,56 +137,82 @@ public class TileRoad : MonoBehaviour
 
     public void ReceiveBlockNumber(int blockNumber)
     {
+        int blockCase = ((int) currentRotationIndex + 1) * 10 + blockNumber;
+        
         BlockInfo[] blockinfo1 = _tileRotate.rotatedPrefabs[0].GetComponentsInChildren<BlockInfo>();
         BlockInfo[] blockinfo2 = _tileRotate.rotatedPrefabs[1].GetComponentsInChildren<BlockInfo>();
         BlockInfo[] blockinfo3 = _tileRotate.rotatedPrefabs[2].GetComponentsInChildren<BlockInfo>();
         BlockInfo[] blockinfo4 = _tileRotate.rotatedPrefabs[3].GetComponentsInChildren<BlockInfo>();
         
-        switch (blockNumber)
+        switch (blockCase)
         {
-            case 1:
+            case 11:
+            case 27:
+            case 39:
+            case 43:
                 blockinfo1[0].PlaceTower();
                 blockinfo2[6].PlaceTower();
                 blockinfo3[8].PlaceTower();
                 blockinfo4[2].PlaceTower();
                 break;
-            case 2:
+            case 12:
+            case 24:
+            case 38:
+            case 46:
                 blockinfo1[1].PlaceTower();
                 blockinfo2[3].PlaceTower();
                 blockinfo3[7].PlaceTower();
                 blockinfo4[5].PlaceTower();
                 break;
-            case 3:
+            case 13:
+            case 21:
+            case 37:
+            case 49:
                 blockinfo1[2].PlaceTower();
                 blockinfo2[0].PlaceTower();
                 blockinfo3[6].PlaceTower();
                 blockinfo4[8].PlaceTower();
                 break;
-            case 4:
+            case 14:
+            case 28:
+            case 36:
+            case 42:
                 blockinfo1[3].PlaceTower();
                 blockinfo2[7].PlaceTower();
                 blockinfo3[5].PlaceTower();
                 blockinfo4[1].PlaceTower();
                 break;
-            case 6:
+            case 16:
+            case 22:
+            case 34:
+            case 48:
                 blockinfo1[5].PlaceTower();
                 blockinfo2[1].PlaceTower();
                 blockinfo3[3].PlaceTower();
                 blockinfo4[7].PlaceTower();
                 break;
-            case 7:
+            case 17:
+            case 29:
+            case 33:
+            case 41:
                 blockinfo1[6].PlaceTower();
                 blockinfo2[8].PlaceTower();
                 blockinfo3[2].PlaceTower();
                 blockinfo4[0].PlaceTower();
                 break;
-            case 8:
+            case 18:
+            case 26:
+            case 32:
+            case 44:
                 blockinfo1[7].PlaceTower();
                 blockinfo2[5].PlaceTower();
                 blockinfo3[1].PlaceTower();
                 blockinfo4[3].PlaceTower();
                 break;
-            case 9:
+            case 19:
+            case 23:
+            case 31:
+            case 47:
                 blockinfo1[8].PlaceTower();
                 blockinfo2[2].PlaceTower();
                 blockinfo3[0].PlaceTower();
@@ -192,13 +220,5 @@ public class TileRoad : MonoBehaviour
                 break;
         }
     }
-
-    public BlockInfo GetBlockNumber(int blockNumber)
-    {
-        return blocks[blockNumber - 1];
-    }
     
-    
-
-
 }
