@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class Enemy : MonoBehaviour
 {
     //체력 관련
-    [SerializeField] float hp = 10f;
+    [SerializeField] float hp = 1f;
     [SerializeField] private float currentHp;
     [SerializeField] Image healthBar;     // Foreground Image 연결
 
@@ -22,6 +22,9 @@ public class Enemy : MonoBehaviour
 
     //private Transform[] path; // 경로를 따라 이동할 때 사용 (예: Waypoint 시스템)
     //private int pathIndex = 0;  // 경로를 따라 이동할 때 사용
+
+    private EnemyAnimationController animController;
+    private bool isDead = false;
 
     void Start()
     {
@@ -40,7 +43,15 @@ public class Enemy : MonoBehaviour
     void Update()
     {
         // 이동 처리
-        transform.position = Vector2.MoveTowards(transform.position, targetPosition, speed * Time.deltaTime);
+        //transform.position = Vector2.MoveTowards(transform.position, targetPosition, speed * Time.deltaTime);
+        if (isDead)
+        {
+            // 죽는 애니메이션 종료 후 오브젝트 삭제
+            if (animController != null && animController.HasDied())
+            {
+                Destroy(gameObject);
+            }
+        }
     }
 
     //충돌 처리
@@ -65,6 +76,8 @@ public class Enemy : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
+        if (isDead) return; // 이미 죽은 상태면 무시
+
         currentHp -= damage;
         UpdateHealthBar(); // 여기 추가
         if (currentHp <= 0) Die();
@@ -72,7 +85,20 @@ public class Enemy : MonoBehaviour
 
     private void Die()
     {
-        Destroy(gameObject);
+        if (isDead) return;  // 중복 호출 방지
+
+        isDead = true;
+
+        // 죽는 애니메이션 재생 요청
+        if (animController != null)
+        {
+            animController.PlayDieAnimation();
+        }
+        else
+        {
+            // 애니메이터 없으면 바로 삭제
+            Destroy(gameObject);
+        }
     }
 
     private void OnMouseDown()
