@@ -56,28 +56,27 @@ public class Tower1 : MonoBehaviour
     private Enemy1 FindTarget()
     {
 
-
+        // 적 탐색
         Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, data.attackRange);
 
         List<Enemy1> enemies = new List<Enemy1>();
 
         foreach (var hit in hits)
         {
+
+            if (hit.gameObject == gameObject) continue;     // 자기자신 제외
+
             Enemy1 enemy = hit.GetComponent<Enemy1>();
+
             if (enemy != null)
             {
-                Debug.Log($"[Ÿ��] �� ������: {enemy.name}");
                 enemies.Add(enemy);
-            }
-            else
-            {
-                Debug.Log($"[Ÿ��] Enemy1 ������Ʈ ����: {hit.name}");
             }
         }
 
         if (enemies.Count == 0)
         {
-            Debug.Log("[Ÿ��] ���� �� �� ����");
+            return null;
         }
 
         foreach (var priority in data.targetOrder)
@@ -98,16 +97,19 @@ public class Tower1 : MonoBehaviour
                 case TargetPriority.Closest:
                     selected = enemies.OrderBy(e => Vector3.Distance(transform.position, e.transform.position)).FirstOrDefault();
                     break;
+                default:
+                    selected = enemies.OrderBy(e => Vector3.Distance(transform.position, e.transform.position)).FirstOrDefault();
+                    break;
+                    
             }
 
             if (selected != null)
-                Debug.Log($"[Ÿ��] �켱���� {priority} ��� ���õ�: {selected.name}");
-            return selected;
+            {
+                return selected;
+            }
         }
 
-        Debug.Log("[Ÿ��] ��ȿ�� Ÿ�� ����");
         return null;
     }
-
 
 }

@@ -33,7 +33,7 @@ public class BlockInfo : MonoBehaviour
             return;
         }
         
-        Vector2 pos = new Vector2(transform.position.x, transform.position.y + 0.4f);
+        Vector2 pos = new Vector2(transform.position.x, transform.position.y + 0.37f);
         
         // 본인에게 설치
         GameObject go = Instantiate(towerPrefab, pos, Quaternion.identity);
