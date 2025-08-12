@@ -17,3 +17,10 @@ public enum TileDir
     Left,
     Right,
 }
+
+public enum BlockCategory
+{
+    Road,
+    Empty,
+    PlaceTower
+}

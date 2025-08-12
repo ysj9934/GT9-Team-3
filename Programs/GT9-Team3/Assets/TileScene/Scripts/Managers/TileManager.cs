@@ -98,7 +98,7 @@ public class TileManager : MonoBehaviour
         {
             for (int col = 0; col < cellSize; col++)
             {
-                Vector2 pos = new Vector3(col * 3.6f - (3.6f * row), (row + col) * -2.1f + 4.2f + (4.2f * mapLevel));
+                Vector2 pos = new Vector3(col * 1.4475f - (1.4475f * row), (row + col) * -0.84f + 1.68f + (1.68f * mapLevel));
                 GameObject go = Instantiate(tileGridPrefab, pos, Quaternion.identity);
                 go.transform.SetParent(transform);
                 TileGrid tileGrid = go.GetComponent<TileGrid>();
@@ -121,24 +121,24 @@ public class TileManager : MonoBehaviour
                 // 주변 8타일
                 if (baseNumber != 5)
                 {
-                    Vector2 pos = new Vector3(col * 3.6f - (3.6f * row), (row + col) * -2.1f + 4.2f);
+                    Vector2 pos = new Vector3(col * 1.4475f - (1.4475f * row), (row + col) * -0.84f + 1.68f);
                     GameObject go = Instantiate(tilePrefabs[Random.Range(0, tilePrefabs.Length)], pos, Quaternion.identity);
                     go.transform.SetParent(transform);
                     TileRoad tileRoad = go.GetComponent<TileRoad>();
                     tileRoad.Initialize(mapLevel, pos);
                     
-                    tileMap[row + mapLevel, col + mapLevel] = tileRoad;
+                    // tileMap[row + mapLevel, col + mapLevel] = tileRoad;
                 }
                 // 기지 타일
                 else
                 {
-                    Vector2 pos = new Vector3(col * 3.6f - (3.6f * row), (row + col) * -2.1f + 4.2f);
+                    Vector2 pos = new Vector3(col * 1.4475f - (1.4475f * row), (row + col) * -0.84f + 1.68f);
                     GameObject go = Instantiate(tileBasePrefab, pos, Quaternion.identity);
                     go.transform.SetParent(transform);
                     TileRoad tileRoad = go.GetComponent<TileRoad>();
                     tileRoad.Initialize(mapLevel, pos);
                     
-                    tileMap[row + mapLevel, col + mapLevel] = tileRoad;
+                    // tileMap[row + mapLevel, col + mapLevel] = tileRoad;
                     endTileRoad = tileRoad;
                 }
 
@@ -173,10 +173,10 @@ public class TileManager : MonoBehaviour
         {
             // 계산식으로 변경하기
             case 1:
-                spawnTransform.Add(gridTileList[2].transform.position);
-                spawnTransform.Add(gridTileList[10].transform.position);
-                spawnTransform.Add(gridTileList[14].transform.position);
-                spawnTransform.Add(gridTileList[22].transform.position);
+                spawnTransform.Add(gridTileList[0].transform.position);
+                spawnTransform.Add(gridTileList[4].transform.position);
+                spawnTransform.Add(gridTileList[20].transform.position);
+                spawnTransform.Add(gridTileList[24].transform.position);
                 break;
             case 2:
                 spawnTransform.Add(gridTileList[3].transform.position);
@@ -289,44 +289,6 @@ public class TileManager : MonoBehaviour
         visited.Remove(current);
         currentPath.RemoveAt(currentPath.Count - 1);
     }
-    
-    // public List<TileRoad> FindConnectedPath(TileRoad startTile, TileRoad endTile)
-    // {
-    //     Debug.Log("FindConnectedPath");
-    //     var visited = new HashSet<TileRoad>();
-    //     var path = new List<TileRoad>();
-    //
-    //     if (DFS(startTile, endTile, visited, path))
-    //     {
-    //         Debug.Log("The path is complete");
-    //         return path;
-    //     }
-    //
-    //     return new List<TileRoad>();
-    // }
-
-    // private bool DFS(TileRoad current, TileRoad target, HashSet<TileRoad> visited, List<TileRoad> path)
-    // {
-    //     Debug.Log("DFS");
-    //     if (current == null || visited.Contains(current))
-    //         return false;
-    //     
-    //     visited.Add(current);
-    //     path.Add(current);
-    //
-    //     if (current == target)
-    //         return true;
-    //
-    //     foreach (var (neighbor, _) in current._tileRoadConnector.GetConnectedNeighbors())
-    //     {
-    //         if (DFS(neighbor, target, visited, path))
-    //             return true;
-    //     }
-    //
-    //     path.Remove(current);
-    //     Debug.LogError("The path is invalid");
-    //     return false;
-    // }
 
     public void GetPathfinder()
     {
@@ -337,7 +299,7 @@ public class TileManager : MonoBehaviour
 
     public void CreateTile(int tileCode)
     {
-        Vector2 pos = new Vector3(7.2f + (3.6f * mapLevel), -4.2f + (-1f * 2.1f * mapLevel));   
+        Vector2 pos = new Vector3(7.2f + (1.4475f * mapLevel), -1.68f + (-1f * 0.84f * mapLevel));   
         GameObject go = Instantiate(tilePrefabs[tileCode], pos, Quaternion.identity);
         go.transform.SetParent(transform);
     }

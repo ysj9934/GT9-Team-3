@@ -5,9 +5,8 @@ using UnityEngine;
 
 public class TileRotate : MonoBehaviour
 {
-    // [SerializeField] public TileRotation currentRotationIndex;
     private TileRoad _tile;
-    [SerializeField] private GameObject[] rotatedPrefabs;
+    [SerializeField] public GameObject[] rotatedPrefabs;
 
 
     private void Start()

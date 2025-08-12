@@ -42,7 +42,7 @@ public class Tower1 : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("[Å¸¿ö] ¹ß»çÃ¼ ÇÁ¸®ÆÕ ¶Ç´Â µ¥ÀÌÅÍ°¡ ¿¬°áµÇÁö ¾Ê¾Ò½À´Ï´Ù.");
+            Debug.LogWarning("[Å¸ï¿½ï¿½] ï¿½ß»ï¿½Ã¼ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ç´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Í°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê¾Ò½ï¿½ï¿½Ï´ï¿½.");
         }
     }
 
@@ -52,7 +52,7 @@ public class Tower1 : MonoBehaviour
         cooldownTimer = 0f;
     }
 
-    // ¿ì¼±¼øÀ§ 
+    // ï¿½ì¼±ï¿½ï¿½ï¿½ï¿½ 
     private Enemy1 FindTarget()
     {
 
@@ -66,18 +66,18 @@ public class Tower1 : MonoBehaviour
             Enemy1 enemy = hit.GetComponent<Enemy1>();
             if (enemy != null)
             {
-                Debug.Log($"[Å¸¿ö] Àû °¨ÁöµÊ: {enemy.name}");
+                Debug.Log($"[Å¸ï¿½ï¿½] ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½: {enemy.name}");
                 enemies.Add(enemy);
             }
             else
             {
-                Debug.Log($"[Å¸¿ö] Enemy1 ÄÄÆ÷³ÍÆ® ¾øÀ½: {hit.name}");
+                Debug.Log($"[Å¸ï¿½ï¿½] Enemy1 ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½: {hit.name}");
             }
         }
 
         if (enemies.Count == 0)
         {
-            Debug.Log("[Å¸¿ö] ¹üÀ§ ³» Àû ¾øÀ½");
+            Debug.Log("[Å¸ï¿½ï¿½] ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½");
         }
 
         foreach (var priority in data.targetOrder)
@@ -101,11 +101,11 @@ public class Tower1 : MonoBehaviour
             }
 
             if (selected != null)
-                Debug.Log($"[Å¸¿ö] ¿ì¼±¼øÀ§ {priority} ´ë»ó ¼±ÅÃµÊ: {selected.name}");
+                Debug.Log($"[Å¸ï¿½ï¿½] ï¿½ì¼±ï¿½ï¿½ï¿½ï¿½ {priority} ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ãµï¿½: {selected.name}");
             return selected;
         }
 
-        Debug.Log("[Å¸¿ö] À¯È¿ÇÑ Å¸°Ù ¾øÀ½");
+        Debug.Log("[Å¸ï¿½ï¿½] ï¿½ï¿½È¿ï¿½ï¿½ Å¸ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½");
         return null;
     }
 
