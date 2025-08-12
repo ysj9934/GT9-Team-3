@@ -58,14 +58,14 @@ public class TileMove : MonoBehaviour
             Vector2 delta = point - originalPosition;
 
             // 기준 벡터들
-            Vector2 diagUpRight = new Vector2(3.6f, 2.1f);
-            Vector2 diagUpLeft  = new Vector2(-3.6f, 2.1f);
-            Vector2 diagDownRight = new Vector2(3.6f, -2.1f);
-            Vector2 diagDownLeft  = new Vector2(-3.6f, -2.1f);
-            Vector2 horizontal = new Vector2(7.2f, 0f);
-            Vector2 rhorizontal = new Vector2(-7.2f, 0f);
-            Vector2 vertical   = new Vector2(0f, 4.2f);
-            Vector2 rvertical   = new Vector2(0f, -4.2f);
+            Vector2 diagUpRight = new Vector2(_tile.cellSize[0], _tile.cellSize[1]);
+            Vector2 diagUpLeft  = new Vector2(-_tile.cellSize[0], _tile.cellSize[1]);
+            Vector2 diagDownRight = new Vector2(_tile.cellSize[0], -_tile.cellSize[1]);
+            Vector2 diagDownLeft  = new Vector2(-_tile.cellSize[0], -_tile.cellSize[1]);
+            Vector2 horizontal = new Vector2(_tile.cellSize[0] * 2, 0f);
+            Vector2 rhorizontal = new Vector2(-_tile.cellSize[0] * 2, 0f);
+            Vector2 vertical   = new Vector2(0f, _tile.cellSize[1] * 2);
+            Vector2 rvertical   = new Vector2(0f, -_tile.cellSize[1] * 2);
             
 
             // 가장 가까운 방향 찾기

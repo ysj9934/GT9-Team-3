@@ -125,22 +125,80 @@ public class TileRoad : MonoBehaviour
         right = null;
     }
 
-    public BlockPlaceTower[] blocks = new BlockPlaceTower[9];
+    
+    /// <summary>
+    /// 타워 설치
+    /// 2025.08.12
+    /// 추후 재작성 필요
+    /// </summary>
+    public BlockInfo[] blocks = new BlockInfo[9];
 
     public void ReceiveBlockNumber(int blockNumber)
     {
-        BlockInfo[] blockinfo1 = _tileRotate.rotatedPrefabs[1].GetComponentsInChildren<BlockInfo>();
-        blockinfo1[0].GetComponent<BlockPlaceTower>().PlaceTower();
-        BlockInfo[] blockinfo2 = _tileRotate.rotatedPrefabs[2].GetComponentsInChildren<BlockInfo>();
-        blockinfo2[6].GetComponent<BlockPlaceTower>().PlaceTower();
-        BlockInfo[] blockinfo3 = _tileRotate.rotatedPrefabs[3].GetComponentsInChildren<BlockInfo>();
-        blockinfo3[8]?.GetComponent<BlockPlaceTower>().PlaceTower();
+        BlockInfo[] blockinfo1 = _tileRotate.rotatedPrefabs[0].GetComponentsInChildren<BlockInfo>();
+        BlockInfo[] blockinfo2 = _tileRotate.rotatedPrefabs[1].GetComponentsInChildren<BlockInfo>();
+        BlockInfo[] blockinfo3 = _tileRotate.rotatedPrefabs[2].GetComponentsInChildren<BlockInfo>();
+        BlockInfo[] blockinfo4 = _tileRotate.rotatedPrefabs[3].GetComponentsInChildren<BlockInfo>();
+        
+        switch (blockNumber)
+        {
+            case 1:
+                blockinfo1[0].PlaceTower();
+                blockinfo2[6].PlaceTower();
+                blockinfo3[8].PlaceTower();
+                blockinfo4[2].PlaceTower();
+                break;
+            case 2:
+                blockinfo1[1].PlaceTower();
+                blockinfo2[3].PlaceTower();
+                blockinfo3[7].PlaceTower();
+                blockinfo4[5].PlaceTower();
+                break;
+            case 3:
+                blockinfo1[2].PlaceTower();
+                blockinfo2[0].PlaceTower();
+                blockinfo3[6].PlaceTower();
+                blockinfo4[8].PlaceTower();
+                break;
+            case 4:
+                blockinfo1[3].PlaceTower();
+                blockinfo2[7].PlaceTower();
+                blockinfo3[5].PlaceTower();
+                blockinfo4[1].PlaceTower();
+                break;
+            case 6:
+                blockinfo1[5].PlaceTower();
+                blockinfo2[1].PlaceTower();
+                blockinfo3[3].PlaceTower();
+                blockinfo4[7].PlaceTower();
+                break;
+            case 7:
+                blockinfo1[6].PlaceTower();
+                blockinfo2[8].PlaceTower();
+                blockinfo3[2].PlaceTower();
+                blockinfo4[0].PlaceTower();
+                break;
+            case 8:
+                blockinfo1[7].PlaceTower();
+                blockinfo2[5].PlaceTower();
+                blockinfo3[1].PlaceTower();
+                blockinfo4[3].PlaceTower();
+                break;
+            case 9:
+                blockinfo1[8].PlaceTower();
+                blockinfo2[2].PlaceTower();
+                blockinfo3[0].PlaceTower();
+                blockinfo4[6].PlaceTower();
+                break;
+        }
     }
 
-    public BlockPlaceTower GetBlockNumber(int blockNumber)
+    public BlockInfo GetBlockNumber(int blockNumber)
     {
         return blocks[blockNumber - 1];
     }
+    
+    
 
 
 }

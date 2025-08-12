@@ -2,9 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
 
-public class Tower1 : MonoBehaviour
+public class Tower_Tile : MonoBehaviour
 {
     public TowerData data;
     private float cooldownTimer;
@@ -108,6 +107,4 @@ public class Tower1 : MonoBehaviour
         Debug.Log("[Ÿ��] ��ȿ�� Ÿ�� ����");
         return null;
     }
-
-
 }
