@@ -26,7 +26,7 @@ public class TowerBuildUI : MonoBehaviour
 
         // 위치(마우스 근처) 배치
         root.gameObject.SetActive(true);
-        root.position = screenPos;
+        //root.position = screenPos;
 
         // 리스트 갱신
         foreach (Transform c in listParent) Destroy(c.gameObject);
