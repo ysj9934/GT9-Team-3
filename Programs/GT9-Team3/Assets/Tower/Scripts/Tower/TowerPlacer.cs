@@ -10,13 +10,15 @@ public class TowerPlacer : MonoBehaviour
     public GameObject towerPrefab;
     public TowerData towerData;
 
-    [SerializeField] private Tilemap groundTilemap; // Ground 타일맵 참조
-    public Grid grid; // 타워 타일 위에 설치하기
+    [SerializeField] private Tilemap groundTilemap;     // Ground 타일맵 참조
+    public Grid grid;                                   // 타워 타일 위에 설치하기
 
     public GameObject previewPrefab;
     private GameObject currentPreview;
 
     private HashSet<Vector3Int> occupiedCells = new HashSet<Vector3Int>();
+
+    public TowerBuildUI buildUI;                        // 인스펙터 연결
 
     void Start()
     {
@@ -42,10 +44,11 @@ public class TowerPlacer : MonoBehaviour
         SpriteRenderer sr = currentPreview.GetComponent<SpriteRenderer>();
         sr.color = canPlace ? new Color(1, 1, 1, 0.5f) : new Color(1, 0, 0, 0.5f);
 
-        // 클릭해서 설치
-        if (Input.GetMouseButtonDown(0) && canPlace) // && ResourceManager.Instance.CanAfford(...)
+        // 클릭: 팝업 오픈
+        if (Input.GetMouseButtonDown(0) && canPlace)
         {
-            PlaceTower(snappedPos, cellPos);
+            Vector2 screenPos = Input.mousePosition;
+            buildUI.ShowAt(this, cellPos, snappedPos, screenPos);
         }
     }
 
@@ -55,25 +58,43 @@ public class TowerPlacer : MonoBehaviour
         return tile != null && !occupiedCells.Contains(cellPos);
     }
 
-    public void PlaceTower(Vector3 position, Vector3Int cellPos)
+    // UI에서 최종 선택 후 호출
+    public void PlaceTowerFromUI(TowerBlueprint bp, Vector3 position, Vector3Int cellPos)
     {
         // 타워를 타일보다 약간 위에 배치
         position.y += 0.44f;
 
-        GameObject tower = Instantiate(towerPrefab, position, Quaternion.identity);
-        tower.GetComponent<SpriteRenderer>().sortingOrder = -(int)(position.y * 100);
+        GameObject tower = Instantiate(bp.towerPrefab, position, Quaternion.identity);
+        var sr = tower.GetComponent<SpriteRenderer>();
+        if (sr) sr.sortingOrder = -(int)(position.y * 100);
 
-        Tower1 towerScript = tower.GetComponent<Tower1>();
-        if (towerScript != null)
-        {
-            towerScript.ApplyData(towerData);
-        }
-        else
-        {
-            Debug.LogError("[오류] Tower1 스크립트가 프리팹에 없음");
-        }
+        var towerScript = tower.GetComponent<Tower1>();
+        if (towerScript != null) towerScript.ApplyData(bp.data);
 
-        ResourceManager.Instance.Spend(towerData.makeCost, towerData.makeValue);
+        ResourceManager.Instance.Spend(bp.CostType, bp.CostValue);
         occupiedCells.Add(cellPos);
     }
+
+    //public void PlaceTower(Vector3 position, Vector3Int cellPos)
+    //{
+    //    // 타워를 타일보다 약간 위에 배치
+    //    position.y += 0.44f;
+
+    //    GameObject tower = Instantiate(towerPrefab, position, Quaternion.identity);
+    //    tower.GetComponent<SpriteRenderer>().sortingOrder = -(int)(position.y * 100);
+
+    //    Tower1 towerScript = tower.GetComponent<Tower1>();
+    //    if (towerScript != null)
+    //    {
+    //        towerScript.ApplyData(towerData);
+    //    }
+    //    else
+    //    {
+    //        Debug.LogError("[오류] Tower1 스크립트가 프리팹에 없음");
+    //    }
+
+    //    ResourceManager.Instance.Spend(towerData.makeCost, towerData.makeValue);
+    //    occupiedCells.Add(cellPos);
+    //}
+
 }

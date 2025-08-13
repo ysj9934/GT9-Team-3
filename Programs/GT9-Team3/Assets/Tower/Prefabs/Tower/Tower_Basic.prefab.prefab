@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 439740306322761697}
   - component: {fileID: 5332382379804766352}
-  - component: {fileID: 7364795126660387885}
   - component: {fileID: 8159373461162594409}
   m_Layer: 0
   m_Name: Tower_Basic.prefab
@@ -86,41 +85,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!58 &7364795126660387885
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1002364044189742249}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
-  m_Radius: 1.5
 --- !u!114 &8159373461162594409
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -134,3 +98,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   data: {fileID: 11400000, guid: eefc0cbb93d48bc46ac1bc9732ee4d1a, type: 2}
+  rangeIndicator: {fileID: 713696373380922031, guid: 7c15592b45cd508439350b7d21300da2, type: 3}
