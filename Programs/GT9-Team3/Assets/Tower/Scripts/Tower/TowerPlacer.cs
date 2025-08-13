@@ -10,8 +10,8 @@ public class TowerPlacer : MonoBehaviour
     public GameObject towerPrefab;
     public TowerData towerData;
 
-    [SerializeField] private Tilemap groundTilemap; // Ground Ÿ�ϸ� ����
-    public Grid grid; // Ÿ�� Ÿ�� ���� ��ġ�ϱ�
+    [SerializeField] private Tilemap groundTilemap; // Ground 타일맵 참조
+    public Grid grid; // 타워 타일 위에 설치하기
 
     public GameObject previewPrefab;
     private GameObject currentPreview;
@@ -32,17 +32,17 @@ public class TowerPlacer : MonoBehaviour
         Vector3 snappedPos = grid.GetCellCenterWorld(cellPos);
         snappedPos.z = 0;
 
-        // �̸����� ��ġ ����
+        // 미리보기 위치 갱신
         Vector3 previewPos = snappedPos;
         previewPos.y += 0.44f;
         currentPreview.transform.position = previewPos;
 
-        // ��ġ ���� ���ο� ���� ���� ����
+        // 설치 가능 여부에 따라 색상 변경
         bool canPlace = CanPlaceTowerAt(cellPos);
         SpriteRenderer sr = currentPreview.GetComponent<SpriteRenderer>();
         sr.color = canPlace ? new Color(1, 1, 1, 0.5f) : new Color(1, 0, 0, 0.5f);
 
-        // Ŭ���ؼ� ��ġ
+        // 클릭해서 설치
         if (Input.GetMouseButtonDown(0) && canPlace) // && ResourceManager.Instance.CanAfford(...)
         {
             PlaceTower(snappedPos, cellPos);
@@ -57,7 +57,7 @@ public class TowerPlacer : MonoBehaviour
 
     public void PlaceTower(Vector3 position, Vector3Int cellPos)
     {
-        // Ÿ���� Ÿ�Ϻ��� �ణ ���� ��ġ
+        // 타워를 타일보다 약간 위에 배치
         position.y += 0.44f;
 
         GameObject tower = Instantiate(towerPrefab, position, Quaternion.identity);
@@ -70,7 +70,7 @@ public class TowerPlacer : MonoBehaviour
         }
         else
         {
-            Debug.LogError("[����] Tower1 ��ũ��Ʈ�� �����տ� ����");
+            Debug.LogError("[오류] Tower1 스크립트가 프리팹에 없음");
         }
 
         ResourceManager.Instance.Spend(towerData.makeCost, towerData.makeValue);

@@ -42,7 +42,7 @@ public class Tower1 : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("[Ÿ��] �߻�ü ������ �Ǵ� �����Ͱ� ������� �ʾҽ��ϴ�.");
+            Debug.LogWarning("[타워] 발사체 프리팹 또는 데이터가 연결되지 않았습니다.");
         }
     }
 
@@ -52,32 +52,31 @@ public class Tower1 : MonoBehaviour
         cooldownTimer = 0f;
     }
 
-    // �켱���� 
+    // 우선순위 
     private Enemy1 FindTarget()
     {
 
-
+        // 적 탐색
         Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, data.attackRange);
 
         List<Enemy1> enemies = new List<Enemy1>();
 
         foreach (var hit in hits)
         {
+
+            if (hit.gameObject == gameObject) continue;     // 자기자신 제외
+
             Enemy1 enemy = hit.GetComponent<Enemy1>();
+
             if (enemy != null)
             {
-                Debug.Log($"[Ÿ��] �� ������: {enemy.name}");
                 enemies.Add(enemy);
-            }
-            else
-            {
-                Debug.Log($"[Ÿ��] Enemy1 ������Ʈ ����: {hit.name}");
             }
         }
 
         if (enemies.Count == 0)
         {
-            Debug.Log("[Ÿ��] ���� �� �� ����");
+            return null;
         }
 
         foreach (var priority in data.targetOrder)
@@ -101,13 +100,12 @@ public class Tower1 : MonoBehaviour
             }
 
             if (selected != null)
-                Debug.Log($"[Ÿ��] �켱���� {priority} ��� ���õ�: {selected.name}");
-            return selected;
+            {
+                return selected;
+            }
         }
 
-        Debug.Log("[Ÿ��] ��ȿ�� Ÿ�� ����");
         return null;
     }
-
 
 }
