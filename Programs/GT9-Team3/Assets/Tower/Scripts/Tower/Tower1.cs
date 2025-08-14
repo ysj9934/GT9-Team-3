@@ -72,6 +72,8 @@ public class Tower1 : MonoBehaviour
         {
             // 클릭할 때마다 토글
             rangeVisual.SetActive(!rangeVisual.activeSelf);
+
+            TowerSellUI.Instance.Show(this); // 판매 UI를 표시
         }
     }
 
