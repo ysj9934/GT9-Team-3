@@ -1,3 +1,4 @@
+using Cinemachine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -7,6 +8,7 @@ using UnityEngine.EventSystems;
 public class TileMove : MonoBehaviour
 {
     private GameManager11 _gameManager;
+    private TileManager _tileManager;
     private TileRoad _tileRoad;
     private Collider2D _collider;
 
@@ -14,37 +16,47 @@ public class TileMove : MonoBehaviour
     private Color originalColor;
     private SpriteRenderer[] _sprites;
 
+    
+
     private void Awake()
     {
         _gameManager = GameManager11.Instance;
+        _tileManager = TileManager.Instance;
         _tileRoad = GetComponent<TileRoad>();
         _collider = GetComponent<PolygonCollider2D>();
-        
-        
     }
 
     private void OnMouseDown()
     {
-        if (!_tileRoad.isEditMode)
+        if (!_tileManager.isTileEditMode && !_tileManager.isTileMoveMode)
         {
-            
+            Debug.LogWarning("It doesn't work when not in TileEditMode");
+            return;
         }
 
         if (EventSystem.current.IsPointerOverGameObject())
             return;
+
+
         originalPosition = transform.position;
         _sprites = GetComponentsInChildren<SpriteRenderer>();
         originalColor = _sprites[0].color;
         
-        if (_collider != null)
-            _collider.enabled = false;
+        //if (_collider != null)
+        //    _collider.enabled = false;
 
         _gameManager.tileRoad = _tileRoad;
         _gameManager.ShowTileInfo();
     }
 
     private void OnMouseDrag()
-    {   
+    {
+        if (!_tileManager.isTileEditMode && !_tileManager.isTileMoveMode) if (!_tileManager.isTileEditMode)
+        {
+            Debug.LogWarning("It doesn't work when not in TileEditMode");
+            return;
+        }
+
         if (EventSystem.current.IsPointerOverGameObject())
             return;
         
@@ -111,6 +123,12 @@ public class TileMove : MonoBehaviour
 
     private void OnMouseUp()
     {
+        if (!_tileManager.isTileEditMode && !_tileManager.isTileMoveMode)
+        {
+            Debug.LogWarning("It doesn't work when not in TileEditMode");
+            return;
+        }
+
         if (EventSystem.current.IsPointerOverGameObject())
             return;
         
@@ -133,8 +151,8 @@ public class TileMove : MonoBehaviour
             UpdateGridPosition();    
         }
         
-        if (_collider != null)
-            _collider.enabled = true;
+        //if (_collider != null)
+        //    _collider.enabled = true;
     }
 
     private void UpdateGridPosition()

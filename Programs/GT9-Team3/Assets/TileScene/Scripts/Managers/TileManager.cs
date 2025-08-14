@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Cinemachine;
+using TMPro;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -31,7 +32,12 @@ public class TileManager : MonoBehaviour
     public List<TileRoad> path;
     public List<TileGrid> gridTileList;
     public List<Vector2> spawnTransform;
-    
+
+    [SerializeField] private TextMeshProUGUI tileEditModeText;
+    [SerializeField] private TextMeshProUGUI tileMoveModeText;
+    public bool isTileEditMode = false;
+    public bool isTileMoveMode = false;
+
     private void Awake()
     {
         Instance = this;
@@ -303,4 +309,20 @@ public class TileManager : MonoBehaviour
         GameObject go = Instantiate(tilePrefabs[tileCode], pos, Quaternion.identity);
         go.transform.SetParent(transform);
     }
+
+    /// <summary>
+    /// 타일 편집 모드 활설화
+    /// Create : 2025.08.13
+    /// </summary>
+    /// 
+
+    public void ToggleTileEditMode()
+    {
+        isTileEditMode = !isTileEditMode;
+
+        tileEditModeText.text = isTileEditMode ? "Tile Edit Mode : ON" : "Tile Edit Mode : OFF";
+
+        
+    }
+
 }

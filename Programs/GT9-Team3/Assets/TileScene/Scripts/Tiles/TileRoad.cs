@@ -1,3 +1,4 @@
+using Cinemachine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -32,12 +33,16 @@ public class TileRoad : MonoBehaviour
 
     // 편집모드
     public bool isEditMode = false;
+    public bool isSelected = false;
+    public Collider2D _collider2D;
+    
 
     private void Awake()
     {
         _gameManager = GameManager.Instance;
         _tileManager = TileManager.Instance;
         _tileRotate = GetComponent<TileRotate>();
+        _collider2D = GetComponent<Collider2D>();
     }
 
     // tile initialize
