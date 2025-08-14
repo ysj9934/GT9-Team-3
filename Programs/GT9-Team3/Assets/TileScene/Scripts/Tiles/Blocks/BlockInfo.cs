@@ -57,7 +57,13 @@ public class BlockInfo : MonoBehaviour
             return;
         }
 
-        ToggleTowerPlacementUI();
+        if (!_tileRoad.isSelected)
+            return;
+
+        //_collider2D.enabled = true; // 타워 설치 UI 활성화 시 Collider2D 활성화
+
+        if (!hasTower)
+            ToggleTowerPlacementUI();
     }
 
 

@@ -23,6 +23,8 @@ public class TileManager : MonoBehaviour
 
     [SerializeField] private CinemachineVirtualCamera[] levelCamera;
 
+    public float[] tileSize = { 1.4475f, 0.84f }; // 타일 사이즈
+
     public int mapLevel = 1;
     private int cellSize = 5;
     private float cellPos;
@@ -436,10 +438,14 @@ public class TileManager : MonoBehaviour
         if (isTileMoveMode)
             ToggleTileMoveMode();
 
+        HideAllUI();
+
         if (isTileEditMode)
             isTileEditMode = false;
         else
             isTileEditMode = true;
+
+
 
         tileEditModeText.text = isTileEditMode ? "Tile Edit Mode : ON" : "Tile Edit Mode : OFF";
     }
@@ -448,6 +454,8 @@ public class TileManager : MonoBehaviour
     {
         if (isTileEditMode)
             ToggleTileEditMode();
+
+        HideAllUI();
 
         if (isTileMoveMode)
             isTileMoveMode = false;
