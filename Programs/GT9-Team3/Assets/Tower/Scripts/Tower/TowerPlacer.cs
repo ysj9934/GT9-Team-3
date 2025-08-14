@@ -36,7 +36,7 @@ public class TowerPlacer : MonoBehaviour
 
         // 미리보기 위치 갱신
         Vector3 previewPos = snappedPos;
-        previewPos.y += 0.44f;
+        //previewPos.y += 0.44f;
         currentPreview.transform.position = previewPos;
 
         // 설치 가능 여부에 따라 색상 변경
