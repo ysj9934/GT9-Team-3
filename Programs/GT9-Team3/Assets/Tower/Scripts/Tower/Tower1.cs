@@ -9,7 +9,12 @@ public class Tower1 : MonoBehaviour
     public TowerData data;
     private float cooldownTimer;
 
-    public RangeIndicator rangeIndicator;
+    private GameObject rangeVisual;
+
+    private void Awake()
+    {
+        rangeVisual = transform.Find("RangeVisual")?.gameObject;
+    }
 
     private void Update()
     {
@@ -53,18 +58,21 @@ public class Tower1 : MonoBehaviour
         data = d;
         cooldownTimer = 0f;
 
-        if (rangeIndicator != null)
+        if (rangeVisual != null)
         {
-            rangeIndicator.SetRadius(data.attackRange);
-            rangeIndicator.gameObject.SetActive(false); // 기본 숨김
+            float range = data.attackRange * 2f;
+            rangeVisual.transform.localScale = new Vector3(range, range, 1f);
+            rangeVisual.SetActive(false); // 처음엔 숨김
         }
     }
 
-    // 선택 시 보여주고, 해제 시 숨김(간단히 클릭 토글)
-    void OnMouseDown()
+    private void OnMouseDown()
     {
-        if (rangeIndicator != null)
-            rangeIndicator.gameObject.SetActive(!rangeIndicator.gameObject.activeSelf);
+        if (rangeVisual != null)
+        {
+            // 클릭할 때마다 토글
+            rangeVisual.SetActive(!rangeVisual.activeSelf);
+        }
     }
 
     // 우선순위 
