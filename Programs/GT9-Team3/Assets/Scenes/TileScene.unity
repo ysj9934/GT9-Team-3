@@ -479,7 +479,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 62475001}
         m_TargetAssemblyTypeName: TileManager, Assembly-CSharp
-        m_MethodName: ToggleTileEditMode
+        m_MethodName: ToggleTileMoveMode
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1658,6 +1658,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 143331594}
     - target: {fileID: 7448605062792393602, guid: 1309173f8e2f8cd43aacf64911676477, type: 3}
+      propertyPath: tileMoveModeText
+      value: 
+      objectReference: {fileID: 1704597711}
+    - target: {fileID: 7448605062792393602, guid: 1309173f8e2f8cd43aacf64911676477, type: 3}
       propertyPath: tilePrefabs.Array.size
       value: 1
       objectReference: {fileID: 0}
@@ -1750,6 +1754,10 @@ PrefabInstance:
       propertyPath: m_HorizontalAlignment
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1472689633506412928, guid: 4536dd610bb89814db267140171d02fb, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2113627442964881035, guid: 4536dd610bb89814db267140171d02fb, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
@@ -1758,6 +1766,10 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 62475001}
+    - target: {fileID: 2272850547371246016, guid: 4536dd610bb89814db267140171d02fb, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 829.3
+      objectReference: {fileID: 0}
     - target: {fileID: 2632979377168904320, guid: 4536dd610bb89814db267140171d02fb, type: 3}
       propertyPath: m_fontSize
       value: 12

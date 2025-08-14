@@ -4,13 +4,16 @@ using System.Collections.Generic;
 using System.Linq;
 using Cinemachine;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UIElements;
 using Random = UnityEngine.Random;
 
 public class TileManager : MonoBehaviour
 {
     public static TileManager Instance { get; private set; }
     private GameManager11 _gameManager;
+    private List<TileUI> _tileUIs;
     
     [Header("Tile Prefabs")]
     [SerializeField] private GameObject[] tilePrefabs;  // 타일_길타입 프리팹
@@ -24,13 +27,14 @@ public class TileManager : MonoBehaviour
     private int cellSize = 5;
     private float cellPos;
     
-    public TileRoad[,] tileMap;
+    [SerializeField]public TileRoad[,] tileMap;
     public TileRoad startTileRoad;
     public TileRoad endTileRoad;
 
     [SerializeField] private GameObject pathfinderPrefab;
     public List<TileRoad> path;
     public List<TileGrid> gridTileList;
+    public List<TileRoad> roadTileList;
     public List<Vector2> spawnTransform;
 
     [SerializeField] private TextMeshProUGUI tileEditModeText;
@@ -46,6 +50,18 @@ public class TileManager : MonoBehaviour
     private void Start()
     {
         _gameManager = GameManager11.Instance;
+    }
+
+    // UI 초기화
+    private void InitializedTileUI()
+    {
+        _tileUIs = new List<TileUI>();
+
+        foreach (var roadTile in roadTileList)
+        {
+            if (roadTile._tileUI != null)
+                _tileUIs.Add(roadTile._tileUI);
+        }
     }
 
     public void Initialize()
@@ -132,8 +148,9 @@ public class TileManager : MonoBehaviour
                     go.transform.SetParent(transform);
                     TileRoad tileRoad = go.GetComponent<TileRoad>();
                     tileRoad.Initialize(mapLevel, pos);
-                    
+
                     // tileMap[row + mapLevel, col + mapLevel] = tileRoad;
+                    roadTileList.Add(tileRoad);
                 }
                 // 기지 타일
                 else
@@ -146,11 +163,13 @@ public class TileManager : MonoBehaviour
                     
                     // tileMap[row + mapLevel, col + mapLevel] = tileRoad;
                     endTileRoad = tileRoad;
+                    roadTileList.Add(tileRoad);
                 }
-
                 baseNumber++;
             }
         }
+
+        InitializedTileUI();
     }
 
     public void SetNeighbors()
@@ -179,16 +198,16 @@ public class TileManager : MonoBehaviour
         {
             // 계산식으로 변경하기
             case 1:
-                spawnTransform.Add(gridTileList[0].transform.position);
+                //spawnTransform.Add(gridTileList[0].transform.position);
                 spawnTransform.Add(gridTileList[4].transform.position);
-                spawnTransform.Add(gridTileList[20].transform.position);
-                spawnTransform.Add(gridTileList[24].transform.position);
+                //spawnTransform.Add(gridTileList[20].transform.position);
+                //spawnTransform.Add(gridTileList[24].transform.position);
                 break;
             case 2:
-                spawnTransform.Add(gridTileList[3].transform.position);
-                spawnTransform.Add(gridTileList[21].transform.position);
-                spawnTransform.Add(gridTileList[27].transform.position);
-                spawnTransform.Add(gridTileList[45].transform.position);
+                //spawnTransform.Add(gridTileList[0].transform.position);
+                //spawnTransform.Add(gridTileList[6].transform.position);
+                //spawnTransform.Add(gridTileList[27].transform.position);
+                //spawnTransform.Add(gridTileList[45].transform.position);
                 break;
             case 3:
                 spawnTransform.Add(gridTileList[4].transform.position);
@@ -206,7 +225,8 @@ public class TileManager : MonoBehaviour
         if (spawnTransform.Count == 0)
             return;
         
-        Vector2 pos = spawnTransform[Random.Range(0, spawnTransform.Count)];
+        //Vector2 pos = spawnTransform[Random.Range(0, spawnTransform.Count)];
+        Vector2 pos = spawnTransform[0];
         GameObject go = Instantiate(tileSpawnPrefab, pos, Quaternion.identity);
         go.transform.SetParent(transform);
         TileSpawner tileS = go.GetComponent<TileSpawner>();
@@ -222,10 +242,82 @@ public class TileManager : MonoBehaviour
         _gameManager.DestroyOfType<TileSpawner>();
     }
 
+    //public void ShowConnectedPath()
+    //{
+    //    path = new List<TileRoad>();
+        
+    //    SetNeighbors();
+
+    //    if (startTileRoad == null)
+    //    {
+    //        Debug.Log("startTileRoad is null");
+    //    }
+    //    else if (endTileRoad == null)
+    //    {
+    //        Debug.Log("endTileRoad is null");
+    //    }
+    //    else
+    //    {
+    //        path = FindConnectedPath(startTileRoad, endTileRoad);
+    //        if (path != null && path.Count > 0)
+    //        {
+    //            GetPathfinder();
+    //        }
+                
+    //    } 
+    //}
+
+    //public List<TileRoad> FindConnectedPath(TileRoad startTile, TileRoad endTile)
+    //{
+    //    Debug.Log("FindConnectedPath - Searching all paths");
+    //    var allPaths = new List<List<TileRoad>>();
+    //    var visited = new HashSet<TileRoad>();
+    //    var currentPath = new List<TileRoad>();
+
+    //    DFSAllPaths(startTile, endTile, visited, currentPath, allPaths);
+
+    //    if (allPaths.Count == 0)
+    //    {
+    //        Debug.LogWarning("No valid paths found");
+    //        return new List<TileRoad>();
+    //    }
+
+    //    // 가장 짧은 경로 선택
+    //    var shortestPath = allPaths.OrderBy(p => p.Count).First();
+    //    Debug.Log($"Shortest path length: {shortestPath.Count}");
+    //    return shortestPath;
+    //}
+
+
+    //private void DFSAllPaths(TileRoad current, TileRoad target, HashSet<TileRoad> visited,
+    //    List<TileRoad> currentPath, List<List<TileRoad>> allPaths)
+    //{
+    //    if (current == null || visited.Contains(current))
+    //        return;
+
+    //    visited.Add(current);
+    //    currentPath.Add(current);
+
+    //    if (current == target)
+    //    {
+    //        // 경로 복사해서 저장
+    //        allPaths.Add(new List<TileRoad>(currentPath));
+    //    }
+    //    else
+    //    {
+    //        foreach (var (neighbor, _) in current._tileRoadConnector.GetConnectedNeighbors())
+    //        {
+    //            DFSAllPaths(neighbor, target, visited, currentPath, allPaths);
+    //        }
+    //    }
+
+    //    // 백트래킹
+    //    visited.Remove(current);
+    //    currentPath.RemoveAt(currentPath.Count - 1);
+    //}
+
     public void ShowConnectedPath()
     {
-        path = new List<TileRoad>();
-        
         SetNeighbors();
 
         if (startTileRoad == null)
@@ -239,61 +331,43 @@ public class TileManager : MonoBehaviour
         else
         {
             path = FindConnectedPath(startTileRoad, endTileRoad);
-            if (path != null && path.Count > 0)
-            {
-                GetPathfinder();
-            }
-                
-        } 
+        }
     }
 
     public List<TileRoad> FindConnectedPath(TileRoad startTile, TileRoad endTile)
     {
-        Debug.Log("FindConnectedPath - Searching all paths");
-        var allPaths = new List<List<TileRoad>>();
+        Debug.Log("FindConnectedPath");
         var visited = new HashSet<TileRoad>();
-        var currentPath = new List<TileRoad>();
+        var path = new List<TileRoad>();
 
-        DFSAllPaths(startTile, endTile, visited, currentPath, allPaths);
+        if (DFS(startTile, endTile, visited, path))
+            return path;
 
-        if (allPaths.Count == 0)
-        {
-            Debug.LogWarning("No valid paths found");
-            return new List<TileRoad>();
-        }
-
-        // 가장 짧은 경로 선택
-        var shortestPath = allPaths.OrderBy(p => p.Count).First();
-        Debug.Log($"Shortest path length: {shortestPath.Count}");
-        return shortestPath;
+        return new List<TileRoad>();
     }
 
-    
-    private void DFSAllPaths(TileRoad current, TileRoad target, HashSet<TileRoad> visited,
-        List<TileRoad> currentPath, List<List<TileRoad>> allPaths)
+    private bool DFS(TileRoad current, TileRoad target, HashSet<TileRoad> visited, List<TileRoad> path)
     {
+        Debug.Log("DFS");
         if (current == null || visited.Contains(current))
-            return;
+            return false;
 
         visited.Add(current);
-        currentPath.Add(current);
+        path.Add(current);
 
         if (current == target)
+            return true;
+
+        foreach (var (neighbor, _) in current._tileRoadConnector.GetConnectedNeighbors())
         {
-            // 경로 복사해서 저장
-            allPaths.Add(new List<TileRoad>(currentPath));
-        }
-        else
-        {
-            foreach (var (neighbor, _) in current._tileRoadConnector.GetConnectedNeighbors())
-            {
-                DFSAllPaths(neighbor, target, visited, currentPath, allPaths);
-            }
+            Debug.Log($"currentTile : {current.col}, {current.row}");
+            if (DFS(neighbor, target, visited, path))
+                return true;
         }
 
-        // 백트래킹
+        path.Remove(current);
         visited.Remove(current);
-        currentPath.RemoveAt(currentPath.Count - 1);
+        return false;
     }
 
     public void GetPathfinder()
@@ -318,11 +392,37 @@ public class TileManager : MonoBehaviour
 
     public void ToggleTileEditMode()
     {
-        isTileEditMode = !isTileEditMode;
+        if (isTileMoveMode)
+            ToggleTileMoveMode();
+
+        if (isTileEditMode)
+            isTileEditMode = false;
+        else
+            isTileEditMode = true;
 
         tileEditModeText.text = isTileEditMode ? "Tile Edit Mode : ON" : "Tile Edit Mode : OFF";
+    }
 
-        
+    public void ToggleTileMoveMode()
+    {
+        if (isTileEditMode)
+            ToggleTileEditMode();
+
+        if (isTileMoveMode)
+            isTileMoveMode = false;
+        else
+            isTileMoveMode = true;
+
+        tileMoveModeText.text = isTileMoveMode ? "Tile Move Mode : ON" : "Tile Move Mode : OFF";
+    }
+
+    // UI 모두 끄기
+    public void HideAllUI()
+    {
+        foreach (var tileUI in _tileUIs)
+        {
+            tileUI.CloseUI();
+        }
     }
 
 }

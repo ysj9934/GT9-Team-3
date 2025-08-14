@@ -11,6 +11,7 @@ public class TileRoad : MonoBehaviour
     private TileManager _tileManager;
     public TileRoadConnector _tileRoadConnector;
     public TileRotate _tileRotate;
+    public TileUI _tileUI;
 
     // 이웃한 타일 정보 (자동으로 수정)
     [Header("Tile Neighbors")] 
@@ -43,6 +44,7 @@ public class TileRoad : MonoBehaviour
         _tileManager = TileManager.Instance;
         _tileRotate = GetComponent<TileRotate>();
         _collider2D = GetComponent<Collider2D>();
+        _tileUI = GetComponent<TileUI>();
     }
 
     // tile initialize
@@ -83,13 +85,17 @@ public class TileRoad : MonoBehaviour
         int colIndex = Mathf.RoundToInt(col);
         int rowIndex = Mathf.RoundToInt(row);
 
+        int originCol = this.col;
+        int originRow = this.row;
+
         this.col = colIndex;
         this.row = rowIndex;
 
         Vector2 originPosition = transform.position;
         try
         {
-            _tileManager.tileMap[rowIndex, colIndex] = this;
+            _tileManager.tileMap[originRow, originCol] = null;
+            _tileManager.tileMap[this.row, this.col] = this;
         }
         catch (IndexOutOfRangeException e)
         {

@@ -30,14 +30,16 @@ public class TileUI : MonoBehaviour
     {
         if (!_tileManager.isTileEditMode)
         {
-            Debug.Log("It is not TIleEditMode");
+            Debug.LogWarning("It doesn't work when not in isTileEditMode");
             return;
         }
 
+        _tileManager.HideAllUI();
+
         if (!EventSystem.current.IsPointerOverGameObject())
             ToggleUI();
-        //ToggleUI();
 
+        
 
         // 타일 선택 시 블록 정보 Collider2D 활성화
         // Enable Collider2D on block info when tile is selected

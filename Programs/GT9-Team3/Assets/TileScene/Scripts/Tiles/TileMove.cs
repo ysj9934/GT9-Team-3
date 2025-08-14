@@ -28,9 +28,9 @@ public class TileMove : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if (!_tileManager.isTileEditMode && !_tileManager.isTileMoveMode)
+        if (!_tileManager.isTileMoveMode)
         {
-            Debug.LogWarning("It doesn't work when not in TileEditMode");
+            Debug.LogWarning("It doesn't work when not in isTileMoveMode");
             return;
         }
 
@@ -42,8 +42,8 @@ public class TileMove : MonoBehaviour
         _sprites = GetComponentsInChildren<SpriteRenderer>();
         originalColor = _sprites[0].color;
         
-        //if (_collider != null)
-        //    _collider.enabled = false;
+        if (_collider != null)
+            _collider.enabled = false;
 
         _gameManager.tileRoad = _tileRoad;
         _gameManager.ShowTileInfo();
@@ -51,9 +51,9 @@ public class TileMove : MonoBehaviour
 
     private void OnMouseDrag()
     {
-        if (!_tileManager.isTileEditMode && !_tileManager.isTileMoveMode) if (!_tileManager.isTileEditMode)
+        if (!_tileManager.isTileMoveMode)
         {
-            Debug.LogWarning("It doesn't work when not in TileEditMode");
+            Debug.LogWarning("It doesn't work when not in isTileMoveMode");
             return;
         }
 
@@ -123,9 +123,9 @@ public class TileMove : MonoBehaviour
 
     private void OnMouseUp()
     {
-        if (!_tileManager.isTileEditMode && !_tileManager.isTileMoveMode)
+        if (!_tileManager.isTileMoveMode)
         {
-            Debug.LogWarning("It doesn't work when not in TileEditMode");
+            Debug.LogWarning("It doesn't work when not in isTileMoveMode");
             return;
         }
 
@@ -142,6 +142,7 @@ public class TileMove : MonoBehaviour
 
         if (tileRoad != null)
         {
+            Debug.Log($"{tileRoad.row}, {tileRoad.col}");
             transform.position = originalPosition;
             UpdateGridPosition();
             Debug.Log("this location already located");
@@ -151,8 +152,8 @@ public class TileMove : MonoBehaviour
             UpdateGridPosition();    
         }
         
-        //if (_collider != null)
-        //    _collider.enabled = true;
+        if (_collider != null)
+            _collider.enabled = true;
     }
 
     private void UpdateGridPosition()
