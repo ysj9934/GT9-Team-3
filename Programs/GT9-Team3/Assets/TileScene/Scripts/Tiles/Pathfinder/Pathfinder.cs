@@ -79,5 +79,17 @@ public class Pathfinder : MonoBehaviour
         {
             currentPathIndex++;
         }
+
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        Basement basement = collision.GetComponent<Basement>();
+
+        if (basement != null)
+        {
+            Debug.Log("You can start the game by connecting paths using the pathfinder");
+            Destroy(gameObject);
+        }
     }
 }

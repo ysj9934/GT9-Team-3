@@ -9,7 +9,7 @@ public class TileUI : MonoBehaviour
 {
     private TileManager _tileManager;
     private TileRoad _tileRoad;
-    [SerializeField] private BlockInfo[] _blockInfos;
+    [SerializeField] public BlockInfo[] _blockInfos;
     [SerializeField] private GameObject tileUI;
 
     // 임시 카메라 위치
@@ -92,5 +92,14 @@ public class TileUI : MonoBehaviour
         //}
 
         _tileRoad._collider2D.enabled = true; // 타일 선택 해제 시 타일 Collider2D 활성화
+
+
+        foreach (var blockInfo in _blockInfos)
+        {
+            if (blockInfo.buildUI != null)
+            {
+                blockInfo.buildUI.Hide();
+            }
+        }
     }
 }
