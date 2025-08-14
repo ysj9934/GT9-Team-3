@@ -57,8 +57,8 @@ public class TileMove : MonoBehaviour
             return;
         }
 
-        if (EventSystem.current.IsPointerOverGameObject())
-            return;
+        //if (EventSystem.current.IsPointerOverGameObject())
+        //    return;
         
         Plane plane = new Plane(Vector3.forward, 0);
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -129,8 +129,8 @@ public class TileMove : MonoBehaviour
             return;
         }
 
-        if (EventSystem.current.IsPointerOverGameObject())
-            return;
+        //if (EventSystem.current.IsPointerOverGameObject())
+        //    return;
         
         foreach (var sprite in _sprites)
         {

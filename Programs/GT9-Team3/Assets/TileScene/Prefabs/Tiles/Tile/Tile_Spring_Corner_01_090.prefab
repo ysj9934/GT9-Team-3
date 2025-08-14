@@ -56,8 +56,8 @@ MonoBehaviour:
   _tile: {fileID: 0}
   connectedUp: 1
   connectedDown: 0
-  connectedLeft: 0
-  connectedRight: 1
+  connectedLeft: 1
+  connectedRight: 0
 --- !u!1 &2633068759239975167
 GameObject:
   m_ObjectHideFlags: 0
@@ -155,9 +155,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 547dc6e35d270b64da6febc6fa442869, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _collider2D: {fileID: 0}
   blockSerialNumber: 9
   blockCategory: 1
   towerPrefab: {fileID: 0}
+  towerPlacementUI: {fileID: 0}
 --- !u!1 &4377993327467508945
 GameObject:
   m_ObjectHideFlags: 0
@@ -255,9 +257,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 547dc6e35d270b64da6febc6fa442869, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _collider2D: {fileID: 0}
   blockSerialNumber: 6
   blockCategory: 1
   towerPrefab: {fileID: 0}
+  towerPlacementUI: {fileID: 0}
 --- !u!1 &6127582476912192401
 GameObject:
   m_ObjectHideFlags: 0
@@ -355,9 +359,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 547dc6e35d270b64da6febc6fa442869, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _collider2D: {fileID: 0}
   blockSerialNumber: 2
   blockCategory: 0
   towerPrefab: {fileID: 0}
+  towerPlacementUI: {fileID: 0}
 --- !u!1 &6825623762609757162
 GameObject:
   m_ObjectHideFlags: 0
@@ -455,9 +461,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 547dc6e35d270b64da6febc6fa442869, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _collider2D: {fileID: 0}
   blockSerialNumber: 5
   blockCategory: 0
   towerPrefab: {fileID: 0}
+  towerPlacementUI: {fileID: 0}
 --- !u!1 &6857185362310494683
 GameObject:
   m_ObjectHideFlags: 0
@@ -555,9 +563,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 547dc6e35d270b64da6febc6fa442869, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _collider2D: {fileID: 0}
   blockSerialNumber: 8
   blockCategory: 1
   towerPrefab: {fileID: 0}
+  towerPlacementUI: {fileID: 0}
 --- !u!1 &7203950881493541094
 GameObject:
   m_ObjectHideFlags: 0
@@ -655,9 +665,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 547dc6e35d270b64da6febc6fa442869, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _collider2D: {fileID: 0}
   blockSerialNumber: 4
   blockCategory: 0
   towerPrefab: {fileID: 0}
+  towerPlacementUI: {fileID: 0}
 --- !u!1 &8651806887311358898
 GameObject:
   m_ObjectHideFlags: 0
@@ -755,9 +767,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 547dc6e35d270b64da6febc6fa442869, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _collider2D: {fileID: 0}
   blockSerialNumber: 7
   blockCategory: 1
   towerPrefab: {fileID: 0}
+  towerPlacementUI: {fileID: 0}
 --- !u!1 &9031503256074482052
 GameObject:
   m_ObjectHideFlags: 0
@@ -855,9 +869,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 547dc6e35d270b64da6febc6fa442869, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _collider2D: {fileID: 0}
   blockSerialNumber: 3
   blockCategory: 1
   towerPrefab: {fileID: 0}
+  towerPlacementUI: {fileID: 0}
 --- !u!1001 &5473656716072884291
 PrefabInstance:
   m_ObjectHideFlags: 0

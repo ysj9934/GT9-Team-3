@@ -182,12 +182,15 @@ public class TileManager : MonoBehaviour
                 if (tileMap[row, col] != null)
                 {
                     tileMap[row, col].SetNeighbors(tileMap, cellSize, cellSize);
+                    //tileMap[row, col].SetNeighbors(tileMap);
                 }
-                
+
                 Debug.Log($"tileMap : {tileMap[row, col]}");
             }
         }
     }
+
+
 
     public void SetSpawnerPosition()
     {
@@ -331,7 +334,45 @@ public class TileManager : MonoBehaviour
         else
         {
             path = FindConnectedPath(startTileRoad, endTileRoad);
+            //path = FindConnectedPathBFS(startTileRoad, endTileRoad);
+
+            if (path != null && path.Count > 0)
+                GetPathfinder();
+
         }
+    }
+
+    public List<TileRoad> FindConnectedPathBFS(TileRoad startTile, TileRoad endTile)
+    {
+        var visited = new HashSet<TileRoad>();
+        var queue = new Queue<List<TileRoad>>();
+        queue.Enqueue(new List<TileRoad> { startTile });
+
+        while (queue.Count > 0)
+        {
+            var path = queue.Dequeue();
+            var current = path[path.Count - 1];
+
+            if (visited.Contains(current))
+                continue;
+
+            visited.Add(current);
+
+            if (current == endTile)
+                return path;
+
+            foreach (var (neighbor, _) in current._tileRoadConnector.GetConnectedNeighbors())
+            {
+                Debug.Log($"현재 타일: {current.name}, 연결된 이웃 수: {current._tileRoadConnector.GetConnectedNeighbors().Count}");
+                if (!visited.Contains(neighbor))
+                {
+                    var newPath = new List<TileRoad>(path) { neighbor };
+                    queue.Enqueue(newPath);
+                }
+            }
+        }
+
+        return new List<TileRoad>();
     }
 
     public List<TileRoad> FindConnectedPath(TileRoad startTile, TileRoad endTile)
