@@ -16,7 +16,7 @@ public class TowerPlacer : MonoBehaviour
     public GameObject previewPrefab;
     private GameObject currentPreview;
 
-    private HashSet<Vector3Int> occupiedCells = new HashSet<Vector3Int>();
+    public HashSet<Vector3Int> occupiedCells = new HashSet<Vector3Int>();
 
     public TowerBuildUI buildUI;                        // 인스펙터 연결
 
@@ -36,7 +36,7 @@ public class TowerPlacer : MonoBehaviour
 
         // 미리보기 위치 갱신
         Vector3 previewPos = snappedPos;
-        previewPos.y += 0.44f;
+        //previewPos.y += 0.44f;
         currentPreview.transform.position = previewPos;
 
         // 설치 가능 여부에 따라 색상 변경
@@ -61,6 +61,7 @@ public class TowerPlacer : MonoBehaviour
     // UI에서 최종 선택 후 호출
     public void PlaceTowerFromUI(TowerBlueprint bp, Vector3 position, Vector3Int cellPos)
     {
+        Debug.Log($"PlaceTowerFromUI cellPos : {cellPos}");
         // 타워를 타일보다 약간 위에 배치
         position.y += 0.44f;
 

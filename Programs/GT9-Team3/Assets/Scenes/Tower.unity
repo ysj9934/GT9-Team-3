@@ -2978,10 +2978,22 @@ PrefabInstance:
     - target: {fileID: 6058384465443791750, guid: 030575b2aa2a8cb45a111563bf63e473, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 7358067079728058978}
+      objectReference: {fileID: 7358067079728058981}
     - target: {fileID: 6058384465443791750, guid: 030575b2aa2a8cb45a111563bf63e473, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6058384465443791750, guid: 030575b2aa2a8cb45a111563bf63e473, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnClickSell
+      objectReference: {fileID: 0}
+    - target: {fileID: 6058384465443791750, guid: 030575b2aa2a8cb45a111563bf63e473, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: TowerSellUI, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 6058384465443791750, guid: 030575b2aa2a8cb45a111563bf63e473, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 6346451093288516015, guid: 030575b2aa2a8cb45a111563bf63e473, type: 3}
       propertyPath: m_AnchorMax.y
@@ -3091,28 +3103,18 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 7095015751173433472, guid: 030575b2aa2a8cb45a111563bf63e473, type: 3}
       insertIndex: -1
       addedObject: {fileID: 9129745403089510771}
-    - targetCorrespondingSourceObject: {fileID: 4357693143695609987, guid: 030575b2aa2a8cb45a111563bf63e473, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 7358067079728058979}
   m_SourcePrefab: {fileID: 100100000, guid: 030575b2aa2a8cb45a111563bf63e473, type: 3}
---- !u!1 &7358067079728058978 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4357693143695609987, guid: 030575b2aa2a8cb45a111563bf63e473, type: 3}
+--- !u!114 &7358067079728058981 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4101429876054838393, guid: 030575b2aa2a8cb45a111563bf63e473, type: 3}
   m_PrefabInstance: {fileID: 7358067079728058977}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &7358067079728058979
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7358067079728058978}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 87dde13c4c7442b47a51be5864953034, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  panel: {fileID: 7358067079728058978}
 --- !u!114 &9129745403089510771
 MonoBehaviour:
   m_ObjectHideFlags: 0

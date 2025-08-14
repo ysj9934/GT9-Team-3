@@ -18,8 +18,8 @@ public class BlockPlaceTower : MonoBehaviour
 
     public void CallNumber()
     {
-        tileRoad.ReceiveBlockNumber(blockInfo.blockSerialNumber);
-        PlaceTower();
+        //tileRoad.ReceiveBlockNumber(blockInfo.blockSerialNumber);
+        //PlaceTower();
     }
 
     public void PlaceTower()
