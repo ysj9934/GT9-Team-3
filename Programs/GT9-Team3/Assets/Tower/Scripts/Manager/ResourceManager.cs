@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,7 +12,7 @@ public class ResourceManager : MonoBehaviour
     void Awake()
     {
         Instance = this;
-        resources[ResourceType.Gold] = 100;
+        resources[ResourceType.Gold] = 10000;
     }
 
     public bool CanAfford(ResourceType type, int cost)
@@ -33,5 +34,14 @@ public class ResourceManager : MonoBehaviour
     public int GetAmount(ResourceType type)
     {
         return resources[type];
+    }
+
+    public void Earn(ResourceType type, int amount)
+    {
+        if (!resources.ContainsKey(type))
+            resources[type] = 0;
+
+        resources[type] += amount;
+        Debug.Log($"[ÀÚ¿ø] {type} +{amount} È¹µæ, ÇöÀç: {resources[type]}");
     }
 }
