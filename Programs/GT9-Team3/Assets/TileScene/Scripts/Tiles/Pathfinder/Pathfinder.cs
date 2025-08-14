@@ -71,10 +71,11 @@ public class Pathfinder : MonoBehaviour
         Transform target = pathPoints[currentPathIndex];
 
         // MoveTowards를 사용해 목표점까지 정확히 이동
-        transform.position = Vector3.MoveTowards(transform.position, target.position, moveSpeed * Time.deltaTime);
+        Vector2 pos = target.position + new Vector3(0f, 0.16f, 0f);
+        transform.position = Vector3.MoveTowards(transform.position, pos, moveSpeed * Time.deltaTime);
 
         // 목표점에 도달했으면 다음 지점으로 이동
-        if (Vector3.Distance(transform.position, target.position) < 0.01f)
+        if (Vector3.Distance(transform.position, pos) < 0.01f)
         {
             currentPathIndex++;
         }
