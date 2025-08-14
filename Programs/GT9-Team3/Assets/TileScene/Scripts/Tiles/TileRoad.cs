@@ -1,3 +1,4 @@
+using Cinemachine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -10,6 +11,7 @@ public class TileRoad : MonoBehaviour
     private TileManager _tileManager;
     public TileRoadConnector _tileRoadConnector;
     public TileRotate _tileRotate;
+    public TileUI _tileUI;
 
     // 이웃한 타일 정보 (자동으로 수정)
     [Header("Tile Neighbors")] 
@@ -32,12 +34,17 @@ public class TileRoad : MonoBehaviour
 
     // 편집모드
     public bool isEditMode = false;
+    public bool isSelected = false;
+    public Collider2D _collider2D;
+    
 
     private void Awake()
     {
         _gameManager = GameManager.Instance;
         _tileManager = TileManager.Instance;
         _tileRotate = GetComponent<TileRotate>();
+        _collider2D = GetComponent<Collider2D>();
+        _tileUI = GetComponent<TileUI>();
     }
 
     // tile initialize
@@ -78,13 +85,17 @@ public class TileRoad : MonoBehaviour
         int colIndex = Mathf.RoundToInt(col);
         int rowIndex = Mathf.RoundToInt(row);
 
+        int originCol = this.col;
+        int originRow = this.row;
+
         this.col = colIndex;
         this.row = rowIndex;
 
         Vector2 originPosition = transform.position;
         try
         {
-            _tileManager.tileMap[rowIndex, colIndex] = this;
+            _tileManager.tileMap[originRow, originCol] = null;
+            _tileManager.tileMap[this.row, this.col] = this;
         }
         catch (IndexOutOfRangeException e)
         {
@@ -109,7 +120,7 @@ public class TileRoad : MonoBehaviour
             spriteRenderers[i].sortingOrder = -1000 + (tileSerialNumber * 10) + i;
         }
     }
-    
+
     public void SetNeighbors(TileRoad[,] map, int maxRow, int maxCol)
     {
         ClearNeighbors();
@@ -118,6 +129,58 @@ public class TileRoad : MonoBehaviour
         if (col > 0) left = map[row, col - 1];
         if (col < maxCol - 1) right = map[row, col + 1];
     }
+
+    //public void SetNeighbors(TileRoad[,] tileMap)
+    //{
+    //    // 현재 타일의 위치
+    //    int row = this.row;
+    //    int col = this.col;
+
+    //    int rows = tileMap.GetLength(0);
+    //    int cols = tileMap.GetLength(1);
+
+    //    // 위쪽 연결
+    //    if (row > 0)
+    //    {
+    //        TileRoad neighbor = tileMap[row - 1, col];
+    //        if (neighbor != null && this.connectedUp && neighbor.connectedDown)
+    //        {
+    //            this.up = neighbor;
+    //        }
+    //    }
+
+    //    // 아래쪽 연결
+    //    if (row < rows - 1)
+    //    {
+    //        TileRoad neighbor = tileMap[row + 1, col];
+    //        if (neighbor != null && this.connectedDown && neighbor.connectedUp)
+    //        {
+    //            this.down = neighbor;
+    //        }
+    //    }
+
+    //    // 왼쪽 연결
+    //    if (col > 0)
+    //    {
+    //        TileRoad neighbor = tileMap[row, col - 1];
+    //        if (neighbor != null && this.connectedLeft && neighbor.connectedRight)
+    //        {
+    //            this.left = neighbor;
+    //        }
+    //    }
+
+    //    // 오른쪽 연결
+    //    if (col < cols - 1)
+    //    {
+    //        TileRoad neighbor = tileMap[row, col + 1];
+    //        if (neighbor != null && this.connectedRight && neighbor.connectedLeft)
+    //        {
+    //            this.right = neighbor;
+    //        }
+    //    }
+
+    //    Debug.Log($"타일 {name} 연결 상태 → Up:{up?.name}, Down:{down?.name}, Left:{left?.name}, Right:{right?.name}");
+    //}
 
     private void ClearNeighbors()
     {

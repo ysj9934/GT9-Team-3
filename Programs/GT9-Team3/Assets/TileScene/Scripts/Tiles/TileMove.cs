@@ -1,3 +1,4 @@
+using Cinemachine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -7,6 +8,7 @@ using UnityEngine.EventSystems;
 public class TileMove : MonoBehaviour
 {
     private GameManager11 _gameManager;
+    private TileManager _tileManager;
     private TileRoad _tileRoad;
     private Collider2D _collider;
 
@@ -14,24 +16,28 @@ public class TileMove : MonoBehaviour
     private Color originalColor;
     private SpriteRenderer[] _sprites;
 
+    
+
     private void Awake()
     {
         _gameManager = GameManager11.Instance;
+        _tileManager = TileManager.Instance;
         _tileRoad = GetComponent<TileRoad>();
         _collider = GetComponent<PolygonCollider2D>();
-        
-        
     }
 
     private void OnMouseDown()
     {
-        if (!_tileRoad.isEditMode)
+        if (!_tileManager.isTileMoveMode)
         {
-            
+            Debug.LogWarning("It doesn't work when not in isTileMoveMode");
+            return;
         }
 
         if (EventSystem.current.IsPointerOverGameObject())
             return;
+
+
         originalPosition = transform.position;
         _sprites = GetComponentsInChildren<SpriteRenderer>();
         originalColor = _sprites[0].color;
@@ -44,9 +50,15 @@ public class TileMove : MonoBehaviour
     }
 
     private void OnMouseDrag()
-    {   
-        if (EventSystem.current.IsPointerOverGameObject())
+    {
+        if (!_tileManager.isTileMoveMode)
+        {
+            Debug.LogWarning("It doesn't work when not in isTileMoveMode");
             return;
+        }
+
+        //if (EventSystem.current.IsPointerOverGameObject())
+        //    return;
         
         Plane plane = new Plane(Vector3.forward, 0);
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -111,8 +123,14 @@ public class TileMove : MonoBehaviour
 
     private void OnMouseUp()
     {
-        if (EventSystem.current.IsPointerOverGameObject())
+        if (!_tileManager.isTileMoveMode)
+        {
+            Debug.LogWarning("It doesn't work when not in isTileMoveMode");
             return;
+        }
+
+        //if (EventSystem.current.IsPointerOverGameObject())
+        //    return;
         
         foreach (var sprite in _sprites)
         {
@@ -124,6 +142,7 @@ public class TileMove : MonoBehaviour
 
         if (tileRoad != null)
         {
+            Debug.Log($"{tileRoad.row}, {tileRoad.col}");
             transform.position = originalPosition;
             UpdateGridPosition();
             Debug.Log("this location already located");
