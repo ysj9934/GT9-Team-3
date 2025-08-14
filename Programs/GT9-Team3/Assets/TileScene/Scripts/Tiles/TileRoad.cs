@@ -1,3 +1,4 @@
+using Cinemachine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -10,6 +11,7 @@ public class TileRoad : MonoBehaviour
     private TileManager _tileManager;
     public TileRoadConnector _tileRoadConnector;
     public TileRotate _tileRotate;
+    public TileUI _tileUI;
 
     // 이웃한 타일 정보 (자동으로 수정)
     [Header("Tile Neighbors")] 
@@ -32,12 +34,17 @@ public class TileRoad : MonoBehaviour
 
     // 편집모드
     public bool isEditMode = false;
+    public bool isSelected = false;
+    public Collider2D _collider2D;
+    
 
     private void Awake()
     {
         _gameManager = GameManager.Instance;
         _tileManager = TileManager.Instance;
         _tileRotate = GetComponent<TileRotate>();
+        _collider2D = GetComponent<Collider2D>();
+        _tileUI = GetComponent<TileUI>();
     }
 
     // tile initialize
@@ -78,13 +85,17 @@ public class TileRoad : MonoBehaviour
         int colIndex = Mathf.RoundToInt(col);
         int rowIndex = Mathf.RoundToInt(row);
 
+        int originCol = this.col;
+        int originRow = this.row;
+
         this.col = colIndex;
         this.row = rowIndex;
 
         Vector2 originPosition = transform.position;
         try
         {
-            _tileManager.tileMap[rowIndex, colIndex] = this;
+            _tileManager.tileMap[originRow, originCol] = null;
+            _tileManager.tileMap[this.row, this.col] = this;
         }
         catch (IndexOutOfRangeException e)
         {
@@ -109,7 +120,7 @@ public class TileRoad : MonoBehaviour
             spriteRenderers[i].sortingOrder = -1000 + (tileSerialNumber * 10) + i;
         }
     }
-    
+
     public void SetNeighbors(TileRoad[,] map, int maxRow, int maxCol)
     {
         ClearNeighbors();
@@ -118,6 +129,58 @@ public class TileRoad : MonoBehaviour
         if (col > 0) left = map[row, col - 1];
         if (col < maxCol - 1) right = map[row, col + 1];
     }
+
+    //public void SetNeighbors(TileRoad[,] tileMap)
+    //{
+    //    // 현재 타일의 위치
+    //    int row = this.row;
+    //    int col = this.col;
+
+    //    int rows = tileMap.GetLength(0);
+    //    int cols = tileMap.GetLength(1);
+
+    //    // 위쪽 연결
+    //    if (row > 0)
+    //    {
+    //        TileRoad neighbor = tileMap[row - 1, col];
+    //        if (neighbor != null && this.connectedUp && neighbor.connectedDown)
+    //        {
+    //            this.up = neighbor;
+    //        }
+    //    }
+
+    //    // 아래쪽 연결
+    //    if (row < rows - 1)
+    //    {
+    //        TileRoad neighbor = tileMap[row + 1, col];
+    //        if (neighbor != null && this.connectedDown && neighbor.connectedUp)
+    //        {
+    //            this.down = neighbor;
+    //        }
+    //    }
+
+    //    // 왼쪽 연결
+    //    if (col > 0)
+    //    {
+    //        TileRoad neighbor = tileMap[row, col - 1];
+    //        if (neighbor != null && this.connectedLeft && neighbor.connectedRight)
+    //        {
+    //            this.left = neighbor;
+    //        }
+    //    }
+
+    //    // 오른쪽 연결
+    //    if (col < cols - 1)
+    //    {
+    //        TileRoad neighbor = tileMap[row, col + 1];
+    //        if (neighbor != null && this.connectedRight && neighbor.connectedLeft)
+    //        {
+    //            this.right = neighbor;
+    //        }
+    //    }
+
+    //    Debug.Log($"타일 {name} 연결 상태 → Up:{up?.name}, Down:{down?.name}, Left:{left?.name}, Right:{right?.name}");
+    //}
 
     private void ClearNeighbors()
     {
@@ -135,8 +198,9 @@ public class TileRoad : MonoBehaviour
     /// </summary>
     public BlockInfo[] blocks = new BlockInfo[9];
 
-    public void ReceiveBlockNumber(int blockNumber)
+    public void ReceiveBlockNumber(int blockNumber, bool isTowerPlaced, TowerBlueprint bp)
     {
+        bool _isTowerPlaced = isTowerPlaced;
         int blockCase = ((int) currentRotationIndex + 1) * 10 + blockNumber;
         
         BlockInfo[] blockinfo1 = _tileRotate.rotatedPrefabs[0].GetComponentsInChildren<BlockInfo>();
@@ -150,74 +214,160 @@ public class TileRoad : MonoBehaviour
             case 27:
             case 39:
             case 43:
-                blockinfo1[0].PlaceTower();
-                blockinfo2[6].PlaceTower();
-                blockinfo3[8].PlaceTower();
-                blockinfo4[2].PlaceTower();
-                break;
+                if (_isTowerPlaced)
+                {
+                    blockinfo1[0].PlaceTower(bp);
+                    blockinfo2[6].PlaceTower(bp);
+                    blockinfo3[8].PlaceTower(bp);
+                    blockinfo4[2].PlaceTower(bp);
+                }
+                else {
+                    blockinfo1[0].RemoveTower();
+                    blockinfo2[6].RemoveTower();
+                    blockinfo3[8].RemoveTower();
+                    blockinfo4[2].RemoveTower();
+                }
+                    break;
             case 12:
             case 24:
             case 38:
             case 46:
-                blockinfo1[1].PlaceTower();
-                blockinfo2[3].PlaceTower();
-                blockinfo3[7].PlaceTower();
-                blockinfo4[5].PlaceTower();
+                if (_isTowerPlaced)
+                {
+                    blockinfo1[1].PlaceTower(bp);
+                    blockinfo2[3].PlaceTower(bp);
+                    blockinfo3[7].PlaceTower(bp);
+                    blockinfo4[5].PlaceTower(bp);
+                }
+                else
+                {
+                    blockinfo1[1].RemoveTower();
+                    blockinfo2[3].RemoveTower();
+                    blockinfo3[7].RemoveTower();
+                    blockinfo4[5].RemoveTower();
+                }
                 break;
+
             case 13:
             case 21:
             case 37:
             case 49:
-                blockinfo1[2].PlaceTower();
-                blockinfo2[0].PlaceTower();
-                blockinfo3[6].PlaceTower();
-                blockinfo4[8].PlaceTower();
+                if (_isTowerPlaced)
+                {
+                    blockinfo1[2].PlaceTower(bp);
+                    blockinfo2[0].PlaceTower(bp);
+                    blockinfo3[6].PlaceTower(bp);
+                    blockinfo4[8].PlaceTower(bp);
+                }
+                else
+                {
+                    blockinfo1[2].RemoveTower();
+                    blockinfo2[0].RemoveTower();
+                    blockinfo3[6].RemoveTower();
+                    blockinfo4[8].RemoveTower();
+                }
                 break;
+
             case 14:
             case 28:
             case 36:
             case 42:
-                blockinfo1[3].PlaceTower();
-                blockinfo2[7].PlaceTower();
-                blockinfo3[5].PlaceTower();
-                blockinfo4[1].PlaceTower();
+                if (_isTowerPlaced)
+                {
+                    blockinfo1[3].PlaceTower(bp);
+                    blockinfo2[7].PlaceTower(bp);
+                    blockinfo3[5].PlaceTower(bp);
+                    blockinfo4[1].PlaceTower(bp);
+                }
+                else
+                {
+                    blockinfo1[3].RemoveTower();
+                    blockinfo2[7].RemoveTower();
+                    blockinfo3[5].RemoveTower();
+                    blockinfo4[1].RemoveTower();
+                }
                 break;
+
             case 16:
             case 22:
             case 34:
             case 48:
-                blockinfo1[5].PlaceTower();
-                blockinfo2[1].PlaceTower();
-                blockinfo3[3].PlaceTower();
-                blockinfo4[7].PlaceTower();
+                if (_isTowerPlaced)
+                {
+                    blockinfo1[5].PlaceTower(bp);
+                    blockinfo2[1].PlaceTower(bp);
+                    blockinfo3[3].PlaceTower(bp);
+                    blockinfo4[7].PlaceTower(bp);
+                }
+                else
+                {
+                    blockinfo1[5].RemoveTower();
+                    blockinfo2[1].RemoveTower();
+                    blockinfo3[3].RemoveTower();
+                    blockinfo4[7].RemoveTower();
+                }
                 break;
+
             case 17:
             case 29:
             case 33:
             case 41:
-                blockinfo1[6].PlaceTower();
-                blockinfo2[8].PlaceTower();
-                blockinfo3[2].PlaceTower();
-                blockinfo4[0].PlaceTower();
+                if (_isTowerPlaced)
+                {
+                    blockinfo1[6].PlaceTower(bp);
+                    blockinfo2[8].PlaceTower(bp);
+                    blockinfo3[2].PlaceTower(bp);
+                    blockinfo4[0].PlaceTower(bp);
+                }
+                else
+                {
+                    blockinfo1[6].RemoveTower();
+                    blockinfo2[8].RemoveTower();
+                    blockinfo3[2].RemoveTower();
+                    blockinfo4[0].RemoveTower();
+                }
                 break;
+
             case 18:
             case 26:
             case 32:
             case 44:
-                blockinfo1[7].PlaceTower();
-                blockinfo2[5].PlaceTower();
-                blockinfo3[1].PlaceTower();
-                blockinfo4[3].PlaceTower();
+                if (_isTowerPlaced)
+                {
+                    blockinfo1[7].PlaceTower(bp);
+                    blockinfo2[5].PlaceTower(bp);
+                    blockinfo3[1].PlaceTower(bp);
+                    blockinfo4[3].PlaceTower(bp);
+                }
+                else
+                {
+                    blockinfo1[7].RemoveTower();
+                    blockinfo2[5].RemoveTower();
+                    blockinfo3[1].RemoveTower();
+                    blockinfo4[3].RemoveTower();
+                }
                 break;
+
             case 19:
             case 23:
             case 31:
             case 47:
-                blockinfo1[8].PlaceTower();
-                blockinfo2[2].PlaceTower();
-                blockinfo3[0].PlaceTower();
-                blockinfo4[6].PlaceTower();
+                if (_isTowerPlaced)
+                {
+                    blockinfo1[8].PlaceTower(bp);
+                    blockinfo2[2].PlaceTower(bp);
+                    blockinfo3[0].PlaceTower(bp);
+                    blockinfo4[6].PlaceTower(bp);
+                }
+                else
+                {
+                    blockinfo1[8].RemoveTower();
+                    blockinfo2[2].RemoveTower();
+                    blockinfo3[0].RemoveTower();
+                    blockinfo4[6].RemoveTower();
+                }
                 break;
+
         }
     }
     
