@@ -8,6 +8,14 @@ public class Tower1 : MonoBehaviour
 {
     public TowerData data;
     private float cooldownTimer;
+    private BlockInfo _blockInfo;
+
+    private GameObject rangeVisual;
+
+    private void Awake()
+    {
+        rangeVisual = transform.Find("RangeVisual")?.gameObject;
+    }
 
     private void Update()
     {
@@ -23,6 +31,16 @@ public class Tower1 : MonoBehaviour
             Attack(target);
             cooldownTimer = 1f / data.attackSpeed;
         }
+    }
+
+    public void Intialize(BlockInfo blockInfo)
+    {
+        _blockInfo = blockInfo;
+    }
+
+    public void SellTowerOnBlock()
+    {
+        _blockInfo.CallNumber2();
     }
 
     public void Shoot(Transform target)
@@ -42,17 +60,35 @@ public class Tower1 : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("[Ÿ��] �߻�ü ������ �Ǵ� �����Ͱ� ������� �ʾҽ��ϴ�.");
+            Debug.LogWarning("[타워] 발사체 프리팹 또는 데이터가 연결되지 않았습니다.");
         }
     }
 
-    public void ApplyData(TowerData towerData)
+    public void ApplyData(TowerData d)
     {
-        data = towerData;
+        data = d;
         cooldownTimer = 0f;
+
+        if (rangeVisual != null)
+        {
+            float range = data.attackRange * 2f;
+            rangeVisual.transform.localScale = new Vector3(range, range, 1f);
+            rangeVisual.SetActive(false); // 처음엔 숨김
+        }
     }
 
-    // �켱���� 
+    private void OnMouseDown()
+    {
+        if (rangeVisual != null)
+        {
+            // 클릭할 때마다 토글
+            rangeVisual.SetActive(!rangeVisual.activeSelf);
+
+            TowerSellUI.Instance.Show(this); // 판매 UI를 표시
+        }
+    }
+
+    // 우선순위 
     private Enemy1 FindTarget()
     {
 
@@ -97,10 +133,6 @@ public class Tower1 : MonoBehaviour
                 case TargetPriority.Closest:
                     selected = enemies.OrderBy(e => Vector3.Distance(transform.position, e.transform.position)).FirstOrDefault();
                     break;
-                default:
-                    selected = enemies.OrderBy(e => Vector3.Distance(transform.position, e.transform.position)).FirstOrDefault();
-                    break;
-                    
             }
 
             if (selected != null)

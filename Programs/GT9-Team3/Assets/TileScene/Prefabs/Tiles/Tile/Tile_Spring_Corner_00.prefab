@@ -460,7 +460,7 @@ PolygonCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -523,6 +523,8 @@ MonoBehaviour:
   connectedLeft: 0
   connectedRight: 0
   mapLevel: 1
+  isEditMode: 0
+  tileCamera: {fileID: 0}
   blocks:
   - {fileID: 0}
   - {fileID: 0}
@@ -574,6 +576,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68f68cea5f64928448d2158912f10c80, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tileCamera: {fileID: 0}
 --- !u!1 &2510449012000729490
 GameObject:
   m_ObjectHideFlags: 0
