@@ -26,11 +26,17 @@ public class EnemyAnimationController : MonoBehaviour
 
     void Update()
     {
+        if (TileManager.Instance == null || TileManager.Instance.endTileRoad == null)
+        {
+            Debug.LogWarning("TileManager 또는 endTileRoad가 할당되지 않았습니다.");
+            return;
+        }
+
         if (isDying)
         {
             // 죽는 애니메이션 종료 체크
             AnimatorStateInfo info = animator.GetCurrentAnimatorStateInfo(0);
-            if (info.IsName("Die") && info.normalizedTime >= 1.0f)
+            if (info.IsName("Death") && info.normalizedTime >= 1.0f)
             {
                 hasDied = true;
             }
@@ -86,6 +92,7 @@ public class EnemyAnimationController : MonoBehaviour
         action = false;
         animator.SetInteger("State", state);
         animator.SetBool("Action", action);
+        //animator.SetTrigger("Death"); // Animator에서 Death 상태로 전환
     }
 
     public bool HasDied()
