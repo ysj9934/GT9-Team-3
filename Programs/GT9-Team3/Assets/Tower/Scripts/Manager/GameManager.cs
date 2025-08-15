@@ -24,6 +24,8 @@ public class GameManager : MonoBehaviour
     // 게임 일시정지 및 재개
     public bool isGamePaused = false;
 
+    [SerializeField] public GameObject gameDefeatPanel;
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -38,6 +40,8 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         _tileManager = TileManager.Instance;
+
+        gameDefeatPanel.SetActive(false);
 
         // 첫 타일 배치
         // first tile placement

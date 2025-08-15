@@ -336,9 +336,9 @@ public class TileManager : MonoBehaviour
 
     public void ShowConnectedPath()
     {
-        //CloseTileEditMode();
-        //CloseTileMoveMode();
-        //HideAllUI();
+        CloseTileEditMode();
+        CloseTileMoveMode();
+        HideAllUI();
 
         SetNeighbors();
 
@@ -470,11 +470,11 @@ public class TileManager : MonoBehaviour
         waveStartButton.SleepOnButton();
     }
 
-    //public void CloseTileEditMode()
-    //{
-    //    isTileEditMode = false;
-    //    //tileEditModeText.text = "Edit Mode : OFF";
-    //}
+    public void CloseTileEditMode()
+    {
+        isTileEditMode = false;
+        tileEditModeText.text = "Edit Mode : OFF";
+    }
 
     public void ToggleTileMoveMode()
     {
@@ -493,11 +493,11 @@ public class TileManager : MonoBehaviour
         waveStartButton.SleepOnButton();
     }
 
-    //public void CloseTileMoveMode()
-    //{
-    //    isTileMoveMode = false;
-    //    //tileMoveModeText.text = "Move Mode : OFF";
-    //}
+    public void CloseTileMoveMode()
+    {
+        isTileMoveMode = false;
+        tileMoveModeText.text = "Move Mode : OFF";
+    }
 
     // UI 모두 끄기
     public void HideAllUI()

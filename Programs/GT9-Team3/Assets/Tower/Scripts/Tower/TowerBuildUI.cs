@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class TowerBuildUI : MonoBehaviour
 {
@@ -62,6 +63,10 @@ public class TowerBuildUI : MonoBehaviour
 
     public void OnClickBuild(TowerBlueprint bp)
     {
+        //if (EventSystem.current.IsPointerOverGameObject())
+        //    return;
+
+
         if (!ResourceManager.Instance.CanAfford(bp.CostType, bp.CostValue)) return;
 
         //placer.PlaceTowerFromUI(bp, pendingWorld, pendingCell);

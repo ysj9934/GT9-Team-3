@@ -94,14 +94,17 @@ public class WaveManager : MonoBehaviour
         isWaveActive = false;
 
         // 다음 웨이브 자동 시작 가능
-        while (waveCount <= 3)
+        if (waveCount < 3)
             StartWave();
+
+        waveCount = 0;
     }
 
     private void SpawnEnemy(int num)
     {
         Transform spawnPoint = this.spawnPoint;
-        Instantiate(enemyPrefabs[num], spawnPoint.position, Quaternion.identity);
+        GameObject go = Instantiate(enemyPrefabs[num], spawnPoint.position, Quaternion.identity);
+        go.GetComponent<Enemy11>().Initialize(pathPoints);
     }
 
 

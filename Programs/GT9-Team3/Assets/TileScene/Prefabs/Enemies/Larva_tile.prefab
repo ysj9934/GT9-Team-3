@@ -185,7 +185,9 @@ GameObject:
   - component: {fileID: 1448875758632270613}
   - component: {fileID: 9194203373116638996}
   - component: {fileID: 8107242139605680915}
-  - component: {fileID: 2493135939913150157}
+  - component: {fileID: -5921773860408993577}
+  - component: {fileID: -4434763303347968377}
+  - component: {fileID: -4404730478482988780}
   m_Layer: 0
   m_Name: Larva_tile
   m_TagString: Untagged
@@ -326,7 +328,7 @@ CapsuleCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0.5, y: 1}
@@ -359,7 +361,34 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animator: {fileID: 0}
   attackInterval: 1.5
---- !u!114 &2493135939913150157
+--- !u!50 &-5921773860408993577
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4035878192753464305}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
+--- !u!114 &-4434763303347968377
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -368,17 +397,25 @@ MonoBehaviour:
   m_GameObject: {fileID: 4035878192753464305}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 51ee3d26cc8fffe4a922406899ea1fde, type: 3}
+  m_Script: {fileID: 11500000, guid: 69857a8437832a74e9edfee50be39a09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hp: 10
-  currentHp: 0
-  healthBar: {fileID: 0}
-  speed: 2
-  attackPower: 10
-  attackRange: 5
-  attackSpeed: 1
-  targetPosition: {x: 0, y: 0}
+  maxHP: 5
+--- !u!114 &-4404730478482988780
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4035878192753464305}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a3b160190c376e49893470921c6b4c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveSpeed: 0.5
+  isMove: 0
+  damage: 10
 --- !u!1 &5762556027235866017
 GameObject:
   m_ObjectHideFlags: 0
