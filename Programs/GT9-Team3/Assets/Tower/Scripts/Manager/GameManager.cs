@@ -46,7 +46,7 @@ public class GameManager : MonoBehaviour
         // 첫 타일 배치
         // first tile placement
         //InitializeTiles();
-    }
+    }   
 
 
     public void DestroyOfType<T>() where T : Component
