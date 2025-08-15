@@ -38,15 +38,15 @@ public class TileUI : MonoBehaviour
 
         if (EventSystem.current.IsPointerOverGameObject())
             return;
-
-        ToggleUI();
-
-        
+            
+            ToggleUI();
 
 
-        // 타일 선택 시 블록 정보 Collider2D 활성화
-        // Enable Collider2D on block info when tile is selected
-        _tileRoad.isSelected = true;
+
+
+            // 타일 선택 시 블록 정보 Collider2D 활성화
+            // Enable Collider2D on block info when tile is selected
+            _tileRoad.isSelected = true;
         _tileRoad._collider2D.enabled = false; // 타일 선택 시 타일 Collider2D 비활성화
 
         if (_tileRoad.isSelected)

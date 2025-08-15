@@ -45,11 +45,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7115c9290e565440a4cedbb7c6c2883, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _tileManager: {fileID: 0}
   baseTransform: {fileID: 0}
   gameWorldLevel: 1
   gameStageLevel: 1
   gameRoundLevel: 1
   gameWaveLevel: 1
+  gameWorldLevelText: {fileID: 0}
+  gameStageLevelText: {fileID: 0}
+  gameRoundLevelText: {fileID: 0}
+  isGamePaused: 0
+  gameDefeatPanel: {fileID: 0}
 --- !u!114 &6202643734470108363
 MonoBehaviour:
   m_ObjectHideFlags: 0

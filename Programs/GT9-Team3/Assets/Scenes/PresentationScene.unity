@@ -506,6 +506,11 @@ Transform:
   - {fileID: 1457832892}
   m_Father: {fileID: 722714862}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &670314307 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6918372728511671098, guid: a2a8ba8eeb33abd4ab8dae77dc6f5cce, type: 3}
+  m_PrefabInstance: {fileID: 1944657469}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &720040136
 GameObject:
   m_ObjectHideFlags: 0
@@ -1412,23 +1417,31 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6176851377505460746, guid: c134ab22b5f17344a95438314993402b, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6291950268179738483, guid: c134ab22b5f17344a95438314993402b, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 338
+      objectReference: {fileID: 0}
+    - target: {fileID: 6291950268179738483, guid: c134ab22b5f17344a95438314993402b, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -164
       objectReference: {fileID: 0}
     - target: {fileID: 6662075841332158181, guid: c134ab22b5f17344a95438314993402b, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6662075841332158181, guid: c134ab22b5f17344a95438314993402b, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6662075841332158181, guid: c134ab22b5f17344a95438314993402b, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 40
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6662075841332158181, guid: c134ab22b5f17344a95438314993402b, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -295
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1443,6 +1456,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 892512494}
     m_Modifications:
+    - target: {fileID: 4642634569280288501, guid: 18204f52de0e83d4389ae13708cf7bef, type: 3}
+      propertyPath: gameDefeatPanel
+      value: 
+      objectReference: {fileID: 670314307}
     - target: {fileID: 4642634569280288501, guid: 18204f52de0e83d4389ae13708cf7bef, type: 3}
       propertyPath: gameRoundLevelText
       value: 
@@ -2049,7 +2066,7 @@ PrefabInstance:
     - target: {fileID: 7448605062792393602, guid: 1309173f8e2f8cd43aacf64911676477, type: 3}
       propertyPath: tilePrefabs.Array.data[1]
       value: 
-      objectReference: {fileID: 2129590565652284986, guid: 55351b21d30fbe54486aa1f42af50884, type: 3}
+      objectReference: {fileID: 2133085871463369083, guid: 5981cc52ecc4cf64689b2652bd25c498, type: 3}
     - target: {fileID: 7448605062792393602, guid: 1309173f8e2f8cd43aacf64911676477, type: 3}
       propertyPath: tilePrefabs.Array.data[2]
       value: 

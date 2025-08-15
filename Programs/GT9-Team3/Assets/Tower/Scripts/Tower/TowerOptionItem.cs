@@ -24,7 +24,7 @@ public class TowerOptionItem : MonoBehaviour
         costText.text = $"{bp.CostType} : {bp.CostValue}";
         buildButton.interactable = canAfford;
 
-        //buildButton.onClick.RemoveAllListeners();
-        //buildButton.onClick.AddListener(() => owner.OnClickBuild(bp));
+        buildButton.onClick.RemoveAllListeners();
+        buildButton.onClick.AddListener(() => owner.OnClickBuild(bp));
     }
 }
