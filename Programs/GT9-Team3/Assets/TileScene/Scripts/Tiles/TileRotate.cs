@@ -36,6 +36,18 @@ public class TileRotate : MonoBehaviour
         _tile.currentRotationIndex = (TileRotation) index;
         rotatedPrefabs[index].SetActive(true);
         _tile.Initialize(_tile.mapLevel, _tile.transform.position);
+
+        _tile._tileUI._blockInfos = _tile.GetComponentsInChildren<BlockInfo>();
+        if (_tile.isSelected)
+        {
+            foreach (var blockInfo in _tile._tileUI._blockInfos)
+            {
+                if (blockInfo._collider2D != null)
+                {
+                    blockInfo._collider2D.enabled = true;
+                }
+            }
+        }
     }
 
     private void CloseTile()

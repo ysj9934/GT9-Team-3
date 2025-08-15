@@ -12,7 +12,7 @@ using Random = UnityEngine.Random;
 public class TileManager : MonoBehaviour
 {
     public static TileManager Instance { get; private set; }
-    private GameManager11 _gameManager;
+    private GameManager _gameManager;
     private List<TileUI> _tileUIs;
     
     [Header("Tile Prefabs")]
@@ -29,7 +29,7 @@ public class TileManager : MonoBehaviour
     private int cellSize = 5;
     private float cellPos;
     
-    [SerializeField]public TileRoad[,] tileMap;
+    public TileRoad[,] tileMap;
     public TileRoad startTileRoad;
     public TileRoad endTileRoad;
 
@@ -43,19 +43,29 @@ public class TileManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI tileMoveModeText;
     public bool isTileEditMode = false;
     public bool isTileMoveMode = false;
+    [SerializeField] private WaveStart waveStartButton;
 
     private void Awake()
     {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
         Instance = this;
     }
 
     private void Start()
     {
-        _gameManager = GameManager11.Instance;
+        _gameManager = GameManager.Instance;
+
+        Initialize();
+        SetSpawnerPosition();
     }
 
     // UI 초기화
-    private void InitializedTileUI()
+    public void InitializedTileUI()
     {
         _tileUIs = new List<TileUI>();
 
@@ -250,7 +260,10 @@ public class TileManager : MonoBehaviour
     //public void ShowConnectedPath()
     //{
     //    path = new List<TileRoad>();
-        
+    //    CloseTileEditMode();
+    //    CloseTileMoveMode();
+    //    HideAllUI();
+
     //    SetNeighbors();
 
     //    if (startTileRoad == null)
@@ -268,8 +281,8 @@ public class TileManager : MonoBehaviour
     //        {
     //            GetPathfinder();
     //        }
-                
-    //    } 
+
+    //    }
     //}
 
     //public List<TileRoad> FindConnectedPath(TileRoad startTile, TileRoad endTile)
@@ -323,6 +336,10 @@ public class TileManager : MonoBehaviour
 
     public void ShowConnectedPath()
     {
+        CloseTileEditMode();
+        CloseTileMoveMode();
+        HideAllUI();
+
         SetNeighbors();
 
         if (startTileRoad == null)
@@ -344,38 +361,38 @@ public class TileManager : MonoBehaviour
         }
     }
 
-    public List<TileRoad> FindConnectedPathBFS(TileRoad startTile, TileRoad endTile)
-    {
-        var visited = new HashSet<TileRoad>();
-        var queue = new Queue<List<TileRoad>>();
-        queue.Enqueue(new List<TileRoad> { startTile });
+    //public List<TileRoad> FindConnectedPathBFS(TileRoad startTile, TileRoad endTile)
+    //{
+    //    var visited = new HashSet<TileRoad>();
+    //    var queue = new Queue<List<TileRoad>>();
+    //    queue.Enqueue(new List<TileRoad> { startTile });
 
-        while (queue.Count > 0)
-        {
-            var path = queue.Dequeue();
-            var current = path[path.Count - 1];
+    //    while (queue.Count > 0)
+    //    {
+    //        var path = queue.Dequeue();
+    //        var current = path[path.Count - 1];
 
-            if (visited.Contains(current))
-                continue;
+    //        if (visited.Contains(current))
+    //            continue;
 
-            visited.Add(current);
+    //        visited.Add(current);
 
-            if (current == endTile)
-                return path;
+    //        if (current == endTile)
+    //            return path;
 
-            foreach (var (neighbor, _) in current._tileRoadConnector.GetConnectedNeighbors())
-            {
-                Debug.Log($"현재 타일: {current.name}, 연결된 이웃 수: {current._tileRoadConnector.GetConnectedNeighbors().Count}");
-                if (!visited.Contains(neighbor))
-                {
-                    var newPath = new List<TileRoad>(path) { neighbor };
-                    queue.Enqueue(newPath);
-                }
-            }
-        }
+    //        foreach (var (neighbor, _) in current._tileRoadConnector.GetConnectedNeighbors())
+    //        {
+    //            Debug.Log($"현재 타일: {current.name}, 연결된 이웃 수: {current._tileRoadConnector.GetConnectedNeighbors().Count}");
+    //            if (!visited.Contains(neighbor))
+    //            {
+    //                var newPath = new List<TileRoad>(path) { neighbor };
+    //                queue.Enqueue(newPath);
+    //            }
+    //        }
+    //    }
 
-        return new List<TileRoad>();
-    }
+    //    return new List<TileRoad>();
+    //}
 
     public List<TileRoad> FindConnectedPath(TileRoad startTile, TileRoad endTile)
     {
@@ -418,6 +435,9 @@ public class TileManager : MonoBehaviour
         GameObject go = Instantiate(pathfinderPrefab, startTileRoad.transform);
         Pathfinder pathfinder = go.GetComponent<Pathfinder>();
         pathfinder.Initialize(path);
+
+        waveStartButton.WakeOnButton();
+        WaveManager.Instance.Initilaize(path, startTileRoad.transform);
     }
 
     public void CreateTile(int tileCode)
@@ -445,9 +465,15 @@ public class TileManager : MonoBehaviour
         else
             isTileEditMode = true;
 
+        tileEditModeText.text = isTileEditMode ? "Edit Mode : ON" : "Edit Mode : OFF";
 
+        waveStartButton.SleepOnButton();
+    }
 
-        tileEditModeText.text = isTileEditMode ? "Tile Edit Mode : ON" : "Tile Edit Mode : OFF";
+    public void CloseTileEditMode()
+    {
+        isTileEditMode = false;
+        tileEditModeText.text = "Edit Mode : OFF";
     }
 
     public void ToggleTileMoveMode()
@@ -462,7 +488,15 @@ public class TileManager : MonoBehaviour
         else
             isTileMoveMode = true;
 
-        tileMoveModeText.text = isTileMoveMode ? "Tile Move Mode : ON" : "Tile Move Mode : OFF";
+        tileMoveModeText.text = isTileMoveMode ? "Move Mode : ON" : "Move Mode : OFF";
+
+        waveStartButton.SleepOnButton();
+    }
+
+    public void CloseTileMoveMode()
+    {
+        isTileMoveMode = false;
+        tileMoveModeText.text = "Move Mode : OFF";
     }
 
     // UI 모두 끄기

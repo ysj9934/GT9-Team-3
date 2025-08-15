@@ -9,7 +9,7 @@ public class TileUI : MonoBehaviour
 {
     private TileManager _tileManager;
     private TileRoad _tileRoad;
-    [SerializeField] private BlockInfo[] _blockInfos;
+    [SerializeField] public BlockInfo[] _blockInfos;
     [SerializeField] private GameObject tileUI;
 
     // 임시 카메라 위치
@@ -36,14 +36,19 @@ public class TileUI : MonoBehaviour
 
         _tileManager.HideAllUI();
 
-        if (!EventSystem.current.IsPointerOverGameObject())
-            ToggleUI();
+        if (EventSystem.current.IsPointerOverGameObject())
+            return;
+
+        ToggleUI();
 
         
+
 
         // 타일 선택 시 블록 정보 Collider2D 활성화
         // Enable Collider2D on block info when tile is selected
         _tileRoad.isSelected = true;
+        _tileRoad._collider2D.enabled = false; // 타일 선택 시 타일 Collider2D 비활성화
+
         if (_tileRoad.isSelected)
         {
             foreach (var blockInfo in _blockInfos)
@@ -54,8 +59,6 @@ public class TileUI : MonoBehaviour
                 }
             }
         }
-
-        _tileRoad._collider2D.enabled = false; // 타일 선택 시 타일 Collider2D 비활성화
 
         // 타일 카메라 작동
         // Activate tile camera
@@ -92,5 +95,14 @@ public class TileUI : MonoBehaviour
         //}
 
         _tileRoad._collider2D.enabled = true; // 타일 선택 해제 시 타일 Collider2D 활성화
+
+
+        foreach (var blockInfo in _blockInfos)
+        {
+            if (blockInfo.buildUI != null)
+            {
+                blockInfo.buildUI.Hide();
+            }
+        }
     }
 }

@@ -45,8 +45,8 @@ public class TileMove : MonoBehaviour
         if (_collider != null)
             _collider.enabled = false;
 
-        _gameManager.tileRoad = _tileRoad;
-        _gameManager.ShowTileInfo();
+        //_gameManager.tileRoad = _tileRoad;
+        //_gameManager.ShowTileInfo();
     }
 
     private void OnMouseDrag()

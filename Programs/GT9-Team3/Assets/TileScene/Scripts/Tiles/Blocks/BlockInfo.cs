@@ -64,7 +64,6 @@ public class BlockInfo : MonoBehaviour
         if (!_tileRoad.isSelected)
             return;
 
-        //_collider2D.enabled = true; // 타워 설치 UI 활성화 시 Collider2D 활성화
 
         if (!hasTower)
             //ToggleTowerPlacementUI();
@@ -110,7 +109,11 @@ public class BlockInfo : MonoBehaviour
             return;
         }
 
-        buildUI.ShowAt(this);
+        bool isOpening = buildUI.root.gameObject.activeSelf;
+        if (isOpening)
+            buildUI.Hide(); 
+        else
+            buildUI.ShowAt(this);
     }
 
 
