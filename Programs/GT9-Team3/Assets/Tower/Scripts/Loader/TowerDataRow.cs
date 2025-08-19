@@ -4,7 +4,7 @@ using System.IO;
 using UnityEngine;
 
 [Serializable]
-public class TowerDataTable
+public class TowerDataRow
 {
     /// <summary>
     /// Tower_ID
@@ -89,15 +89,17 @@ public class TowerDataTable
 }
 public class TowerDataTableLoader
 {
-    public List<TowerDataTable> ItemsList { get; private set; }
-    public Dictionary<int, TowerDataTable> ItemsDict { get; private set; }
+    public static TowerDataTableLoader Instance { get; private set; }
+    public List<TowerDataRow> ItemsList { get; private set; }
+    public Dictionary<int, TowerDataRow> ItemsDict { get; private set; }
 
     public TowerDataTableLoader(string path = "JSON/TowerDataTable")
     {
-        string jsonData;
-        jsonData = Resources.Load<TextAsset>(path).text;
+        Instance = this;
+
+        string jsonData = Resources.Load<TextAsset>(path).text;
         ItemsList = JsonUtility.FromJson<Wrapper>(jsonData).Items;
-        ItemsDict = new Dictionary<int, TowerDataTable>();
+        ItemsDict = new Dictionary<int, TowerDataRow>();
         foreach (var item in ItemsList)
         {
             ItemsDict.Add(item.key, item);
@@ -107,10 +109,10 @@ public class TowerDataTableLoader
     [Serializable]
     private class Wrapper
     {
-        public List<TowerDataTable> Items;
+        public List<TowerDataRow> Items;
     }
 
-    public TowerDataTable GetByKey(int key)
+    public TowerDataRow GetByKey(int key)
     {
         if (ItemsDict.ContainsKey(key))
         {
@@ -118,7 +120,7 @@ public class TowerDataTableLoader
         }
         return null;
     }
-    public TowerDataTable GetByIndex(int index)
+    public TowerDataRow GetByIndex(int index)
     {
         if (index >= 0 && index < ItemsList.Count)
         {

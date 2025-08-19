@@ -36,7 +36,7 @@ public class TowerPlacer : MonoBehaviour
 
         // 미리보기 위치 갱신
         Vector3 previewPos = snappedPos;
-        //previewPos.y += 0.44f;
+        previewPos.y += 0.24f;
         currentPreview.transform.position = previewPos;
 
         // 설치 가능 여부에 따라 색상 변경
@@ -62,7 +62,7 @@ public class TowerPlacer : MonoBehaviour
     public void PlaceTowerFromUI(TowerBlueprint bp, Vector3 position, Vector3Int cellPos)
     {
         // 타워를 타일보다 약간 위에 배치
-        position.y += 0.44f;
+        position.y += 0.24f;
 
         GameObject tower = Instantiate(bp.towerPrefab, position, Quaternion.identity);
         var sr = tower.GetComponent<SpriteRenderer>();
@@ -74,27 +74,5 @@ public class TowerPlacer : MonoBehaviour
         ResourceManager.Instance.Spend(bp.CostType, bp.CostValue);
         occupiedCells.Add(cellPos);
     }
-
-    //public void PlaceTower(Vector3 position, Vector3Int cellPos)
-    //{
-    //    // 타워를 타일보다 약간 위에 배치
-    //    position.y += 0.44f;
-
-    //    GameObject tower = Instantiate(towerPrefab, position, Quaternion.identity);
-    //    tower.GetComponent<SpriteRenderer>().sortingOrder = -(int)(position.y * 100);
-
-    //    Tower1 towerScript = tower.GetComponent<Tower1>();
-    //    if (towerScript != null)
-    //    {
-    //        towerScript.ApplyData(towerData);
-    //    }
-    //    else
-    //    {
-    //        Debug.LogError("[오류] Tower1 스크립트가 프리팹에 없음");
-    //    }
-
-    //    ResourceManager.Instance.Spend(towerData.makeCost, towerData.makeValue);
-    //    occupiedCells.Add(cellPos);
-    //}
 
 }

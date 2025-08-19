@@ -99,7 +99,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 049041a975080c8418a90006e4180c6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  data: {fileID: 11400000, guid: eefc0cbb93d48bc46ac1bc9732ee4d1a, type: 2}
+  data: {fileID: 0}
 --- !u!61 &8281414311058052218
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -137,9 +137,9 @@ BoxCollider2D:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
     oldSize: {x: 1, y: 1.2769231}
-    newSize: {x: 1, y: 1.2769231}
+    newSize: {x: 0.7, y: 0.89}
     adaptiveTilingThreshold: 0.5
-    drawMode: 0
+    drawMode: 1
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2

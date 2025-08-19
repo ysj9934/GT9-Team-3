@@ -16,6 +16,21 @@ public class TowerBuildUI : MonoBehaviour
     private Vector3Int pendingCell;
     private Vector3 pendingWorld;
 
+    private void Start()
+    {
+        if (TowerDataTableLoader.Instance == null)
+            new TowerDataTableLoader();  // 명시적 초기화
+
+        var table = TowerDataTableLoader.Instance.ItemsDict;
+
+        foreach (var bp in options)
+        {
+            bp.ApplyLoadedData(table);
+            Debug.Log("데이터 매핑 중: " + bp.name);
+        }
+
+    }
+
     void Awake() => Hide();
 
     public void ShowAt(TowerPlacer caller, Vector3Int cell, Vector3 world, Vector2 screenPos)
