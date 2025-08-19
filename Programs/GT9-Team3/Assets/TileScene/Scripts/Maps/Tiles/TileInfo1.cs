@@ -4,13 +4,8 @@ using UnityEngine;
 
 public class TileInfo1 : TileData
 {
-    public GameObject[] rotatePrefabs;
+    public GameObject[] rotatedPrefabs;
     public TileDirector tileDirector;
-    
-    public bool connectedUp;
-    public bool connectedDown;
-    public bool connectedLeft;
-    public bool connectedRight;
     
     public Dictionary<int, BlockInfo2[]> blockInfos = new Dictionary<int, BlockInfo2[]>();
     
@@ -35,9 +30,9 @@ public class TileInfo1 : TileData
 
     private void SetBlockInfos()
     {
-        for (int index = 0; index < rotatePrefabs.Length; index++)
+        for (int index = 0; index < rotatedPrefabs.Length; index++)
         {
-            BlockInfo2[] blockInfoArray = rotatePrefabs[index].GetComponentsInChildren<BlockInfo2>();
+            BlockInfo2[] blockInfoArray = rotatedPrefabs[index].GetComponentsInChildren<BlockInfo2>();
             blockInfos.Add(index, blockInfoArray);
         }
     }
@@ -53,7 +48,7 @@ public class TileInfo1 : TileData
         }
     }
     
-    private void UpdateSpriteOrder()
+    public void UpdateSpriteOrder()
     { 
         SpriteRenderer[] spriteRenderers = GetComponentsInChildren<SpriteRenderer>();
 

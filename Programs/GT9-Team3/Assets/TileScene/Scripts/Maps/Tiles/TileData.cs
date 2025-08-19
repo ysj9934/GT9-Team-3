@@ -23,6 +23,11 @@ public class TileData : MonoBehaviour
     public TileData left;
     public TileData right;
     
+    public bool connectedUp;
+    public bool connectedDown;
+    public bool connectedLeft;
+    public bool connectedRight;
+    
     public int tileIndex;
     public int originTileCol = -1;
     public int originTileRow = -1;
@@ -71,6 +76,11 @@ public class TileData : MonoBehaviour
         if (tileRow < maxRow - 1) down = tileMap[tileRow + 1, tileCol];
         if (tileCol > 0) left = tileMap[tileRow, tileCol - 1];
         if (tileCol < maxCol - 1) right = tileMap[tileRow, tileCol + 1];
+    }
+    
+    public virtual void UpdateWorldLevel(int level)
+    {
+        
     }
     
     protected int UpdateTileIndex()

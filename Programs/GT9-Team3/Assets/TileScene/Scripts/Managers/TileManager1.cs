@@ -19,12 +19,11 @@ using Random = UnityEngine.Random;
 /// </summary>
 public class TileManager1 : MonoBehaviour
 {
-   
     public static TileManager1 Instance { get; private set; }
     
     // 참조
     // Reference
-    public GameManager _gameManager;
+    public GameManager12 _gameManager;
 
     // ??? ?????? ????
     // tile size setting
@@ -32,6 +31,7 @@ public class TileManager1 : MonoBehaviour
     public int tileLength = 5;
 
     public int worldLevel = 1;
+    public int tempLevel = 1;
 
     // ??? ?????? ????
     [SerializeField] public GameObject[] tilePrefabs;
@@ -40,9 +40,12 @@ public class TileManager1 : MonoBehaviour
     [SerializeField] public GameObject tileSpawnPrefab;
 
     public TileData[,] tileMap;
+    public TileData startTile;
+    public TileData endTile;
 
     public List<TileGrid1> tileGridList;
     public List<TileInfo1> tileInfoList;
+    public List<Vector2> spawnTransform;
 
     private void Awake()
     {
@@ -54,14 +57,22 @@ public class TileManager1 : MonoBehaviour
 
         Instance = this;
 
-        _gameManager = GameManager.Instance;
+        
     }
 
     private void Start()
     {
+        _gameManager = GameManager12.Instance;
+        
+        Initialize();
+    }
+
+    public void Initialize()
+    {
         InitializeTileMap(tileLength);
         SetTileGrid(tileLength);
         SetTileRoad(tileLength);
+        SetSpawnerPosition();
     }
 
     // tileMap ????
@@ -80,6 +91,15 @@ public class TileManager1 : MonoBehaviour
         {
             tileInfo.UpdateWorldLevel(worldLevel);
         }
+        
+        startTile.UpdateWorldLevel(worldLevel);
+        endTile.UpdateWorldLevel(worldLevel);
+    }
+
+    public void UpdateTempLevel(int level)
+    {
+        tempLevel = level;
+        tileLength = 3 + (2 * tempLevel);
     }
 
     public void SetTileGrid(int tileLength)
@@ -113,7 +133,8 @@ public class TileManager1 : MonoBehaviour
             {
                 if (baseNumber != 4){
                     Vector2 pos = new Vector2(col * tileSize[0] - row * tileSize[0], (col + row) * -tileSize[1] + tileSize[1] * 2);
-                    GameObject go = Instantiate(tilePrefabs[UnityEngine.Random.Range(0, tilePrefabs.Length)],
+                    GameObject go = Instantiate(
+                        tilePrefabs[UnityEngine.Random.Range(0, tilePrefabs.Length)],
                         pos,
                         Quaternion.identity);
                     go.transform.SetParent(transform);
@@ -125,20 +146,21 @@ public class TileManager1 : MonoBehaviour
                 }
                 else {
                     Vector2 pos = new Vector2(col * tileSize[0] - row * tileSize[0], (col + row) * -tileSize[1] + tileSize[1] * 2);
-                    GameObject go = Instantiate(tileCastlePrefab,
+                    GameObject go = Instantiate(
+                        tileCastlePrefab,
                         pos,
                         Quaternion.identity);
                     go.transform.SetParent(transform);
                     TileCastle tileCastle = go.GetComponent<TileCastle>();
                     tileCastle.Initialize(pos);
+
+                    endTile = tileCastle;
                 }
                     
                 baseNumber++;
             }
         }
     }
-
-    
 
     // 이웃한 타일 정보 보기
     public void SetNeighbors()
@@ -153,5 +175,46 @@ public class TileManager1 : MonoBehaviour
                 }
             }
         }
+    }
+
+    public void SetSpawnerPosition()
+    {
+        spawnTransform = new List<Vector2>();
+        ClearSpawner();
+
+        switch (tempLevel)
+        {
+            case 1:
+                spawnTransform.Add(tileGridList[4].transform.position);
+                break;
+            case 2:
+                spawnTransform.Add(tileGridList[6].transform.position);
+                break;
+        }
+
+        CreateSpawner();
+    }
+    
+    public void CreateSpawner()
+    {
+        if (spawnTransform.Count == 0)
+            return;
+        
+        Vector2 pos = spawnTransform[0];
+        GameObject go = Instantiate(
+            tileSpawnPrefab, 
+            pos, 
+            Quaternion.identity);
+        go.transform.SetParent(transform);
+        TileSpawner tileSpawner = go.GetComponent<TileSpawner>();
+        tileSpawner.Initialize(pos);
+
+        startTile = tileSpawner;
+    }
+    
+    
+    public void ClearSpawner()
+    {
+        _gameManager.DestroyOfType<TileSpawner>();
     }
 }

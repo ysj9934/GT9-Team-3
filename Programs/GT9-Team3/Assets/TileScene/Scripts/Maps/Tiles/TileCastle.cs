@@ -9,19 +9,16 @@ public class TileCastle : TileData
     public override void Initialize(Vector2 pos)
     {
         base.Initialize(pos);
-        
+        SetBlockInfos();
         UpdateSpriteOrder();
     }
     
-    protected override void UpdateMapping(Vector2 pos)
+    private void SetBlockInfos()
     {
-        base.UpdateMapping(pos);
-
-        // _tileManager.tileMap[base.originTileRow, base.originTileCol] = null;
-        // _tileManager.tileMap[base.tileRow, base.tileCol] = this;
+        blockInfos = GetComponentsInChildren<BlockInfo2>();
     }
     
-    public void UpdateWorldLevel(int level)
+    public override void UpdateWorldLevel(int level)
     {
         foreach (var blockInfo in blockInfos)
         {

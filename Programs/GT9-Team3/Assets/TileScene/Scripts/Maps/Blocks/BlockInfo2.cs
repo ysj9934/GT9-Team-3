@@ -9,17 +9,15 @@ public class BlockInfo2 : MonoBehaviour
 {
     [SerializeField] public BlockData _blockData;
     [SerializeField] public SpriteRenderer spriteRenderer;
-
-    private void Awake()
-    {
-        spriteRenderer = GetComponent<SpriteRenderer>();
-    }
+    public int level = 1;
+    
 
     public void UpdateWorldLevel(int level)
     {
-        if (_blockData.blockCategory == BlockCategory.None)
-        {
+        this.level = level;
+        // if (_blockData.blockCategory == BlockCategory.None)
+        // {
             spriteRenderer.sprite = _blockData.sprites[level - 1];    
-        }
+        // }
     }
 }

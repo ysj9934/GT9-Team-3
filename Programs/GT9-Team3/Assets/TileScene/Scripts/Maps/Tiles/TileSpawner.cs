@@ -4,11 +4,6 @@ using UnityEngine;
 
 public class TileSpawner : TileData
 {
-    public bool connectedUp;
-    public bool connectedDown;
-    public bool connectedLeft;
-    public bool connectedRight;
-    
     public BlockInfo2[] blockInfos = new BlockInfo2[9];
     
     protected override void Awake()
@@ -19,7 +14,6 @@ public class TileSpawner : TileData
     public override void Initialize(Vector2 pos)
     {
         base.Initialize(pos);
-        _tileManager.SetNeighbors();
         SetBlockInfos();
         UpdateSpriteOrder();
     }
@@ -32,14 +26,12 @@ public class TileSpawner : TileData
         _tileManager.tileMap[base.tileRow, base.tileCol] = this;
     }
 
-    
-
     private void SetBlockInfos()
     {
         blockInfos = GetComponentsInChildren<BlockInfo2>();
     }
 
-    public void UpdateWorldLevel(int level)
+    public override void UpdateWorldLevel(int level)
     {
         foreach (var blockInfo in blockInfos)
         {
