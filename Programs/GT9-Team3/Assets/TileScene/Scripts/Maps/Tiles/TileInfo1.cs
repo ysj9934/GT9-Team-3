@@ -54,7 +54,7 @@ public class TileInfo1 : TileData
 
         foreach (SpriteRenderer sr in spriteRenderers)
         {
-            sr.sortingOrder = sr.sortingOrder + (tileIndex * 10) - 1000;
+            sr.sortingOrder = (tileIndex * 10) - 1000;
         }
     }
     
