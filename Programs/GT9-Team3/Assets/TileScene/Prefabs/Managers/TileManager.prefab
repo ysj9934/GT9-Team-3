@@ -45,9 +45,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tilePrefabs:
-  - {fileID: 2129590565652284986, guid: 35ca314a15f98134397221372554eea7, type: 3}
-  - {fileID: 2129590565652284986, guid: 55351b21d30fbe54486aa1f42af50884, type: 3}
-  - {fileID: 2129590565652284986, guid: 198782aa18376594aba85e8ca0a30376, type: 3}
+  - {fileID: 2129590565652284986, guid: 58e9e364b74acd5408555eea8ecac0f1, type: 3}
   tileGridPrefab: {fileID: 1648578658134522860, guid: d4c4867eb3844ae4cacd9621fc7884de, type: 3}
   tileBasePrefab: {fileID: 1648578658134522860, guid: b6552e04540f4ac4e9d1d54ce10a615f, type: 3}
   tileSpawnPrefab: {fileID: 7293273341129508085, guid: f43e9bdeb122bf24db08cb2810e60802, type: 3}
@@ -55,10 +53,19 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  tileSize:
+  - 1.4475
+  - 0.84
   mapLevel: 1
   startTileRoad: {fileID: 0}
   endTileRoad: {fileID: 0}
   pathfinderPrefab: {fileID: 2678620220463419942, guid: 0d97ab2ba19e21947aeec62756e1ac53, type: 3}
   path: []
   gridTileList: []
+  roadTileList: []
   spawnTransform: []
+  tileEditModeText: {fileID: 0}
+  tileMoveModeText: {fileID: 0}
+  isTileEditMode: 0
+  isTileMoveMode: 0
+  waveStartButton: {fileID: 0}
