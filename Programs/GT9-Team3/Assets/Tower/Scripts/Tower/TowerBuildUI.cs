@@ -1,24 +1,35 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 public class TowerBuildUI : MonoBehaviour
 {
-    private BlockInfo _blockInfo;
-
     [Header("Wiring")]
-    public RectTransform root;            // Panel ï¿½ï¿½Æ®
-    public RectTransform listParent;          // ï¿½×¸ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ Content
+    public RectTransform root;            // Panel ·çÆ®
+    public Transform listParent;          // Ç×¸ñÀÌ ¹èÄ¡µÉ Content
     public TowerOptionItem itemPrefab;
 
-
     [Header("Catalog")]
-    public List<TowerBlueprint> options;  // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Å¸ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    public List<TowerBlueprint> options;  // ³ëÃâÇÒ Å¸¿ö Á¾·ùµé
 
     private TowerPlacer placer;
     private Vector3Int pendingCell;
     private Vector3 pendingWorld;
+
+    private void Start()
+    {
+        if (TowerDataTableLoader.Instance == null)
+            new TowerDataTableLoader();  // ¸í½ÃÀû ÃÊ±âÈ­
+
+        var table = TowerDataTableLoader.Instance.ItemsDict;
+
+        foreach (var bp in options)
+        {
+            bp.ApplyLoadedData(table);
+            Debug.Log("µ¥ÀÌÅÍ ¸ÅÇÎ Áß: " + bp.name);
+        }
+
+    }
 
     void Awake() => Hide();
 
@@ -28,11 +39,11 @@ public class TowerBuildUI : MonoBehaviour
         pendingCell = cell;
         pendingWorld = world;
 
-        // ï¿½ï¿½Ä¡(ï¿½ï¿½ï¿½ì½º ï¿½ï¿½Ã³) ï¿½ï¿½Ä¡
+        // À§Ä¡(¸¶¿ì½º ±ÙÃ³) ¹èÄ¡
         root.gameObject.SetActive(true);
         //root.position = screenPos;
 
-        // ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½
+        // ¸®½ºÆ® °»½Å
         foreach (Transform c in listParent) Destroy(c.gameObject);
 
         foreach (var bp in options)
@@ -41,37 +52,15 @@ public class TowerBuildUI : MonoBehaviour
             bool canAfford = ResourceManager.Instance.CanAfford(bp.CostType, bp.CostValue);
             item.Setup(bp, this, canAfford);
         }
-    }
-
-    public void ShowAt(BlockInfo blockInfo)
-    {
-        root.gameObject.SetActive(true);
-
-        foreach (Transform c in listParent) Destroy(c.gameObject);
-
-        foreach (var bp in options)
-        {
-            var item = Instantiate(itemPrefab, listParent);
-            bool canAfford = ResourceManager.Instance.CanAfford(bp.CostType, bp.CostValue);
-            item.Setup(bp, this, canAfford);
-        }
-
-        _blockInfo = blockInfo;
     }
 
     public void Hide() => root.gameObject.SetActive(false);
 
     public void OnClickBuild(TowerBlueprint bp)
     {
-        //if (EventSystem.current.IsPointerOverGameObject())
-        //    return;
-
-
         if (!ResourceManager.Instance.CanAfford(bp.CostType, bp.CostValue)) return;
 
-        //placer.PlaceTowerFromUI(bp, pendingWorld, pendingCell);
-        // _blockInfo.CallNumber(bp);
-
+        placer.PlaceTowerFromUI(bp, pendingWorld, pendingCell);
         Hide();
     }
 }
