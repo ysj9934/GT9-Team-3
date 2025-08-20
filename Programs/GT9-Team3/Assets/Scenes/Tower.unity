@@ -2765,20 +2765,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: Tower_Basic.prefab
       objectReference: {fileID: 0}
-    - target: {fileID: 1995663395238900618, guid: f8105c6b0f09a874e96f8136d8e65f88, type: 3}
-      propertyPath: m_Size.x
-      value: 0.6
-      objectReference: {fileID: 0}
-    - target: {fileID: 1995663395238900618, guid: f8105c6b0f09a874e96f8136d8e65f88, type: 3}
-      propertyPath: m_Size.y
-      value: 0.7
-      objectReference: {fileID: 0}
     - target: {fileID: 4243980660832141537, guid: f8105c6b0f09a874e96f8136d8e65f88, type: 3}
       propertyPath: panel
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 8159373461162594409, guid: f8105c6b0f09a874e96f8136d8e65f88, type: 3}
-      propertyPath: data
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 8159373461162594409, guid: f8105c6b0f09a874e96f8136d8e65f88, type: 3}
@@ -2990,7 +2978,7 @@ PrefabInstance:
     - target: {fileID: 6058384465443791750, guid: 030575b2aa2a8cb45a111563bf63e473, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 7358067079728058979}
+      objectReference: {fileID: 7358067079728058981}
     - target: {fileID: 6058384465443791750, guid: 030575b2aa2a8cb45a111563bf63e473, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
@@ -3104,6 +3092,7 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents:
+    - {fileID: 6962500298223395302, guid: 030575b2aa2a8cb45a111563bf63e473, type: 3}
     - {fileID: 0}
     - {fileID: 0}
     m_RemovedGameObjects:
@@ -3114,28 +3103,18 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 7095015751173433472, guid: 030575b2aa2a8cb45a111563bf63e473, type: 3}
       insertIndex: -1
       addedObject: {fileID: 9129745403089510771}
-    - targetCorrespondingSourceObject: {fileID: 4357693143695609987, guid: 030575b2aa2a8cb45a111563bf63e473, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 7358067079728058979}
   m_SourcePrefab: {fileID: 100100000, guid: 030575b2aa2a8cb45a111563bf63e473, type: 3}
---- !u!1 &7358067079728058978 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4357693143695609987, guid: 030575b2aa2a8cb45a111563bf63e473, type: 3}
+--- !u!114 &7358067079728058981 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4101429876054838393, guid: 030575b2aa2a8cb45a111563bf63e473, type: 3}
   m_PrefabInstance: {fileID: 7358067079728058977}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &7358067079728058979
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7358067079728058978}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 87dde13c4c7442b47a51be5864953034, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  panel: {fileID: 7358067079728058978}
 --- !u!114 &9129745403089510771
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3152,6 +3131,9 @@ MonoBehaviour:
   listParent: {fileID: 1409183482}
   itemPrefab: {fileID: -5431973138116944278, guid: 2718aded59e659d4f9d6ee7ba66601cc, type: 3}
   options:
+  - {fileID: 11400000, guid: 22951b57fef0db24bb7523b2b5a1fb75, type: 2}
+  - {fileID: 11400000, guid: 22951b57fef0db24bb7523b2b5a1fb75, type: 2}
+  - {fileID: 11400000, guid: 22951b57fef0db24bb7523b2b5a1fb75, type: 2}
   - {fileID: 11400000, guid: 22951b57fef0db24bb7523b2b5a1fb75, type: 2}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
