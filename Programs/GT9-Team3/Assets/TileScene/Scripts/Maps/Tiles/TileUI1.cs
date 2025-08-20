@@ -15,11 +15,19 @@ using UnityEngine.EventSystems;
 
 public class TileUI1 : MonoBehaviour
 {
+    private TileInfo1 _tileInfo;
     [SerializeField] public GameObject tileUI;
 
+    private bool isActive = false;
+    
     private void Awake()
     {
         tileUI.SetActive(false);
+    }
+
+    private void Start()
+    {
+        _tileInfo = GetComponent<TileInfo1>();
     }
 
     private void OnMouseDown()
@@ -28,6 +36,7 @@ public class TileUI1 : MonoBehaviour
             return;
         
         Debug.Log("TileUI");
+        _tileInfo._tileManager.CloseAllUI(this);
         
         tileUI.SetActive(!tileUI.activeSelf);
     }

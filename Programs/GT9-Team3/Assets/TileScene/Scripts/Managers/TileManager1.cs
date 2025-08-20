@@ -287,4 +287,13 @@ public class TileManager1 : MonoBehaviour
         // waveStartButton.WakeOnButton();
         // WaveManager.Instance.Initilaize(path, startTile.transform);
     }
+
+    public void CloseAllUI(TileUI1 exceptUI)
+    {
+        foreach (var tileInfo in tileInfoList)
+        {
+            if (tileInfo._tileUI != exceptUI)
+                tileInfo._tileUI.CloseUI();
+        }
+    }
 }
