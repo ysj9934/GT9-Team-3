@@ -4,16 +4,20 @@ using UnityEngine;
 
 public class TileInfo1 : TileData
 {
+    public TilePlaceOnTower _tilePlaceOnTower;
+    
     public GameObject[] rotatedPrefabs;
     public TileDirector tileDirector;
     
     public Dictionary<int, BlockInfo2[]> blockInfos = new Dictionary<int, BlockInfo2[]>();
+    
     public Dictionary<SpriteRenderer, int> originBlockOrder = new Dictionary<SpriteRenderer, int>();
     private bool originOrderInitialized = false;
     
     protected override void Awake()
     {
         base.Awake();
+        _tilePlaceOnTower = GetComponent<TilePlaceOnTower>();
     }
 
     public override void Initialize(Vector2 pos)
@@ -59,8 +63,18 @@ public class TileInfo1 : TileData
                 SpriteRenderer[] spriteRenderers = bi.GetComponentsInChildren<SpriteRenderer>(true);
                 foreach (var sr in spriteRenderers)
                 {
-                    int baseOrder = originBlockOrder.ContainsKey(sr) ? originBlockOrder[sr] : 0;
-                    sr.sortingOrder = baseOrder + (tileIndex * 10) - 1000;
+                    bool isTower = sr.GetComponent<Tower2>() != null;
+
+                    if (isTower)
+                    {
+                        int towerOrder = 1000 + (tileIndex * 10);
+                        sr.sortingOrder = towerOrder;
+                    }
+                    else
+                    {
+                        int baseOrder = originBlockOrder.ContainsKey(sr) ? originBlockOrder[sr] : 0;
+                        sr.sortingOrder = baseOrder + (tileIndex * 10) - 1000;    
+                    }
                 }
             }
         }

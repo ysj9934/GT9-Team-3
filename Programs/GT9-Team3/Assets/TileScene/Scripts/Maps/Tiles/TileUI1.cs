@@ -35,7 +35,6 @@ public class TileUI1 : MonoBehaviour
         if (EventSystem.current.IsPointerOverGameObject())
             return;
         
-        Debug.Log("TileUI");
         _tileInfo._tileManager.CloseAllUI(this);
         
         tileUI.SetActive(!tileUI.activeSelf);

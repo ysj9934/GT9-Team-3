@@ -15,6 +15,7 @@ public class TileData : MonoBehaviour
     public TileManager1 _tileManager;
     public TileRoadConnector1 _tileRoadConnector;
     public TileUI1 _tileUI;
+    
 
     [SerializeField] public TileCategory tileCategory;
     [SerializeField] public TileShape tileShape;
@@ -47,6 +48,7 @@ public class TileData : MonoBehaviour
     {
         _tileRoadConnector = GetComponent<TileRoadConnector1>();
         _tileUI = GetComponent<TileUI1>();
+        
     }
 
     public virtual void Initialize(Vector2 pos)
