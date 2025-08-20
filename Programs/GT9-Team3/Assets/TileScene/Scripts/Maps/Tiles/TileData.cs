@@ -13,6 +13,7 @@ using UnityEngine;
 public class TileData : MonoBehaviour
 {
     public TileManager1 _tileManager;
+    public TileRoadConnector1 _tileRoadConnector;
 
     [SerializeField] public TileCategory tileCategory;
     [SerializeField] public TileShape tileShape;
@@ -34,11 +35,18 @@ public class TileData : MonoBehaviour
     public int tileCol;
     public int tileRow;
 
+    
+
     protected virtual void Awake()
     {
         _tileManager = TileManager1.Instance;
     }
-    
+
+    private void Start()
+    {
+        _tileRoadConnector = GetComponent<TileRoadConnector1>();
+    }
+
     public virtual void Initialize(Vector2 pos)
     {
         UpdateMapping(pos);
@@ -46,7 +54,7 @@ public class TileData : MonoBehaviour
         _tileManager.SetNeighbors();
     }
 
-    protected virtual void UpdateMapping(Vector2 pos)
+    public virtual void UpdateMapping(Vector2 pos)
     {
         float originX = 0f;
         float originY = _tileManager.tileSize[1] * 2 + (_tileManager.tileSize[1] * 2);
@@ -79,12 +87,12 @@ public class TileData : MonoBehaviour
     }
     
     public virtual void UpdateWorldLevel(int level)
-    {
-        
-    }
+    {}
     
-    protected int UpdateTileIndex()
+    public int UpdateTileIndex()
     {
         return tileCol + tileRow * _tileManager.tileLength + 1;
     }
+
+    
 }

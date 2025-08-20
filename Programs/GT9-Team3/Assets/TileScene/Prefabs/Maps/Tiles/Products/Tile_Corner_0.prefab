@@ -13,6 +13,8 @@ GameObject:
   - component: {fileID: 8545693331094786250}
   - component: {fileID: 333253310575543144}
   - component: {fileID: -1144345236411129266}
+  - component: {fileID: 6363705902095627914}
+  - component: {fileID: -1277934509847021496}
   m_Layer: 0
   m_Name: Tile_Corner_0
   m_TagString: Untagged
@@ -102,6 +104,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _tileManager: {fileID: 0}
+  _tileRoadConnector: {fileID: 0}
   tileCategory: 0
   tileShape: 0
   up: {fileID: 0}
@@ -147,11 +150,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b23372755180ea4eb73d4132888ecc3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sr: {fileID: 0}
-  normalColor: {r: 1, g: 1, b: 1, a: 1}
-  invalidColor: {r: 1, g: 0, b: 0, a: 1}
-  tileWidth: 1.4475
-  tileHeight: 0.84
+--- !u!114 &6363705902095627914
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6599734895951474928}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8bd5fd8ebe856a24eb1ad6c33d8d254d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &-1277934509847021496
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6599734895951474928}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4b8a7e073518fa43bcd405531e4ee60, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tileUI: {fileID: 8957058631161427013}
 --- !u!1001 &1206419256636960780
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -632,5 +655,10 @@ PrefabInstance:
 --- !u!224 &1503946993765681160 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6949227965044991617, guid: 4f5a54429a5043e42a78d44696afaa14, type: 3}
+  m_PrefabInstance: {fileID: 8408090561874767497}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &8957058631161427013 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 640167071227124428, guid: 4f5a54429a5043e42a78d44696afaa14, type: 3}
   m_PrefabInstance: {fileID: 8408090561874767497}
   m_PrefabAsset: {fileID: 0}

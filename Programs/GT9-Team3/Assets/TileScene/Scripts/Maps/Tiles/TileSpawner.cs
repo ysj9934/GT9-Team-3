@@ -18,12 +18,9 @@ public class TileSpawner : TileData
         UpdateSpriteOrder();
     }
 
-    protected override void UpdateMapping(Vector2 pos)
+    public override void UpdateMapping(Vector2 pos)
     {
         base.UpdateMapping(pos);
-
-        _tileManager.tileMap[base.originTileRow, base.originTileCol] = null;
-        _tileManager.tileMap[base.tileRow, base.tileCol] = this;
     }
 
     private void SetBlockInfos()

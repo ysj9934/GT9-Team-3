@@ -304,6 +304,8 @@ MonoBehaviour:
   tileSpawnPrefab: {fileID: 2012721464780551075, guid: 7e286290d78285743a7d2adea0c43073, type: 3}
   startTile: {fileID: 0}
   endTile: {fileID: 0}
+  pathfinderPrefab: {fileID: 0}
+  path: []
   tileGridList: []
   tileInfoList: []
   spawnTransform: []
@@ -1369,6 +1371,63 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 501235413380068376, guid: c134ab22b5f17344a95438314993402b, type: 3}
   m_PrefabInstance: {fileID: 2651243015497401899}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &2412668509285696685
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 2678620220463419942, guid: c39df59ea4e072d4f8b41eb031dc0fb4, type: 3}
+      propertyPath: m_Name
+      value: Pathfinder 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4204851679155201825, guid: c39df59ea4e072d4f8b41eb031dc0fb4, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4204851679155201825, guid: c39df59ea4e072d4f8b41eb031dc0fb4, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4204851679155201825, guid: c39df59ea4e072d4f8b41eb031dc0fb4, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4204851679155201825, guid: c39df59ea4e072d4f8b41eb031dc0fb4, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4204851679155201825, guid: c39df59ea4e072d4f8b41eb031dc0fb4, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4204851679155201825, guid: c39df59ea4e072d4f8b41eb031dc0fb4, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4204851679155201825, guid: c39df59ea4e072d4f8b41eb031dc0fb4, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4204851679155201825, guid: c39df59ea4e072d4f8b41eb031dc0fb4, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4204851679155201825, guid: c39df59ea4e072d4f8b41eb031dc0fb4, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4204851679155201825, guid: c39df59ea4e072d4f8b41eb031dc0fb4, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: c39df59ea4e072d4f8b41eb031dc0fb4, type: 3}
 --- !u!1001 &2651243015497401899
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1854,6 +1913,14 @@ PrefabInstance:
     - target: {fileID: 6586318415301559631, guid: c9890c154bc31c94ca183d3f753a0d40, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
+      objectReference: {fileID: 367874780}
+    - target: {fileID: 6586318415301559631, guid: c9890c154bc31c94ca183d3f753a0d40, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ShowConnectedPath
+      objectReference: {fileID: 0}
+    - target: {fileID: 6586318415301559631, guid: c9890c154bc31c94ca183d3f753a0d40, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: TileManager1, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 6759991561649897718, guid: c9890c154bc31c94ca183d3f753a0d40, type: 3}
       propertyPath: m_AnchorMax.y
@@ -2050,3 +2117,4 @@ SceneRoots:
   - {fileID: 892512494}
   - {fileID: 1289114094}
   - {fileID: 722714862}
+  - {fileID: 2412668509285696685}

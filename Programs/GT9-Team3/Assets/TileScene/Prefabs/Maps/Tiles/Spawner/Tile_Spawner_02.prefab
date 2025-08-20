@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2373705106479648748}
   - component: {fileID: 8290062743954730223}
+  - component: {fileID: 4351577047798166079}
   m_Layer: 0
   m_Name: Tile_Spawner_02
   m_TagString: Untagged
@@ -55,21 +56,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _tileManager: {fileID: 0}
+  _tileRoadConnector: {fileID: 0}
   tileCategory: 2
   tileShape: 0
   up: {fileID: 0}
   down: {fileID: 0}
   left: {fileID: 0}
   right: {fileID: 0}
+  connectedUp: 1
+  connectedDown: 1
+  connectedLeft: 1
+  connectedRight: 1
   tileIndex: 0
   originTileCol: 0
   originTileRow: 0
   tileCol: 0
   tileRow: 0
-  connectedUp: 1
-  connectedDown: 1
-  connectedLeft: 1
-  connectedRight: 1
   blockInfos:
   - {fileID: 0}
   - {fileID: 0}
@@ -80,6 +82,18 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+--- !u!114 &4351577047798166079
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2012721464780551075}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8bd5fd8ebe856a24eb1ad6c33d8d254d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7428746455109916407
 GameObject:
   m_ObjectHideFlags: 0

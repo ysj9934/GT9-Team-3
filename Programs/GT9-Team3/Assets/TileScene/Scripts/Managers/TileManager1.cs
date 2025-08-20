@@ -43,6 +43,8 @@ public class TileManager1 : MonoBehaviour
     public TileData startTile;
     public TileData endTile;
 
+    [SerializeField] private GameObject pathfinderPrefab;
+    public List<TileData> path;
     public List<TileGrid1> tileGridList;
     public List<TileInfo1> tileInfoList;
     public List<Vector2> spawnTransform;
@@ -216,5 +218,73 @@ public class TileManager1 : MonoBehaviour
     public void ClearSpawner()
     {
         _gameManager.DestroyOfType<TileSpawner>();
+    }
+
+    public void ShowConnectedPath()
+    {
+        SetNeighbors();
+
+        if (startTile == null)
+        {
+            Debug.Log("startTileRoad is null");
+        }
+        else if (endTile == null)
+        {
+            Debug.Log("endTileRoad is null");
+        }
+        else
+        {
+            path = FindConnectedPath(startTile, endTile);
+            //path = FindConnectedPathBFS(startTileRoad, endTileRoad);
+
+            if (path != null && path.Count > 0)
+                GetPathfinder();
+        }
+    }
+    
+    public List<TileData> FindConnectedPath(TileData startTile, TileData endTile)
+    {
+        Debug.Log("FindConnectedPath");
+        var visited = new HashSet<TileData>();
+        var path = new List<TileData>();
+
+        if (DFS(startTile, endTile, visited, path))
+            return path;
+
+        return new List<TileData>();
+    }
+
+    private bool DFS(TileData current, TileData target, HashSet<TileData> visited, List<TileData> path)
+    {
+        Debug.Log("DFS");
+        if (current == null || visited.Contains(current))
+            return false;
+
+        visited.Add(current);
+        path.Add(current);
+
+        if (current == target)
+            return true;
+
+        foreach (var (neighbor, _) in current._tileRoadConnector.GetConnectedNeighbors())
+        {
+            Debug.Log($"currentTile : {current.tileCol}, {current.tileCol}");
+            if (DFS(neighbor, target, visited, path))
+                return true;
+        }
+
+        path.Remove(current);
+        visited.Remove(current);
+        return false;
+    }
+    
+    public void GetPathfinder()
+    {
+        GameObject go = Instantiate(pathfinderPrefab, startTile.transform);
+        Pathfinder1 pathfinder = go.GetComponent<Pathfinder1>();
+        pathfinder.Initialize(path);
+
+        // waveStartButton.WakeOnButton();
+        // WaveManager.Instance.Initilaize(path, startTile.transform);
     }
 }

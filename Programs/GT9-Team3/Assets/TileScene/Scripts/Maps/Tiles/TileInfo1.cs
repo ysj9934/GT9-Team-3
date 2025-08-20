@@ -8,6 +8,8 @@ public class TileInfo1 : TileData
     public TileDirector tileDirector;
     
     public Dictionary<int, BlockInfo2[]> blockInfos = new Dictionary<int, BlockInfo2[]>();
+    public Dictionary<SpriteRenderer, int> originBlockOrder = new Dictionary<SpriteRenderer, int>();
+    private bool originOrderInitialized = false;
     
     protected override void Awake()
     {
@@ -17,22 +19,21 @@ public class TileInfo1 : TileData
     public override void Initialize(Vector2 pos)
     {
         base.Initialize(pos);
-        // _tileManager.SetNeighbors();
+        CacheOriginOrders();
         SetBlockInfos();
         UpdateSpriteOrder();
     }
 
-    protected override void UpdateMapping(Vector2 pos)
+    public override void UpdateMapping(Vector2 pos)
     {
         base.UpdateMapping(pos);
-
     }
 
     private void SetBlockInfos()
     {
         for (int index = 0; index < rotatedPrefabs.Length; index++)
         {
-            BlockInfo2[] blockInfoArray = rotatedPrefabs[index].GetComponentsInChildren<BlockInfo2>();
+            BlockInfo2[] blockInfoArray = rotatedPrefabs[index].GetComponentsInChildren<BlockInfo2>(true);
             blockInfos.Add(index, blockInfoArray);
         }
     }
@@ -49,13 +50,36 @@ public class TileInfo1 : TileData
     }
     
     public void UpdateSpriteOrder()
-    { 
-        SpriteRenderer[] spriteRenderers = GetComponentsInChildren<SpriteRenderer>();
+    {
+        foreach (var blockInfo in blockInfos)
+        {
+            BlockInfo2[] biArray = blockInfo.Value;
+            foreach (var bi in biArray)
+            {
+                SpriteRenderer[] spriteRenderers = bi.GetComponentsInChildren<SpriteRenderer>(true);
+                foreach (var sr in spriteRenderers)
+                {
+                    int baseOrder = originBlockOrder.ContainsKey(sr) ? originBlockOrder[sr] : 0;
+                    sr.sortingOrder = baseOrder + (tileIndex * 10) - 1000;
+                }
+            }
+        }
+    }
+    
+    // 최초 블럭 sortingOrder저장
+    private void CacheOriginOrders()
+    {
+        if (originOrderInitialized) return;
+
+        SpriteRenderer[] spriteRenderers = GetComponentsInChildren<SpriteRenderer>(true);
+        originBlockOrder.Clear();
 
         foreach (SpriteRenderer sr in spriteRenderers)
         {
-            sr.sortingOrder = sr.sortingOrder + (tileIndex * 10) - 1000;
+            originBlockOrder[sr] = sr.sortingOrder;
         }
+        
+        originOrderInitialized = true;
     }
     
 }

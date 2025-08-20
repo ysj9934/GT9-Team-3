@@ -8,6 +8,7 @@ using UnityEngine.EventSystems;
 public class TileMove1 : MonoBehaviour
 {
     private TileManager1 _tileManager;
+    private TileData _tileData;
     private TileInfo1 _tileInfo;
     private Collider2D _collider;
     
@@ -22,8 +23,10 @@ public class TileMove1 : MonoBehaviour
     private void Awake()
     {
         _tileManager = TileManager1.Instance;
+        _tileData = GetComponent<TileData>();
         _tileInfo = GetComponent<TileInfo1>();
         _collider = GetComponent<PolygonCollider2D>();
+        
     }
     
     private void OnMouseDown()
@@ -34,8 +37,10 @@ public class TileMove1 : MonoBehaviour
         isPressing = true;
         pressTime = 0;
         originalPosition = transform.position;
-        _sprites = GetComponentsInChildren<SpriteRenderer>();
+        _sprites = GetComponentsInChildren<SpriteRenderer>();   
         originalColor = _sprites[0].color;
+        // 들어 올린 것 처럼 보인다
+        UpdateSpriteOrder();
     }
     
     private void Update()
@@ -56,11 +61,10 @@ public class TileMove1 : MonoBehaviour
             Plane plane = new Plane(Vector3.forward, 0);
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             
-        
-            for (int i = 0; i < _sprites.Length; i++)
-            {
-                _sprites[i].sortingOrder = 100 + i;
-            }
+            
+            
+            
+            _collider.enabled = false;
             
             if (plane.Raycast(ray, out float distance))
             {
@@ -154,6 +158,7 @@ public class TileMove1 : MonoBehaviour
                     rtrippleDowndualRight,
                     rtrippleDowndualleft,
                 };
+                
                 Vector2 bestDir = directions[0];
                 float maxDot = Vector2.Dot(delta.normalized, directions[0].normalized);
         
@@ -199,18 +204,17 @@ public class TileMove1 : MonoBehaviour
             }
         
             Collider2D hit = Physics2D.OverlapPoint(transform.position);
-            TileRoad tileRoad = hit != null ? hit.GetComponent<TileRoad>() : null;
+            TileData tileData = hit != null ? hit.GetComponent<TileData>() : null;
     
-            if (tileRoad != null)
+            if (tileData != null)
             {
-                Debug.Log($"{tileRoad.row}, {tileRoad.col}");
                 transform.position = originalPosition;
                 UpdateGridPosition();
                 Debug.Log("this location already located");
             }
             else
             {
-                UpdateGridPosition();    
+                UpdateGridPosition();
             }
         
             if (_collider != null)
@@ -220,18 +224,30 @@ public class TileMove1 : MonoBehaviour
         isDragging = false;
         isPressing = false;
         pressTime = 0;
+        UpdateGridPosition();
     }
     
     private void UpdateGridPosition()
     {
-        // _tileInfo.UpdateMapping(_tileInfo.GetGridSize(_tileInfo.mapLevel), transform.position);
-        // _tileInfo.UpdateTileSerialNumber();
+        _tileData.UpdateMapping(transform.position);
+        _tileData.tileIndex = _tileData.UpdateTileIndex();
+        _tileInfo.UpdateSpriteOrder();
+        _tileManager.SetNeighbors();
     }
     
     private bool IsValidPosition(Vector2 pos)
     {
         Collider2D hit = Physics2D.OverlapPoint(pos);
         return hit == null || hit.gameObject == this.gameObject;
+    }
+
+    private void UpdateSpriteOrder()
+    {
+        foreach (SpriteRenderer sr in _sprites)
+        {
+            int baseOrder = _tileInfo.originBlockOrder.ContainsKey(sr) ? _tileInfo.originBlockOrder[sr] : 0;
+            sr.sortingOrder = baseOrder + 1000;
+        }
     }
 
 }
