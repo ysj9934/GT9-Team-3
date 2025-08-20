@@ -26,11 +26,17 @@ public class EnemyAnimationController : MonoBehaviour
 
     void Update()
     {
+        if (TileManager.Instance == null || TileManager.Instance.endTileRoad == null)
+        {
+            Debug.LogWarning("TileManager ¶Ç´Â endTileRoad°¡ ÇÒ´çµÇÁö ¾Ê¾Ò½À´Ï´Ù.");
+            return;
+        }
+
         if (isDying)
         {
             // ï¿½×´ï¿½ ï¿½Ö´Ï¸ï¿½ï¿½Ì¼ï¿½ ï¿½ï¿½ï¿½ï¿½ Ã¼Å©
             AnimatorStateInfo info = animator.GetCurrentAnimatorStateInfo(0);
-            if (info.IsName("Die") && info.normalizedTime >= 1.0f)
+            if (info.IsName("Death") && info.normalizedTime >= 1.0f)
             {
                 hasDied = true;
             }
@@ -86,6 +92,7 @@ public class EnemyAnimationController : MonoBehaviour
         action = false;
         animator.SetInteger("State", state);
         animator.SetBool("Action", action);
+        //animator.SetTrigger("Death"); // Animator¿¡¼­ Death »óÅÂ·Î ÀüÈ¯
     }
 
     public bool HasDied()

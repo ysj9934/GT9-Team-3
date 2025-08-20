@@ -5,33 +5,89 @@ using UnityEngine.UI;
 
 public class Enemy : MonoBehaviour
 {
+    public int key; // JSON에 정의된 key
+    public EnemyStat stat;  //ScriptableObject로부터 적의 스탯을 가져옴
+
+    Enemy_DataTable_EnemyStatTable data;
+    string prefabName;
+
     //체력 관련
-    [SerializeField] float hp = 1f;
     [SerializeField] private float currentHp;
     [SerializeField] Image healthBar;     // Foreground Image 연결
 
-    //이동 관련
-    [SerializeField] private float speed = 2f;  // 이동 속도 public으로 변경
-
-    //공격 관련
-    public int attackPower = 10;    //공격력
-    public float attackRange = 5f;  //공격 사거리
-    public float attackSpeed = 1f;  //공격 주기(초 단위)
-
     public Vector2 targetPosition;  // 목표 위치는 public으로 둠
-
-    //private Transform[] path; // 경로를 따라 이동할 때 사용 (예: Waypoint 시스템)
-    //private int pathIndex = 0;  // 경로를 따라 이동할 때 사용
 
     private EnemyAnimationController animController;
     private bool isDead = false;
 
+    private void Awake()
+    {
+        prefabName = gameObject.name;
+
+        animController = GetComponent<EnemyAnimationController>();
+
+        if (EnemyDataReader.Instance == null)
+        {
+            Debug.LogError("EnemyDataReader.Instance is null. 싱글톤 초기화 순서 확인!");
+            return;
+        }
+
+        Debug.Log(prefabName);
+        Debug.Log($"Looking for prefabName: '{prefabName}' in EnemyDataReader");
+
+        data = EnemyDataReader.Instance.GetEnemyStatByImage(prefabName);
+        if (data != null)
+        {
+            key = data.key;
+
+            // ScriptableObject 개별 생성
+            stat = ScriptableObject.CreateInstance<EnemyStat>();
+            stat.enemyID = data.key;
+            stat.enemy_Inner_Name = data.Enemy_Inner_Name;
+            stat.maxHP = data.MaxHP;
+            stat.movementSpeed = data.MovementSpeed;
+            stat.attackDamage = data.AttackDamage;
+            stat.attackSpeed = data.AttackSpeed;
+            stat.attackRange = data.AttackRange;
+            stat.attackType = data.AttackType;
+            stat.projectileID = data.ProjectileID;
+            stat.defense = data.Defense;
+            stat.tilePieceAmount = data.TilePieceAmount;
+            stat.ignoreDebuff = data.IgnoreDebuff;
+            stat.enemy_Skill_ID = data.Enemy_Skill_ID;
+        }
+        else
+        {
+            Debug.LogWarning($"Enemy key {key} 데이터가 없습니다!");
+        }
+    }
+
     void Start()
     {
-        currentHp = hp;
-        Debug.Log("EnemyTest Initialized");
-        Debug.Log(" → target: " + targetPosition);
+        currentHp = stat.maxHP;
         UpdateHealthBar();
+
+        if (stat != null)
+        {
+            Debug.Log($"Enemy Stat Info:\n" +
+                      $"ID: {stat.enemyID}\n" +
+                      $"Name: {stat.enemy_Inner_Name}\n" +
+                      $"MaxHP: {stat.maxHP}\n" +
+                      $"Speed: {stat.movementSpeed}\n" +
+                      $"AttackDamage: {stat.attackDamage}\n" +
+                      $"AttackSpeed: {stat.attackSpeed}\n" +
+                      $"AttackRange: {stat.attackRange}\n" +
+                      $"AttackType: {stat.attackType}\n" +
+                      $"ProjectileID: {stat.projectileID}\n" +
+                      $"Defense: {stat.defense}\n" +
+                      $"TilePieceAmount: {stat.tilePieceAmount}\n" +
+                      $"IgnoreDebuff: {stat.ignoreDebuff}\n" +
+                      $"SkillID: {stat.enemy_Skill_ID}");
+        }
+        else
+        {
+            Debug.LogWarning($"{prefabName}의 stat이 null입니다!");
+        }
     }
 
     // 경로를 설정하는 함수 (예: 경로를 따라 이동하는 적을 만들 때 사용)
@@ -42,16 +98,7 @@ public class Enemy : MonoBehaviour
 
     void Update()
     {
-        // 이동 처리
-        //transform.position = Vector2.MoveTowards(transform.position, targetPosition, speed * Time.deltaTime);
-        if (isDead)
-        {
-            // 죽는 애니메이션 종료 후 오브젝트 삭제
-            if (animController != null && animController.HasDied())
-            {
-                Destroy(gameObject);
-            }
-        }
+
     }
 
     //충돌 처리
@@ -93,18 +140,21 @@ public class Enemy : MonoBehaviour
         if (animController != null)
         {
             animController.PlayDieAnimation();
+
+            StartCoroutine(DestroyAfterDelay(1f));
         }
         else
         {
             // 애니메이터 없으면 바로 삭제
+            Debug.Log("애니메이션이 없네?");
             Destroy(gameObject);
         }
     }
 
     private void OnMouseDown()
     {
-        TakeDamage(1); // 클릭 시 데미지 1
-        Debug.Log(hp);
+        TakeDamage(10); // 클릭 시 데미지 1
+        Debug.Log($"{currentHp} , {animController.HasDied()}");
         if (healthBar != null)
             Debug.Log(healthBar.fillAmount);
         else
@@ -114,6 +164,12 @@ public class Enemy : MonoBehaviour
     void UpdateHealthBar()
     {
         if (healthBar != null)
-            healthBar.fillAmount = currentHp / hp;
+            healthBar.fillAmount = currentHp / stat.maxHP;
+    }
+
+    private IEnumerator DestroyAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        Destroy(gameObject);
     }
 }
