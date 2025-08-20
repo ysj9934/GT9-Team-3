@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class TilePlaceOnTower : MonoBehaviour
 {
-    private TileInfo1 _tileInfo;
+    private TileInfo _tileInfo;
     
     private bool _isTowerPlaced;
 
@@ -63,7 +63,7 @@ public class TilePlaceOnTower : MonoBehaviour
     
     private void Start()
     {
-        _tileInfo = GetComponent<TileInfo1>();
+        _tileInfo = GetComponent<TileInfo>();
     }
     
     public void HandleTowerPlacement(int blockCase, bool hasTower)

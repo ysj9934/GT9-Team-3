@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class TileCastle : TileData
 {
-    public BlockInfo2[] blockInfos = new BlockInfo2[9];
+    public BlockInfo[] blockInfos = new BlockInfo[9];
     
     public override void Initialize(Vector2 pos)
     {
@@ -15,7 +15,7 @@ public class TileCastle : TileData
     
     private void SetBlockInfos()
     {
-        blockInfos = GetComponentsInChildren<BlockInfo2>();
+        blockInfos = GetComponentsInChildren<BlockInfo>();
     }
     
     public override void UpdateWorldLevel(int level)

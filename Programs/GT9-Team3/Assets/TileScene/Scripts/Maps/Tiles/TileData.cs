@@ -12,9 +12,9 @@ using UnityEngine;
 /// </summary>
 public class TileData : MonoBehaviour
 {
-    public TileManager1 _tileManager;
-    public TileRoadConnector1 _tileRoadConnector;
-    public TileUI1 _tileUI;
+    public TileManager _tileManager;
+    public TileRoadConnector _tileRoadConnector;
+    public TileUI _tileUI;
     
 
     [SerializeField] public TileCategory tileCategory;
@@ -41,13 +41,13 @@ public class TileData : MonoBehaviour
 
     protected virtual void Awake()
     {
-        _tileManager = TileManager1.Instance;
+        _tileManager = TileManager.Instance;
     }
 
     private void Start()
     {
-        _tileRoadConnector = GetComponent<TileRoadConnector1>();
-        _tileUI = GetComponent<TileUI1>();
+        _tileRoadConnector = GetComponent<TileRoadConnector>();
+        _tileUI = GetComponent<TileUI>();
         
     }
 
@@ -61,7 +61,7 @@ public class TileData : MonoBehaviour
     public virtual void UpdateMapping(Vector2 pos)
     {
         float originX = 0f;
-        float originY = _tileManager.tileSize[1] * 2 + (_tileManager.tileSize[1] * 2);
+        float originY = _tileManager.tileSize[1] * 2 + (_tileManager.tileSize[1] * 2 * _tileManager.tempLevel);
 
         float dx = pos.x - originX;
         float dy = originY - pos.y;

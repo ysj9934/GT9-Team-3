@@ -12,7 +12,7 @@ using UnityEngine;
 /// </summary>
 public class TileDirection : MonoBehaviour
 {
-    private TileInfo1 _tileInfo;
+    private TileInfo _tileInfo;
     
     [SerializeField] public TileDirector tileDirector;
     
@@ -24,7 +24,7 @@ public class TileDirection : MonoBehaviour
     private void Awake()
     {
         if (_tileInfo == null)
-            _tileInfo = GetComponentInParent<TileInfo1>();
+            _tileInfo = GetComponentInParent<TileInfo>();
         
         if (tileDirector != TileDirector.Degree_0)
             gameObject.SetActive(false);

@@ -7,7 +7,7 @@ using UnityEngine;
 public class GameManager12 : MonoBehaviour
 {
     public static GameManager12 Instance { get; private set; }
-    public TileManager1 _tileManager;
+    public TileManager _tileManager;
 
     // level
     public int worldLevel = 1;
@@ -27,7 +27,7 @@ public class GameManager12 : MonoBehaviour
 
     private void Start()
     {
-        _tileManager = TileManager1.Instance;
+        _tileManager = TileManager.Instance;
     }
 
 

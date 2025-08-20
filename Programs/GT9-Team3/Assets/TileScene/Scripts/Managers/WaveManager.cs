@@ -11,7 +11,7 @@ public class WaveManager : MonoBehaviour
     [SerializeField] private float spawnInterval = 1f; // Time between spawns in seconds
     private int waveCount = 0;
 
-    public List<TileRoad> pathManager;
+    // public List<TileRoad> pathManager;
     private Transform[] pathPoints;
     private int currentPathIndex = 0;
     private Transform spawnPoint;
@@ -33,20 +33,20 @@ public class WaveManager : MonoBehaviour
     }
 
 
-    public void Initilaize(List<TileRoad> pathManager, Transform spawnPoint)
-    {
-        this.pathManager = pathManager;
-        this.spawnPoint = spawnPoint;
-
-        currentPathIndex = 0;
-        int childCount = pathManager.Count;
-        pathPoints = new Transform[childCount];
-
-        for (int index = 0; index < childCount; index++)
-        {
-            pathPoints[index] = pathManager[index].transform;
-        }
-    }
+    // public void Initilaize(List<TileRoad> pathManager, Transform spawnPoint)
+    // {
+    //     this.pathManager = pathManager;
+    //     this.spawnPoint = spawnPoint;
+    //
+    //     currentPathIndex = 0;
+    //     int childCount = pathManager.Count;
+    //     pathPoints = new Transform[childCount];
+    //
+    //     for (int index = 0; index < childCount; index++)
+    //     {
+    //         pathPoints[index] = pathManager[index].transform;
+    //     }
+    // }
 
     //public void SpawnWave(int worldLevel, int StageLevel, int Round)
     //{
@@ -87,13 +87,13 @@ public class WaveManager : MonoBehaviour
         {
             SpawnEnemy(enemyTypes);
             enemiesSpawned++;
-            yield return new WaitForSeconds(1f); // Àû °£ °£°Ý
+            yield return new WaitForSeconds(1f); // ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         }
 
         yield return new WaitForSeconds(timeBetweenWaves);
         isWaveActive = false;
 
-        // ´ÙÀ½ ¿þÀÌºê ÀÚµ¿ ½ÃÀÛ °¡´É
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ìºï¿½ ï¿½Úµï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         if (waveCount < 3)
             StartWave();
 

@@ -63,11 +63,11 @@ public class Enemy11 : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Basement basement = collision.GetComponent<Basement>();
+        Castle castle = collision.GetComponent<Castle>();
 
-        if (basement != null)
+        if (castle != null)
         {
-            basement.TakeDamage(damage);
+            castle.TakeDamage(damage);
             Debug.Log("Basement hit by enemy!");
             Destroy(gameObject); // 적이 바닥에 도달하면 제거
         }

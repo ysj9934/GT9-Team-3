@@ -5,26 +5,24 @@ using UnityEngine;
 
 public class TileRotate : MonoBehaviour
 {
-    private TileRoad _tile;
-    [SerializeField] public GameObject[] rotatedPrefabs;
-
-
+    private TileInfo _tileInfo;
+    
     private void Start()
     {
-        _tile = GetComponent<TileRoad>();
+        _tileInfo = GetComponent<TileInfo>();
     }
 
     // 다음 각도의 맵 타일 생성하기
     public void RotateLeft()
     {
-        int newIndex = ((int)_tile.currentRotationIndex - 1 + 4) % 4;
+        int newIndex = ((int)_tileInfo.tileDirector - 1 + 4) % 4;
         
         RotateTile(newIndex);
     }
 
     public void RotateRight()
     {
-        int newIndex = ((int)_tile.currentRotationIndex + 1) % 4;
+        int newIndex = ((int)_tileInfo.tileDirector + 1) % 4;
 
         RotateTile(newIndex);
     }
@@ -32,27 +30,15 @@ public class TileRotate : MonoBehaviour
     public void RotateTile(int index)
     {
         CloseTile();
-        
-        _tile.currentRotationIndex = (TileDirector) index;
-        rotatedPrefabs[index].SetActive(true);
-        _tile.Initialize(_tile.mapLevel, _tile.transform.position);
-
-        _tile._tileUI._blockInfos = _tile.GetComponentsInChildren<BlockInfo>();
-        if (_tile.isSelected)
-        {
-            foreach (var blockInfo in _tile._tileUI._blockInfos)
-            {
-                if (blockInfo._collider2D != null)
-                {
-                    blockInfo._collider2D.enabled = true;
-                }
-            }
-        }
+        // _tileInfo.tileDirector = (TileDirector) index;
+        _tileInfo.rotatedPrefabs[index].SetActive(true);
+        Vector2 pos = _tileInfo.transform.position;
+        _tileInfo.UpdateSpriteOrder();
     }
 
     private void CloseTile()
     {
-        foreach (var prefab in rotatedPrefabs)
+        foreach (var prefab in _tileInfo.rotatedPrefabs)
         {
             prefab.SetActive(false);
         }

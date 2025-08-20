@@ -8,7 +8,7 @@ public class Tower2 : MonoBehaviour
 {
     public TowerData data;
     private float cooldownTimer;
-    private BlockInfo2 _blockInfo;
+    private BlockInfo _blockInfo;
 
     private GameObject rangeVisual;
 
@@ -33,7 +33,7 @@ public class Tower2 : MonoBehaviour
         }
     }
 
-    public void Intialize(BlockInfo2 blockInfo)
+    public void Intialize(BlockInfo blockInfo)
     {
         _blockInfo = blockInfo;
     }

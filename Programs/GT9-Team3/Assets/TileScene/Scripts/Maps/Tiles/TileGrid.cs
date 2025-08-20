@@ -5,64 +5,68 @@ using UnityEngine;
 
 public class TileGrid : MonoBehaviour
 {
-    [SerializeField] public float[] cellSize = { 1.4475f,  0.84f };
-    public int col, row;
-    [SerializeField] public int tileSerialNumber;
-    private int mapLevel = 1;
+    public TileManager _tileManager;
+
+    [SerializeField] public TileCategory tileCategory;
+    [SerializeField] public TileShape tileShape;
+
+    [Header("Tile Neighbors")]
+    public TileData up;
+    public TileData down;
+    public TileData left;
+    public TileData right;
     
-    public void Initialize(int mapLevel, Vector2 pos)
+    public int tileIndex;
+    public int originTileCol = -1;
+    public int originTileRow = -1;
+    public int tileCol;
+    public int tileRow;
+
+    protected virtual void Awake()
     {
-        this.mapLevel = mapLevel;
-        GetMapping(GetGridSize(this.mapLevel), pos);
-        UpdateTileSerialNumber();
+        _tileManager = TileManager.Instance;
     }
     
-    public int GetGridSize(int mapLevel)
+    public void Initialize(Vector2 pos)
     {
-        switch (mapLevel)
-        {
-            case 1:
-                return 5;
-            case 2:
-                return 7;
-            case 3:
-                return 9;
-            default:
-                return 5;
-        };
+        UpdateMapping(pos);
+        tileIndex = UpdateTileIndex();
+        UpdateSpriteOrder();
     }
-    
-    private void GetMapping(int gridSize, Vector2 pos)
+
+    protected void UpdateMapping(Vector2 pos)
     {
         float originX = 0f;
-        float originY = 3.36f;
+        float originY = _tileManager.tileSize[1] * 2 + (_tileManager.tileSize[1] * 2);
 
         float dx = pos.x - originX;
         float dy = originY - pos.y;
 
-        float col = (dx / cellSize[0] + dy / cellSize[1]) / 2f;
-        float row = (dy / cellSize[1] - dx / cellSize[0]) / 2f;
+        float col = (dx / _tileManager.tileSize[0] + dy / _tileManager.tileSize[1]) / 2f;
+        float row = (dy / _tileManager.tileSize[1] - dx / _tileManager.tileSize[0]) / 2f;
 
         int colIndex = Mathf.RoundToInt(col);
         int rowIndex = Mathf.RoundToInt(row);
 
-        this.col = colIndex;
-        this.row = rowIndex;
+        originTileCol = this.tileCol;
+        originTileRow = this.tileRow;
+
+        this.tileCol = colIndex;
+        this.tileRow = rowIndex;
     }
-
-    private void UpdateTileSerialNumber()
+    
+    protected int UpdateTileIndex()
     {
-        tileSerialNumber = col + (row * 5) + 1;
-
-        UpdateTileOrder();
+        return tileCol + tileRow * _tileManager.tileLength + 1;
     }
-
-    private void UpdateTileOrder()
-    {
+    
+    private void UpdateSpriteOrder()
+    { 
         SpriteRenderer[] spriteRenderers = GetComponentsInChildren<SpriteRenderer>();
-        for (int i = 0; i < spriteRenderers.Length; i++)
+
+        foreach (SpriteRenderer sr in spriteRenderers)
         {
-            spriteRenderers[i].sortingOrder = -1000 + (tileSerialNumber * 10) + i;
+            sr.sortingOrder = sr.sortingOrder * tileIndex - 1000;
         }
     }
 }

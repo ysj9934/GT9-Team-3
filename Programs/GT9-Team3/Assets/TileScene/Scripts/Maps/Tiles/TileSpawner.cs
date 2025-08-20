@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class TileSpawner : TileData
 {
-    public BlockInfo2[] blockInfos = new BlockInfo2[9];
+    public BlockInfo[] blockInfos = new BlockInfo[9];
     
     protected override void Awake()
     {
@@ -25,7 +25,7 @@ public class TileSpawner : TileData
 
     private void SetBlockInfos()
     {
-        blockInfos = GetComponentsInChildren<BlockInfo2>();
+        blockInfos = GetComponentsInChildren<BlockInfo>();
     }
 
     public override void UpdateWorldLevel(int level)

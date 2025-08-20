@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 1234642313698270208}
   - component: {fileID: -3791736020184234226}
   - component: {fileID: 778189576840323544}
+  - component: {fileID: 6914284372707028423}
   m_Layer: 0
   m_Name: BlockTowerPlace_0
   m_TagString: Untagged
@@ -151,12 +152,24 @@ MonoBehaviour:
   _tileInfo: {fileID: 0}
   _blockData: {fileID: 11400000, guid: ad01d531443f7f443b94ef002d091283, type: 2}
   spriteRenderer: {fileID: 1234642313698270208}
-  blockCategory: 0
+  blockCategory: 2
   blockSerialNumber: 0
   level: 1
   hasTower: 0
   towerUI: {fileID: 7119036890365082206}
   towerPrefab: {fileID: 1002364044189742249, guid: 8b0c49232d7d38e4989f2a7dd4ada1a1, type: 3}
+--- !u!114 &6914284372707028423
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7366331192512988059}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 21228079084de46499f9b84ff6f245f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &254533954786650367
 PrefabInstance:
   m_ObjectHideFlags: 0

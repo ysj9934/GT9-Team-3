@@ -7,165 +7,256 @@ using UnityEngine.EventSystems;
 
 public class TileMove : MonoBehaviour
 {
-    private GameManager11 _gameManager;
     private TileManager _tileManager;
-    private TileRoad _tileRoad;
+    private TileData _tileData;
+    private TileInfo _tileInfo;
     private Collider2D _collider;
-
+    
     private Vector2 originalPosition;
     private Color originalColor;
     private SpriteRenderer[] _sprites;
 
+    private bool isDragging = false;
+    private bool isPressing = false;
+    private float pressTime = 0f;
     
-
     private void Awake()
     {
-        _gameManager = GameManager11.Instance;
         _tileManager = TileManager.Instance;
-        _tileRoad = GetComponent<TileRoad>();
+        _tileData = GetComponent<TileData>();
+        _tileInfo = GetComponent<TileInfo>();
         _collider = GetComponent<PolygonCollider2D>();
+        
     }
-
+    
     private void OnMouseDown()
     {
-        if (!_tileManager.isTileMoveMode)
-        {
-            Debug.LogWarning("It doesn't work when not in isTileMoveMode");
-            return;
-        }
-
         if (EventSystem.current.IsPointerOverGameObject())
             return;
-
-
+        
+        isPressing = true;
+        pressTime = 0;
         originalPosition = transform.position;
-        _sprites = GetComponentsInChildren<SpriteRenderer>();
+        _sprites = GetComponentsInChildren<SpriteRenderer>();   
         originalColor = _sprites[0].color;
-        
-        if (_collider != null)
-            _collider.enabled = false;
-
-        //_gameManager.tileRoad = _tileRoad;
-        //_gameManager.ShowTileInfo();
+        // 들어 올린 것 처럼 보인다
+        UpdateSpriteOrder();
     }
-
-    private void OnMouseDrag()
+    
+    private void Update()
     {
-        if (!_tileManager.isTileMoveMode)
+        if (isPressing && !isDragging)
         {
-            Debug.LogWarning("It doesn't work when not in isTileMoveMode");
-            return;
-        }
-
-        //if (EventSystem.current.IsPointerOverGameObject())
-        //    return;
-        
-        Plane plane = new Plane(Vector3.forward, 0);
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        
-
-        for (int i = 0; i < _sprites.Length; i++)
-        {
-            _sprites[i].sortingOrder = 100 + i;
-        }
-        
-        if (plane.Raycast(ray, out float distance))
-        {
-            Vector2 point = ray.GetPoint(distance);
-            Vector2 delta = point - originalPosition;
-
-            // 기준 벡터들
-            Vector2 diagUpRight = new Vector2(_tileRoad.cellSize[0], _tileRoad.cellSize[1]);
-            Vector2 diagUpLeft  = new Vector2(-_tileRoad.cellSize[0], _tileRoad.cellSize[1]);
-            Vector2 diagDownRight = new Vector2(_tileRoad.cellSize[0], -_tileRoad.cellSize[1]);
-            Vector2 diagDownLeft  = new Vector2(-_tileRoad.cellSize[0], -_tileRoad.cellSize[1]);
-            Vector2 horizontal = new Vector2(_tileRoad.cellSize[0] * 2, 0f);
-            Vector2 rhorizontal = new Vector2(-_tileRoad.cellSize[0] * 2, 0f);
-            Vector2 vertical   = new Vector2(0f, _tileRoad.cellSize[1] * 2);
-            Vector2 rvertical   = new Vector2(0f, -_tileRoad.cellSize[1] * 2);
-            
-
-            // 가장 가까운 방향 찾기
-            Vector2[] directions = { diagUpRight, diagUpLeft, diagDownRight, diagDownLeft, horizontal, rhorizontal, vertical, rvertical };
-            Vector2 bestDir = directions[0];
-            float maxDot = Vector2.Dot(delta.normalized, directions[0].normalized);
-
-            for (int i = 1; i < directions.Length; i++)
+            pressTime += Time.deltaTime;
+                
+            // 0.5초 이상 누르면 이동 모드로 전환
+            if (pressTime >= 0.5f)
             {
-                float dot = Vector2.Dot(delta.normalized, directions[i].normalized);
-                if (dot > maxDot)
-                {
-                    maxDot = dot;
-                    bestDir = directions[i];
-                }
+                isDragging = true;
             }
-
-            // 몇 칸 움직일지 계산
-            float magnitude = delta.magnitude;
-            float stepSize = bestDir.magnitude;
-            int steps = Mathf.RoundToInt(magnitude / stepSize);
-
-            // 새로운 위치 계산
-            Vector2 newPos = originalPosition + (bestDir.normalized * stepSize * steps);
-            transform.position = new Vector2(newPos.x, newPos.y);
         }
 
-        bool isValid = IsValidPosition(transform.position);
-
-        foreach (var sprite in _sprites)
+        if (isDragging)
         {
-            if (isValid)
-                sprite.color = originalColor;
-            else
-                sprite.color = Color.red;
+            Plane plane = new Plane(Vector3.forward, 0);
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            
+            _collider.enabled = false;
+            
+            if (plane.Raycast(ray, out float distance))
+            {
+                Vector2 point = ray.GetPoint(distance);
+                Vector2 delta = point - originalPosition;
+        
+                // 기준 벡터들
+                Vector2 diagUpRight = new Vector2(_tileManager.tileSize[0], _tileManager.tileSize[1]);
+                Vector2 diagUpLeft  = new Vector2(-_tileManager.tileSize[0], _tileManager.tileSize[1]);
+                Vector2 diagDownRight = new Vector2(_tileManager.tileSize[0], -_tileManager.tileSize[1]);
+                Vector2 diagDownLeft  = new Vector2(-_tileManager.tileSize[0], -_tileManager.tileSize[1]);
+                Vector2 horizontal = new Vector2(_tileManager.tileSize[0] * 2, 0f);
+                Vector2 rhorizontal = new Vector2(-_tileManager.tileSize[0] * 2, 0f);
+                Vector2 vertical = new Vector2(0f, _tileManager.tileSize[1] * 2);
+                Vector2 rvertical = new Vector2(0f, -_tileManager.tileSize[1] * 2);
+                Vector2 dualHorizontalUp = new Vector2(_tileManager.tileSize[0] * 4, _tileManager.tileSize[1] * 2);
+                Vector2 dualHorizontalDown = new Vector2(_tileManager.tileSize[0] * 4, -_tileManager.tileSize[1] * 2);
+                Vector2 rdualHorizontalUp = new Vector2(-_tileManager.tileSize[0] * 4, _tileManager.tileSize[1] * 2);
+                Vector2 rdualHorizontalDown = new Vector2(-_tileManager.tileSize[0] * 4, -_tileManager.tileSize[1] * 2);
+                Vector2 dualVerticalUp = new Vector2(_tileManager.tileSize[0] * 2, _tileManager.tileSize[1] * 4);
+                Vector2 dualVerticalDown = new Vector2(_tileManager.tileSize[0] * 2, -_tileManager.tileSize[1] * 4);
+                Vector2 rdualVerticalUp = new Vector2(-_tileManager.tileSize[0] * 2, _tileManager.tileSize[1] * 4);
+                Vector2 rdualVerticalDown = new Vector2(-_tileManager.tileSize[0] * 2, -_tileManager.tileSize[1] * 4);
+                Vector2 dualUpRight = new Vector2(_tileManager.tileSize[0] * 3, _tileManager.tileSize[1]);
+                Vector2 dualUpleft = new Vector2(-_tileManager.tileSize[0] * 3, _tileManager.tileSize[1]);
+                Vector2 dualDownRight = new Vector2(_tileManager.tileSize[0] * 3, -_tileManager.tileSize[1]);
+                Vector2 dualDownleft = new Vector2(-_tileManager.tileSize[0] * 3, -_tileManager.tileSize[1]);
+                Vector2 rdualUpRight = new Vector2(_tileManager.tileSize[0], _tileManager.tileSize[1] * 3);
+                Vector2 rdualUpleft = new Vector2(-_tileManager.tileSize[0], _tileManager.tileSize[1] * 3);
+                Vector2 rdualDownRight = new Vector2(_tileManager.tileSize[0], -_tileManager.tileSize[1] * 3);
+                Vector2 rdualDownleft = new Vector2(-_tileManager.tileSize[0], -_tileManager.tileSize[1] * 3);
+                Vector2 trippleUpRight = new Vector2(_tileManager.tileSize[0] * 5, _tileManager.tileSize[1]);
+                Vector2 trippleUpleft = new Vector2(-_tileManager.tileSize[0] * 5, _tileManager.tileSize[1]);
+                Vector2 trippleDownRight = new Vector2(_tileManager.tileSize[0] * 5, -_tileManager.tileSize[1]);
+                Vector2 trippleDownleft = new Vector2(-_tileManager.tileSize[0] * 5, -_tileManager.tileSize[1]);
+                Vector2 trippleUpdualRight = new Vector2(_tileManager.tileSize[0] * 5, _tileManager.tileSize[1] * 3);
+                Vector2 trippleUpdualleft = new Vector2(-_tileManager.tileSize[0] * 5, _tileManager.tileSize[1] * 3);
+                Vector2 trippleDowndualRight = new Vector2(_tileManager.tileSize[0] * 5, -_tileManager.tileSize[1] * 3);
+                Vector2 trippleDowndualleft = new Vector2(-_tileManager.tileSize[0] * 5, -_tileManager.tileSize[1] * 3);
+                Vector2 rtrippleUpRight = new Vector2(_tileManager.tileSize[0], _tileManager.tileSize[1] * 5);
+                Vector2 rtrippleUpleft = new Vector2(-_tileManager.tileSize[0], _tileManager.tileSize[1] * 5);
+                Vector2 rtrippleDownRight = new Vector2(_tileManager.tileSize[0], -_tileManager.tileSize[1] * 5);
+                Vector2 rtrippleDownleft = new Vector2(-_tileManager.tileSize[0], -_tileManager.tileSize[1] * 5);
+                Vector2 rtrippleUpdualRight = new Vector2(_tileManager.tileSize[0] * 3, _tileManager.tileSize[1] * 5);
+                Vector2 rtrippleUpdualleft = new Vector2(-_tileManager.tileSize[0] * 3, _tileManager.tileSize[1] * 5);
+                Vector2 rtrippleDowndualRight = new Vector2(_tileManager.tileSize[0] * 3, -_tileManager.tileSize[1] * 5);
+                Vector2 rtrippleDowndualleft = new Vector2(-_tileManager.tileSize[0] * 3, -_tileManager.tileSize[1] * 5);
+                
+        
+                // 가장 가까운 방향 찾기
+                Vector2[] directions =
+                {
+                    diagUpRight, 
+                    diagUpLeft, 
+                    diagDownRight, 
+                    diagDownLeft, 
+                    horizontal, 
+                    rhorizontal, 
+                    vertical, 
+                    rvertical,
+                    dualHorizontalUp,
+                    dualHorizontalDown,
+                    rdualHorizontalUp,
+                    rdualHorizontalDown,
+                    dualVerticalUp,
+                    dualVerticalDown,
+                    rdualVerticalUp,
+                    rdualVerticalDown,
+                    dualUpRight,
+                    dualUpleft,
+                    dualDownRight,
+                    dualDownleft,
+                    rdualUpRight,
+                    rdualUpleft,
+                    rdualDownRight,
+                    rdualDownleft,
+                    trippleUpRight,
+                    trippleUpleft,
+                    trippleDownRight,
+                    trippleDownleft,
+                    trippleUpdualRight,
+                    trippleUpdualleft,
+                    trippleDowndualRight,
+                    trippleDowndualleft,
+                    rtrippleUpRight,
+                    rtrippleUpleft,
+                    rtrippleDownRight,
+                    rtrippleDownleft,
+                    rtrippleUpdualRight,
+                    rtrippleUpdualleft,
+                    rtrippleDowndualRight,
+                    rtrippleDowndualleft,
+                };
+                
+                Vector2 bestDir = directions[0];
+                float maxDot = Vector2.Dot(delta.normalized, directions[0].normalized);
+        
+                for (int i = 1; i < directions.Length; i++)
+                {
+                    float dot = Vector2.Dot(delta.normalized, directions[i].normalized);
+                    if (dot > maxDot)
+                    {
+                        maxDot = dot;
+                        bestDir = directions[i];
+                    }
+                }
+        
+                // 몇 칸 움직일지 계산
+                float magnitude = delta.magnitude;
+                float stepSize = bestDir.magnitude;
+                int steps = Mathf.RoundToInt(magnitude / stepSize);
+        
+                // 새로운 위치 계산
+                Vector2 newPos = originalPosition + (bestDir.normalized * stepSize * steps);
+                transform.position = new Vector2(newPos.x, newPos.y);
+            }
+        
+            bool isValid = IsValidPosition(transform.position);
+        
+            foreach (var sprite in _sprites)
+            {
+                if (isValid)
+                    sprite.color = originalColor;
+                else
+                    sprite.color = Color.red;
+            }
         }
     }
-
+    
     private void OnMouseUp()
     {
-        if (!_tileManager.isTileMoveMode)
+        if (isDragging)
         {
-            Debug.LogWarning("It doesn't work when not in isTileMoveMode");
-            return;
+            foreach (var sprite in _sprites)
+            {
+                sprite.color = originalColor;
+            }
+        
+            Collider2D hit = Physics2D.OverlapPoint(transform.position);
+            TileData tileData = hit != null ? hit.GetComponent<TileData>() : null;
+    
+            if (tileData != null)
+            {
+                transform.position = originalPosition;
+                UpdateGridPosition();
+                Debug.Log("this location already located");
+            }
+            else
+            {
+                UpdateGridPosition();
+            }
+        
+            if (_collider != null)
+                _collider.enabled = true;
         }
 
-        //if (EventSystem.current.IsPointerOverGameObject())
-        //    return;
-        
-        foreach (var sprite in _sprites)
-        {
-            sprite.color = originalColor;
-        }
-        
-        Collider2D hit = Physics2D.OverlapPoint(transform.position);
-        TileRoad tileRoad = hit != null ? hit.GetComponent<TileRoad>() : null;
-
-        if (tileRoad != null)
-        {
-            Debug.Log($"{tileRoad.row}, {tileRoad.col}");
-            transform.position = originalPosition;
-            UpdateGridPosition();
-            Debug.Log("this location already located");
-        }
-        else
-        {
-            UpdateGridPosition();    
-        }
-        
-        if (_collider != null)
-            _collider.enabled = true;
+        isDragging = false;
+        isPressing = false;
+        pressTime = 0;
+        UpdateGridPosition();
     }
-
+    
     private void UpdateGridPosition()
     {
-        _tileRoad.UpdateMapping(_tileRoad.GetGridSize(_tileRoad.mapLevel), transform.position);
-        _tileRoad.UpdateTileSerialNumber();
+        _tileData.UpdateMapping(transform.position);
+        _tileData.tileIndex = _tileData.UpdateTileIndex();
+        _tileInfo.UpdateSpriteOrder();
+        _tileManager.SetNeighbors();
     }
-
+    
     private bool IsValidPosition(Vector2 pos)
     {
         Collider2D hit = Physics2D.OverlapPoint(pos);
         return hit == null || hit.gameObject == this.gameObject;
+    }
+
+    private void UpdateSpriteOrder()
+    {
+        foreach (SpriteRenderer sr in _sprites)
+        {
+            bool isTower = sr.GetComponent<Tower2>() != null;
+
+            if (isTower)
+            {
+                int towerOrder = 1000 + (_tileInfo.tileIndex * 10);
+                sr.sortingOrder = towerOrder;
+            }
+            else
+            {
+                int baseOrder = _tileInfo.originBlockOrder.ContainsKey(sr) ? _tileInfo.originBlockOrder[sr] : 0;
+                sr.sortingOrder = baseOrder + 1000;    
+            }
+            
+            
+        }
     }
 
 }

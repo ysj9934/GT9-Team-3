@@ -2,145 +2,65 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
+using UnityEngine.EventSystems;
+using Random = UnityEngine.Random;
+
 
 public class BlockInfo : MonoBehaviour
 {
-    private TileManager _tileManager;
-    private TileRoad _tileRoad;
-    private Tower_Tile[] _towerTile;
-    public Collider2D _collider2D;
-    private Tower1 _tower1;
-    
+    public TileInfo _tileInfo;
+    [SerializeField] public BlockData _blockData;
+    [SerializeField] public SpriteRenderer spriteRenderer;
+    [SerializeField] public BlockCategory blockCategory;
     [SerializeField] public int blockSerialNumber;
-    [SerializeField] private BlockCategory blockCategory;
-    public bool hasTower;
-    // 임시 사용 타워 프리팹
-    // Temporary tower prefab for testing purposes
-    [SerializeField] private GameObject towerPrefab;
-    
 
-    // 타워 설치 UI
-    [SerializeField] private GameObject towerPlacementUI;   // 타워 설치 UI GameObject;
-    [SerializeField] public TowerBuildUI buildUI;
+    private Collider2D _collider;
+    
+    public int level = 1;
+    public bool hasTower = false;
+    
+    // temp
+    [SerializeField] public GameObject towerUI;
+    [SerializeField] public GameObject towerPrefab;
 
     private void Awake()
     {
-        _tileManager = TileManager.Instance;
-        _tileRoad = GetComponentInParent<TileRoad>();
-        _towerTile = GetComponentsInChildren<Tower_Tile>();
-        _collider2D = GetComponent<Collider2D>();
-        
+        _tileInfo = GetComponentInParent<TileInfo>();
+        _collider = GetComponent<Collider2D>();
+        if (towerUI != null)
+            towerUI.SetActive(false);
     }
 
-    private void Start()
+    public void UpdateWorldLevel(int level)
     {
-        _tileManager = TileManager.Instance;
-        buildUI = FindObjectOfType<TowerBuildUI>();
-
-        // 타워 설치 UI 비활성화
-        if (towerPlacementUI != null)
-            towerPlacementUI.SetActive(false);
-
-        // TileEditMode가 아닐 때 작동 안함.
-        if (_collider2D != null)
-            _collider2D.enabled = false;
+        this.level = level;
+        spriteRenderer.sprite = _blockData.sprites[level - 1];
     }
 
     private void OnMouseDown()
     {
-        if (_tileManager == null)
+        if (EventSystem.current.IsPointerOverGameObject())
+            return;
+        
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        if (Physics.Raycast(ray, out RaycastHit hit))
         {
-            _tileManager = TileManager.Instance;
+            Debug.Log(hit.collider.gameObject.name);
+            
+            if (hit.collider.gameObject != this.gameObject)
+            {
+                // 내가 아닌 다른 GameObject가 클릭된 경우 → 무시
+                return;
+            }
         }
 
-        if (!_tileManager.isTileEditMode)
-        {
-            Debug.LogWarning("It doesn't work when not in TileEditMode");
-            towerPlacementUI.SetActive(false);
-            return;
-        }
-
-        if (!_tileRoad.isSelected)
-            return;
-
-
-        if (!hasTower)
-            //ToggleTowerPlacementUI();
-            ToggleTowerPlacementUI2();
+        towerUI.SetActive(!towerUI.activeSelf);
     }
-
-
-
-    // 타일 편집모드에서 타워 설치를 가능하도록 한다.
-
-    // 타워 설치 UI 활성화/비활성화 토글
-    // Toggle tower placement UI on/off
-    public void ToggleTowerPlacementUI()
+    
+    // 명칭변경 필요
+    public void SetTower()
     {
-        // TileEditMode가 아닐 때 작동 안함.
-        if (_tileManager == null)
-        {
-            _tileManager = TileManager.Instance;
-        }
-
-        if (!_tileManager.isTileEditMode)
-        {
-            Debug.LogWarning("It doesn't work when not in TileEditMode");
-            towerPlacementUI.SetActive(false);
-            return;
-        }
-
-        towerPlacementUI.SetActive(!towerPlacementUI.activeSelf);
-    }
-
-    public void ToggleTowerPlacementUI2()
-    {
-        // TileEditMode가 아닐 때 작동 안함.
-        if (_tileManager == null)
-        {
-            _tileManager = TileManager.Instance;
-        }
-
-        if (!_tileManager.isTileEditMode)
-        {
-            Debug.LogWarning("It doesn't work when not in TileEditMode");
-            //buildUI.SetActive(false);
-            return;
-        }
-
-        bool isOpening = buildUI.root.gameObject.activeSelf;
-        if (isOpening)
-            buildUI.Hide(); 
-        else
-            buildUI.ShowAt(this);
-    }
-
-
-    // 타워 신규 생성
-    public void CallNumber(TowerBlueprint bp)
-    {
-        // TileEditMode가 아닐 때 작동 안함.
-        if (!_tileManager.isTileEditMode)
-        {
-            Debug.LogWarning("It doesn't work when not in TileEditMode");
-            return;
-        }
-
-        _tileRoad.ReceiveBlockNumber(blockSerialNumber, true, bp);
-    }
-
-    // 타워 판매
-    public void CallNumber2()
-    {
-        // TileEditMode가 아닐 때 작동 안함.
-        if (!_tileManager.isTileEditMode)
-        {
-            Debug.LogWarning("It doesn't work when not in TileEditMode");
-            return;
-        }
-
-        _tileRoad.ReceiveBlockNumber(blockSerialNumber, false, null);
+        _tileInfo._tilePlaceOnTower.HandleTowerPlacement(blockSerialNumber, hasTower);
     }
 
     public void PlaceTower(TowerBlueprint bp)
@@ -154,7 +74,7 @@ public class BlockInfo : MonoBehaviour
         Vector2 pos = new Vector2(transform.position.x, transform.position.y + 0.37f);
         GameObject go = Instantiate(bp.towerPrefab, pos, Quaternion.identity);
         go.transform.SetParent(transform);
-        Tower1 tower = go.GetComponent<Tower1>();
+        Tower2 tower = go.GetComponent<Tower2>();
         tower.Intialize(this);
         tower.ApplyData(bp.data);
         ResourceManager.Instance.Spend(bp.CostType, bp.CostValue);
@@ -162,12 +82,10 @@ public class BlockInfo : MonoBehaviour
         hasTower = true;
         Debug.Log("Placed tower");
 
-        if (_collider2D != null)
-            _collider2D.enabled = false;
+        if (_collider != null)
+            _collider.enabled = false;
     }
-
-
-
+    
     public void PlaceTower()
     {
         if (hasTower)
@@ -181,28 +99,17 @@ public class BlockInfo : MonoBehaviour
         // 본인에게 설치
         GameObject go = Instantiate(towerPrefab, pos, Quaternion.identity);
         go.transform.SetParent(transform);
-        Tower1 tower = go.GetComponent<Tower1>();
+        Tower2 tower = go.GetComponent<Tower2>();
         tower.Intialize(this);
 
         hasTower = true;
         Debug.Log("Placed tower");
 
-        if (_collider2D != null)
-            _collider2D.enabled = false;
+        if (_collider != null)
+            _collider.enabled = false;
 
         // 타워 설치시 UI 비활성화
         // Disable UI when a tower is placed;
-        //ToggleTowerPlacementUI();
-    }
-
-    public void RemoveTower()
-    {
-        _tower1 = GetComponentInChildren<Tower1>();
-        Destroy(_tower1.gameObject);
-
-        hasTower = false;
-
-        if (_collider2D != null)
-            _collider2D.enabled = true;
+        towerUI.SetActive(!towerUI.activeSelf);
     }
 }
