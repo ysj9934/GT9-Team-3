@@ -63,7 +63,7 @@ public class TileInfo : TileData
                 SpriteRenderer[] spriteRenderers = bi.GetComponentsInChildren<SpriteRenderer>(true);
                 foreach (var sr in spriteRenderers)
                 {
-                    bool isTower = sr.GetComponent<Tower2>() != null;
+                    bool isTower = sr.GetComponent<Tower1>() != null;
 
                     if (isTower)
                     {

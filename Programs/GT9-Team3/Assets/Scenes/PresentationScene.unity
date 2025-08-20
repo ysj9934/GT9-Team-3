@@ -383,22 +383,6 @@ MonoBehaviour:
   m_CameraActivatedEvent:
     m_PersistentCalls:
       m_Calls: []
---- !u!4 &367874779 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2340488764103222346, guid: 1309173f8e2f8cd43aacf64911676477, type: 3}
-  m_PrefabInstance: {fileID: 5766896515803786906}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &367874780 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8976502372533630626, guid: 1309173f8e2f8cd43aacf64911676477, type: 3}
-  m_PrefabInstance: {fileID: 5766896515803786906}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ff80029023f500848bf51f8adb67871f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &581354575
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -746,7 +730,7 @@ Transform:
   m_Children:
   - {fileID: 869072415}
   - {fileID: 581354576}
-  - {fileID: 367874779}
+  - {fileID: 5766896515803786907}
   - {fileID: 1840306260095831589}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1737,7 +1721,7 @@ PrefabInstance:
     - target: {fileID: 1844378960917239537, guid: c9890c154bc31c94ca183d3f753a0d40, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 367874780}
+      objectReference: {fileID: 0}
     - target: {fileID: 1844378960917239537, guid: c9890c154bc31c94ca183d3f753a0d40, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: UpdateTempLevel
@@ -1881,7 +1865,7 @@ PrefabInstance:
     - target: {fileID: 4247502158377657823, guid: c9890c154bc31c94ca183d3f753a0d40, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 367874780}
+      objectReference: {fileID: 0}
     - target: {fileID: 4247502158377657823, guid: c9890c154bc31c94ca183d3f753a0d40, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: Initialize
@@ -1893,7 +1877,7 @@ PrefabInstance:
     - target: {fileID: 4311738156208368684, guid: c9890c154bc31c94ca183d3f753a0d40, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 367874780}
+      objectReference: {fileID: 0}
     - target: {fileID: 4311738156208368684, guid: c9890c154bc31c94ca183d3f753a0d40, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: UpdateTempLevel
@@ -2057,14 +2041,14 @@ PrefabInstance:
     - target: {fileID: 6586318415301559631, guid: c9890c154bc31c94ca183d3f753a0d40, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 367874780}
+      objectReference: {fileID: 0}
     - target: {fileID: 6586318415301559631, guid: c9890c154bc31c94ca183d3f753a0d40, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: ShowConnectedPath
       objectReference: {fileID: 0}
     - target: {fileID: 6586318415301559631, guid: c9890c154bc31c94ca183d3f753a0d40, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: TileManager1, Assembly-CSharp
+      value: TileManager, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 6759991561649897718, guid: c9890c154bc31c94ca183d3f753a0d40, type: 3}
       propertyPath: m_AnchorMax.y
@@ -2316,6 +2300,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1309173f8e2f8cd43aacf64911676477, type: 3}
+--- !u!4 &5766896515803786907 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2340488764103222346, guid: 1309173f8e2f8cd43aacf64911676477, type: 3}
+  m_PrefabInstance: {fileID: 5766896515803786906}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

@@ -74,7 +74,7 @@ public class BlockInfo : MonoBehaviour
         Vector2 pos = new Vector2(transform.position.x, transform.position.y + 0.37f);
         GameObject go = Instantiate(bp.towerPrefab, pos, Quaternion.identity);
         go.transform.SetParent(transform);
-        Tower2 tower = go.GetComponent<Tower2>();
+        Tower1 tower = go.GetComponent<Tower1>();
         tower.Intialize(this);
         tower.ApplyData(bp.data);
         ResourceManager.Instance.Spend(bp.CostType, bp.CostValue);
@@ -99,7 +99,7 @@ public class BlockInfo : MonoBehaviour
         // 본인에게 설치
         GameObject go = Instantiate(towerPrefab, pos, Quaternion.identity);
         go.transform.SetParent(transform);
-        Tower2 tower = go.GetComponent<Tower2>();
+        Tower1 tower = go.GetComponent<Tower1>();
         tower.Intialize(this);
 
         hasTower = true;

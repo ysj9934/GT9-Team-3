@@ -15,6 +15,11 @@ public class Tower1 : MonoBehaviour
     {
         rangeVisual = transform.Find("RangeVisual")?.gameObject;
     }
+    
+    public void Intialize(BlockInfo blockInfo)
+    {
+        
+    }
 
     private void Update()
     {

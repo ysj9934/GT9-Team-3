@@ -242,7 +242,7 @@ public class TileMove : MonoBehaviour
     {
         foreach (SpriteRenderer sr in _sprites)
         {
-            bool isTower = sr.GetComponent<Tower2>() != null;
+            bool isTower = sr.GetComponent<Tower1>() != null;
 
             if (isTower)
             {
