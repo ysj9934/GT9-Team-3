@@ -8,13 +8,13 @@ public class TowerBuildUI : MonoBehaviour
     private BlockInfo _blockInfo;
 
     [Header("Wiring")]
-    public RectTransform root;            // Panel ·çÆ®
-    public RectTransform listParent;          // Ç×¸ñÀÌ ¹èÄ¡µÉ Content
+    public RectTransform root;            // Panel ï¿½ï¿½Æ®
+    public RectTransform listParent;          // ï¿½×¸ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ Content
     public TowerOptionItem itemPrefab;
 
 
     [Header("Catalog")]
-    public List<TowerBlueprint> options;  // ³ëÃâÇÒ Å¸¿ö Á¾·ùµé
+    public List<TowerBlueprint> options;  // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Å¸ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
     private TowerPlacer placer;
     private Vector3Int pendingCell;
@@ -28,11 +28,11 @@ public class TowerBuildUI : MonoBehaviour
         pendingCell = cell;
         pendingWorld = world;
 
-        // À§Ä¡(¸¶¿ì½º ±ÙÃ³) ¹èÄ¡
+        // ï¿½ï¿½Ä¡(ï¿½ï¿½ï¿½ì½º ï¿½ï¿½Ã³) ï¿½ï¿½Ä¡
         root.gameObject.SetActive(true);
         //root.position = screenPos;
 
-        // ¸®½ºÆ® °»½Å
+        // ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½
         foreach (Transform c in listParent) Destroy(c.gameObject);
 
         foreach (var bp in options)
@@ -70,7 +70,7 @@ public class TowerBuildUI : MonoBehaviour
         if (!ResourceManager.Instance.CanAfford(bp.CostType, bp.CostValue)) return;
 
         //placer.PlaceTowerFromUI(bp, pendingWorld, pendingCell);
-        _blockInfo.CallNumber(bp);
+        // _blockInfo.CallNumber(bp);
 
         Hide();
     }
