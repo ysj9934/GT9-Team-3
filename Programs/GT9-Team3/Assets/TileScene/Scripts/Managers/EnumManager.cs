@@ -2,12 +2,30 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum TileRotation
+public enum TileDirector
 {
     Degree_0,
     Degree_90,
     Degree_180,
     Degree_270,
+}
+
+public enum TileCategory
+{
+    Normal,
+    Castle,
+    Spawner,
+    Grid,
+    None,
+}
+
+public enum TileShape
+{
+    Corner,
+    Straight,
+    TShape,
+    Cross,
+    None,
 }
 
 public enum TileDir
@@ -20,7 +38,8 @@ public enum TileDir
 
 public enum BlockCategory
 {
+    Ground,
     Road,
-    Empty,
-    PlaceTower
+    PlaceTower,
+    None,
 }
