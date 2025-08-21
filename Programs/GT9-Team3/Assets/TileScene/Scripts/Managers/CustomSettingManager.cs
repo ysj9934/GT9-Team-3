@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -17,27 +18,52 @@ public class CustomSettingManager : MonoBehaviour
 
         Instance = this;
     }
-    
+
+    private void Start()
+    {
+        waveSettingPrefab.gameObject.SetActive(false);
+    }
+
+    // custom setting
     [SerializeField] public RectTransform customSettingPrefab;
     [SerializeField] public RectTransform customSettingButton;
     [SerializeField] public TextMeshProUGUI customSettingButtonText;
-    private bool isOpen = false;
+    public bool isOpen_CustomSetting = true;
     
-    public void ToggleTileInfo()
+    // waveSetting
+    [SerializeField] public RectTransform waveSettingPrefab;
+    [SerializeField] public RectTransform waveSettingButton;
+    [SerializeField] public TextMeshProUGUI waveSettingButtonText;
+    
+    public void ToggleCustomSetting()
     {
-        if (isOpen)
+        if (isOpen_CustomSetting)
         {
             customSettingPrefab.anchoredPosition = new Vector2(1130, 0);
             customSettingButton.anchoredPosition = new Vector2(-220, 430);
             customSettingButtonText.text = "<";
-            isOpen = false;
+            isOpen_CustomSetting = false;
         }
         else
         {
             customSettingPrefab.anchoredPosition = new Vector2(785, 0);
             customSettingButton.anchoredPosition = new Vector2(-115, 430);
             customSettingButtonText.text = ">";
-            isOpen = true;
+            isOpen_CustomSetting = true;
         }
     }
+    
+    public void OpenWaveSetting()
+    {
+        waveSettingPrefab.gameObject.SetActive(true);
+        customSettingPrefab.gameObject.SetActive(false);
+    }
+
+    public void CloseWaveSetting()
+    {
+        waveSettingPrefab.gameObject.SetActive(false);
+        customSettingPrefab.gameObject.SetActive(true);
+    }
+
+
 }
