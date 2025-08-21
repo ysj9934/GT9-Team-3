@@ -8,6 +8,7 @@ public class Tower1 : MonoBehaviour
 {
     public TowerData data;
     private float cooldownTimer;
+    private BlockInfo _blockInfo;
 
     private GameObject rangeVisual;
 
@@ -15,17 +16,9 @@ public class Tower1 : MonoBehaviour
     {
         rangeVisual = transform.Find("RangeVisual")?.gameObject;
     }
-    
-    public void Intialize(BlockInfo blockInfo)
-    {
-        
-    }
 
     private void Update()
     {
-
-        if (data == null) return;
-
         if (cooldownTimer > 0f)
         {
             cooldownTimer -= Time.deltaTime;
@@ -38,7 +31,16 @@ public class Tower1 : MonoBehaviour
             Attack(target);
             cooldownTimer = 1f / data.attackSpeed;
         }
+    }
 
+    public void Intialize(BlockInfo blockInfo)
+    {
+        _blockInfo = blockInfo;
+    }
+
+    public void SellTowerOnBlock()
+    {
+        _blockInfo.CallNumber2();
     }
 
     public void Shoot(Transform target)
@@ -71,10 +73,8 @@ public class Tower1 : MonoBehaviour
         {
             float range = data.attackRange * 2f;
             rangeVisual.transform.localScale = new Vector3(range, range, 1f);
-            rangeVisual.SetActive(false);   // 처음엔 숨김
+            rangeVisual.SetActive(false); // 처음엔 숨김
         }
-
-        Debug.Log($"[타워] 스탯 적용됨: 고유번호 = {data.towerID},  이름 = {data.innerName}");
     }
 
     private void OnMouseDown()
@@ -84,7 +84,7 @@ public class Tower1 : MonoBehaviour
             // 클릭할 때마다 토글
             rangeVisual.SetActive(!rangeVisual.activeSelf);
 
-            TowerSellUI.Instance.Show(this);    // 판매 UI
+            TowerSellUI.Instance.Show(this); // 판매 UI를 표시
         }
     }
 
@@ -130,7 +130,7 @@ public class Tower1 : MonoBehaviour
                 case TargetPriority.Lowest_HP:
                     selected = enemies.OrderBy(e => e.CurrentHP).FirstOrDefault();
                     break;
-                case TargetPriority.Base_Closest:
+                case TargetPriority.Closest:
                     selected = enemies.OrderBy(e => Vector3.Distance(transform.position, e.transform.position)).FirstOrDefault();
                     break;
             }
@@ -143,6 +143,5 @@ public class Tower1 : MonoBehaviour
 
         return null;
     }
-
 
 }

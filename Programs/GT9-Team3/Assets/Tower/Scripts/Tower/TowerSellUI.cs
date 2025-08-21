@@ -29,9 +29,14 @@ public class TowerSellUI : MonoBehaviour
         if (currentTower != null)
         {
             Debug.Log("타워 제거 및 골드 환급");
-            ResourceManager.Instance.Earn(currentTower.data.makeCost, currentTower.data.sellValue);
-            Destroy(currentTower.gameObject);
+            ResourceManager.Instance.Earn(currentTower.data.makeCost, currentTower.data.makeValue);
+
+            currentTower.SellTowerOnBlock();
+
+            //Destroy(currentTower.gameObject);
             panel.SetActive(false);
+
+            
         }
     }
 }

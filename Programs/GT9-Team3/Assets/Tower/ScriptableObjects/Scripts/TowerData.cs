@@ -6,7 +6,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "NewTowerData", menuName = "Tower Defense/Tower Data")]
 public class TowerData : ScriptableObject
 {
-    public int towerID;
+    public string towerID;
     public string innerName;        // 타워를 시스템 내부에서 식별하기 위해 사용하는 고유 문자열 이름
     public int towerLevel;
     public string useProjectile;    // 해당 타워가 사용하는 발사체의 내부 이름(Inner_Name)을 정의하는 데이터
@@ -36,5 +36,5 @@ public class TowerData : ScriptableObject
 
 public enum AttackType { Single, AreaOfEffect }
 public enum EnemyType { Ground_Unit, Air_Unit }
-public enum TargetPriority { Boss, Base_Range, Lowest_HP, Base_Closest }
+public enum TargetPriority { Boss, Base_Range, Lowest_HP, Closest }
 public enum ResourceType { Gold, Mana, Crystal }
