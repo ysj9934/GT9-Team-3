@@ -3,17 +3,23 @@ using System.Collections;
 
 public class WaveDataManager : MonoBehaviour
 {
-    // 테스트용 Key값 (존재하는 key로 바꾸세요)
-    public int testKey = 10101;
+    
+    [SerializeField] private int testKey;
     public GameObject[] enemyPrefabs; // EnemyID에 맞춰 넣을 프리팹 배열
-    public Transform[] spawnerTransforms; // SpawnerID에 맞춰 배치할 스폰 위치들
+    //public Transform[] spawnerTransforms; // SpawnerID에 맞춰 배치할 스폰 위치들
+
+    private void Awake()
+    {
+        // 테스트용 Key값 (존재하는 key로 바꾸세요)
+        testKey = 10104;  // 인스펙터 값 무시하고 코드 값 강제 적용
+    }
 
     private void Start()
     {
         // WaveReader 싱글턴 접근
         if (WaveDataReader.Instance == null)
         {
-            Debug.LogError("WaveReader instance not found!");
+            Debug.LogError("웨이브 리더가 없음");
             return;
         }
 
@@ -21,11 +27,11 @@ public class WaveDataManager : MonoBehaviour
         var masterData = WaveDataReader.Instance.GetWaveMasterByKey(testKey);
         if (masterData != null)
         {
-            Debug.Log($"[Master] Key: {masterData.key}, Name: {masterData.Inner_Name}, {masterData.RoundIndex}라운드의 {masterData.WaveInRound}웨이브");
+            Debug.Log($"웨이브 정보 : {masterData.key}, 이름: {masterData.Inner_Name}, {masterData.RoundIndex}라운드의 {masterData.WaveInRound}웨이브");
         }
         else
         {
-            Debug.LogWarning($"Wave Master data not found for key: {testKey}");
+            Debug.LogWarning($"해당 키를 찾을 수 없음 : {testKey}");
         }
 
         // Wave Spawn Table 접근
@@ -45,9 +51,10 @@ public class WaveDataManager : MonoBehaviour
 
                 if (spawnSquence != -1 && enemyID != -1)    //해당 시퀀스(순서)가 존재하고 적이 존재하다면
                 {
-                    Debug.Log($"{spawnSquence} 순서 : {spawnStartTime}초에 {spawnerID} 스폰서에서 EnemyID_{i}가 {enemyID}인 몬스터가 " +
+                    Debug.Log($"{spawnSquence} 순서 : {spawnStartTime}초부터 {spawnerID} 스폰서에서 EnemyID_{i}가 {enemyID}인 몬스터가 " +
                               $"{spawnIntervalSec}초 간격으로 {spawnBatchSize}마리씩 {spawnRepeat}번 생성");
 
+                    EnemyDataManager.Instance.PrintEnemyInfo(enemyID);
                     // 스폰 코루틴 실행
                     StartCoroutine(SpawnEnemiesCoroutine(
                         spawnStartTime, spawnerID, enemyID, spawnBatchSize, spawnRepeat, spawnIntervalSec
@@ -57,7 +64,7 @@ public class WaveDataManager : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning($"Wave Spawn data not found for key: {testKey}");
+            Debug.LogWarning($"{testKey}에 해당하는 웨이브 생성 데이터가 없어요");
         }
     }
 
@@ -83,21 +90,32 @@ public class WaveDataManager : MonoBehaviour
 
     private void SpawnEnemy(int spawnerID, int enemyID)
     {
-        if (spawnerID < 0 || spawnerID >= spawnerTransforms.Length)
+        //if (spawnerID < 0 || spawnerID >= spawnerTransforms.Length)
+        //{
+        //    Debug.LogWarning($"스포너 {spawnerID}은 유효하지 않아요");
+        //    return;
+        //}
+        //if (enemyID < 0 || enemyID >= enemyPrefabs.Length)
+        //{
+        //    Debug.LogWarning($"적 {enemyID}은 유효하지 않아요");
+        //    return;
+        //}
+
+        GameObject prefab = EnemyDataReader.Instance.GetPrefabByKey(enemyID);
+        if (prefab == null)
         {
-            Debug.LogWarning($"스포너 {spawnerID}은 유효하지 않아요");
-            return;
-        }
-        if (enemyID < 0 || enemyID >= enemyPrefabs.Length)
-        {
-            Debug.LogWarning($"적 {enemyID}은 유효하지 않아요");
+            Debug.LogWarning($"EnemyID {enemyID}에 해당하는 프리팹을 찾을 수 없음");
             return;
         }
 
-        Transform spawnPoint = spawnerTransforms[spawnerID];
-        GameObject prefab = enemyPrefabs[enemyID];
+        if (TileManager.Instance == null || TileManager.Instance.startTile == null)
+        {
+            Debug.LogWarning("TileManager 또는 startTile이 비어있습니다. 스폰 불가");
+            return;
+        }
 
+        Transform spawnPoint = TileManager.Instance.startTile.transform;
         Instantiate(prefab, spawnPoint.position, spawnPoint.rotation);
-        Debug.Log($"{enemyID} 스포너에서 {spawnerID} 적 생성");
+        Debug.Log($"스포너에서 적 {enemyID} 생성");
     }
 }
