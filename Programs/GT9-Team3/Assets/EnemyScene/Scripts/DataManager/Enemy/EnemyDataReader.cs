@@ -18,7 +18,6 @@ public class EnemyDataReader : MonoBehaviour
         {
             // 다른 스크립트에서 EnemyReader.Instance로 접근할 수 있게 됨
             Instance = this;
-            DontDestroyOnLoad(gameObject);
         }
         else
         {
@@ -30,7 +29,6 @@ public class EnemyDataReader : MonoBehaviour
         masterLoader = new Enemy_DataTable_EnemyMaster_DataTableLoader();
         statLoader = new Enemy_DataTable_EnemyStatTableLoader();
 
-        //keyByName = new Dictionary<string, int>();
         keyByImage = new Dictionary<string, int>();
 
         // Enemy_Image 기반 조회용 딕셔너리를 초기화함
@@ -42,6 +40,22 @@ public class EnemyDataReader : MonoBehaviour
                     keyByImage[stat.Enemy_Image] = stat.key;
             }
         }
+    }
+
+    public GameObject GetPrefabByKey(int key)
+    {
+        var findName = EnemyDataReader.Instance.GetEnemyMasterByKey(key);
+
+        string path = $"Prefab/Enemy/{findName.Enemy_Image}";
+        GameObject prefab = Resources.Load<GameObject>(path);
+
+        if (prefab == null)
+        {
+            //Debug.LogWarning($"EnemyID {key}에 해당하는 프리팹({path})을 찾을 수 없음!");
+            Debug.LogWarning(findName.Enemy_Image);
+        }
+
+        return prefab;
     }
 
     #region Enemy Master Table 접근
@@ -83,6 +97,10 @@ public class EnemyDataReader : MonoBehaviour
     {
         if (string.IsNullOrEmpty(image) || keyByImage == null)
             return null;
+
+        // "(Clone)" 제거
+        if (image.EndsWith("(Clone)"))
+            image = image.Substring(0, image.Length - 7);
 
         if (keyByImage.TryGetValue(image, out int key))
             return GetEnemyStatByKey(key);
