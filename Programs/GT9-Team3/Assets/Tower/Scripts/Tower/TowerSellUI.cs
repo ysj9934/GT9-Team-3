@@ -28,6 +28,14 @@ public class TowerSellUI : MonoBehaviour
 
     public void Show(Tower1 tower)
     {
+        // 기존 타워의 사거리 숨김
+        if (currentTarget != null && currentTarget != tower)
+        {
+            Transform prevRV = currentTarget.transform.Find("RangeVisual");
+            if (prevRV != null)
+                prevRV.gameObject.SetActive(false);
+        }
+
         currentTower = tower;
         currentTarget = tower;
 
