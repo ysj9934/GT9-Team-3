@@ -64,16 +64,22 @@ public class TileInfo : TileData
                 foreach (var sr in spriteRenderers)
                 {
                     bool isTower = sr.GetComponent<Tower1>() != null;
+                    bool isRange = sr.GetComponent<TowerRange>() != null;
 
                     if (isTower)
                     {
                         int towerOrder = 1000 + (tileIndex * 10);
                         sr.sortingOrder = towerOrder;
                     }
+                    else if (isRange)
+                    {
+                        int towerRangeOrder = 1000 + (tileIndex * 10) - 1;
+                        sr.sortingOrder = towerRangeOrder;
+                    }
                     else
                     {
                         int baseOrder = originBlockOrder.ContainsKey(sr) ? originBlockOrder[sr] : 0;
-                        sr.sortingOrder = baseOrder + (tileIndex * 10) - 1000;    
+                        sr.sortingOrder = baseOrder + (tileIndex * 10) - 1000;
                     }
                 }
             }
