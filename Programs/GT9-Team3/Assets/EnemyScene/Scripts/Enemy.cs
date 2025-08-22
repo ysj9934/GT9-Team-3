@@ -17,6 +17,13 @@ public class Enemy : MonoBehaviour
 
     public Vector2 targetPosition;  // 목표 위치는 public으로 둠
 
+    public List<TileData> path;
+    private Transform[] pathPoints;
+    private int currentPathIndex = 0;
+    private bool isMove;
+
+
+
     private EnemyAnimationController animController;
     private bool isDead = false;
 
@@ -94,20 +101,64 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    // 경로를 설정하는 함수 (예: 경로를 따라 이동하는 적을 만들 때 사용)
-    //public void SetPath(Transform[] newPath)
-    //{
-    //    path = newPath;
-    //}
+    //경로를 설정하는 함수(예: 경로를 따라 이동하는 적을 만들 때 사용)
+    public void SetPath(List<TileData> newPath)
+    {
+        path = newPath;
+    }
 
     void Update()
     {
+        if (!isMove) return;
 
+        if (currentPathIndex >= pathPoints.Length)
+        {
+            isMove = false;
+            //gameObject.SetActive(false);
+            return;
+        }
+
+        Transform target = pathPoints[currentPathIndex];
+
+        // MoveTowards를 사용해 목표점까지 정확히 이동
+        Vector2 pos = target.position + new Vector3(0f, 0.16f, 0f);
+        transform.position = Vector3.MoveTowards(transform.position, pos, stat.movementSpeed * Time.deltaTime);
+
+        // 목표점에 도달했으면 다음 지점으로 이동
+        if (Vector3.Distance(transform.position, pos) < 0.01f)
+        {
+            currentPathIndex++;
+        }
     }
+
+    public void Initialize()
+    {
+        currentPathIndex = 0;
+
+        int childCount = path.Count;
+        pathPoints = new Transform[childCount];
+
+        for (int index = 0; index < childCount; index++)
+        {
+            pathPoints[index] = path[index].transform;
+        }
+
+        isMove = true;
+    }
+
+    
 
     //충돌 처리
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        Castle castle = collision.GetComponent<Castle>();
+        if (castle != null)
+        {
+            castle.TakeDamage(10); // 성에 데미지 주기
+
+            Die();
+        }
+
         // 총알에 맞은 경우
         if (collision.CompareTag("Bullet"))
         {
@@ -153,16 +204,6 @@ public class Enemy : MonoBehaviour
             Debug.Log("애니메이션이 없네?");
             Destroy(gameObject);
         }
-    }
-
-    private void OnMouseDown()
-    {
-        TakeDamage(10); // 클릭 시 데미지 1
-        Debug.Log($"{currentHp} , {animController.HasDied()}");
-        if (healthBar != null)
-            Debug.Log(healthBar.fillAmount);
-        else
-            Debug.LogWarning("healthBar is null");
     }
 
     void UpdateHealthBar()

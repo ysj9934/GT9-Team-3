@@ -1,5 +1,6 @@
-using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 
 public class WaveDataManager : MonoBehaviour
 {
@@ -7,11 +8,13 @@ public class WaveDataManager : MonoBehaviour
     [SerializeField] private int testKey;
     public GameObject[] enemyPrefabs; // EnemyID에 맞춰 넣을 프리팹 배열
     //public Transform[] spawnerTransforms; // SpawnerID에 맞춰 배치할 스폰 위치들
+    public List<TileData> path;
+
 
     private void Awake()
     {
         // 테스트용 Key값 (존재하는 key로 바꾸세요)
-        testKey = 10104;  // 인스펙터 값 무시하고 코드 값 강제 적용
+        //testKey = 10104;  // 인스펙터 값 무시하고 코드 값 강제 적용
     }
 
     private void Start()
@@ -22,20 +25,22 @@ public class WaveDataManager : MonoBehaviour
             Debug.LogError("웨이브 리더가 없음");
             return;
         }
+    }
 
-        // Wave Master Table 접근
-        var masterData = WaveDataReader.Instance.GetWaveMasterByKey(testKey);
+    public void StartWave(int key)
+    {
+        var masterData = WaveDataReader.Instance.GetWaveMasterByKey(key);
         if (masterData != null)
         {
             Debug.Log($"웨이브 정보 : {masterData.key}, 이름: {masterData.Inner_Name}, {masterData.RoundIndex}라운드의 {masterData.WaveInRound}웨이브");
         }
         else
         {
-            Debug.LogWarning($"해당 키를 찾을 수 없음 : {testKey}");
+            Debug.LogWarning($"해당 키를 찾을 수 없음 : {key}");
         }
 
         // Wave Spawn Table 접근
-        var spawnData = WaveDataReader.Instance.GetWaveSpawnByKey(testKey);
+        var spawnData = WaveDataReader.Instance.GetWaveSpawnByKey(key);
         if (spawnData != null)
         {
             //Debug.Log($"[Spawn] Key(고유번호): {spawnData.key}, EnemyID_01: {spawnData.EnemyID_01}, SpawnerID_01: {spawnData.SpawnerID_01}");
@@ -64,7 +69,7 @@ public class WaveDataManager : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning($"{testKey}에 해당하는 웨이브 생성 데이터가 없어요");
+            Debug.LogWarning($"{key}에 해당하는 웨이브 생성 데이터가 없어요");
         }
     }
 
@@ -90,32 +95,30 @@ public class WaveDataManager : MonoBehaviour
 
     private void SpawnEnemy(int spawnerID, int enemyID)
     {
-        //if (spawnerID < 0 || spawnerID >= spawnerTransforms.Length)
+        //GameObject prefab = EnemyDataReader.Instance.GetPrefabByKey(enemyID);
+        //if (prefab == null)
         //{
-        //    Debug.LogWarning($"스포너 {spawnerID}은 유효하지 않아요");
-        //    return;
-        //}
-        //if (enemyID < 0 || enemyID >= enemyPrefabs.Length)
-        //{
-        //    Debug.LogWarning($"적 {enemyID}은 유효하지 않아요");
+        //    Debug.LogWarning($"EnemyID {enemyID}에 해당하는 프리팹을 찾을 수 없음");
         //    return;
         //}
 
-        GameObject prefab = EnemyDataReader.Instance.GetPrefabByKey(enemyID);
-        if (prefab == null)
-        {
-            Debug.LogWarning($"EnemyID {enemyID}에 해당하는 프리팹을 찾을 수 없음");
-            return;
-        }
+        //if (TileManager.Instance == null || TileManager.Instance.startTile == null)
+        //{
+        //    Debug.LogWarning("TileManager 또는 startTile이 비어있습니다. 스폰 불가");
+        //    return;
+        //}
 
-        if (TileManager.Instance == null || TileManager.Instance.startTile == null)
-        {
-            Debug.LogWarning("TileManager 또는 startTile이 비어있습니다. 스폰 불가");
-            return;
-        }
+        //Transform spawnPoint = TileManager.Instance.startTile.transform;
+        //Instantiate(prefab, spawnPoint.position, spawnPoint.rotation);
+        //Debug.Log($"스포너에서 적 {enemyID} 생성");
 
+        path = TileManager.Instance.path;
         Transform spawnPoint = TileManager.Instance.startTile.transform;
-        Instantiate(prefab, spawnPoint.position, spawnPoint.rotation);
+        GameObject go = Instantiate(enemyPrefabs[Random.Range(0, enemyPrefabs.Length)], spawnPoint.position, spawnPoint.rotation);
+        Enemy enemy = go.GetComponent<Enemy>();
+        enemy.SetPath(path);
+        enemy.Initialize();
+
         Debug.Log($"스포너에서 적 {enemyID} 생성");
     }
 }

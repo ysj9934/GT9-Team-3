@@ -6,33 +6,45 @@ using UnityEngine.UI;
 
 public class Castle : MonoBehaviour
 {
-    public int health;
+    public HUD_CastleHP castleHUD;
+
+    public int currentHealth;
     public int maxHealth = 100;
 
-    [SerializeField] private Slider healthGauge;
-    [SerializeField] private TextMeshProUGUI healthText;
+    public bool isDead;
+
+
+    private void Awake()
+    {
+        
+    }
 
     public void Start()
     {
-        health = maxHealth;
+        currentHealth = maxHealth;
+        castleHUD = HUD_Canvas.Instance.castleHUD;
+        if (castleHUD != null)
+            castleHUD.Initialize(this);
+            castleHUD.UpdateHPbar();
     }
 
     public void TakeDamage(int damage)
     {
-        health -= damage;
+        if (isDead) return;
 
+        currentHealth -= damage;
+        
+        castleHUD.UpdateHPbar();
 
-        healthGauge.value = health / maxHealth;
-        healthText.text = $"{health.ToString()}/{maxHealth.ToString()}";
-
-        if (health <= 0)
+        if (currentHealth <= 0)
         {
             DestroyBasement();
         }
     }
 
     public void DestroyBasement()
-    { 
+    {
+        isDead = true;
         GameManager.Instance.gameDefeatPanel.SetActive(true);
     }
 
