@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class TowerBuildUI : MonoBehaviour
 {
+    private BlockInfo _blockInfo;
+
     [Header("Wiring")]
     public RectTransform root;            // Panel 루트
     public Transform listParent;          // 항목이 배치될 Content
@@ -54,9 +56,8 @@ public class TowerBuildUI : MonoBehaviour
         }
     }
 
-    public void ShowAt(TowerPlacer caller)
+    public void ShowAt(BlockInfo blockInfo)
     {
-        placer = caller;
         root.gameObject.SetActive(true);
 
         // 리스트 갱신
@@ -68,6 +69,8 @@ public class TowerBuildUI : MonoBehaviour
             bool canAfford = ResourceManager.Instance.CanAfford(bp.CostType, bp.CostValue);
             item.Setup2(bp, this, canAfford);
         }
+
+        _blockInfo = blockInfo;
     }
 
     public void Hide() => root.gameObject.SetActive(false);
@@ -84,7 +87,9 @@ public class TowerBuildUI : MonoBehaviour
     {
         if (!ResourceManager.Instance.CanAfford(bp.CostType, bp.CostValue)) return;
 
-        placer.PlaceTowerFromUI2(bp);
+        //placer.PlaceTowerFromUI2(bp);
+        _blockInfo.SetTower(bp);
+
         Hide();
     }
 }

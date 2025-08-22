@@ -81,13 +81,13 @@ public class BlockInfo : MonoBehaviour
         if (isOpening)
             towerUIdnjswls.Hide();
         else
-            towerUIdnjswls.ShowAt(towerPlacerdnjswls);
+            towerUIdnjswls.ShowAt(this);
     }
 
     // 명칭변경 필요
-    public void SetTower()
+    public void SetTower(TowerBlueprint bp)
     {
-        _tileInfo._tilePlaceOnTower.HandleTowerPlacement(blockSerialNumber, hasTower);
+        _tileInfo._tilePlaceOnTower.HandleTowerPlacement(blockSerialNumber, hasTower, bp);
     }
 
     public void PlaceTower(TowerBlueprint bp)

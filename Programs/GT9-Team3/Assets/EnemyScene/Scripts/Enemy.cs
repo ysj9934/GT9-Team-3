@@ -12,7 +12,7 @@ public class Enemy : MonoBehaviour
     string prefabName;
 
     //체력 관련
-    [SerializeField] private float currentHp;
+    [SerializeField] public float currentHp;
     [SerializeField] Image healthBar;     // Foreground Image 연결
 
     public Vector2 targetPosition;  // 목표 위치는 public으로 둠
@@ -152,6 +152,7 @@ public class Enemy : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         Castle castle = collision.GetComponent<Castle>();
+        Projectile projectile = collision.GetComponent<Projectile>();
         if (castle != null)
         {
             castle.TakeDamage(10); // 성에 데미지 주기
@@ -159,21 +160,27 @@ public class Enemy : MonoBehaviour
             Die();
         }
 
-        // 총알에 맞은 경우
-        if (collision.CompareTag("Bullet"))
+        if (projectile != null)
         {
-            Debug.Log("Enemy hit by Bullet");
-            TakeDamage(1); // 기본 데미지 1
-            Destroy(collision.gameObject); // 총알 제거
+            TakeDamage(projectile.data.damage); // 총알로부터 데미지 받기
+            Destroy(projectile.gameObject); // 총알 제거
         }
 
-        // 플레이어와 충돌한 경우
-        else if (collision.CompareTag("Player"))
-        {
-            Debug.Log("Enemy collided with Player");
-            // 예: 플레이어에 데미지 주거나 자폭 등
-            Die(); // 자폭형 적이라면
-        }
+        // 총알에 맞은 경우
+        //if (collision.CompareTag("Bullet"))
+        //{
+        //    Debug.Log("Enemy hit by Bullet");
+        //    TakeDamage(1); // 기본 데미지 1
+        //    Destroy(collision.gameObject); // 총알 제거
+        //}
+
+        //// 플레이어와 충돌한 경우
+        //else if (collision.CompareTag("Player"))
+        //{
+        //    Debug.Log("Enemy collided with Player");
+        //    // 예: 플레이어에 데미지 주거나 자폭 등
+        //    Die(); // 자폭형 적이라면
+        //}
     }
 
     public void TakeDamage(int damage)
