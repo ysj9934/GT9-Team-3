@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 /// <summary>
 /// TileData
@@ -15,7 +16,7 @@ public class TileData : MonoBehaviour
     public TileManager _tileManager;
     public TileRoadConnector _tileRoadConnector;
     public TileUI _tileUI;
-    
+    public TileMove _tileMove;
 
     [SerializeField] public TileCategory tileCategory;
     [SerializeField] public TileShape tileShape;
@@ -48,7 +49,7 @@ public class TileData : MonoBehaviour
     {
         _tileRoadConnector = GetComponent<TileRoadConnector>();
         _tileUI = GetComponent<TileUI>();
-        
+        _tileMove = GetComponent<TileMove>();
     }
 
     public virtual void Initialize(Vector2 pos)
@@ -79,7 +80,12 @@ public class TileData : MonoBehaviour
         this.tileRow = rowIndex;
         
         _tileManager.tileMap[originTileRow, originTileCol] = null;
-        _tileManager.tileMap[tileRow, tileCol] = this;
+        
+        if (tileCol > _tileManager.tileLength &&
+            tileRow > _tileManager.tileLength &&
+            tileCol < -1 &&
+            tileRow < -1)
+            _tileManager.tileMap[tileRow, tileCol] = this;
     }
     
     public void SetNeighbors(TileData[,] tileMap, int maxRow, int maxCol)

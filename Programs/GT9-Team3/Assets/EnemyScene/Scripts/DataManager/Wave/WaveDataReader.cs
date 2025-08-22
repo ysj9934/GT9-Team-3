@@ -16,7 +16,6 @@ public class WaveDataReader : MonoBehaviour
         {
             // 다른 스크립트에서 WaveReader.Instance로 접근할 수 있게 됨
             Instance = this;
-            DontDestroyOnLoad(gameObject);
         }
         else
         {
