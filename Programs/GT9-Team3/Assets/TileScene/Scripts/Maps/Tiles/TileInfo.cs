@@ -28,6 +28,12 @@ public class TileInfo : TileData
         UpdateSpriteOrder();
     }
 
+    public void InitializeTemp(Vector2 pos)
+    {
+        base.Initialize(pos);
+        UpdateSpriteOrder();
+    }   
+
     public override void UpdateMapping(Vector2 pos)
     {
         base.UpdateMapping(pos);
