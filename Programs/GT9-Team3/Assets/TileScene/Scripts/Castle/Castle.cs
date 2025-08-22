@@ -6,37 +6,37 @@ using UnityEngine.UI;
 
 public class Castle : MonoBehaviour
 {
-    private HUD_CastleHP castleHUD;
+    public HUD_CastleHP castleHUD;
 
-    public int health;
+    public int currentHealth;
     public int maxHealth = 100;
-
-    [SerializeField] private Slider healthGauge;
-    [SerializeField] private TextMeshProUGUI healthText;
 
     public bool isDead;
 
 
     private void Awake()
     {
-        castleHUD = HUD_Canvas.Instance.castleHUD;
+        
     }
 
     public void Start()
     {
-        health = maxHealth;
-        castleHUD.UpdateHPbar(health, maxHealth);
+        currentHealth = maxHealth;
+        castleHUD = HUD_Canvas.Instance.castleHUD;
+        if (castleHUD != null)
+            castleHUD.Initialize(this);
+            castleHUD.UpdateHPbar();
     }
 
     public void TakeDamage(int damage)
     {
         if (isDead) return;
 
-        health -= damage;
+        currentHealth -= damage;
         
-        castleHUD.UpdateHPbar(health, maxHealth);
+        castleHUD.UpdateHPbar();
 
-        if (health <= 0)
+        if (currentHealth <= 0)
         {
             DestroyBasement();
         }

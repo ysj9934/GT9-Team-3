@@ -9,19 +9,18 @@ public class HUD_CastleHP : MonoBehaviour
     public Castle castle;
     [SerializeField] private Slider hpbar;
     [SerializeField] private TextMeshProUGUI hpbarText;
+    private float healthPercent = 0f;
 
     public void Initialize(Castle castle)
     {
         this.castle = castle;
     }
 
-    public void UpdateHPbar(int currentHealth, int maxHealth)
+    public void UpdateHPbar()
     {
-        hpbarText.text = $"{currentHealth}/{maxHealth}";
+        hpbarText.text = $"{castle.currentHealth}/{castle.maxHealth}";
 
-        float healthPercent = 0f;
-
-        healthPercent = currentHealth / maxHealth;
+        healthPercent = (float)castle.currentHealth / castle.maxHealth;
 
         hpbar.value = healthPercent;
     }

@@ -154,7 +154,7 @@ public class Enemy : MonoBehaviour
         Castle castle = collision.GetComponent<Castle>();
         if (castle != null)
         {
-            castle.TakeDamage(50); // 성에 데미지 주기
+            castle.TakeDamage(10); // 성에 데미지 주기
 
             Die();
         }
