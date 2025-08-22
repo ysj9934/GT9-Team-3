@@ -10,9 +10,10 @@ public class TowerBlueprint : ScriptableObject
     public string displayName;
     public Sprite icon;
 
+
     public GameObject towerPrefab;
 
-    [HideInInspector] public TowerData data; // 런타임에 연결
+    public TowerData data; // 런타임에 연결
 
     public ResourceType CostType => data.makeCost;
     public int CostValue => data.makeValue;
@@ -22,19 +23,18 @@ public class TowerBlueprint : ScriptableObject
     {
         if (data == null)
         {
-            Debug.LogWarning($"[타워블루프린트] ScriptableObject TowerData가 비어있음: {displayName}");
+            Debug.LogWarning($"[TowerBlueprint] {name}의 data가 비어 있음");
             return;
         }
 
-        if (table.TryGetValue(data.towerID, out var row))
+        Debug.Log($"[TowerBlueprint] {name}의 데이터 매핑 시작: ID = {data.towerID}");
+
+        if (!table.TryGetValue(data.towerID, out var row))
         {
-            Debug.Log($"[TowerBlueprint] {data.towerID} 데이터 찾음. 매핑 시작");
-            TowerDataMapper.ApplyToSO(data, row);
+            Debug.LogWarning($"[TowerBlueprint] {name}: 데이터 테이블에 ID {data.towerID} 없음");
+            return;
         }
-        else
-        {
-            Debug.LogWarning($"[TowerBlueprint] {data.towerID} 에 해당하는 데이터 없음");
-        }
+
 
         TowerDataMapper.ApplyToSO(data, row);
 

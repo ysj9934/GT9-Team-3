@@ -79,13 +79,24 @@ public class Tower1 : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if (rangeVisual != null)
-        {
-            // 클릭할 때마다 토글
-            rangeVisual.SetActive(!rangeVisual.activeSelf);
+        bool isAlreadyOpen = TowerSellUI.Instance.IsOpenFor(this);
 
-            TowerSellUI.Instance.Show(this);    // 판매 UI
+        // UI 열려있고 같은 타워를 누른 경우 닫기
+        if (isAlreadyOpen)
+        {
+            TowerSellUI.Instance.Hide();
+
+            if (rangeVisual != null)
+                rangeVisual.SetActive(false);
+
+            return;
         }
+
+        // 다른 타워거나 처음 열리는 경우 기존 UI 닫고 새로 열기
+        TowerSellUI.Instance.Show(this);
+
+        if (rangeVisual != null)
+            rangeVisual.SetActive(true);
     }
 
     // 우선순위 
