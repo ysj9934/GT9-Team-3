@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditorInternal.Profiling.Memory.Experimental.FileFormat;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "NewTowerData", menuName = "Tower Defense/Tower Data")]
