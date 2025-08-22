@@ -24,17 +24,19 @@ public class BlockInfo : MonoBehaviour
     [SerializeField] public GameObject towerPrefab;
 
     // dnjswls
-    [SerializeField] public GameObject towerUIdnjswls;
+    [SerializeField] public TowerBuildUI towerUIdnjswls;
 
     private void Awake()
     {
         _tileInfo = GetComponentInParent<TileInfo>();
         _collider = GetComponent<Collider2D>();
+        towerUIdnjswls = FindObjectOfType<TowerBuildUI>();
+
         if (towerUI != null)
             towerUI.SetActive(false);
 
-        if (towerUIdnjswls != null)
-            towerUIdnjswls.SetActive(false);
+        //if (towerUIdnjswls != null)
+        //    towerUIdnjswls.root.SetActive(false);
 
     }
 
@@ -63,7 +65,7 @@ public class BlockInfo : MonoBehaviour
 
         towerUI.SetActive(!towerUI.activeSelf);
 
-        towerUIdnjswls.SetActive(!towerUIdnjswls.activeSelf);
+        //towerUIdnjswls.SetActive(!towerUIdnjswls.activeSelf);
     }
     
     // 명칭변경 필요
@@ -121,6 +123,6 @@ public class BlockInfo : MonoBehaviour
         // Disable UI when a tower is placed;
         towerUI.SetActive(!towerUI.activeSelf);
 
-        towerUIdnjswls.SetActive(!towerUIdnjswls.activeSelf);
+        //towerUIdnjswls.SetActive(!towerUIdnjswls.activeSelf);
     }
 }
