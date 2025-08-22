@@ -81,10 +81,10 @@ public class TileData : MonoBehaviour
         
         _tileManager.tileMap[originTileRow, originTileCol] = null;
         
-        if (tileCol > _tileManager.tileLength &&
-            tileRow > _tileManager.tileLength &&
-            tileCol < -1 &&
-            tileRow < -1)
+        //if (tileCol > _tileManager.tileLength &&
+        //    tileRow > _tileManager.tileLength &&
+        //    tileCol < -1 &&
+        //    tileRow < -1)
             _tileManager.tileMap[tileRow, tileCol] = this;
     }
     

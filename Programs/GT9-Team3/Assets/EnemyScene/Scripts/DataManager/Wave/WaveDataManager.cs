@@ -1,5 +1,6 @@
-using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 
 public class WaveDataManager : MonoBehaviour
 {
@@ -7,6 +8,8 @@ public class WaveDataManager : MonoBehaviour
     [SerializeField] private int testKey;
     public GameObject[] enemyPrefabs; // EnemyID에 맞춰 넣을 프리팹 배열
     //public Transform[] spawnerTransforms; // SpawnerID에 맞춰 배치할 스폰 위치들
+    public List<TileData> path;
+
 
     private void Awake()
     {
@@ -92,32 +95,30 @@ public class WaveDataManager : MonoBehaviour
 
     private void SpawnEnemy(int spawnerID, int enemyID)
     {
-        //if (spawnerID < 0 || spawnerID >= spawnerTransforms.Length)
+        //GameObject prefab = EnemyDataReader.Instance.GetPrefabByKey(enemyID);
+        //if (prefab == null)
         //{
-        //    Debug.LogWarning($"스포너 {spawnerID}은 유효하지 않아요");
-        //    return;
-        //}
-        //if (enemyID < 0 || enemyID >= enemyPrefabs.Length)
-        //{
-        //    Debug.LogWarning($"적 {enemyID}은 유효하지 않아요");
+        //    Debug.LogWarning($"EnemyID {enemyID}에 해당하는 프리팹을 찾을 수 없음");
         //    return;
         //}
 
-        GameObject prefab = EnemyDataReader.Instance.GetPrefabByKey(enemyID);
-        if (prefab == null)
-        {
-            Debug.LogWarning($"EnemyID {enemyID}에 해당하는 프리팹을 찾을 수 없음");
-            return;
-        }
+        //if (TileManager.Instance == null || TileManager.Instance.startTile == null)
+        //{
+        //    Debug.LogWarning("TileManager 또는 startTile이 비어있습니다. 스폰 불가");
+        //    return;
+        //}
 
-        if (TileManager.Instance == null || TileManager.Instance.startTile == null)
-        {
-            Debug.LogWarning("TileManager 또는 startTile이 비어있습니다. 스폰 불가");
-            return;
-        }
+        //Transform spawnPoint = TileManager.Instance.startTile.transform;
+        //Instantiate(prefab, spawnPoint.position, spawnPoint.rotation);
+        //Debug.Log($"스포너에서 적 {enemyID} 생성");
 
+        path = TileManager.Instance.path;
         Transform spawnPoint = TileManager.Instance.startTile.transform;
-        Instantiate(prefab, spawnPoint.position, spawnPoint.rotation);
+        GameObject go = Instantiate(enemyPrefabs[Random.Range(0, enemyPrefabs.Length)], spawnPoint.position, spawnPoint.rotation);
+        Enemy enemy = go.GetComponent<Enemy>();
+        enemy.SetPath(path);
+        enemy.Initialize();
+
         Debug.Log($"스포너에서 적 {enemyID} 생성");
     }
 }
