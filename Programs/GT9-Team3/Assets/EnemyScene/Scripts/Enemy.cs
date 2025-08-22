@@ -24,6 +24,11 @@ public class Enemy : MonoBehaviour
     {
         prefabName = gameObject.name;
 
+        // (Clone) 제거
+        string displayName = prefabName;
+        if (displayName.EndsWith("(Clone)"))
+            displayName = displayName.Substring(0, displayName.Length - 7);
+
         animController = GetComponent<EnemyAnimationController>();
 
         if (EnemyDataReader.Instance == null)
@@ -32,8 +37,7 @@ public class Enemy : MonoBehaviour
             return;
         }
 
-        Debug.Log(prefabName);
-        Debug.Log($"Looking for prefabName: '{prefabName}' in EnemyDataReader");
+        Debug.Log($"프리팹 이름 찾는 중: '{displayName}' in EnemyDataReader");
 
         data = EnemyDataReader.Instance.GetEnemyStatByImage(prefabName);
         if (data != null)
