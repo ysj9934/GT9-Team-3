@@ -54,6 +54,22 @@ public class TowerBuildUI : MonoBehaviour
         }
     }
 
+    public void ShowAt(TowerPlacer caller)
+    {
+        placer = caller;
+        root.gameObject.SetActive(true);
+
+        // 리스트 갱신
+        foreach (Transform c in listParent) Destroy(c.gameObject);
+
+        foreach (var bp in options)
+        {
+            var item = Instantiate(itemPrefab, listParent);
+            bool canAfford = ResourceManager.Instance.CanAfford(bp.CostType, bp.CostValue);
+            item.Setup2(bp, this, canAfford);
+        }
+    }
+
     public void Hide() => root.gameObject.SetActive(false);
 
     public void OnClickBuild(TowerBlueprint bp)
@@ -61,6 +77,14 @@ public class TowerBuildUI : MonoBehaviour
         if (!ResourceManager.Instance.CanAfford(bp.CostType, bp.CostValue)) return;
 
         placer.PlaceTowerFromUI(bp, pendingWorld, pendingCell);
+        Hide();
+    }
+
+    public void OnClickBuild2(TowerBlueprint bp)
+    {
+        if (!ResourceManager.Instance.CanAfford(bp.CostType, bp.CostValue)) return;
+
+        placer.PlaceTowerFromUI2(bp);
         Hide();
     }
 }

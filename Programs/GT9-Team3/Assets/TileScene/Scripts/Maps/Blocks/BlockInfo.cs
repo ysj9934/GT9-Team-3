@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using static UnityEditor.ObjectChangeEventStream;
 using Random = UnityEngine.Random;
 
 
@@ -25,12 +26,14 @@ public class BlockInfo : MonoBehaviour
 
     // dnjswls
     [SerializeField] public TowerBuildUI towerUIdnjswls;
+    private TowerPlacer towerPlacerdnjswls;
 
     private void Awake()
     {
         _tileInfo = GetComponentInParent<TileInfo>();
         _collider = GetComponent<Collider2D>();
         towerUIdnjswls = FindObjectOfType<TowerBuildUI>();
+        towerPlacerdnjswls = FindObjectOfType<TowerPlacer>();
 
         if (towerUI != null)
             towerUI.SetActive(false);
@@ -48,14 +51,20 @@ public class BlockInfo : MonoBehaviour
 
     private void OnMouseDown()
     {
+        //ToggleTowerPlacementUI();
+        ToggleTowerPlacementUI2();
+    }
+
+    public void ToggleTowerPlacementUI()
+    {
         if (EventSystem.current.IsPointerOverGameObject())
             return;
-        
+
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(ray, out RaycastHit hit))
         {
             Debug.Log(hit.collider.gameObject.name);
-            
+
             if (hit.collider.gameObject != this.gameObject)
             {
                 // 내가 아닌 다른 GameObject가 클릭된 경우 → 무시
@@ -64,10 +73,17 @@ public class BlockInfo : MonoBehaviour
         }
 
         towerUI.SetActive(!towerUI.activeSelf);
-
-        //towerUIdnjswls.SetActive(!towerUIdnjswls.activeSelf);
     }
-    
+
+    public void ToggleTowerPlacementUI2()
+    {
+        bool isOpening = towerUIdnjswls.root.gameObject.activeSelf;
+        if (isOpening)
+            towerUIdnjswls.Hide();
+        else
+            towerUIdnjswls.ShowAt(towerPlacerdnjswls);
+    }
+
     // 명칭변경 필요
     public void SetTower()
     {
@@ -123,6 +139,5 @@ public class BlockInfo : MonoBehaviour
         // Disable UI when a tower is placed;
         towerUI.SetActive(!towerUI.activeSelf);
 
-        //towerUIdnjswls.SetActive(!towerUIdnjswls.activeSelf);
     }
 }
