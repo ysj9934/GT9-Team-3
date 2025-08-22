@@ -80,12 +80,20 @@ public class TowerSellUI : MonoBehaviour
     {
         Debug.Log("판매 버튼 눌림");
 
-        if (currentTower != null)
-        {
-            Debug.Log("타워 제거 및 골드 환급");
-            ResourceManager.Instance.Earn(currentTower.data.makeCost, currentTower.data.sellValue);
-            Destroy(currentTower.gameObject);
-            panel.SetActive(false);
-        }
+        currentTower.blockInfo._tileInfo._tilePlaceOnTower.HandleTowerPlacement(
+            currentTower.blockInfo.blockSerialNumber, 
+            true, 
+            null,
+            currentTower);
+
+        panel.SetActive(false);
+
+        //if (currentTower != null)
+        //{
+        //    Debug.Log("타워 제거 및 골드 환급");
+        //    ResourceManager.Instance.Earn(currentTower.data.makeCost, currentTower.data.sellValue);
+        //    Destroy(currentTower.gameObject);
+        //    panel.SetActive(false);
+        //}
     }
 }

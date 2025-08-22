@@ -5,14 +5,16 @@ using UnityEngine;
 
 public class ResourceManager : MonoBehaviour
 {
-    public static ResourceManager Instance;
+    public static ResourceManager Instance { get; private set; }
 
-    private Dictionary<ResourceType, int> resources = new();
+    public Dictionary<ResourceType, int> resources = new();
 
     void Awake()
     {
         Instance = this;
-        resources[ResourceType.Gold] = 10000;
+
+        resources[ResourceType.Gold] = 5000;
+        resources[ResourceType.Tilepiece] = 5000;
     }
 
     public bool CanAfford(ResourceType type, int cost)
@@ -43,5 +45,15 @@ public class ResourceManager : MonoBehaviour
 
         resources[type] += amount;
         Debug.Log($"[ÀÚ¿ø] {type} +{amount} È¹µæ, ÇöÀç: {resources[type]}");
+    }
+
+    public int ShowTilePiece()
+    {
+        return resources.ContainsKey(ResourceType.Tilepiece) ? resources[ResourceType.Tilepiece] : 0;
+    }
+
+    public int showGold()
+    {
+        return resources.ContainsKey(ResourceType.Gold) ? resources[ResourceType.Gold] : 0;
     }
 }

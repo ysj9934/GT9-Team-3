@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class TowerBuildUI : MonoBehaviour
 {
-    private BlockInfo _blockInfo;
+    public BlockInfo _blockInfo;
 
     [Header("Wiring")]
     public RectTransform root;            // Panel ∑Á∆Æ
