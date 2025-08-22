@@ -23,12 +23,19 @@ public class BlockInfo : MonoBehaviour
     [SerializeField] public GameObject towerUI;
     [SerializeField] public GameObject towerPrefab;
 
+    // dnjswls
+    [SerializeField] public GameObject towerUIdnjswls;
+
     private void Awake()
     {
         _tileInfo = GetComponentInParent<TileInfo>();
         _collider = GetComponent<Collider2D>();
         if (towerUI != null)
             towerUI.SetActive(false);
+
+        if (towerUIdnjswls != null)
+            towerUIdnjswls.SetActive(false);
+
     }
 
     public void UpdateWorldLevel(int level)
@@ -55,6 +62,8 @@ public class BlockInfo : MonoBehaviour
         }
 
         towerUI.SetActive(!towerUI.activeSelf);
+
+        towerUIdnjswls.SetActive(!towerUIdnjswls.activeSelf);
     }
     
     // 명칭변경 필요
@@ -111,5 +120,7 @@ public class BlockInfo : MonoBehaviour
         // 타워 설치시 UI 비활성화
         // Disable UI when a tower is placed;
         towerUI.SetActive(!towerUI.activeSelf);
+
+        towerUIdnjswls.SetActive(!towerUIdnjswls.activeSelf);
     }
 }
