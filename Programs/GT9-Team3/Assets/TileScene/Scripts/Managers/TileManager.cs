@@ -88,6 +88,21 @@ public class TileManager : MonoBehaviour
         InitializeTileMap(tileLength);
         SetTileGrid(tileLength);
         SetSpawnerPosition();
+
+        foreach (var tileInfo in tileInfoList)
+        {
+            tileInfo.InitializeTemp(tileInfo.transform.position);
+        }
+
+        TileCastle tileCastle = endTile as TileCastle;
+        if (tileCastle != null)
+        {
+            tileCastle.InitializeTemp(tileCastle.transform.position);
+        }
+        else
+        {
+            Debug.LogError("startTile is not a TileCastle");
+        }
     }
 
     // 월드 변경시 타일 변경

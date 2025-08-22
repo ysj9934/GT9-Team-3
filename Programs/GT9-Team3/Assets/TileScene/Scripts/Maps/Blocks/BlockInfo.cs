@@ -38,9 +38,15 @@ public class BlockInfo : MonoBehaviour
         if (towerUI != null)
             towerUI.SetActive(false);
 
-        //if (towerUIdnjswls != null)
-        //    towerUIdnjswls.root.SetActive(false);
+        if (_collider != null)
+            _collider.enabled = false;
 
+    }
+
+    private void Start()
+    {
+        if (_collider != null)
+            _collider.enabled = true;
     }
 
     private void OnEnable()
