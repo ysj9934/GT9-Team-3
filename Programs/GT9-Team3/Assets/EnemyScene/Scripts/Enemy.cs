@@ -155,9 +155,9 @@ public class Enemy : MonoBehaviour
         Projectile projectile = collision.GetComponent<Projectile>();
         if (castle != null)
         {
-            castle.TakeDamage(10); // 성에 데미지 주기
+            castle.TakeDamage(stat.attackDamage); // 성에 데미지 주기
 
-            Die();
+            CastleDie();
         }
 
         if (projectile != null)
@@ -192,6 +192,16 @@ public class Enemy : MonoBehaviour
         if (currentHp <= 0) Die();
     }
 
+    private void CastleDie()
+    {
+        if (isDead) return;  // 중복 호출 방지
+
+        isDead = true;
+
+        Debug.Log("애니메이션이 없네?");
+        Destroy(gameObject);
+    }
+
     private void Die()
     {
         if (isDead) return;  // 중복 호출 방지
@@ -210,6 +220,9 @@ public class Enemy : MonoBehaviour
             // 애니메이터 없으면 바로 삭제
             Debug.Log("애니메이션이 없네?");
             Destroy(gameObject);
+
+            ResourceManager.Instance.Earn(ResourceType.Gold, stat.tilePieceAmount); // 타일 조각 추가
+            HUD_Canvas.Instance.castleHUD.UpdateGold();
         }
     }
 

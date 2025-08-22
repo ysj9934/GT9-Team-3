@@ -28,6 +28,17 @@ public class Castle : MonoBehaviour
             castleHUD.UpdateHPbar();
     }
 
+    public void ResetButton()
+    {
+        currentHealth = maxHealth;
+        castleHUD = HUD_Canvas.Instance.castleHUD;
+        if (castleHUD != null)
+            castleHUD.Initialize(this);
+        castleHUD.UpdateHPbar();
+
+        isDead = false;
+    }
+
     public void TakeDamage(int damage)
     {
         if (isDead) return;
@@ -45,7 +56,8 @@ public class Castle : MonoBehaviour
     public void DestroyBasement()
     {
         isDead = true;
-        GameManager.Instance.gameDefeatPanel.SetActive(true);
+        
+        HUD_Canvas.Instance.gameDefeatHUD.ShowDefeatPanel();
     }
 
 }

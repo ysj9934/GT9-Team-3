@@ -9,6 +9,7 @@ public class HUD_Canvas : MonoBehaviour
 
     public HUD_CustomSetting customSetting;
     public HUD_CastleHP castleHUD;
+    public HUD_GameDefeat gameDefeatHUD;
 
     private void Awake()
     {
@@ -19,6 +20,13 @@ public class HUD_Canvas : MonoBehaviour
     {
         customSetting = GetComponentInChildren<HUD_CustomSetting>();
         castleHUD = GetComponentInChildren<HUD_CastleHP>();
+        gameDefeatHUD = GetComponentInChildren<HUD_GameDefeat>();
+
+        if (gameDefeatHUD != null)
+        { 
+            gameDefeatHUD.gameObject.SetActive(false);
+        }
     }
+
 
 }
