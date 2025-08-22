@@ -6,10 +6,23 @@ using UnityEngine.UI;
 
 public class HUD_CastleHP : MonoBehaviour
 {
+    public ResourceManager _resourceManager;
     public Castle castle;
     [SerializeField] private Slider hpbar;
     [SerializeField] private TextMeshProUGUI hpbarText;
     private float healthPercent = 0f;
+
+    [SerializeField] private TextMeshProUGUI tilePieceText;
+
+    private void Awake()
+    {
+        _resourceManager = ResourceManager.Instance;
+    }
+
+    private void Start()
+    {
+        UpdateGold();
+    }
 
     public void Initialize(Castle castle)
     {
@@ -23,6 +36,16 @@ public class HUD_CastleHP : MonoBehaviour
         healthPercent = (float)castle.currentHealth / castle.maxHealth;
 
         hpbar.value = healthPercent;
+    }
+
+    public void UpdateTilePiece()
+    {
+        tilePieceText.text = $"{_resourceManager.ShowTilePiece()}";
+    }
+
+    public void UpdateGold()
+    {
+        tilePieceText.text = $"{_resourceManager.showGold()}";
     }
 
 

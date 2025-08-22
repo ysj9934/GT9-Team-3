@@ -22,7 +22,7 @@ public class TowerPlacer : MonoBehaviour
 
     void Start()
     {
-        currentPreview = Instantiate(previewPrefab);
+        //currentPreview = Instantiate(previewPrefab);
     }
 
     //void Update()

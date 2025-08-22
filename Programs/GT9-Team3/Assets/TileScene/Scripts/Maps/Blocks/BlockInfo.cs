@@ -87,7 +87,7 @@ public class BlockInfo : MonoBehaviour
     // 명칭변경 필요
     public void SetTower(TowerBlueprint bp)
     {
-        _tileInfo._tilePlaceOnTower.HandleTowerPlacement(blockSerialNumber, hasTower, bp);
+        _tileInfo._tilePlaceOnTower.HandleTowerPlacement(blockSerialNumber, hasTower, bp, null);
     }
 
     public void PlaceTower(TowerBlueprint bp)
@@ -105,6 +105,7 @@ public class BlockInfo : MonoBehaviour
         tower.Intialize(this);
         tower.ApplyData(bp.data);
         ResourceManager.Instance.Spend(bp.CostType, bp.CostValue);
+        HUD_Canvas.Instance.castleHUD.UpdateGold();
 
         hasTower = true;
         Debug.Log("Placed tower");
@@ -129,6 +130,8 @@ public class BlockInfo : MonoBehaviour
         Tower1 tower = go.GetComponent<Tower1>();
         tower.Intialize(this);
 
+        
+
         hasTower = true;
         Debug.Log("Placed tower");
 
@@ -139,5 +142,21 @@ public class BlockInfo : MonoBehaviour
         // Disable UI when a tower is placed;
         towerUI.SetActive(!towerUI.activeSelf);
 
+    }
+
+    public void RemoveTower(Tower1 currentTower)
+    {
+        Debug.Log("타워 제거 및 골드 환급");
+        ResourceManager.Instance.Earn(currentTower.data.makeCost, currentTower.data.sellValue);
+
+        HUD_Canvas.Instance.castleHUD.UpdateGold();
+
+        Tower1 tower = GetComponentInChildren<Tower1>();
+        Destroy(tower.gameObject);
+
+        if (_collider != null)
+            _collider.enabled = true;
+
+        hasTower = false;
     }
 }

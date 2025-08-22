@@ -6,6 +6,7 @@ using static UnityEngine.GraphicsBuffer;
 
 public class Tower1 : MonoBehaviour
 {
+    public BlockInfo blockInfo;
     public TowerData data;
     private float cooldownTimer;
 
@@ -18,7 +19,7 @@ public class Tower1 : MonoBehaviour
     
     public void Intialize(BlockInfo blockInfo)
     {
-        
+        this.blockInfo = blockInfo;
     }
 
     private void Update()
