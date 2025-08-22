@@ -43,6 +43,18 @@ public class BlockInfo : MonoBehaviour
 
     }
 
+    private void OnEnable()
+    {
+        Tower1 tower = GetComponentInChildren<Tower1>();
+        if (BlockCategory.PlaceTower == blockCategory)
+        {
+            if (tower != null)
+                _collider.enabled = false;
+            else
+                _collider.enabled = true;
+        }
+    }
+
     public void UpdateWorldLevel(int level)
     {
         this.level = level;
@@ -104,7 +116,8 @@ public class BlockInfo : MonoBehaviour
         Tower1 tower = go.GetComponent<Tower1>();
         tower.Intialize(this);
         tower.ApplyData(bp.data);
-        ResourceManager.Instance.Spend(bp.CostType, bp.CostValue);
+        Debug.Log($"Tower data applied: {(float)bp.CostValue / 4}");
+        ResourceManager.Instance.Spend(bp.CostType, (float)bp.CostValue / 4);
         HUD_Canvas.Instance.castleHUD.UpdateGold();
 
         hasTower = true;
@@ -147,7 +160,7 @@ public class BlockInfo : MonoBehaviour
     public void RemoveTower(Tower1 currentTower)
     {
         Debug.Log("타워 제거 및 골드 환급");
-        ResourceManager.Instance.Earn(currentTower.data.makeCost, currentTower.data.sellValue);
+        ResourceManager.Instance.Earn(currentTower.data.makeCost, (float)currentTower.data.sellValue / 4);
 
         HUD_Canvas.Instance.castleHUD.UpdateGold();
 
