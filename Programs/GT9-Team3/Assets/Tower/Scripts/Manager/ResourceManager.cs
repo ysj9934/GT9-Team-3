@@ -13,7 +13,7 @@ public class ResourceManager : MonoBehaviour
     {
         Instance = this;
 
-        resources[ResourceType.Gold] = 5000;
+        resources[ResourceType.Gold] = 120;
         resources[ResourceType.Tilepiece] = 5000;
     }
 
