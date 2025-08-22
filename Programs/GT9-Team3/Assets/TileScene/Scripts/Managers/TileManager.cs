@@ -83,6 +83,13 @@ public class TileManager : MonoBehaviour
         tileMap = new TileData[tileLength, tileLength];
     }
 
+    public void SetTempInitlaize()
+    {
+        InitializeTileMap(tileLength);
+        SetTileGrid(tileLength);
+        SetSpawnerPosition();
+    }
+
     // 월드 변경시 타일 변경
     public void UpdateWorldLevel(int level)
     {
@@ -223,6 +230,7 @@ public class TileManager : MonoBehaviour
     public void ShowConnectedPath()
     {
         SetNeighbors();
+        CloseAllUI(null);
 
         if (startTile == null)
         {
@@ -284,8 +292,7 @@ public class TileManager : MonoBehaviour
         Pathfinder pathfinder = go.GetComponent<Pathfinder>();
         pathfinder.Initialize(path);
 
-        // waveStartButton.WakeOnButton();
-        // WaveManager.Instance.Initilaize(path, startTile.transform);
+        HUD_Canvas.Instance.customSetting.waveSystembutton.interactable = true;
     }
 
     public void CloseAllUI(TileUI exceptUI)

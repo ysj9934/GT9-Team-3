@@ -372,7 +372,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 8940237005653005365}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 7169157321496772698}
+        m_TargetAssemblyTypeName: TowerSellUI, Assembly-CSharp
+        m_MethodName: Hide
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &6566227493515911286
 GameObject:
   m_ObjectHideFlags: 0
@@ -836,6 +848,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e29c3d9f03eaf5441b77171c618a5a93, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _blockInfo: {fileID: 0}
   root: {fileID: 43615359177422886}
   listParent: {fileID: 1477124543333765708}
   itemPrefab: {fileID: -5431973138116944278, guid: 2718aded59e659d4f9d6ee7ba66601cc, type: 3}
