@@ -1,0 +1,64 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &4378955704433422198
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2340488764103222346}
+  - component: {fileID: 8976502372533630626}
+  m_Layer: 0
+  m_Name: TileManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2340488764103222346
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4378955704433422198}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8976502372533630626
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4378955704433422198}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff80029023f500848bf51f8adb67871f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _gameManager: {fileID: 0}
+  tileLength: 5
+  worldLevel: 1
+  tempLevel: 1
+  tilePrefabs:
+  - {fileID: 8240947508694223969, guid: 6eace172b3cbc9f4082fed72b12eece4, type: 3}
+  - {fileID: 8185493614075263715, guid: f2fb3fd2b82d07f4292d96d23ca0c330, type: 3}
+  - {fileID: 7936289938698289828, guid: 368eac32b1dfd6f4fb5c28817b44a95b, type: 3}
+  tileGridPrefab: {fileID: 1648578658134522860, guid: d4c4867eb3844ae4cacd9621fc7884de, type: 3}
+  tileCastlePrefab: {fileID: 1648578658134522860, guid: 72b2f12649d1c3b4db71e23d74144a46, type: 3}
+  tileSpawnPrefab: {fileID: 2012721464780551075, guid: 7e286290d78285743a7d2adea0c43073, type: 3}
+  startTile: {fileID: 0}
+  endTile: {fileID: 0}
+  pathfinderPrefab: {fileID: 2678620220463419942, guid: c39df59ea4e072d4f8b41eb031dc0fb4, type: 3}
+  path: []
+  tileGridList: []
+  tileInfoList: []
+  spawnTransform: []
