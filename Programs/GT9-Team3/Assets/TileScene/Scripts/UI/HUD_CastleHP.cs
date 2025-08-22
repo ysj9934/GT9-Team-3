@@ -16,11 +16,12 @@ public class HUD_CastleHP : MonoBehaviour
 
     private void Awake()
     {
-        _resourceManager = ResourceManager.Instance;
+        
     }
 
     private void Start()
     {
+        _resourceManager = ResourceManager.Instance;
         UpdateGold();
     }
 
