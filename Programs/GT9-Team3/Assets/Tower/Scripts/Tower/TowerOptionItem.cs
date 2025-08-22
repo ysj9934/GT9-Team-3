@@ -27,4 +27,18 @@ public class TowerOptionItem : MonoBehaviour
         buildButton.onClick.RemoveAllListeners();
         buildButton.onClick.AddListener(() => owner.OnClickBuild(bp));
     }
+
+    public void Setup2(TowerBlueprint blueprint, TowerBuildUI ui, bool canAfford)
+    {
+        bp = blueprint;
+        owner = ui;
+
+        icon.sprite = bp.icon;
+        nameText.text = bp.displayName;
+        costText.text = $"{bp.CostType} : {bp.CostValue}";
+        buildButton.interactable = canAfford;
+
+        buildButton.onClick.RemoveAllListeners();
+        buildButton.onClick.AddListener(() => owner.OnClickBuild2(bp));
+    }
 }

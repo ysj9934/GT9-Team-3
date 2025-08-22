@@ -41,7 +41,8 @@ public class GameManager : MonoBehaviour
     {
         _tileManager = TileManager.Instance;
 
-        gameDefeatPanel.SetActive(false);
+        if (gameDefeatPanel != null)
+            gameDefeatPanel.SetActive(false);
 
         // 첫 타일 배치
         // first tile placement

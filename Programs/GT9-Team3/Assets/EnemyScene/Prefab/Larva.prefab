@@ -220,6 +220,7 @@ GameObject:
   - component: {fileID: 8364271249298629789}
   - component: {fileID: 4620393066797069024}
   - component: {fileID: 5446089503640464113}
+  - component: {fileID: -865324401395503179}
   m_Layer: 0
   m_Name: Larva
   m_TagString: Untagged
@@ -411,6 +412,19 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &-865324401395503179
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5771025906570419322}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 69857a8437832a74e9edfee50be39a09, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHP: 0
 --- !u!1 &6538531345337990132
 GameObject:
   m_ObjectHideFlags: 0

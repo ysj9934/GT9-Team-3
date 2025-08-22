@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 8172083579576173814}
   - component: {fileID: 989568010467082416}
   - component: {fileID: 256153724271036156}
+  - component: {fileID: -1774435185798905738}
   m_Layer: 0
   m_Name: Castle
   m_TagString: Untagged
@@ -133,7 +134,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b095e581068e5db45b05f9a986b230ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 0
+  castleHUD: {fileID: 0}
+  currentHealth: 0
   maxHealth: 100
-  healthGauge: {fileID: 7443169974299355299, guid: fd42924a94d006e4eb872c9964efd5f9, type: 3}
-  healthText: {fileID: 8197055508125984769, guid: 3ba6f27205241f547a136720143fc6d1, type: 3}
+  isDead: 0
+--- !u!114 &-1774435185798905738
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3348235002463853327}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7115c9290e565440a4cedbb7c6c2883, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _tileManager: {fileID: 0}
+  baseTransform: {fileID: 8335545637110372168}
+  gameWorldLevel: 1
+  gameStageLevel: 1
+  gameRoundLevel: 1
+  gameWaveLevel: 1
+  gameWorldLevelText: {fileID: 0}
+  gameStageLevelText: {fileID: 0}
+  gameRoundLevelText: {fileID: 0}
+  isGamePaused: 0
+  gameDefeatPanel: {fileID: 0}
