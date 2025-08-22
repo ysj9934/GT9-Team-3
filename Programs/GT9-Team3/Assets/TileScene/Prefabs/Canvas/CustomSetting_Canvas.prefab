@@ -122,7 +122,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: TileManager1, Assembly-CSharp
+        m_TargetAssemblyTypeName: TileManager, Assembly-CSharp
         m_MethodName: ShowConnectedPath
         m_Mode: 1
         m_Arguments:
@@ -280,7 +280,7 @@ GameObject:
   - component: {fileID: 5878723514209928845}
   - component: {fileID: 3168951484323763751}
   m_Layer: 5
-  m_Name: SetWorldLevel_2
+  m_Name: 1-1-2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -304,7 +304,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: -125}
-  m_SizeDelta: {x: 160, y: 30}
+  m_SizeDelta: {x: 260, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7024761135911272226
 CanvasRenderer:
@@ -389,13 +389,13 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: GameManager12, Assembly-CSharp
-        m_MethodName: UpdateWorldLevel
+        m_TargetAssemblyTypeName: WaveDataManager, Assembly-CSharp
+        m_MethodName: StartWave
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 2
+          m_IntArgument: 10102
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -617,7 +617,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1301894576792536131}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
@@ -679,7 +679,7 @@ GameObject:
   - component: {fileID: 2645997824984472525}
   - component: {fileID: 6722077260137046209}
   m_Layer: 5
-  m_Name: SetWorldLevel_3
+  m_Name: 1-1-3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -703,7 +703,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: -175}
-  m_SizeDelta: {x: 160, y: 30}
+  m_SizeDelta: {x: 260, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1931668134932710117
 CanvasRenderer:
@@ -788,13 +788,13 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: GameManager12, Assembly-CSharp
-        m_MethodName: UpdateWorldLevel
+        m_TargetAssemblyTypeName: WaveDataManager, Assembly-CSharp
+        m_MethodName: StartWave
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 3
+          m_IntArgument: 10103
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -888,6 +888,7 @@ GameObject:
   - component: {fileID: 7449946501839818056}
   - component: {fileID: 7323050064465577607}
   - component: {fileID: 9183241775150597846}
+  - component: {fileID: 1264640438977806145}
   m_Layer: 5
   m_Name: CustomSetting_Canvas
   m_TagString: Untagged
@@ -989,6 +990,20 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &1264640438977806145
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1785243385431983374}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 60ecac1c493427a4d8e3fe8561a68124, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  customSetting: {fileID: 0}
+  castleHUD: {fileID: 0}
 --- !u!1 &2156249198777701476
 GameObject:
   m_ObjectHideFlags: 0
@@ -1398,6 +1413,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4379035364011840398}
+  - component: {fileID: 4580828683680037991}
   m_Layer: 5
   m_Name: CustomSetting
   m_TagString: Untagged
@@ -1425,6 +1441,19 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &4580828683680037991
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3943014127679432027}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 63870a4c319ee334f89811b49dde2f44, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  waveSystembutton: {fileID: 3605918122166630643}
 --- !u!1 &4008263064985096722
 GameObject:
   m_ObjectHideFlags: 0
@@ -1490,7 +1519,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: WorldLevel_2
+  m_text: World1-Stage1-Wave2
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1892,7 +1921,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: WorldLevel_3
+  m_text: World1-Stage1-Wave3
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -2765,7 +2794,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: TileManager, Assembly-CSharp
-        m_MethodName: Initialize
+        m_MethodName: SetTempInitlaize
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3410,7 +3439,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: WorldLevel_1
+  m_text: World1-Stage1-Wave1
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -3702,7 +3731,7 @@ GameObject:
   - component: {fileID: 2594722103093117496}
   - component: {fileID: 4044523596926315569}
   m_Layer: 5
-  m_Name: SetWorldLevel_1
+  m_Name: 1-1-1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3726,7 +3755,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: -75}
-  m_SizeDelta: {x: 160, y: 30}
+  m_SizeDelta: {x: 260, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &9120754593343369381
 CanvasRenderer:
@@ -3811,13 +3840,13 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: GameManager12, Assembly-CSharp
-        m_MethodName: UpdateWorldLevel
+        m_TargetAssemblyTypeName: WaveDataManager, Assembly-CSharp
+        m_MethodName: StartWave
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 1
+          m_IntArgument: 10101
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -4935,15 +4964,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 5234476705286864474, guid: 9434086bcc31c7548bf58531175b0ea3, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5234476705286864474, guid: 9434086bcc31c7548bf58531175b0ea3, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5234476705286864474, guid: 9434086bcc31c7548bf58531175b0ea3, type: 3}
       propertyPath: m_AnchorMin.x
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5795282311957826888, guid: 9434086bcc31c7548bf58531175b0ea3, type: 3}
       propertyPath: m_Pivot.x
@@ -5025,24 +5054,90 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8619961338486031639, guid: 9434086bcc31c7548bf58531175b0ea3, type: 3}
+      propertyPath: m_Value
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8619961338486031639, guid: 9434086bcc31c7548bf58531175b0ea3, type: 3}
+      propertyPath: m_Direction
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8829254072131002396, guid: 9434086bcc31c7548bf58531175b0ea3, type: 3}
       propertyPath: m_Name
       value: HUD_Tile_BaseHeath
       objectReference: {fileID: 0}
     - target: {fileID: 8829254072131002396, guid: 9434086bcc31c7548bf58531175b0ea3, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8829254072131002396, guid: 9434086bcc31c7548bf58531175b0ea3, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1544537903055556433}
   m_SourcePrefab: {fileID: 100100000, guid: 9434086bcc31c7548bf58531175b0ea3, type: 3}
 --- !u!224 &1605356865280303011 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5795282311957826888, guid: 9434086bcc31c7548bf58531175b0ea3, type: 3}
   m_PrefabInstance: {fileID: 5056316558773424875}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &3570198043012765692 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8619961338486031639, guid: 9434086bcc31c7548bf58531175b0ea3, type: 3}
+  m_PrefabInstance: {fileID: 5056316558773424875}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &3808911503985133154 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8282222845261730953, guid: 9434086bcc31c7548bf58531175b0ea3, type: 3}
+  m_PrefabInstance: {fileID: 5056316558773424875}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!1 &4371986790535901943 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8829254072131002396, guid: 9434086bcc31c7548bf58531175b0ea3, type: 3}
+  m_PrefabInstance: {fileID: 5056316558773424875}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1544537903055556433
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4371986790535901943}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ecfe9812539698d4e8308df30b5f075d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _resourceManager: {fileID: 0}
+  castle: {fileID: 0}
+  hpbar: {fileID: 3570198043012765692}
+  hpbarText: {fileID: 7754370828543086884}
+  tilePieceText: {fileID: 3808911503985133154}
+--- !u!114 &7754370828543086884 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3294007308227167183, guid: 9434086bcc31c7548bf58531175b0ea3, type: 3}
+  m_PrefabInstance: {fileID: 5056316558773424875}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &5242542062317957208
 PrefabInstance:
   m_ObjectHideFlags: 0

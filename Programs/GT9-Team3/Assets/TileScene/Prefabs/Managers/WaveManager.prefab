@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1767509587284649228}
-  - component: {fileID: 785379948013281487}
+  - component: {fileID: 8991713824298658944}
   m_Layer: 0
   m_Name: WaveManager
   m_TagString: Untagged
@@ -25,14 +25,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1002909952478597910}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &785379948013281487
+--- !u!114 &8991713824298658944
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -41,12 +41,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1002909952478597910}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2073515d717ad4a41acb3f024a53d9b2, type: 3}
+  m_Script: {fileID: 11500000, guid: b2beafce23e90e24ba3d77ee68c8d2d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  testKey: 10103
   enemyPrefabs:
-  - {fileID: 4035878192753464305, guid: 3b39f3fad1de65446abe244969a58a71, type: 3}
-  - {fileID: 7886712000471107392, guid: 370b8889430e59c43b8b26ccacc410e8, type: 3}
-  spawnInterval: 1
-  enemiesPerWave: 4
-  timeBetweenWaves: 5
+  - {fileID: 5771025906570419322, guid: 6f9eabe73b862794da4368091610cb15, type: 3}
+  - {fileID: 5771025906570419322, guid: 431c6b58da094c243a5ae1f015c2e838, type: 3}
+  path: []
