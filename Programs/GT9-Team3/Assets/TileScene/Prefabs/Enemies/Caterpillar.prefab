@@ -425,7 +425,6 @@ GameObject:
   - component: {fileID: 8364271249298629789}
   - component: {fileID: 1880822616636555698}
   - component: {fileID: 2855911802003967393}
-  - component: {fileID: 4711335635817342448}
   m_Layer: 0
   m_Name: Caterpillar
   m_TagString: Untagged
@@ -550,7 +549,7 @@ CapsuleCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5771025906570419322}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -623,19 +622,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!114 &4711335635817342448
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5771025906570419322}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 69857a8437832a74e9edfee50be39a09, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxHP: 0
 --- !u!1 &6736664902982549718
 GameObject:
   m_ObjectHideFlags: 0
