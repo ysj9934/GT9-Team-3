@@ -4365,7 +4365,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -9.5798, y: 1.305}
+  m_AnchoredPosition: {x: -9.5798, y: 304}
   m_SizeDelta: {x: 579.84033, y: 62.61}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1538487877
@@ -6412,7 +6412,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1723246696863538809}
-  - component: {fileID: 1723246696863538810}
   m_Layer: 0
   m_Name: Enemy Star
   m_TagString: Untagged
@@ -6443,20 +6442,6 @@ RectTransform:
   m_AnchoredPosition: {x: 374.73, y: 38.360474}
   m_SizeDelta: {x: 599, y: 688.8196}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1723246696863538810
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1723246696863538808}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 86710e43de46f6f4bac7c8e50813a599, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_AspectMode: 1
-  m_AspectRatio: 0.86960363
 --- !u!1 &1723246696953613700
 GameObject:
   m_ObjectHideFlags: 0
@@ -8820,7 +8805,7 @@ PrefabInstance:
   m_SourcePrefab: {fileID: 100100000, guid: 1309173f8e2f8cd43aacf64911676477, type: 3}
 --- !u!4 &5766896515803786907 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: 4618969997637024044, guid: 1309173f8e2f8cd43aacf64911676477, type: 3}
+  m_CorrespondingSourceObject: {fileID: 2340488764103222346, guid: 1309173f8e2f8cd43aacf64911676477, type: 3}
   m_PrefabInstance: {fileID: 5766896515803786906}
   m_PrefabAsset: {fileID: 0}
 --- !u!224 &5836018069031913234
@@ -9490,7 +9475,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -299.5, y: 38.360474}
-  m_SizeDelta: {x: 599, y: 0}
+  m_SizeDelta: {x: 599, y: 688.8196}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &6737927265715694539
 GameObject:
@@ -9501,7 +9486,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6737927265715694538}
-  - component: {fileID: 6737927265715694540}
   m_Layer: 0
   m_Name: Clear Reward
   m_TagString: Untagged
@@ -9509,20 +9493,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &6737927265715694540
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6737927265715694539}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 86710e43de46f6f4bac7c8e50813a599, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_AspectMode: 1
-  m_AspectRatio: 0.86960363
 --- !u!1 &6737927266951856384
 GameObject:
   m_ObjectHideFlags: 0
@@ -10648,9 +10618,9 @@ RectTransform:
   m_Father: {fileID: 6737927265715694538}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 314.4098}
+  m_SizeDelta: {x: 0, y: -628.8196}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &8176898460044523621
 RectTransform:
@@ -11061,7 +11031,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8174890239912864820}
-  - component: {fileID: 9003035749434392539}
   m_Layer: 0
   m_Name: First Clear Rewards
   m_TagString: Untagged
@@ -11069,20 +11038,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &9003035749434392539
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9003035749434392538}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 86710e43de46f6f4bac7c8e50813a599, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_AspectMode: 3
-  m_AspectRatio: 9.983334
 --- !u!1 &9088683954403297694
 GameObject:
   m_ObjectHideFlags: 0
