@@ -1,12 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using UnityEditor.EditorTools;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
     public TileManager _tileManager;
+    public ObjectPoolManager _poolManager;
+    public DataManager _dataManager;
 
     public Transform baseTransform;
 
@@ -40,6 +43,8 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         _tileManager = TileManager.Instance;
+        _poolManager = ObjectPoolManager.Instance;
+        _dataManager = DataManager.Instance;
 
         if (gameDefeatPanel != null)
             gameDefeatPanel.SetActive(false);
@@ -76,6 +81,41 @@ public class GameManager : MonoBehaviour
     {
         WaveManager.Instance.StartWave();
     }
+
+    // TEMP
+    // 적 스폰
+    public void SpanwEnemy(Enemy_DataTable_EnemyStatTable jsonData)
+    {
+        GameObject enemyObj = _poolManager.GetEnemy();
+        if (enemyObj != null)
+        {
+            //var config = EnemyConfigManager.Instance.CreateConfigFromJson(jsonData);
+            //enemyObj.GetComponent<EnemyTEMP>().Setup(config);
+        }
+    }
+
+#if UNITY_EDITOR
+    [ContextMenu("Spawn Test Enemy")]
+    void SpawnTestEnemy()
+    {
+        GameObject enemyObj = _poolManager.GetEnemy();
+        if (enemyObj != null)
+        {
+            var testJson = new Enemy_DataTable_EnemyStatTable
+            {
+                key = 1000,
+                Enemy_Inner_Name = "기어다니는 굼벵이",
+                MaxHP = 100,
+                MovementSpeed = 3.5f
+            };
+
+            //var config = EnemyConfigManager.Instance.CreateConfigFromJson(testJson);
+            //var enemy = Instantiate(config.enemyPrefab);
+            //enemyObj.GetComponent<EnemyTEMP>().Setup(config);
+        }
+    }
+#endif
+
 
 
     // 적 베이스 찾기 (김원진)
