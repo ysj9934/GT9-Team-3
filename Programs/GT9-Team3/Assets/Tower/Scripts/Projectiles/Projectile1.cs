@@ -32,6 +32,13 @@ public class Projectile1 : MonoBehaviour
         }
     }
 
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.transform != target) return;
+
+        HitTarget();
+    }
+
     void HitTarget()
     {
         if (data.impactEffectPrefab != null)
@@ -46,4 +53,6 @@ public class Projectile1 : MonoBehaviour
 
         Destroy(gameObject);
     }
+
+
 }
