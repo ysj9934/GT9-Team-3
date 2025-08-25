@@ -6,8 +6,8 @@ public class EnemySpawnTest : MonoBehaviour
 {
     public GameObject enemyPrefab;
 
-    // ÀûÀ» »ı¼ºÇÒ À§Ä¡¿Í ¸ñÇ¥ À§Ä¡¸¦ Vector2 Å¸ÀÔÀ¸·Î Á¤ÀÇ
-    // ¼öÁ¤µÉ º¯µ¿°ª
+    // ì ì„ ìƒì„±í•  ìœ„ì¹˜ì™€ ëª©í‘œ ìœ„ì¹˜ë¥¼ Vector2 íƒ€ì…ìœ¼ë¡œ ì •ì˜
+    // ìˆ˜ì •ë  ë³€ë™ê°’
     private Vector2 spawnPosition = new Vector2(-3f, 0f);
     private Vector2 targetPosition = new Vector2(5f, 0f);
 
@@ -15,14 +15,14 @@ public class EnemySpawnTest : MonoBehaviour
     {
         GameObject enemy = SpawnEnemyAt(spawnPosition);
 
-        // EnemyÀÇ ½ºÅ©¸³Æ® ÄÄÆ÷³ÍÆ® EnemyTest¸¦ °¡Á®¿Í ¸ñÇ¥ À§Ä¡¸¦ ¼³Á¤
+        // Enemyì˜ ìŠ¤í¬ë¦½íŠ¸ ì»´í¬ë„ŒíŠ¸ EnemyTestë¥¼ ê°€ì ¸ì™€ ëª©í‘œ ìœ„ì¹˜ë¥¼ ì„¤ì •
         Enemy enemyScript = enemy.GetComponent<Enemy>();
-        enemyScript.targetPosition = targetPosition;
+        //enemyScript.targetPosition = targetPosition;
 
-        Debug.Log("Enemy spawned at: " + spawnPosition + " ¡æ target: " + targetPosition);
+        Debug.Log("Enemy spawned at: " + spawnPosition + " â†’ target: " + targetPosition);
     }
 
-    //Vector2 Å¸ÀÔÀÇ positionÀ» ¹Ş¾Æ À¯´ÏÆ¼ ¿£Áø ¿ÀºêÁ§Æ®¸¦ ÇØ´ç À§Ä¡¿¡¼­ º¹Á¦ »ı¼ºÇÏ´Â ÇÔ¼ö
+    //Vector2 íƒ€ì…ì˜ positionì„ ë°›ì•„ ìœ ë‹ˆí‹° ì—”ì§„ ì˜¤ë¸Œì íŠ¸ë¥¼ í•´ë‹¹ ìœ„ì¹˜ì—ì„œ ë³µì œ ìƒì„±í•˜ëŠ” í•¨ìˆ˜
     GameObject SpawnEnemyAt(Vector2 position)
     {
         return Instantiate(enemyPrefab, position, Quaternion.identity);

@@ -24,7 +24,7 @@ public class TileManager : MonoBehaviour
     
     // 참조
     // Reference
-    public GameManager12 _gameManager;
+    public GameManager _gameManager;
 
     // ??? ?????? ????
     // tile size setting
@@ -63,7 +63,7 @@ public class TileManager : MonoBehaviour
 
     private void Start()
     {
-        _gameManager = GameManager12.Instance;
+        _gameManager = GameManager.Instance;
         
         Initialize();
     }
@@ -177,6 +177,7 @@ public class TileManager : MonoBehaviour
                     go.transform.SetParent(transform);
                     TileCastle tileCastle = go.GetComponent<TileCastle>();
                     tileCastle.Initialize(pos);
+                    _gameManager.baseTransform = tileCastle.gameObject.transform;
 
                     endTile = tileCastle;
                 }
@@ -308,6 +309,14 @@ public class TileManager : MonoBehaviour
         pathfinder.Initialize(path);
 
         HUD_Canvas.Instance.customSetting.waveSystembutton.interactable = true;
+
+        List<Transform> pathTrans = new List<Transform>();
+        foreach (var tile in path)
+        {
+            pathTrans.Add(tile.transform);
+        }
+
+        WaveManager.Instance.SetPath(pathTrans);
     }
 
     public void CloseAllUI(TileUI exceptUI)
