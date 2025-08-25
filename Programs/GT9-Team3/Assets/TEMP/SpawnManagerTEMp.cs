@@ -12,7 +12,7 @@ public class SpawnManagerTEMp : MonoBehaviour
 
     [SerializeField] List<Transform> path = new List<Transform>();
 
-    List<int> SpawnSequence = new List<int>();
+    
     List<float> SpawnStartTime = new List<float>();
     List<int> EnemyId = new List<int>();
     List<int> SpawnBatchSize = new List<int>();
@@ -32,7 +32,7 @@ public class SpawnManagerTEMp : MonoBehaviour
     {
         float spawnTime = 1.1f;
         //int monsterID = 1000;
-        float interval = 0.5f; // °£°Ý Á¶Àý °¡´É
+        float interval = 0.5f; // ê°„ê²© ì¡°ì ˆ ê°€ëŠ¥
 
         for (int i = 0; i < 5; i++)
         {
@@ -59,7 +59,7 @@ public class SpawnManagerTEMp : MonoBehaviour
         var config = EnemyConfigManager.Instance.GetConfig(monsterID);
         if (config == null)
         {
-            Debug.LogError($"EnemyConfig »ý¼º ½ÇÆÐ: monsterID {monsterID}");
+            Debug.LogError($"EnemyConfig ìƒì„± ì‹¤íŒ¨: monsterID {monsterID}");
             yield break;
         }
 
@@ -83,10 +83,10 @@ public class SpawnManagerTEMp : MonoBehaviour
 
         if (jsonData == null)
         {
-            Debug.LogError($"¿þÀÌºê ID {waveID}¿¡ ´ëÇÑ JSON µ¥ÀÌÅÍ ¾øÀ½");
+            Debug.LogError($"ì›¨ì´ë¸Œ ID {waveID}ì— ëŒ€í•œ JSON ë°ì´í„° ì—†ìŒ");
         }
 
-        this.SpawnSequence = jsonData.SpawnSequence;
+        
         this.SpawnStartTime = jsonData.SpawnStartTime;
         this.EnemyId = jsonData.EnemyID;
         this.SpawnBatchSize = jsonData.SpawnBatchSize;
