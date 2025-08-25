@@ -1216,6 +1216,8 @@ GameObject:
   - component: {fileID: 8976841963386655451}
   - component: {fileID: 5597263831047762013}
   - component: {fileID: 6240159620484366302}
+  - component: {fileID: -2612715835561932285}
+  - component: {fileID: 4934388894551805344}
   m_Layer: 0
   m_Name: GreenScorpion
   m_TagString: Untagged
@@ -1362,12 +1364,39 @@ CapsuleCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 1.2}
   m_Size: {x: 5, y: 2.5}
   m_Direction: 1
+--- !u!114 &-2612715835561932285
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8258635254558164793}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 69857a8437832a74e9edfee50be39a09, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemy: {fileID: 0}
+--- !u!114 &4934388894551805344
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8258635254558164793}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 192de757adfe1fe4494a008461f64ef0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 0}
+  attackInterval: 1.5
 --- !u!1 &8396210150771700385
 GameObject:
   m_ObjectHideFlags: 0

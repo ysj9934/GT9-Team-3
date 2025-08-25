@@ -612,6 +612,8 @@ GameObject:
   - component: {fileID: 5348429189093309385}
   - component: {fileID: 117150395161187365}
   - component: {fileID: 563940067125343201}
+  - component: {fileID: 6706866243219192653}
+  - component: {fileID: 5643079042644374132}
   m_Layer: 0
   m_Name: Cerberus
   m_TagString: Untagged
@@ -757,12 +759,39 @@ CapsuleCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: -0.5, y: 2.06}
   m_Size: {x: 5.48, y: 3.76}
   m_Direction: 1
+--- !u!114 &6706866243219192653
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 117150395161187363}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 69857a8437832a74e9edfee50be39a09, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemy: {fileID: 0}
+--- !u!114 &5643079042644374132
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 117150395161187363}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 192de757adfe1fe4494a008461f64ef0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 0}
+  attackInterval: 1.5
 --- !u!1 &188064519148664878
 GameObject:
   m_ObjectHideFlags: 0

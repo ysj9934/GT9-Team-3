@@ -360,6 +360,8 @@ GameObject:
   - component: {fileID: 5165282314794600162}
   - component: {fileID: 2069015975501184384}
   - component: {fileID: 7822718706275986}
+  - component: {fileID: -7267536438222965188}
+  - component: {fileID: -8061177479010199989}
   m_Layer: 0
   m_Name: Bear
   m_TagString: Untagged
@@ -505,12 +507,39 @@ CapsuleCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: -0.5, y: 2}
   m_Size: {x: 6.4, y: 4.8}
   m_Direction: 1
+--- !u!114 &-7267536438222965188
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2069015975501184387}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 69857a8437832a74e9edfee50be39a09, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemy: {fileID: 0}
+--- !u!114 &-8061177479010199989
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2069015975501184387}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 192de757adfe1fe4494a008461f64ef0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 0}
+  attackInterval: 1.5
 --- !u!1 &2069015975566648525
 GameObject:
   m_ObjectHideFlags: 0
