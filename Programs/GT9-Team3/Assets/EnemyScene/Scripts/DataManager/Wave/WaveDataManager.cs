@@ -6,23 +6,23 @@ public class WaveDataManager : MonoBehaviour
 {
     
     [SerializeField] private int testKey;
-    public GameObject[] enemyPrefabs; // EnemyID¿¡ ¸ÂÃç ³ÖÀ» ÇÁ¸®ÆÕ ¹è¿­
-    //public Transform[] spawnerTransforms; // SpawnerID¿¡ ¸ÂÃç ¹èÄ¡ÇÒ ½ºÆù À§Ä¡µé
+    public GameObject[] enemyPrefabs; // EnemyIDì— ë§ì¶° ë„£ì„ í”„ë¦¬íŒ¹ ë°°ì—´
+    //public Transform[] spawnerTransforms; // SpawnerIDì— ë§ì¶° ë°°ì¹˜í•  ìŠ¤í° ìœ„ì¹˜ë“¤
     public List<TileData> path;
 
 
     private void Awake()
     {
-        // Å×½ºÆ®¿ë Key°ª (Á¸ÀçÇÏ´Â key·Î ¹Ù²Ù¼¼¿ä)
-        //testKey = 10104;  // ÀÎ½ºÆåÅÍ °ª ¹«½ÃÇÏ°í ÄÚµå °ª °­Á¦ Àû¿ë
+        // í…ŒìŠ¤íŠ¸ìš© Keyê°’ (ì¡´ì¬í•˜ëŠ” keyë¡œ ë°”ê¾¸ì„¸ìš”)
+        //testKey = 10104;  // ì¸ìŠ¤í™í„° ê°’ ë¬´ì‹œí•˜ê³  ì½”ë“œ ê°’ ê°•ì œ ì ìš©
     }
 
     private void Start()
     {
-        // WaveReader ½Ì±ÛÅÏ Á¢±Ù
+        // WaveReader ì‹±ê¸€í„´ ì ‘ê·¼
         if (WaveDataReader.Instance == null)
         {
-            Debug.LogError("¿şÀÌºê ¸®´õ°¡ ¾øÀ½");
+            Debug.LogError("ì›¨ì´ë¸Œ ë¦¬ë”ê°€ ì—†ìŒ");
             return;
         }
     }
@@ -32,18 +32,18 @@ public class WaveDataManager : MonoBehaviour
         var masterData = WaveDataReader.Instance.GetWaveMasterByKey(key);
         if (masterData != null)
         {
-            Debug.Log($"¿şÀÌºê Á¤º¸ : {masterData.key}, ÀÌ¸§: {masterData.Inner_Name}, {masterData.RoundIndex}¶ó¿îµåÀÇ {masterData.WaveInRound}¿şÀÌºê");
+            Debug.Log($"ì›¨ì´ë¸Œ ì •ë³´ : {masterData.key}, ì´ë¦„: {masterData.Inner_Name}, {masterData.RoundIndex}ë¼ìš´ë“œì˜ {masterData.WaveInRound}ì›¨ì´ë¸Œ");
         }
         else
         {
-            Debug.LogWarning($"ÇØ´ç Å°¸¦ Ã£À» ¼ö ¾øÀ½ : {key}");
+            Debug.LogWarning($"í•´ë‹¹ í‚¤ë¥¼ ì°¾ì„ ìˆ˜ ì—†ìŒ : {key}");
         }
 
-        // Wave Spawn Table Á¢±Ù
+        // Wave Spawn Table ì ‘ê·¼
         var spawnData = WaveDataReader.Instance.GetWaveSpawnByKey(key);
         if (spawnData != null)
         {
-            //Debug.Log($"[Spawn] Key(°íÀ¯¹øÈ£): {spawnData.key}, EnemyID_01: {spawnData.EnemyID_01}, SpawnerID_01: {spawnData.SpawnerID_01}");
+            //Debug.Log($"[Spawn] Key(ê³ ìœ ë²ˆí˜¸): {spawnData.key}, EnemyID_01: {spawnData.EnemyID_01}, SpawnerID_01: {spawnData.SpawnerID_01}");
             for (int i = 1; i <= 5; i++)
             {
                 int spawnSquence = spawnData.GetSpawnSquence(i);
@@ -54,13 +54,13 @@ public class WaveDataManager : MonoBehaviour
                 int spawnRepeat = spawnData.GetSpawnRepeat(i);
                 float spawnIntervalSec = spawnData.GetSpawnIntervalSec(i);
 
-                if (spawnSquence != -1 && enemyID != -1)    //ÇØ´ç ½ÃÄö½º(¼ø¼­)°¡ Á¸ÀçÇÏ°í ÀûÀÌ Á¸ÀçÇÏ´Ù¸é
+                if (spawnSquence != -1 && enemyID != -1)    //í•´ë‹¹ ì‹œí€€ìŠ¤(ìˆœì„œ)ê°€ ì¡´ì¬í•˜ê³  ì ì´ ì¡´ì¬í•˜ë‹¤ë©´
                 {
-                    Debug.Log($"{spawnSquence} ¼ø¼­ : {spawnStartTime}ÃÊºÎÅÍ {spawnerID} ½ºÆù¼­¿¡¼­ EnemyID_{i}°¡ {enemyID}ÀÎ ¸ó½ºÅÍ°¡ " +
-                              $"{spawnIntervalSec}ÃÊ °£°İÀ¸·Î {spawnBatchSize}¸¶¸®¾¿ {spawnRepeat}¹ø »ı¼º");
+                    Debug.Log($"{spawnSquence} ìˆœì„œ : {spawnStartTime}ì´ˆë¶€í„° {spawnerID} ìŠ¤í°ì„œì—ì„œ EnemyID_{i}ê°€ {enemyID}ì¸ ëª¬ìŠ¤í„°ê°€ " +
+                              $"{spawnIntervalSec}ì´ˆ ê°„ê²©ìœ¼ë¡œ {spawnBatchSize}ë§ˆë¦¬ì”© {spawnRepeat}ë²ˆ ìƒì„±");
 
                     EnemyDataManager.Instance.PrintEnemyInfo(enemyID);
-                    // ½ºÆù ÄÚ·çÆ¾ ½ÇÇà
+                    // ìŠ¤í° ì½”ë£¨í‹´ ì‹¤í–‰
                     StartCoroutine(SpawnEnemiesCoroutine(
                         spawnStartTime, spawnerID, enemyID, spawnBatchSize, spawnRepeat, spawnIntervalSec
                     ));
@@ -69,17 +69,17 @@ public class WaveDataManager : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning($"{key}¿¡ ÇØ´çÇÏ´Â ¿şÀÌºê »ı¼º µ¥ÀÌÅÍ°¡ ¾ø¾î¿ä");
+            Debug.LogWarning($"{key}ì— í•´ë‹¹í•˜ëŠ” ì›¨ì´ë¸Œ ìƒì„± ë°ì´í„°ê°€ ì—†ì–´ìš”");
         }
     }
 
     private IEnumerator SpawnEnemiesCoroutine(
         float startTime, int spawnerID, int enemyID, int batchSize, int repeatCount, float intervalSec)
     {
-        // ½ÃÀÛ ½Ã°£ ´ë±â
+        // ì‹œì‘ ì‹œê°„ ëŒ€ê¸°
         yield return new WaitForSeconds(startTime);
 
-        // ¹İº¹ ½ºÆù
+        // ë°˜ë³µ ìŠ¤í°
         for (int repeat = 0; repeat < repeatCount; repeat++)
         {
             for (int j = 0; j < batchSize; j++)
@@ -87,7 +87,7 @@ public class WaveDataManager : MonoBehaviour
                 SpawnEnemy(spawnerID, enemyID);
             }
 
-            // ´ÙÀ½ ¹İº¹ Àü ´ë±â
+            // ë‹¤ìŒ ë°˜ë³µ ì „ ëŒ€ê¸°
             if (repeat < repeatCount - 1)
                 yield return new WaitForSeconds(intervalSec);
         }
@@ -98,27 +98,27 @@ public class WaveDataManager : MonoBehaviour
         //GameObject prefab = EnemyDataReader.Instance.GetPrefabByKey(enemyID);
         //if (prefab == null)
         //{
-        //    Debug.LogWarning($"EnemyID {enemyID}¿¡ ÇØ´çÇÏ´Â ÇÁ¸®ÆÕÀ» Ã£À» ¼ö ¾øÀ½");
+        //    Debug.LogWarning($"EnemyID {enemyID}ì— í•´ë‹¹í•˜ëŠ” í”„ë¦¬íŒ¹ì„ ì°¾ì„ ìˆ˜ ì—†ìŒ");
         //    return;
         //}
 
         //if (TileManager.Instance == null || TileManager.Instance.startTile == null)
         //{
-        //    Debug.LogWarning("TileManager ¶Ç´Â startTileÀÌ ºñ¾îÀÖ½À´Ï´Ù. ½ºÆù ºÒ°¡");
+        //    Debug.LogWarning("TileManager ë˜ëŠ” startTileì´ ë¹„ì–´ìˆìŠµë‹ˆë‹¤. ìŠ¤í° ë¶ˆê°€");
         //    return;
         //}
 
         //Transform spawnPoint = TileManager.Instance.startTile.transform;
         //Instantiate(prefab, spawnPoint.position, spawnPoint.rotation);
-        //Debug.Log($"½ºÆ÷³Ê¿¡¼­ Àû {enemyID} »ı¼º");
+        //Debug.Log($"ìŠ¤í¬ë„ˆì—ì„œ ì  {enemyID} ìƒì„±");
 
         path = TileManager.Instance.path;
         Transform spawnPoint = TileManager.Instance.startTile.transform;
         GameObject go = Instantiate(enemyPrefabs[Random.Range(0, enemyPrefabs.Length)], spawnPoint.position, spawnPoint.rotation);
         Enemy enemy = go.GetComponent<Enemy>();
-        enemy.SetPath(path);
-        enemy.Initialize();
+        //enemy.SetPath(path);
+        //enemy.Initialize();
 
-        Debug.Log($"½ºÆ÷³Ê¿¡¼­ Àû {enemyID} »ı¼º");
+        Debug.Log($"ìŠ¤í¬ë„ˆì—ì„œ ì  {enemyID} ìƒì„±");
     }
 }

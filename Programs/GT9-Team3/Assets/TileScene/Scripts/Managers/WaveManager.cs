@@ -1,26 +1,24 @@
+using Assets.FantasyMonsters.Common.Scripts;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.EditorTools;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class WaveManager : MonoBehaviour
 {
     public static WaveManager Instance { get; private set; }
+
     private GameManager _gameManager;
+    public ObjectPoolManager _poolManager;
 
-    [SerializeField] public GameObject[] enemyPrefabs;
-    [SerializeField] private float spawnInterval = 1f; // Time between spawns in seconds
-    private int waveCount = 0;
+    List<Transform> path = new List<Transform>();
 
-    // public List<TileRoad> pathManager;
-    private Transform[] pathPoints;
-    private int currentPathIndex = 0;
-    private Transform spawnPoint;
-    [SerializeField] private int enemiesPerWave;
-    [SerializeField] private float timeBetweenWaves = 5f;
-
-
-    private bool isWaveActive = false;
-
+    List<float> SpawnStartTime = new List<float>();
+    List<int> EnemyId = new List<int>();
+    List<int> SpawnBatchSize = new List<int>();
+    List<int> SpawnRepeat = new List<int>();
+    List<float> SpawnintervalSec = new List<float>();
 
     private void Awake()
     {
@@ -30,82 +28,97 @@ public class WaveManager : MonoBehaviour
     private void Start()
     {
         _gameManager = GameManager.Instance;
+        _poolManager = ObjectPoolManager.Instance;
+
     }
 
+    public void SetPath(List<Transform> path)
+    {
+        this.path = path;
+    }
 
-    // public void Initilaize(List<TileRoad> pathManager, Transform spawnPoint)
-    // {
-    //     this.pathManager = pathManager;
-    //     this.spawnPoint = spawnPoint;
-    //
-    //     currentPathIndex = 0;
-    //     int childCount = pathManager.Count;
-    //     pathPoints = new Transform[childCount];
-    //
-    //     for (int index = 0; index < childCount; index++)
-    //     {
-    //         pathPoints[index] = pathManager[index].transform;
-    //     }
-    // }
+    public void SpawnWave(int monsterID)
+    {
+        float spawnTime = 1.1f;
+        //int monsterID = 1000;
+        float interval = 0.5f; // 간격 조절 가능
 
-    //public void SpawnWave(int worldLevel, int StageLevel, int Round)
-    //{
-    //    if (Round == 1)
-    //    { 
+        for (int i = 0; i < 5; i++)
+        {
+            StartCoroutine(SpawnEnemyWithDelay(i * spawnTime, monsterID));
+        }
+
+    }
+
+    public void SpawnWaves(int waveID)
+    {
+        WaveSystem(waveID);
+        
+        StartCoroutine(AwakeWave());
+        
+    }
+
+    IEnumerator AwakeWave()
+    {
+        int index = 0;
+        while (SpawnStartTime[index] > -1)
+        {
+            float delay = index == 0 ? SpawnStartTime[0] : SpawnStartTime[index] - SpawnStartTime[index - 1]; 
+            yield return new WaitForSeconds(delay);
             
-    //    }
-    //}
-
-    public void StartWave()
-    {
-        if (!isWaveActive)
-            StartCoroutine(SpawnWave());
+            for (int j = 0; j < SpawnRepeat[index]; j++)
+            {
+                StartCoroutine(SpawnEnemyWithDelay(j * SpawnintervalSec[index], EnemyId[index]));    
+            }
+            
+            Debug.Log($"Wave {index} 생성");
+            
+            index++;
+        }
     }
 
-    private IEnumerator SpawnWave()
+    // 적 유닛 생성 시스템
+    IEnumerator SpawnEnemyWithDelay(float spawnTime, int monsterID)
     {
-        isWaveActive = true;
-        waveCount++;
-        int enemiesSpawned = 0;
-        int enemyTypes = 0;
+        yield return new WaitForSeconds(spawnTime);
+        Debug.Log($"Enemy 생성");
 
-        switch (waveCount)
+        var config = EnemyConfigManager.Instance.GetConfig(monsterID);
+        if (config == null)
         {
-            case 1:
-            case 2:
-                enemyTypes = 0;
-                enemiesPerWave++;
-                break;
-            case 3:
-                enemyTypes = 1;
-                enemiesPerWave = 5;
-                break;
+            Debug.LogError($"EnemyConfig 생성 실패: monsterID {monsterID}");
+            yield break;
         }
 
-
-        while (enemiesSpawned < enemiesPerWave)
-        {
-            SpawnEnemy(enemyTypes);
-            enemiesSpawned++;
-            yield return new WaitForSeconds(1f); // �� �� ����
-        }
-
-        yield return new WaitForSeconds(timeBetweenWaves);
-        isWaveActive = false;
-
-        // ���� ���̺� �ڵ� ���� ����
-        if (waveCount < 3)
-            StartWave();
-
-        waveCount = 0;
+        SpanwEnemy(config);
     }
 
-    private void SpawnEnemy(int num)
+    public void SpanwEnemy(EnemyConfig config)
     {
-        Transform spawnPoint = this.spawnPoint;
-        GameObject go = Instantiate(enemyPrefabs[num], spawnPoint.position, Quaternion.identity);
-        go.GetComponent<Enemy11>().Initialize(pathPoints);
+        GameObject enemyObj = _poolManager.GetEnemy();
+        if (enemyObj != null)
+        {
+            Enemy enemy = enemyObj.GetComponent<Enemy>();
+            enemy._enemyStat.Setup(config);
+            enemy._enemyMovement.pathPoint(path);
+        }
     }
 
+    public void WaveSystem(int waveID)
+    { 
+        // key = 10101;
+        var jsonData = _gameManager._dataManager.WaveDataLoader.GetByKey(waveID);
+
+        if (jsonData == null)
+        {
+            Debug.LogError($"웨이브 ID {waveID}에 대한 JSON 데이터 없음");
+        }
+        
+        this.SpawnStartTime = jsonData.SpawnStartTime;
+        this.EnemyId = jsonData.EnemyID;
+        this.SpawnBatchSize = jsonData.SpawnBatchSize;
+        this.SpawnRepeat = jsonData.SpawnRepeat;
+        this.SpawnintervalSec = jsonData.SpawnintervalSec;
+    }
 
 }

@@ -13,18 +13,19 @@ public class GameManager : MonoBehaviour
 
     public Transform baseTransform;
 
-    // °ÔÀÓ ·¹º§
+    // ê²Œì„ ë ˆë²¨
     // GameLevel
     public int gameWorldLevel = 1;
     public int gameStageLevel = 1;
     public int gameRoundLevel = 1;
     public int gameWaveLevel = 1;
+    public int tempLevel = 1;
     [SerializeField] private TextMeshProUGUI gameWorldLevelText;
     [SerializeField] private TextMeshProUGUI gameStageLevelText;
     [SerializeField] private TextMeshProUGUI gameRoundLevelText;
     //[SerializeField] private TextMeshProUGUI gameWorldLevelText;
 
-    // °ÔÀÓ ÀÏ½ÃÁ¤Áö ¹× Àç°³
+    // ê²Œì„ ì¼ì‹œì •ì§€ ë° ì¬ê°œ
     public bool isGamePaused = false;
 
     [SerializeField] public GameObject gameDefeatPanel;
@@ -49,7 +50,7 @@ public class GameManager : MonoBehaviour
         if (gameDefeatPanel != null)
             gameDefeatPanel.SetActive(false);
 
-        // Ã¹ Å¸ÀÏ ¹èÄ¡
+        // ì²« íƒ€ì¼ ë°°ì¹˜
         // first tile placement
         //InitializeTiles();
     }   
@@ -67,30 +68,43 @@ public class GameManager : MonoBehaviour
 
 
 
-    // ÃÊ±â Å¸ÀÏ ¹èÄ¡
+    // ì´ˆê¸° íƒ€ì¼ ë°°ì¹˜
     // Initial tile placement
     public void InitializeTiles()
     {
-        // Å¸ÀÏ »ı¼º
+        // íƒ€ì¼ ìƒì„±
         _tileManager.Initialize();
         _tileManager.SetSpawnerPosition();
     }
 
+    public void UpdateWorldLevel(int level)
+    {
+        this.gameWorldLevel = level;
+        gameWorldLevelText.text = level.ToString();
+        _tileManager.UpdateWorldLevel(this.gameWorldLevel);
+    }
+
+    public void UpdateTempLevel(int level)
+    {
+        this.tempLevel = level;
+
+        _tileManager.UpdateTempLevel(this.tempLevel);
+    }
 
     public void WaveStartButton()
     {
-        WaveManager.Instance.StartWave();
+        //WaveManager.Instance.StartWave();
     }
 
     // TEMP
-    // Àû ½ºÆù
+    // ì  ìŠ¤í°
     public void SpanwEnemy(Enemy_DataTable_EnemyStatTable jsonData)
     {
         GameObject enemyObj = _poolManager.GetEnemy();
         if (enemyObj != null)
         {
             //var config = EnemyConfigManager.Instance.CreateConfigFromJson(jsonData);
-            //enemyObj.GetComponent<EnemyTEMP>().Setup(config);
+            //enemyObj.GetComponent<Enemy>().Setup(config);
         }
     }
 
@@ -104,21 +118,21 @@ public class GameManager : MonoBehaviour
             var testJson = new Enemy_DataTable_EnemyStatTable
             {
                 key = 1000,
-                Enemy_Inner_Name = "±â¾î´Ù´Ï´Â ±Àº¬ÀÌ",
+                Enemy_Inner_Name = "ê¸°ì–´ë‹¤ë‹ˆëŠ” êµ¼ë²µì´",
                 MaxHP = 100,
                 MovementSpeed = 3.5f
             };
 
             //var config = EnemyConfigManager.Instance.CreateConfigFromJson(testJson);
             //var enemy = Instantiate(config.enemyPrefab);
-            //enemyObj.GetComponent<EnemyTEMP>().Setup(config);
+            //enemyObj.GetComponent<Enemy>().Setup(config);
         }
     }
 #endif
 
 
 
-    // Àû º£ÀÌ½º Ã£±â (±è¿øÁø)
+    // ì  ë² ì´ìŠ¤ ì°¾ê¸° (ê¹€ì›ì§„)
     // Find the enemy base transform in the scene
     public Vector3 BasePosition => baseTransform != null ? baseTransform.position : Vector3.zero;
 }
