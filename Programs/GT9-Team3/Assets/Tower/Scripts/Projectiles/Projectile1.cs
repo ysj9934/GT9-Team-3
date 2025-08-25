@@ -26,8 +26,7 @@ public class Projectile1 : MonoBehaviour
         Vector3 direction = (target.position - transform.position).normalized;
         transform.position += direction * data.speed * Time.deltaTime;
 
-        float distance = Vector3.Distance(transform.position, target.position);
-        if (distance < 0.1f)
+        if (Vector3.Distance(transform.position, target.position) < 0.1f)
         {
             HitTarget();
         }
@@ -40,8 +39,7 @@ public class Projectile1 : MonoBehaviour
             Instantiate(data.impactEffectPrefab, transform.position, Quaternion.identity);
         }
 
-        Enemy1 enemy = target.GetComponent<Enemy1>();
-        if(enemy != null)
+        if (target.TryGetComponent(out Enemy1 enemy))
         {
             enemy.TakeDamage(data.damage);
         }
