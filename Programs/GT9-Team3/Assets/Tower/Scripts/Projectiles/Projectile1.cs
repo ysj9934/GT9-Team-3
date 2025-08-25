@@ -33,6 +33,13 @@ public class Projectile1 : MonoBehaviour
         }
     }
 
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.transform != target) return;
+
+        HitTarget();
+    }
+
     void HitTarget()
     {
         if (data.impactEffectPrefab != null)
@@ -40,12 +47,13 @@ public class Projectile1 : MonoBehaviour
             Instantiate(data.impactEffectPrefab, transform.position, Quaternion.identity);
         }
 
-        Enemy1 enemy = target.GetComponent<Enemy1>();
-        if(enemy != null)
+        if (target.TryGetComponent(out Enemy1 enemy))
         {
             enemy.TakeDamage(data.damage);
         }
 
         Destroy(gameObject);
     }
+
+
 }

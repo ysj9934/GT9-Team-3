@@ -140,13 +140,13 @@ public class Tower1 : MonoBehaviour
                     selected = enemies.OrderBy(e => e.DistanceToBase).FirstOrDefault();
                     break;
                 case TargetPriority.Lowest_HP:
-                    selected = enemies.OrderBy(e => e.enemy._enemyHealthHandler.currentHealth).FirstOrDefault();
+                    selected = enemies.OrderBy(e => e._enemy._enemyHealthHandler.currentHealth).FirstOrDefault();
                     break;
                 case TargetPriority.Base_Closest:
                     selected = enemies.OrderBy(e => Vector3.Distance(transform.position, e.transform.position)).FirstOrDefault();
                     break;
                 default:
-                    selected = enemies.OrderBy(e => e.enemy._enemyHealthHandler.currentHealth).FirstOrDefault();
+                    selected = enemies.OrderBy(e => e._enemy._enemyHealthHandler.currentHealth).FirstOrDefault();
                     break;
             }
 
