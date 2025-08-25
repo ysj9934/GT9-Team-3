@@ -41,12 +41,12 @@ public class EnemyHealthHandler : MonoBehaviour
             castle.TakeDamage((int)_enemy._enemyStat.enemyAttackDamage);
             DeathMotion(HitTarget.Castle);
         }
-        else if (projectile != null)
-        {
-            // 투사체에 맞았을 때 처리
-            TakeDamage(projectile.data.damage);
-            //projectile.Hit();
-        }
+        //else if (projectile != null)
+        //{
+        //    // 투사체에 맞았을 때 처리
+        //    TakeDamage(projectile.data.damage);
+        //    //projectile.Hit();
+        //}
     }
 
     private void TakeDamage(int damage)
