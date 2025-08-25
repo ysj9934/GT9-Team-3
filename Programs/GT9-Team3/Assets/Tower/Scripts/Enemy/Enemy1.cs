@@ -18,20 +18,20 @@ public class Enemy1 : MonoBehaviour
         }
     }
 
-    private void Awake()
+    private void Start()
     {
-        enemy = GetComponent<Enemy>();
+        enemy = GetComponentInParent<Enemy>();
     }
 
     public void TakeDamage(int damage)
     {
-        enemy.currentHp -= damage;
-        Debug.Log($"[««∞›] {gameObject.name} √º∑¬: {enemy.currentHp}");
+        //enemy.currentHp -= damage;
+        //Debug.Log($"[ÌîºÍ≤©] {gameObject.name} Ï≤¥Î†•: {enemy.currentHp}");
     }
 
     //private void Die()
     //{
-    //    Debug.Log($"[ªÁ∏¡] {gameObject.name}");
+    //    Debug.Log($"[ÏÇ¨Îßù] {gameObject.name}");
     //    Destroy(gameObject);
     //}
 
