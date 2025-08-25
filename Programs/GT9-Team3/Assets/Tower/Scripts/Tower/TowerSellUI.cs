@@ -25,10 +25,10 @@ public class TowerSellUI : MonoBehaviour
     public TextMeshProUGUI targetCountText;
     public TextMeshProUGUI attackTypeText;
     public TextMeshProUGUI sellValueText;
-    //public TextMeshProUGUI slowEffectText;
-    //public TextMeshProUGUI slowTimeText;
-    //public TextMeshProUGUI ccTimeText;
-    //public TextMeshProUGUI tileRangeText;
+    public TextMeshProUGUI slowEffectText;
+    public TextMeshProUGUI slowTimeText;
+    public TextMeshProUGUI ccTimeText;
+    public TextMeshProUGUI tileRangeText;
 
     void Awake()
     {
@@ -66,19 +66,21 @@ public class TowerSellUI : MonoBehaviour
         towerIconImage.sprite = tower.blueprint.icon;     // TowerBluePrint에서 받아옴
         towerNameText.text = d.innerName;
         levelText.text = $"Lv.{d.towerLevel}";
-        damageText.text = d.damage.ToString();
         attackSpeedText.text = $"{d.attackSpeed}/s";
         rangeText.text = d.attackRange.ToString();
         targetCountText.text = d.targetCount.ToString();
         attackTypeText.text = d.attackType.ToString();
-        sellValueText.text = d.sellValue.ToString();
+        sellValueText.text = $"Cost : {d.sellValue}";
 
-        //ProjectileData p = tower.data.projectileData;
 
-        //slowEffectText.text = d.slowEffect.ToString();
-        //slowTimeText.text = $"{d.slowTime}/s";
-        //ccTimeText.text = $"{d.ccTime}/s";       
-        //tileRangeText.text = $"{d.tileRange}/Tile";
+        ProjectileData p = tower.data.projectileData;
+
+        damageText.text = p.damage.ToString();
+
+        //slowEffectText.text = p.slowEffect.ToString();
+        //slowTimeText.text = $"{p.slowTime}/s";
+        //ccTimeText.text = $"{p.stunTime}/s";
+        //tileRangeText.text = $"{p.tileRange}/Tile";
     }
 
     public void Hide()
