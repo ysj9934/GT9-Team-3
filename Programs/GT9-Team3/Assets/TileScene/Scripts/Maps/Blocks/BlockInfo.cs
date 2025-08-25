@@ -119,8 +119,10 @@ public class BlockInfo : MonoBehaviour
         GameObject go = Instantiate(bp.towerPrefab, pos, Quaternion.identity);
         go.transform.SetParent(transform);
         Tower1 tower = go.GetComponent<Tower1>();
-        tower.Intialize(this);
+        tower.ApplyData(bp);
         tower.ApplyData(bp.data);
+        tower.Intialize(this);
+        TowerSellUI.Instance.Show(tower);
         Debug.Log($"Tower data applied: {(float)bp.CostValue / 4}");
         ResourceManager.Instance.Spend(bp.CostType, (float)bp.CostValue / 4);
         HUD_Canvas.Instance.castleHUD.UpdateGold();

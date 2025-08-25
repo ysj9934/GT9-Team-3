@@ -81,6 +81,7 @@ public class TowerPlacer : MonoBehaviour
         GameObject go = Instantiate(bp.towerPrefab, pos, Quaternion.identity);
         go.transform.SetParent(transform);
         Tower1 tower = go.GetComponent<Tower1>();
+        tower.ApplyData(bp);
         //tower.Intialize(this);
         if (tower != null) tower.ApplyData(bp.data);
         tower.ApplyData(bp.data);

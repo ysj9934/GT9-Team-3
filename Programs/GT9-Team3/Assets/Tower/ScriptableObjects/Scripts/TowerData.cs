@@ -6,30 +6,34 @@ using UnityEngine;
 public class TowerData : ScriptableObject
 {
     public int towerID;
-    public string innerName;        // Å¸¿ö¸¦ ½Ã½ºÅÛ ³»ºÎ¿¡¼­ ½Äº°ÇÏ±â À§ÇØ »ç¿ëÇÏ´Â °íÀ¯ ¹®ÀÚ¿­ ÀÌ¸§
+    public string innerName;        // íƒ€ì›Œë¥¼ ì‹œìŠ¤í…œ ë‚´ë¶€ì—ì„œ ì‹ë³„í•˜ê¸° ìœ„í•´ ì‚¬ìš©í•˜ëŠ” ê³ ìœ  ë¬¸ìì—´ ì´ë¦„
     public int towerLevel;
-    public string useProjectile;    // ÇØ´ç Å¸¿ö°¡ »ç¿ëÇÏ´Â ¹ß»çÃ¼ÀÇ ³»ºÎ ÀÌ¸§(Inner_Name)À» Á¤ÀÇÇÏ´Â µ¥ÀÌÅÍ
+    public string useProjectile;    // í•´ë‹¹ íƒ€ì›Œê°€ ì‚¬ìš©í•˜ëŠ” ë°œì‚¬ì²´ì˜ ë‚´ë¶€ ì´ë¦„(Inner_Name)ì„ ì •ì˜í•˜ëŠ” ë°ì´í„°
 
 
     public AttackType attackType;
-    public float attackRadius;      // °ø°İÀÌ ÀûÁßÇÏ´Â ¹üÀ§¸¦ Á¤ÀÇÇÏ´Â µ¥ÀÌÅÍ
-    public int targetCount;         // °ø°İÀÌ ÀûÁßÇÏ´Â ¹üÀ§¸¦ Á¤ÀÇÇÏ´Â µ¥ÀÌÅÍ
+    public float attackRadius;      // ê³µê²©ì´ ì ì¤‘í•˜ëŠ” ë²”ìœ„ë¥¼ ì •ì˜í•˜ëŠ” ë°ì´í„°
+    public int targetCount;         // ê³µê²©ì´ ì ì¤‘í•˜ëŠ” ë²”ìœ„ë¥¼ ì •ì˜í•˜ëŠ” ë°ì´í„°
     public float attackRange;
 
     public EnemyType attackEnemyType1;
     public EnemyType attackEnemyType2;
-    public TargetPriority[] targetOrder;    // ´ë»ó ¿ì¼±¼øÀ§
+    public TargetPriority[] targetOrder;    // ëŒ€ìƒ ìš°ì„ ìˆœìœ„
 
     public ResourceType makeCost;
-    public int makeValue;           // Å¸¿ö¸¦ Áş´Âµ¥ ¼Ò¸ğµÇ´Â ÀÚ¿øÀÇ ¼öÄ¡¸¦ Á¤ÀÇÇÏ´Â µ¥ÀÌÅÍ
-    public ResourceType sellCost;   // À¯Àú°¡ Å¸¿ö¸¦ ÆÇ¸ÅÇÒ °æ¿ì µ¹·Á¹Ş´Â ÀÚ¿øÀÇ Á¾·ù¸¦ Á¤ÀÇÇÏ´Â µ¥ÀÌÅÍ
-    public int sellValue;           // Å¸¿ö¸¦ Áş´Âµ¥ ¼Ò¸ğµÇ´Â ÀÚ¿øÀÇ ¼öÄ¡¸¦ Á¤ÀÇÇÏ´Â µ¥ÀÌÅÍ
+    public int makeValue;               // íƒ€ì›Œë¥¼ ì§“ëŠ”ë° ì†Œëª¨ë˜ëŠ” ìì›ì˜ ìˆ˜ì¹˜ë¥¼ ì •ì˜í•˜ëŠ” ë°ì´í„°
+    public ResourceType sellCost;       // ìœ ì €ê°€ íƒ€ì›Œë¥¼ íŒë§¤í•  ê²½ìš° ëŒë ¤ë°›ëŠ” ìì›ì˜ ì¢…ë¥˜ë¥¼ ì •ì˜í•˜ëŠ” ë°ì´í„°
+    public int sellValue;               // íƒ€ì›Œë¥¼ íŒŒëŠ”ë° ì†Œëª¨ë˜ëŠ” ìì›ì˜ ìˆ˜ì¹˜ë¥¼ ì •ì˜í•˜ëŠ” ë°ì´í„°
+    public ResourceType UpgradeCost;
+    public int UpgradeValue;
 
-    public int damage;             // °ø°İ µ¥¹ÌÁö
-    public float attackSpeed;      // ÃÊ´ç °ø°İ È½¼ö
+    public int damage;             // ê³µê²© ë°ë¯¸ì§€
+    public float attackSpeed;      // ì´ˆë‹¹ ê³µê²© íšŸìˆ˜
 
-    public GameObject projectilePrefab;     // »ç¿ëÇÒ ¹ß»çÃ¼ ÇÁ¸®ÆÕ
-    public ProjectileData projectileData;   // ¹ß»çÃ¼ ¼Ó¼º Á¤º¸
+    public GameObject projectilePrefab;     // ì‚¬ìš©í•  ë°œì‚¬ì²´ í”„ë¦¬íŒ¹
+    public ProjectileData projectileData;   // ë°œì‚¬ì²´ ì†ì„± ì •ë³´
+
+
 
 }
 

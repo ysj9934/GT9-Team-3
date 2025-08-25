@@ -17,7 +17,7 @@ public class TowerDataMapper
                 case "Base_Closest": list.Add(TargetPriority.Base_Range); break;
                 case "Low_HP": list.Add(TargetPriority.Lowest_HP); break;
                 case "Tower_Closest": list.Add(TargetPriority.Base_Closest); break;
-                default: Debug.LogWarning($"[¿ì¼±¼øÀ§ º¯È¯ ½ÇÆĞ] {val}"); break;
+                default: Debug.LogWarning($"[ìš°ì„ ìˆœìœ„ ë³€í™˜ ì‹¤íŒ¨] {val}"); break;
             }
         }
         return list.ToArray();
@@ -31,15 +31,18 @@ public class TowerDataMapper
 
         so.targetOrder = BuildPriorityArray(row.Target_Order1, row.Target_Order2, row.Target_Order3, row.Target_Order4);
 
-        so.makeCost = ResourceType.Gold;        // ÇöÀç´Â ÀüºÎ Gold
+        so.makeCost = ResourceType.Gold;        // í˜„ì¬ëŠ” ì „ë¶€ Gold
         so.makeValue = row.Make_Value;
 
         so.sellCost = ResourceType.Gold;
         so.sellValue = row.Sell_Value;
 
-        Debug.Log($"[TowerDataMapper] ½ºÅÈ ¸ÅÇÎ ¿Ï·á: ID = {row.key}, ÀÌ¸§ = {row.Inner_Name}, ·¹º§ = {row.Tower_Grade}, »ı¼ººñ¿ë = {row.Make_Value}, ÆÇ¸Å°¡ = {row.Sell_Value}");
+        so.UpgradeCost = ResourceType.Gold;
+        so.UpgradeValue = row.Upgrade_Value;
+
+        Debug.Log($"[TowerDataMapper] ìŠ¤íƒ¯ ë§¤í•‘ ì™„ë£Œ: ID = {row.key}, ì´ë¦„ = {row.Inner_Name}, ë ˆë²¨ = {row.Tower_Grade}, ìƒì„±ë¹„ìš© = {row.Make_Value}, íŒë§¤ê°€ = {row.Sell_Value}");
 
 
-        // ÀÌ¿Ü¿¡ attackRange, attackSpeed, damage µîÀº ´Ù¸¥ Å×ÀÌºí¿¡¼­ ºÒ·¯¿Í¾ß ÇÔ
+        // ì´ì™¸ì— attackRange, attackSpeed, damage ë“±ì€ ë‹¤ë¥¸ í…Œì´ë¸”ì—ì„œ ë¶ˆëŸ¬ì™€ì•¼ í•¨
     }
 }

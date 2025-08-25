@@ -12,6 +12,8 @@ public class Tower1 : MonoBehaviour
 
     private GameObject rangeVisual;
 
+    public TowerBlueprint blueprint;
+
     private void Awake()
     {
         rangeVisual = transform.Find("RangeVisual")?.gameObject;
@@ -78,8 +80,16 @@ public class Tower1 : MonoBehaviour
         Debug.Log($"[타워] 스탯 적용됨: 고유번호 = {data.towerID},  이름 = {data.innerName}");
     }
 
+    public void ApplyData(TowerBlueprint bp)
+    {
+        blueprint = bp;
+
+        ApplyData(bp.data);
+    }
+
     private void OnMouseDown()
     {
+
         bool isAlreadyOpen = TowerSellUI.Instance.IsOpenFor(this);
 
         // UI 열려있고 같은 타워를 누른 경우 닫기
