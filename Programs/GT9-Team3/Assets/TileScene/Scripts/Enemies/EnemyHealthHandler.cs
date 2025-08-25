@@ -33,7 +33,7 @@ public class EnemyHealthHandler : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         Castle castle = collision.GetComponent<Castle>();
-        Projectile projectile = collision.GetComponent<Projectile>();
+        //Projectile projectile = collision.GetComponent<Projectile>();
 
         if (castle != null)
         {
@@ -41,15 +41,15 @@ public class EnemyHealthHandler : MonoBehaviour
             castle.TakeDamage((int)_enemy._enemyStat.enemyAttackDamage);
             DeathMotion(HitTarget.Castle);
         }
-        else if (projectile != null)
-        {
-            // 투사체에 맞았을 때 처리
-            TakeDamage(projectile.data.damage);
-            //projectile.Hit();
-        }
+        //else if (projectile != null)
+        //{
+        //    // 투사체에 맞았을 때 처리
+        //    TakeDamage(projectile.data.damage);
+        //    //projectile.Hit();
+        //}
     }
 
-    private void TakeDamage(int damage)
+    public void TakeDamage(int damage)
     {
         currentHealth -= damage;
 
