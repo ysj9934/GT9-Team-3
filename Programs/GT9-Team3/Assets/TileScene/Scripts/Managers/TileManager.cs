@@ -6,390 +6,278 @@ using Cinemachine;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UIElements;
 using Random = UnityEngine.Random;
 
+
+/// <summary>
+/// TileManager
+/// created by: yoon
+/// created at: 2025.08.18
+/// description:
+/// TileManager refactoring
+/// </summary>
 public class TileManager : MonoBehaviour
 {
     public static TileManager Instance { get; private set; }
-    private GameManager11 _gameManager;
-    private List<TileUI> _tileUIs;
     
-    [Header("Tile Prefabs")]
-    [SerializeField] private GameObject[] tilePrefabs;  // 타일_길타입 프리팹
-    [SerializeField] private GameObject tileGridPrefab; // 타일_그리드 프리팹
-    [SerializeField] private GameObject tileBasePrefab; // 타일_기지 프리펩
-    [SerializeField] private GameObject tileSpawnPrefab;// 타일_스포너 프리팹
+    // 참조
+    // Reference
+    public GameManager12 _gameManager;
 
-    [SerializeField] private CinemachineVirtualCamera[] levelCamera;
+    // ??? ?????? ????
+    // tile size setting
+    public readonly float[] tileSize = { 1.4475f, 0.84f };
+    public int tileLength = 5;
 
-    public float[] tileSize = { 1.4475f, 0.84f }; // 타일 사이즈
+    public int worldLevel = 1;
+    public int tempLevel = 1;
 
-    public int mapLevel = 1;
-    private int cellSize = 5;
-    private float cellPos;
-    
-    [SerializeField]public TileRoad[,] tileMap;
-    public TileRoad startTileRoad;
-    public TileRoad endTileRoad;
+    // ??? ?????? ????
+    [SerializeField] public GameObject[] tilePrefabs;
+    [SerializeField] public GameObject tileGridPrefab;
+    [SerializeField] public GameObject tileCastlePrefab;
+    [SerializeField] public GameObject tileSpawnPrefab;
+
+    public TileData[,] tileMap;
+    public TileData startTile;
+    public TileData endTile;
 
     [SerializeField] private GameObject pathfinderPrefab;
-    public List<TileRoad> path;
-    public List<TileGrid> gridTileList;
-    public List<TileRoad> roadTileList;
+    public List<TileData> path;
+    public List<TileGrid> tileGridList;
+    public List<TileInfo> tileInfoList;
     public List<Vector2> spawnTransform;
-
-    [SerializeField] private TextMeshProUGUI tileEditModeText;
-    [SerializeField] private TextMeshProUGUI tileMoveModeText;
-    public bool isTileEditMode = false;
-    public bool isTileMoveMode = false;
 
     private void Awake()
     {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
         Instance = this;
     }
 
     private void Start()
     {
-        _gameManager = GameManager11.Instance;
-    }
-
-    // UI 초기화
-    private void InitializedTileUI()
-    {
-        _tileUIs = new List<TileUI>();
-
-        foreach (var roadTile in roadTileList)
-        {
-            if (roadTile._tileUI != null)
-                _tileUIs.Add(roadTile._tileUI);
-        }
+        _gameManager = GameManager12.Instance;
+        
+        Initialize();
     }
 
     public void Initialize()
     {
-        UpdateLevel(mapLevel);
-        CameraMove();
-        ClearTiles();
-        SetGridTile();
-        SetBaseTile();
+        InitializeTileMap(tileLength);
+        SetTileGrid(tileLength);
+        SetTileRoad(tileLength);
+        SetSpawnerPosition();
     }
 
-    // 맵 레벨 업데이트
-    public void UpdateLevel(int level)
+    // tileMap ????
+    // Initialize the tile map with the given dimensions
+    private void InitializeTileMap(int tileLength)
     {
-        this.mapLevel = level;
+        tileMap = new TileData[tileLength, tileLength];
+    }
 
-        switch (mapLevel)
+    public void SetTempInitlaize()
+    {
+        InitializeTileMap(tileLength);
+        SetTileGrid(tileLength);
+        SetSpawnerPosition();
+
+        foreach (var tileInfo in tileInfoList)
         {
-            case 1:
-                cellSize = 5;
-                break;
-            case 2:
-                cellSize = 7;
-                break;
-            case 3:
-                cellSize = 9;
-                break;
+            tileInfo.InitializeTemp(tileInfo.transform.position);
         }
 
-        cellPos = Mathf.Ceil((float)cellSize / 2f);
-    }
-
-    public void ClearTiles()
-    {
-        _gameManager.DestroyOfType<TileRoad>();
-    }
-
-    private void CameraMove()
-    {
-        foreach (var vcamera in levelCamera)
+        TileCastle tileCastle = endTile as TileCastle;
+        if (tileCastle != null)
         {
-            vcamera.Priority = 0;
+            tileCastle.InitializeTemp(tileCastle.transform.position);
         }
-
-        levelCamera[mapLevel - 1].Priority = 20;
+        else
+        {
+            Debug.LogError("startTile is not a TileCastle");
+        }
     }
 
-    public void SetGridTile()
+    // 월드 변경시 타일 변경
+    public void UpdateWorldLevel(int level)
     {
+        worldLevel = level;
+
+        foreach (var tileInfo in tileInfoList)
+        {
+            tileInfo.UpdateWorldLevel(worldLevel);
+        }
         
-        gridTileList = new List<TileGrid>();
+        startTile.UpdateWorldLevel(worldLevel);
+        endTile.UpdateWorldLevel(worldLevel);
+    }
+
+    public void UpdateTempLevel(int level)
+    {
+        tempLevel = level;
+        tileLength = 3 + (2 * tempLevel);
+    }
+
+    public void SetTileGrid(int tileLength)
+    {
+        tileGridList = new List<TileGrid>();
         _gameManager.DestroyOfType<TileGrid>();
-        tileMap = new TileRoad[cellSize, cellSize];
-        
-        for (int row = 0; row < cellSize; row++)
+
+        for (int row = 0; row < tileLength; row++)
         {
-            for (int col = 0; col < cellSize; col++)
+            for (int col = 0; col < tileLength; col++)
             {
-                Vector2 pos = new Vector3(col * 1.4475f - (1.4475f * row), (row + col) * -0.84f + 1.68f + (1.68f * mapLevel));
-                GameObject go = Instantiate(tileGridPrefab, pos, Quaternion.identity);
+                Vector2 pos = new Vector2(col * tileSize[0] - row * tileSize[0], (col + row) * -tileSize[1] + tileSize[1] * 2 + (tileSize[1] * 2 * tempLevel));
+                GameObject go = Instantiate(tileGridPrefab, 
+                    pos, 
+                    Quaternion.identity);
                 go.transform.SetParent(transform);
                 TileGrid tileGrid = go.GetComponent<TileGrid>();
-                tileGrid.Initialize(mapLevel, pos);
-                
-                gridTileList.Add(tileGrid);
+                tileGrid.Initialize(pos);
+
+                tileGridList.Add(tileGrid);
             }
         }
     }
 
-    public void SetBaseTile()
+    public void SetTileRoad(int tileLength)
     {
-        _gameManager.DestroyOfType<TileRoad>();
-        int baseNumber = 1;
-
+        tileInfoList = new List<TileInfo>();
+        int baseNumber = 0;
         for (int row = 0; row < 3; row++)
         {
             for (int col = 0; col < 3; col++)
             {
-                // 주변 8타일
-                if (baseNumber != 5)
-                {
-                    Vector2 pos = new Vector3(col * 1.4475f - (1.4475f * row), (row + col) * -0.84f + 1.68f);
-                    GameObject go = Instantiate(tilePrefabs[Random.Range(0, tilePrefabs.Length)], pos, Quaternion.identity);
+                if (baseNumber != 4){
+                    Vector2 pos = new Vector2(col * tileSize[0] - row * tileSize[0], (col + row) * -tileSize[1] + tileSize[1] * 2);
+                    GameObject go = Instantiate(
+                        tilePrefabs[UnityEngine.Random.Range(0, tilePrefabs.Length)],
+                        pos,
+                        Quaternion.identity);
                     go.transform.SetParent(transform);
-                    TileRoad tileRoad = go.GetComponent<TileRoad>();
-                    tileRoad.Initialize(mapLevel, pos);
+                    TileInfo tileInfo = go.GetComponent<TileInfo>();
+                    tileInfo.Initialize(pos);
 
-                    // tileMap[row + mapLevel, col + mapLevel] = tileRoad;
-                    roadTileList.Add(tileRoad);
+
+                    tileInfoList.Add(tileInfo);
                 }
-                // 기지 타일
-                else
-                {
-                    Vector2 pos = new Vector3(col * 1.4475f - (1.4475f * row), (row + col) * -0.84f + 1.68f);
-                    GameObject go = Instantiate(tileBasePrefab, pos, Quaternion.identity);
+                else {
+                    Vector2 pos = new Vector2(col * tileSize[0] - row * tileSize[0], (col + row) * -tileSize[1] + tileSize[1] * 2);
+                    GameObject go = Instantiate(
+                        tileCastlePrefab,
+                        pos,
+                        Quaternion.identity);
                     go.transform.SetParent(transform);
-                    TileRoad tileRoad = go.GetComponent<TileRoad>();
-                    tileRoad.Initialize(mapLevel, pos);
-                    
-                    // tileMap[row + mapLevel, col + mapLevel] = tileRoad;
-                    endTileRoad = tileRoad;
-                    roadTileList.Add(tileRoad);
+                    TileCastle tileCastle = go.GetComponent<TileCastle>();
+                    tileCastle.Initialize(pos);
+
+                    endTile = tileCastle;
                 }
+                    
                 baseNumber++;
             }
         }
-
-        InitializedTileUI();
     }
 
+    // 이웃한 타일 정보 보기
     public void SetNeighbors()
     {
-        for (int row = 0; row < cellSize; row++)
+        for (int row = 0; row < tileLength; row++)
         {
-            for (int col = 0; col < cellSize; col++)
+            for (int col = 0; col < tileLength; col++)
             {
-                Debug.Log($"tileMap[{row},{col}]");
                 if (tileMap[row, col] != null)
                 {
-                    tileMap[row, col].SetNeighbors(tileMap, cellSize, cellSize);
-                    //tileMap[row, col].SetNeighbors(tileMap);
+                    tileMap[row, col].SetNeighbors(tileMap, tileLength, tileLength);
                 }
-
-                Debug.Log($"tileMap : {tileMap[row, col]}");
             }
         }
     }
-
-
 
     public void SetSpawnerPosition()
     {
         spawnTransform = new List<Vector2>();
         ClearSpawner();
-        
-        switch (mapLevel)
+
+        switch (tempLevel)
         {
-            // 계산식으로 변경하기
             case 1:
-                //spawnTransform.Add(gridTileList[0].transform.position);
-                spawnTransform.Add(gridTileList[4].transform.position);
-                //spawnTransform.Add(gridTileList[20].transform.position);
-                //spawnTransform.Add(gridTileList[24].transform.position);
+                spawnTransform.Add(tileGridList[4].transform.position);
                 break;
             case 2:
-                //spawnTransform.Add(gridTileList[0].transform.position);
-                //spawnTransform.Add(gridTileList[6].transform.position);
-                //spawnTransform.Add(gridTileList[27].transform.position);
-                //spawnTransform.Add(gridTileList[45].transform.position);
-                break;
-            case 3:
-                spawnTransform.Add(gridTileList[4].transform.position);
-                spawnTransform.Add(gridTileList[36].transform.position);
-                spawnTransform.Add(gridTileList[44].transform.position);
-                spawnTransform.Add(gridTileList[76].transform.position);
+                spawnTransform.Add(tileGridList[6].transform.position);
                 break;
         }
 
         CreateSpawner();
     }
-
+    
     public void CreateSpawner()
     {
         if (spawnTransform.Count == 0)
             return;
         
-        //Vector2 pos = spawnTransform[Random.Range(0, spawnTransform.Count)];
         Vector2 pos = spawnTransform[0];
-        GameObject go = Instantiate(tileSpawnPrefab, pos, Quaternion.identity);
+        GameObject go = Instantiate(
+            tileSpawnPrefab, 
+            pos, 
+            Quaternion.identity);
         go.transform.SetParent(transform);
-        TileSpawner tileS = go.GetComponent<TileSpawner>();
-        TileRoad tile = go.GetComponent<TileRoad>();
-        
-        tile.Initialize(mapLevel, pos);
+        TileSpawner tileSpawner = go.GetComponent<TileSpawner>();
+        tileSpawner.Initialize(pos);
 
-        startTileRoad = tile;
+        startTile = tileSpawner;
     }
+    
     
     public void ClearSpawner()
     {
         _gameManager.DestroyOfType<TileSpawner>();
     }
 
-    //public void ShowConnectedPath()
-    //{
-    //    path = new List<TileRoad>();
-        
-    //    SetNeighbors();
-
-    //    if (startTileRoad == null)
-    //    {
-    //        Debug.Log("startTileRoad is null");
-    //    }
-    //    else if (endTileRoad == null)
-    //    {
-    //        Debug.Log("endTileRoad is null");
-    //    }
-    //    else
-    //    {
-    //        path = FindConnectedPath(startTileRoad, endTileRoad);
-    //        if (path != null && path.Count > 0)
-    //        {
-    //            GetPathfinder();
-    //        }
-                
-    //    } 
-    //}
-
-    //public List<TileRoad> FindConnectedPath(TileRoad startTile, TileRoad endTile)
-    //{
-    //    Debug.Log("FindConnectedPath - Searching all paths");
-    //    var allPaths = new List<List<TileRoad>>();
-    //    var visited = new HashSet<TileRoad>();
-    //    var currentPath = new List<TileRoad>();
-
-    //    DFSAllPaths(startTile, endTile, visited, currentPath, allPaths);
-
-    //    if (allPaths.Count == 0)
-    //    {
-    //        Debug.LogWarning("No valid paths found");
-    //        return new List<TileRoad>();
-    //    }
-
-    //    // 가장 짧은 경로 선택
-    //    var shortestPath = allPaths.OrderBy(p => p.Count).First();
-    //    Debug.Log($"Shortest path length: {shortestPath.Count}");
-    //    return shortestPath;
-    //}
-
-
-    //private void DFSAllPaths(TileRoad current, TileRoad target, HashSet<TileRoad> visited,
-    //    List<TileRoad> currentPath, List<List<TileRoad>> allPaths)
-    //{
-    //    if (current == null || visited.Contains(current))
-    //        return;
-
-    //    visited.Add(current);
-    //    currentPath.Add(current);
-
-    //    if (current == target)
-    //    {
-    //        // 경로 복사해서 저장
-    //        allPaths.Add(new List<TileRoad>(currentPath));
-    //    }
-    //    else
-    //    {
-    //        foreach (var (neighbor, _) in current._tileRoadConnector.GetConnectedNeighbors())
-    //        {
-    //            DFSAllPaths(neighbor, target, visited, currentPath, allPaths);
-    //        }
-    //    }
-
-    //    // 백트래킹
-    //    visited.Remove(current);
-    //    currentPath.RemoveAt(currentPath.Count - 1);
-    //}
-
     public void ShowConnectedPath()
     {
         SetNeighbors();
+        CloseAllUI(null);
 
-        if (startTileRoad == null)
+        if (startTile == null)
         {
             Debug.Log("startTileRoad is null");
         }
-        else if (endTileRoad == null)
+        else if (endTile == null)
         {
             Debug.Log("endTileRoad is null");
         }
         else
         {
-            path = FindConnectedPath(startTileRoad, endTileRoad);
+            path = FindConnectedPath(startTile, endTile);
             //path = FindConnectedPathBFS(startTileRoad, endTileRoad);
 
             if (path != null && path.Count > 0)
                 GetPathfinder();
-
         }
     }
-
-    public List<TileRoad> FindConnectedPathBFS(TileRoad startTile, TileRoad endTile)
-    {
-        var visited = new HashSet<TileRoad>();
-        var queue = new Queue<List<TileRoad>>();
-        queue.Enqueue(new List<TileRoad> { startTile });
-
-        while (queue.Count > 0)
-        {
-            var path = queue.Dequeue();
-            var current = path[path.Count - 1];
-
-            if (visited.Contains(current))
-                continue;
-
-            visited.Add(current);
-
-            if (current == endTile)
-                return path;
-
-            foreach (var (neighbor, _) in current._tileRoadConnector.GetConnectedNeighbors())
-            {
-                Debug.Log($"현재 타일: {current.name}, 연결된 이웃 수: {current._tileRoadConnector.GetConnectedNeighbors().Count}");
-                if (!visited.Contains(neighbor))
-                {
-                    var newPath = new List<TileRoad>(path) { neighbor };
-                    queue.Enqueue(newPath);
-                }
-            }
-        }
-
-        return new List<TileRoad>();
-    }
-
-    public List<TileRoad> FindConnectedPath(TileRoad startTile, TileRoad endTile)
+    
+    public List<TileData> FindConnectedPath(TileData startTile, TileData endTile)
     {
         Debug.Log("FindConnectedPath");
-        var visited = new HashSet<TileRoad>();
-        var path = new List<TileRoad>();
+        var visited = new HashSet<TileData>();
+        var path = new List<TileData>();
 
         if (DFS(startTile, endTile, visited, path))
             return path;
 
-        return new List<TileRoad>();
+        return new List<TileData>();
     }
 
-    private bool DFS(TileRoad current, TileRoad target, HashSet<TileRoad> visited, List<TileRoad> path)
+    private bool DFS(TileData current, TileData target, HashSet<TileData> visited, List<TileData> path)
     {
         Debug.Log("DFS");
         if (current == null || visited.Contains(current))
@@ -403,7 +291,7 @@ public class TileManager : MonoBehaviour
 
         foreach (var (neighbor, _) in current._tileRoadConnector.GetConnectedNeighbors())
         {
-            Debug.Log($"currentTile : {current.col}, {current.row}");
+            Debug.Log($"currentTile : {current.tileCol}, {current.tileCol}");
             if (DFS(neighbor, target, visited, path))
                 return true;
         }
@@ -412,66 +300,22 @@ public class TileManager : MonoBehaviour
         visited.Remove(current);
         return false;
     }
-
+    
     public void GetPathfinder()
     {
-        GameObject go = Instantiate(pathfinderPrefab, startTileRoad.transform);
+        GameObject go = Instantiate(pathfinderPrefab, startTile.transform);
         Pathfinder pathfinder = go.GetComponent<Pathfinder>();
         pathfinder.Initialize(path);
+
+        HUD_Canvas.Instance.customSetting.waveSystembutton.interactable = true;
     }
 
-    public void CreateTile(int tileCode)
+    public void CloseAllUI(TileUI exceptUI)
     {
-        Vector2 pos = new Vector3(7.2f + (1.4475f * mapLevel), -1.68f + (-1f * 0.84f * mapLevel));   
-        GameObject go = Instantiate(tilePrefabs[tileCode], pos, Quaternion.identity);
-        go.transform.SetParent(transform);
-    }
-
-    /// <summary>
-    /// 타일 편집 모드 활설화
-    /// Create : 2025.08.13
-    /// </summary>
-    /// 
-
-    public void ToggleTileEditMode()
-    {
-        if (isTileMoveMode)
-            ToggleTileMoveMode();
-
-        HideAllUI();
-
-        if (isTileEditMode)
-            isTileEditMode = false;
-        else
-            isTileEditMode = true;
-
-
-
-        tileEditModeText.text = isTileEditMode ? "Tile Edit Mode : ON" : "Tile Edit Mode : OFF";
-    }
-
-    public void ToggleTileMoveMode()
-    {
-        if (isTileEditMode)
-            ToggleTileEditMode();
-
-        HideAllUI();
-
-        if (isTileMoveMode)
-            isTileMoveMode = false;
-        else
-            isTileMoveMode = true;
-
-        tileMoveModeText.text = isTileMoveMode ? "Tile Move Mode : ON" : "Tile Move Mode : OFF";
-    }
-
-    // UI 모두 끄기
-    public void HideAllUI()
-    {
-        foreach (var tileUI in _tileUIs)
+        foreach (var tileInfo in tileInfoList)
         {
-            tileUI.CloseUI();
+            if (tileInfo._tileUI != exceptUI)
+                tileInfo._tileUI.CloseUI();
         }
     }
-
 }

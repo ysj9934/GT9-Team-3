@@ -423,9 +423,9 @@ GameObject:
   - component: {fileID: 6781992547309488536}
   - component: {fileID: 8009411909281360670}
   - component: {fileID: 8364271249298629789}
-  - component: {fileID: 4774479652878505429}
-  - component: {fileID: 4792015657008276146}
   - component: {fileID: 1880822616636555698}
+  - component: {fileID: 2855911802003967393}
+  - component: {fileID: 4711335635817342448}
   m_Layer: 0
   m_Name: Caterpillar
   m_TagString: Untagged
@@ -572,39 +572,12 @@ CapsuleCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: -0.25, y: 1.07}
   m_Size: {x: 4, y: 3}
   m_Direction: 1
---- !u!114 &4774479652878505429
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5771025906570419322}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c724bebd385749b408a0ccc116fd2e0b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  moveSpeed: 0.5
---- !u!114 &4792015657008276146
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5771025906570419322}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 927f6e9beb4d5fe4ea50c31b98851c79, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  animator: {fileID: 0}
-  attackInterval: 1.5
 --- !u!114 &1880822616636555698
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -617,14 +590,52 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 51ee3d26cc8fffe4a922406899ea1fde, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hp: 1
+  key: 1000
+  stat: {fileID: 0}
   currentHp: 0
   healthBar: {fileID: 0}
-  speed: 2
-  attackPower: 10
-  attackRange: 5
-  attackSpeed: 1
   targetPosition: {x: 0, y: 0}
+  path: []
+--- !u!50 &2855911802003967393
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5771025906570419322}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
+--- !u!114 &4711335635817342448
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5771025906570419322}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 69857a8437832a74e9edfee50be39a09, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHP: 0
 --- !u!1 &6736664902982549718
 GameObject:
   m_ObjectHideFlags: 0

@@ -4,13 +4,12 @@ using UnityEngine;
 
 public class TowerBuildUI : MonoBehaviour
 {
-    private BlockInfo _blockInfo;
+    public BlockInfo _blockInfo;
 
     [Header("Wiring")]
     public RectTransform root;            // Panel 루트
-    public RectTransform listParent;          // 항목이 배치될 Content
+    public Transform listParent;          // 항목이 배치될 Content
     public TowerOptionItem itemPrefab;
-
 
     [Header("Catalog")]
     public List<TowerBlueprint> options;  // 노출할 타워 종류들
@@ -18,6 +17,21 @@ public class TowerBuildUI : MonoBehaviour
     private TowerPlacer placer;
     private Vector3Int pendingCell;
     private Vector3 pendingWorld;
+
+    private void Start()
+    {
+        if (TowerDataTableLoader.Instance == null)
+            new TowerDataTableLoader();  // 명시적 초기화
+
+        var table = TowerDataTableLoader.Instance.ItemsDict;
+
+        foreach (var bp in options)
+        {
+            bp.ApplyLoadedData(table);
+            Debug.Log("데이터 매핑 중: " + bp.name);
+        }
+
+    }
 
     void Awake() => Hide();
 
@@ -46,13 +60,14 @@ public class TowerBuildUI : MonoBehaviour
     {
         root.gameObject.SetActive(true);
 
+        // 리스트 갱신
         foreach (Transform c in listParent) Destroy(c.gameObject);
 
         foreach (var bp in options)
         {
             var item = Instantiate(itemPrefab, listParent);
             bool canAfford = ResourceManager.Instance.CanAfford(bp.CostType, bp.CostValue);
-            item.Setup(bp, this, canAfford);
+            item.Setup2(bp, this, canAfford);
         }
 
         _blockInfo = blockInfo;
@@ -64,8 +79,16 @@ public class TowerBuildUI : MonoBehaviour
     {
         if (!ResourceManager.Instance.CanAfford(bp.CostType, bp.CostValue)) return;
 
-        //placer.PlaceTowerFromUI(bp, pendingWorld, pendingCell);
-        _blockInfo.CallNumber(bp);
+        placer.PlaceTowerFromUI(bp, pendingWorld, pendingCell);
+        Hide();
+    }
+
+    public void OnClickBuild2(TowerBlueprint bp)
+    {
+        if (!ResourceManager.Instance.CanAfford(bp.CostType, bp.CostValue)) return;
+
+        //placer.PlaceTowerFromUI2(bp);
+        _blockInfo.SetTower(bp);
 
         Hide();
     }

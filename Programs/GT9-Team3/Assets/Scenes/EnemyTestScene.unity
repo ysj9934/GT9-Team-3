@@ -534,17 +534,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 20953886}
   m_CullTransparentMesh: 1
---- !u!114 &62475001 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7448605062792393602, guid: 1309173f8e2f8cd43aacf64911676477, type: 3}
-  m_PrefabInstance: {fileID: 5716029180256189964}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 36189a6cc3ba635469b7b87d5c5995b1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &266231758
 GameObject:
   m_ObjectHideFlags: 0
@@ -889,7 +878,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 62475001}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: TileManager, Assembly-CSharp
         m_MethodName: ShowConnectedPath
         m_Mode: 1
@@ -1156,7 +1145,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 62475001}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: TileManager, Assembly-CSharp
         m_MethodName: Initialize
         m_Mode: 1
@@ -1206,17 +1195,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 412722751}
   m_CullTransparentMesh: 1
---- !u!114 &419841402 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3926948051132389953, guid: 3cddd80fd0266db419433ed182d8d428, type: 3}
-  m_PrefabInstance: {fileID: 2932410010099126918}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b45d492a95104fe4a9e30295eb48cbf6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &486213232
 GameObject:
   m_ObjectHideFlags: 0
@@ -1578,7 +1556,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 62475001}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: TileManager, Assembly-CSharp
         m_MethodName: CreateTile
         m_Mode: 3
@@ -2040,7 +2018,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 419841402}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
         m_MethodName: UpdateMapLevel
         m_Mode: 3
@@ -2989,7 +2967,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 62475001}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: TileManager, Assembly-CSharp
         m_MethodName: CreateTile
         m_Mode: 3
@@ -3199,7 +3177,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 419841402}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
         m_MethodName: UpdateMapLevel
         m_Mode: 3
@@ -3332,7 +3310,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 62475001}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: TileManager, Assembly-CSharp
         m_MethodName: CreateTile
         m_Mode: 3
@@ -3382,6 +3360,27 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1215265928}
   m_CullTransparentMesh: 1
+--- !u!1 &1241964452 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6003360712782960644, guid: 3cddd80fd0266db419433ed182d8d428, type: 3}
+  m_PrefabInstance: {fileID: 2932410010099126918}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1241964454
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1241964452}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a5e74f14b6563c4fb5dc26c0627de1e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _tileManager: {fileID: 0}
+  worldLevel: 1
+  tempLevel: 1
+  worldLevelText: {fileID: 0}
 --- !u!1 &1438846962
 GameObject:
   m_ObjectHideFlags: 0
@@ -3465,7 +3464,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 62475001}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: TileManager, Assembly-CSharp
         m_MethodName: CreateTile
         m_Mode: 3
@@ -3774,7 +3773,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 419841402}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
         m_MethodName: UpdateMapLevel
         m_Mode: 3
@@ -4115,7 +4114,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 62475001}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: TileManager, Assembly-CSharp
         m_MethodName: SetSpawnerPosition
         m_Mode: 1
@@ -4346,10 +4345,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 3926948051132389953, guid: 3cddd80fd0266db419433ed182d8d428, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6003360712782960644, guid: 3cddd80fd0266db419433ed182d8d428, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1241964454}
   m_SourcePrefab: {fileID: 100100000, guid: 3cddd80fd0266db419433ed182d8d428, type: 3}
 --- !u!1001 &5716029180256189964
 PrefabInstance:

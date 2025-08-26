@@ -6,9 +6,9 @@ using static UnityEngine.GraphicsBuffer;
 
 public class Tower1 : MonoBehaviour
 {
+    public BlockInfo blockInfo;
     public TowerData data;
     private float cooldownTimer;
-    private BlockInfo _blockInfo;
 
     private GameObject rangeVisual;
 
@@ -16,9 +16,17 @@ public class Tower1 : MonoBehaviour
     {
         rangeVisual = transform.Find("RangeVisual")?.gameObject;
     }
+    
+    public void Intialize(BlockInfo blockInfo)
+    {
+        this.blockInfo = blockInfo;
+    }
 
     private void Update()
     {
+
+        if (data == null) return;
+
         if (cooldownTimer > 0f)
         {
             cooldownTimer -= Time.deltaTime;
@@ -31,16 +39,7 @@ public class Tower1 : MonoBehaviour
             Attack(target);
             cooldownTimer = 1f / data.attackSpeed;
         }
-    }
 
-    public void Intialize(BlockInfo blockInfo)
-    {
-        _blockInfo = blockInfo;
-    }
-
-    public void SellTowerOnBlock()
-    {
-        _blockInfo.CallNumber2();
     }
 
     public void Shoot(Transform target)
@@ -73,19 +72,32 @@ public class Tower1 : MonoBehaviour
         {
             float range = data.attackRange * 2f;
             rangeVisual.transform.localScale = new Vector3(range, range, 1f);
-            rangeVisual.SetActive(false); // 처음엔 숨김
+            rangeVisual.SetActive(false);   // 처음엔 숨김
         }
+
+        Debug.Log($"[타워] 스탯 적용됨: 고유번호 = {data.towerID},  이름 = {data.innerName}");
     }
 
     private void OnMouseDown()
     {
-        if (rangeVisual != null)
-        {
-            // 클릭할 때마다 토글
-            rangeVisual.SetActive(!rangeVisual.activeSelf);
+        bool isAlreadyOpen = TowerSellUI.Instance.IsOpenFor(this);
 
-            TowerSellUI.Instance.Show(this); // 판매 UI를 표시
+        // UI 열려있고 같은 타워를 누른 경우 닫기
+        if (isAlreadyOpen)
+        {
+            TowerSellUI.Instance.Hide();
+
+            if (rangeVisual != null)
+                rangeVisual.SetActive(false);
+
+            return;
         }
+
+        // 다른 타워거나 처음 열리는 경우 기존 UI 닫고 새로 열기
+        TowerSellUI.Instance.Show(this);
+
+        if (rangeVisual != null)
+            rangeVisual.SetActive(true);
     }
 
     // 우선순위 
@@ -128,9 +140,9 @@ public class Tower1 : MonoBehaviour
                     selected = enemies.OrderBy(e => e.DistanceToBase).FirstOrDefault();
                     break;
                 case TargetPriority.Lowest_HP:
-                    selected = enemies.OrderBy(e => e.CurrentHP).FirstOrDefault();
+                    selected = enemies.OrderBy(e => e.enemy.currentHp).FirstOrDefault();
                     break;
-                case TargetPriority.Closest:
+                case TargetPriority.Base_Closest:
                     selected = enemies.OrderBy(e => Vector3.Distance(transform.position, e.transform.position)).FirstOrDefault();
                     break;
             }
@@ -143,5 +155,6 @@ public class Tower1 : MonoBehaviour
 
         return null;
     }
+
 
 }
