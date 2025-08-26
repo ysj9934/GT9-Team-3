@@ -28,6 +28,7 @@ public class ObjectPoolManager : MonoBehaviour
         for (int i = 0; i < poolSize; i++)
         {
             GameObject obj = Instantiate(enemyPrefab);
+            obj.transform.parent = this.transform;
             obj.SetActive(false);
             pool.Enqueue(obj);
         }
