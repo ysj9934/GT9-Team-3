@@ -65,10 +65,10 @@ public class EnemyHealthHandler : MonoBehaviour
             }
 
             // 스턴 미구현
-            //if (projectileData != null && projectileData.stunTime > 0)
-            //{
-            //    _enemy._enemyMovement.ApplyStun(projectileData.stunTime);
-            //}
+            if (projectileData != null && projectileData.stunTime > 0)
+            {
+                _enemy._enemyMovement.ApplyStun(projectileData.stunTime);
+            }
         }
 
         if (currentHealth <= 0)
