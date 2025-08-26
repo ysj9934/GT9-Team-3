@@ -1,23 +1,23 @@
 using UnityEngine;
 
-public class StagePopUp : MonoBehaviour
+public class PopUp : MonoBehaviour
 {
-    public GameObject popupPanel; // PanelÀ» ÀÎ½ºÆåÅÍ¿¡¼­ ¿¬°á
+    public GameObject popupPanel; // Panelì„ ì¸ìŠ¤í™í„°ì—ì„œ ì—°ê²°
 
     void Start()
     {
-        // ½ÃÀÛ ½Ã ÀÚµ¿À¸·Î ¼û±â±â
+        // ì‹œì‘ ì‹œ ìë™ìœ¼ë¡œ ìˆ¨ê¸°ê¸°
         if (popupPanel != null)
             popupPanel.SetActive(false);
     }
 
-    // ÆË¾÷ ¿­±â
+    // íŒì—… ì—´ê¸°
     public void ShowPopup()
     {
         popupPanel.SetActive(true);
     }
 
-    // ÆË¾÷ ´İ±â
+    // íŒì—… ë‹«ê¸°
     public void HidePopup()
     {
         popupPanel.SetActive(false);
