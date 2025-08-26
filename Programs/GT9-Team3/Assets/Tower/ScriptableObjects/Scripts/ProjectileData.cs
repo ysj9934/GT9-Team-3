@@ -6,16 +6,18 @@ using UnityEngine;
 public class ProjectileData : ScriptableObject
 {
     public string projectileID;
+    public string projectileName;
     public float speed;
     public int damage;
     public float lifetime = 5f;
 
-    public bool isAOE;                      // ¹üÀ§ °ø°İ ¿©ºÎ
+    public bool isAOE;                      // ë²”ìœ„ ê³µê²© ì—¬ë¶€
     public float aoeRadius;
 
-    public GameObject impactEffectPrefab;   // Å¸°İ ½Ã ÀÌÆåÆ®
+    public GameObject impactEffectPrefab;   // íƒ€ê²© ì‹œ ì´í™íŠ¸
 
-    public int armorDestroy;
+    //public int armorDestroy;
+
     public float slowEffect;
     public float slowTime;
     public float stunTime;

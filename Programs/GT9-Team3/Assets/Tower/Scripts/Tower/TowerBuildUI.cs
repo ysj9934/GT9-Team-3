@@ -7,12 +7,12 @@ public class TowerBuildUI : MonoBehaviour
     public BlockInfo _blockInfo;
 
     [Header("Wiring")]
-    public RectTransform root;            // Panel ·çÆ®
-    public Transform listParent;          // Ç×¸ñÀÌ ¹èÄ¡µÉ Content
+    public RectTransform root;            // Panel ë£¨íŠ¸
+    public Transform listParent;          // í•­ëª©ì´ ë°°ì¹˜ë  Content
     public TowerOptionItem itemPrefab;
 
     [Header("Catalog")]
-    public List<TowerBlueprint> options;  // ³ëÃâÇÒ Å¸¿ö Á¾·ùµé
+    public List<TowerBlueprint> options;  // ë…¸ì¶œí•  íƒ€ì›Œ ì¢…ë¥˜ë“¤
 
     private TowerPlacer placer;
     private Vector3Int pendingCell;
@@ -21,15 +21,21 @@ public class TowerBuildUI : MonoBehaviour
     private void Start()
     {
         if (TowerDataTableLoader.Instance == null)
-            new TowerDataTableLoader();  // ¸í½ÃÀû ÃÊ±âÈ­
+            new TowerDataTableLoader();
 
-        var table = TowerDataTableLoader.Instance.ItemsDict;
+        if (ProjectileDataLoader.Instance == null)
+            new ProjectileDataLoader();
+
+        var towerTable = TowerDataTableLoader.Instance.ItemsDict;
+        var projectileTable = ProjectileDataLoader.Instance.ItemsDict;
 
         foreach (var bp in options)
         {
-            bp.ApplyLoadedData(table);
-            Debug.Log("µ¥ÀÌÅÍ ¸ÅÇÎ Áß: " + bp.name);
+            bp.ApplyLoadedData(towerTable, projectileTable);
         }
+
+        Debug.Log($"ProjectileDataLoader.Instance is null? -> {ProjectileDataLoader.Instance == null}");
+        Debug.Log($"TowerDataLoader.Instance is null? -> {TowerDataTableLoader.Instance == null}");
 
     }
 
@@ -41,11 +47,11 @@ public class TowerBuildUI : MonoBehaviour
         pendingCell = cell;
         pendingWorld = world;
 
-        // À§Ä¡(¸¶¿ì½º ±ÙÃ³) ¹èÄ¡
+        // ìœ„ì¹˜(ë§ˆìš°ìŠ¤ ê·¼ì²˜) ë°°ì¹˜
         root.gameObject.SetActive(true);
         //root.position = screenPos;
 
-        // ¸®½ºÆ® °»½Å
+        // ë¦¬ìŠ¤íŠ¸ ê°±ì‹ 
         foreach (Transform c in listParent) Destroy(c.gameObject);
 
         foreach (var bp in options)
@@ -60,7 +66,7 @@ public class TowerBuildUI : MonoBehaviour
     {
         root.gameObject.SetActive(true);
 
-        // ¸®½ºÆ® °»½Å
+        // ë¦¬ìŠ¤íŠ¸ ê°±ì‹ 
         foreach (Transform c in listParent) Destroy(c.gameObject);
 
         foreach (var bp in options)

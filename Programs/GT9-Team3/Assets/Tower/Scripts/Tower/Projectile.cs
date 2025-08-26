@@ -37,7 +37,7 @@ public class Projectile : MonoBehaviour
         Enemy1 enemy = target.GetComponent<Enemy1>();
         if (enemy != null)
         {
-            enemy.TakeDamage(data.damage);
+            enemy.TakeDamage(data.damage, data);
         }
 
         if(data.impactEffectPrefab)

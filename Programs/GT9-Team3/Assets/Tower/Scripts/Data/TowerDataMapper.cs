@@ -40,6 +40,8 @@ public class TowerDataMapper
         so.UpgradeCost = ResourceType.Gold;
         so.UpgradeValue = row.Upgrade_Value;
 
+        so.attackSpeed = row.Attack_Speed;
+
         Debug.Log($"[TowerDataMapper] 스탯 매핑 완료: ID = {row.key}, 이름 = {row.Inner_Name}, 레벨 = {row.Tower_Grade}, 생성비용 = {row.Make_Value}, 판매가 = {row.Sell_Value}");
 
 
