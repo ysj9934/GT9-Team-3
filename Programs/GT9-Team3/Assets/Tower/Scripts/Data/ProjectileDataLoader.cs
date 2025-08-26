@@ -10,7 +10,7 @@ public class ProjectileDataLoader
     public List<ProjectileDataRow> ItemsList { get; private set; }
     public Dictionary<int, ProjectileDataRow> ItemsDict { get; private set; }
 
-    public ProjectileDataLoader(string path = "JSON/ProjectileDataTable")
+    public ProjectileDataLoader(string resourcePath = "JSON/ProjectileDataTable")
     {
         if (Instance != null)
         {
@@ -20,7 +20,7 @@ public class ProjectileDataLoader
 
         Instance = this;
 
-        var jsonText = Resources.Load<TextAsset>(path)?.text;
+        var jsonText = Resources.Load<TextAsset>(resourcePath)?.text;
         if (string.IsNullOrEmpty(jsonText))
         {
             Debug.LogError("ProjectileDataTable JSON 파일을 찾을 수 없습니다.");

@@ -72,14 +72,12 @@ public class TowerSellUI : MonoBehaviour
         attackTypeText.text = d.attackType.ToString();
         sellValueText.text = $"Cost : {d.sellValue}";
 
-
         ProjectileData p = tower.data.projectileData;
 
         damageText.text = p.damage.ToString();
-
-        //slowEffectText.text = p.slowEffect.ToString();
-        //slowTimeText.text = $"{p.slowTime}/s";
-        //ccTimeText.text = $"{p.stunTime}/s";
+        slowEffectText.text = p.slowEffect.ToString();
+        slowTimeText.text = $"{p.slowTime}/s";
+        ccTimeText.text = $"{p.stunTime}/s";
         //tileRangeText.text = $"{p.tileRange}/Tile";
     }
 

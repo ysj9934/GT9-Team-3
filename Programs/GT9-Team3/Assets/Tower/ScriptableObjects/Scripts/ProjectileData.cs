@@ -6,6 +6,7 @@ using UnityEngine;
 public class ProjectileData : ScriptableObject
 {
     public string projectileID;
+    public string projectileName;
     public float speed;
     public int damage;
     public float lifetime = 5f;
