@@ -80,7 +80,7 @@ public class ProjectileDataRow
 public class ProjectileDataTableLoader
 {
     public static ProjectileDataTableLoader Instance { get; private set; }
-    public List<ProjectileDataTable> ItemsList { get; private set; }
+    public List<ProjectileDataRow> ItemsList { get; private set; }
     public Dictionary<int, ProjectileDataRow> ItemsDict { get; private set; }
 
     public ProjectileDataTableLoader(string path = "JSON/ProjectileDataTable")
@@ -91,14 +91,14 @@ public class ProjectileDataTableLoader
         ItemsDict = new Dictionary<int, ProjectileDataRow>();
         foreach (var item in ItemsList)
         {
-            ItemsDict.Add(item.key, item);
+            ItemsDict.Add(item.Key, item);
         }
     }
 
     [Serializable]
     private class Wrapper
     {
-        public List<ProjectileDataTable> Items;
+        public List<ProjectileDataRow> Items;
     }
 
     public ProjectileDataRow GetByKey(int key)
