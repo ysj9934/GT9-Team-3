@@ -21,23 +21,21 @@ public class TowerBuildUI : MonoBehaviour
     private void Start()
     {
         if (TowerDataTableLoader.Instance == null)
-            new TowerDataTableLoader();     // 명시적 초기화
+            new TowerDataTableLoader();
 
-        if (ProjectileDataTableLoader.Instance == null)
-            new ProjectileDataTableLoader();    
+        if (ProjectileDataLoader.Instance == null)
+            new ProjectileDataLoader();
 
         var towerTable = TowerDataTableLoader.Instance.ItemsDict;
-        var projectileTable = ProjectileDataTableLoader.Instance.ItemsDict;
+        var projectileTable = ProjectileDataLoader.Instance.ItemsDict;
 
         foreach (var bp in options)
         {
             bp.ApplyLoadedData(towerTable, projectileTable);
-            Debug.Log("데이터 매핑 중: " + bp.name);
         }
 
-        Debug.Log("ProjectileDataTableLoader.Instance is null: " + (ProjectileDataTableLoader.Instance == null));
-        Debug.Log("Projectile Table Dict is null: " + (ProjectileDataTableLoader.Instance.ItemsDict == null));
-
+        Debug.Log($"ProjectileDataLoader.Instance is null? -> {ProjectileDataLoader.Instance == null}");
+        Debug.Log($"TowerDataLoader.Instance is null? -> {TowerDataTableLoader.Instance == null}");
 
     }
 

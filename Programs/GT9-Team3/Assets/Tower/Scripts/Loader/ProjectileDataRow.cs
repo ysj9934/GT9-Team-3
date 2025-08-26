@@ -83,10 +83,10 @@ public class ProjectileDataTableLoader
     public List<ProjectileDataRow> ItemsList { get; private set; }
     public Dictionary<int, ProjectileDataRow> ItemsDict { get; private set; }
 
-    public ProjectileDataTableLoader(string path = "JSON/ProjectileDataTable")
+    public ProjectileDataTableLoader(string resourcePath = "JSON/ProjectileDataTable")
     {
         string jsonData;
-        jsonData = Resources.Load<TextAsset>(path).text;
+        jsonData = Resources.Load<TextAsset>(resourcePath).text;
         ItemsList = JsonUtility.FromJson<Wrapper>(jsonData).Items;
         ItemsDict = new Dictionary<int, ProjectileDataRow>();
         foreach (var item in ItemsList)
