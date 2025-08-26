@@ -70,6 +70,41 @@ public class TileManager : MonoBehaviour
         
         Initialize();
     }
+    
+    private void Update()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            if (EventSystem.current.IsPointerOverGameObject())
+                return;
+            
+            int layerMask = LayerMask.GetMask("Ground");
+            
+            Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            RaycastHit2D hit = Physics2D.Raycast(mousePos, Vector2.zero, Mathf.Infinity, layerMask);
+
+            
+            // place on tower first
+            
+            // ground second
+            
+            if (hit.collider != null)
+            {
+                Debug.Log("Hit: " + hit.collider.name);
+                
+                TileInfo tileInfo = hit.collider.GetComponent<TileInfo>();
+                if (tileInfo != null)
+                {
+                    CloseAllUI(tileInfo._tileUI);
+                    tileInfo._tileUI.tileUI.SetActive(!tileInfo._tileUI.tileUI.activeSelf);
+                }
+            }
+            else
+            {
+                CloseAllUI(null);
+            }
+        }
+    }
 
     public void Initialize()
     {
