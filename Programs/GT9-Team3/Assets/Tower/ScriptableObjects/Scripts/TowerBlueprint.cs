@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,37 +7,66 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Tower Defense/Tower Blueprint")]
 public class TowerBlueprint : ScriptableObject
 {
-    public string towerID;              // JSON¿¡¼­ ¸ÅÄªÇÒ ID
+    public string towerID;              // JSONì—ì„œ ë§¤ì¹­í•  ID
     public string displayName;
     public Sprite icon;
 
 
     public GameObject towerPrefab;
 
-    public TowerData data; // ·±Å¸ÀÓ¿¡ ¿¬°á
+    public TowerData data; // ëŸ°íƒ€ì„ì— ì—°ê²°
 
     public ResourceType CostType => data.makeCost;
     public int CostValue => data.makeValue;
 
-    // ¿ÜºÎ¿¡¼­ JSON µ¥ÀÌÅÍ ÁÖÀÔ
-    public void ApplyLoadedData(Dictionary<int, TowerDataRow> table)
+    // ì™¸ë¶€ì—ì„œ JSON ë°ì´í„° ì£¼ì…
+    public void ApplyLoadedData(Dictionary<int, TowerDataRow> Towertable, Dictionary<int, ProjectileDataRow> projectileTable)
     {
         if (data == null)
         {
-            Debug.LogWarning($"[TowerBlueprint] {name}ÀÇ data°¡ ºñ¾î ÀÖÀ½");
+            Debug.LogWarning($"[TowerBlueprint] {name}ì˜ dataê°€ ë¹„ì–´ ìˆìŒ");
             return;
         }
 
-        Debug.Log($"[TowerBlueprint] {name}ÀÇ µ¥ÀÌÅÍ ¸ÅÇÎ ½ÃÀÛ: ID = {data.towerID}");
+        Debug.Log($"[TowerBlueprint] {name}ì˜ ë°ì´í„° ë§¤í•‘ ì‹œì‘: ID = {data.towerID}");
 
-        if (!table.TryGetValue(data.towerID, out var row))
+        if (!Towertable.TryGetValue(data.towerID, out var row))
         {
-            Debug.LogWarning($"[TowerBlueprint] {name}: µ¥ÀÌÅÍ Å×ÀÌºí¿¡ ID {data.towerID} ¾øÀ½");
+            Debug.LogWarning($"[TowerBlueprint] {name}: ë°ì´í„° í…Œì´ë¸”ì— ID {data.towerID} ì—†ìŒ");
             return;
         }
 
 
         TowerDataMapper.ApplyToSO(data, row);
 
+        if (data.projectileData != null && int.TryParse(data.projectileData.projectileID, out int projID))
+        {
+            if (projectileTable.TryGetValue(projID, out var projRow))
+            {
+                ProjectileDataMapper.ApplyToSO(data.projectileData, projRow);
+            }
+            else
+            {
+                Debug.LogWarning($"[TowerBlueprint] {name}: í”„ë¡œì íƒ€ì¼ í…Œì´ë¸”ì— ID {projID} ì—†ìŒ");
+            }
+        }
+        else
+        {
+            Debug.LogWarning($"[TowerBlueprint] {name}: projectileDataê°€ nullì´ê±°ë‚˜ ID íŒŒì‹± ì‹¤íŒ¨");
+        }
+    }
+
+    internal void ApplyLoadedData(Dictionary<int, TowerDataRow> table)
+    {
+        var projectileTable = ProjectileDataTableLoader.Instance?.ItemsDict;
+        if (projectileTable == null)
+        {
+            Debug.LogWarning("[TowerBlueprint] projectileTableì´ nullì…ë‹ˆë‹¤.");
+            return;
+        }
+
+        Debug.LogWarning($"[TowerBlueprint] {name}: projectileDataê°€ nullì´ê±°ë‚˜ ID íŒŒì‹± ì‹¤íŒ¨");
+
+        ApplyLoadedData(table, projectileTable);
     }
 }
