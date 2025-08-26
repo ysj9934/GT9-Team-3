@@ -50,4 +50,22 @@ public class EnemyMovement : MonoBehaviour
         //    currentPathIndex = 0;
         //}
     }
+
+    // 원진 : 상태이상 적용 함수
+    public void ApplySlow(float slowAmount, float duration)
+    {
+        StartCoroutine(SlowCoroutine(slowAmount, duration));
+    }
+
+    private IEnumerator SlowCoroutine(float slowAmount, float duration)
+    {
+        float originalSpeed = _enemy._enemyStat.enemyMovementSpeed;
+        _enemy._enemyStat.enemyMovementSpeed *= (1f - slowAmount);
+
+        yield return new WaitForSeconds(duration);
+
+        _enemy._enemyStat.enemyMovementSpeed = originalSpeed;
+    }
+
+
 }

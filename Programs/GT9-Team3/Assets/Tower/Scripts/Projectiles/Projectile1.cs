@@ -48,7 +48,7 @@ public class Projectile1 : MonoBehaviour
 
         if (target.TryGetComponent(out Enemy1 enemy))
         {
-            enemy.TakeDamage(data.damage);
+            enemy.TakeDamage(data.damage, data);
         }
 
         Destroy(gameObject);
