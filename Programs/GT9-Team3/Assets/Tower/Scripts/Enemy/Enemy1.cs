@@ -23,9 +23,9 @@ public class Enemy1 : MonoBehaviour
         _enemy = GetComponentInParent<Enemy>();
     }
 
-    public void TakeDamage(int damage)
+    public void TakeDamage(int damage, ProjectileData projectileData)
     {
-        _enemy._enemyHealthHandler.TakeDamage(damage);
+        _enemy._enemyHealthHandler.TakeDamage(damage, projectileData);
     }
 
 }
