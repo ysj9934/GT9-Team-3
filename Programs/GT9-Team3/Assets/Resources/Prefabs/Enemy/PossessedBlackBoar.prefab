@@ -47,7 +47,7 @@ GameObject:
   - component: {fileID: 948499981450828562}
   - component: {fileID: 2761354891534679173}
   - component: {fileID: 2025463823778703587}
-  - component: {fileID: -5401531818807761434}
+  - component: {fileID: -4911180060294494932}
   m_Layer: 0
   m_Name: PossessedBlackBoar
   m_TagString: Untagged
@@ -64,7 +64,7 @@ Transform:
   m_GameObject: {fileID: 948499981450828567}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2, y: -1, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.5, y: 0.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -210,8 +210,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69857a8437832a74e9edfee50be39a09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemy: {fileID: 0}
---- !u!114 &-5401531818807761434
+  _enemy: {fileID: 0}
+--- !u!114 &-4911180060294494932
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -220,7 +220,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 948499981450828567}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 192de757adfe1fe4494a008461f64ef0, type: 3}
+  m_Script: {fileID: 11500000, guid: ef7e94862ed7a544d85491846149f3b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 0}
