@@ -68,6 +68,9 @@ public class BlockInfo : MonoBehaviour
 
     private void OnMouseDown()
     {
+        if (EventSystem.current.IsPointerOverGameObject())
+            return;
+        
         //ToggleTowerPlacementUI();
         ToggleTowerPlacementUI2();
     }
