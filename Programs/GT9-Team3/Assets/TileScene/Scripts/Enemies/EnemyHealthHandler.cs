@@ -51,6 +51,8 @@ public class EnemyHealthHandler : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
+        if (!_enemy.isAlive) return;
+        
         currentHealth -= damage;
 
         if (currentHealth <= 0)
@@ -61,6 +63,8 @@ public class EnemyHealthHandler : MonoBehaviour
 
     private void DeathMotion(HitTarget target)
     {
+        if (!_enemy.isAlive) return;
+        
         _enemy.isAlive = false;
 
         switch (target)
