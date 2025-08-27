@@ -9,6 +9,7 @@ public class EnemyMovement : MonoBehaviour
     private Transform[] pathPoints;
     private int currentPathIndex = 0;
 
+    // 스턴
     private bool isStunned = false;
     private float stunTimer = 0f;
 

@@ -41,6 +41,9 @@ public class ObjectPoolManager : MonoBehaviour
             GameObject obj = pool.Dequeue();
             obj.transform.position = position;
             obj.SetActive(true);
+
+            SetLayerRecursively(obj, LayerMask.NameToLayer("Enemy"));
+
             return obj;
         }
         return null;
@@ -52,6 +55,9 @@ public class ObjectPoolManager : MonoBehaviour
         {
             GameObject obj = pool.Dequeue();
             obj.SetActive(true);
+
+            SetLayerRecursively(obj, LayerMask.NameToLayer("Enemy"));
+
             return obj;
         }
         return null;
@@ -62,4 +68,20 @@ public class ObjectPoolManager : MonoBehaviour
         obj.SetActive(false);
         pool.Enqueue(obj);
     }
+
+    // 원진 layer 재귀
+    private void SetLayerRecursively(GameObject obj, int newLayer)
+    {
+        if (obj == null) return;
+
+        obj.layer = newLayer;
+        Debug.Log($"Set Layer: {obj.name} → {LayerMask.LayerToName(newLayer)}");
+
+        foreach (Transform child in obj.transform)
+        {
+            if (child == null) continue;
+            SetLayerRecursively(child.gameObject, newLayer);
+        }
+    }
+
 }

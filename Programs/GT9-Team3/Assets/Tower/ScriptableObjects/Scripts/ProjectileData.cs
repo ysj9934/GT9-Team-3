@@ -12,7 +12,7 @@ public class ProjectileData : ScriptableObject
     public float lifetime = 5f;
 
     public bool isAOE;                      // 범위 공격 여부
-    public float aoeRadius;
+    public float impactRadius;
 
     public GameObject impactEffectPrefab;   // 타격 시 이펙트
 
