@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
@@ -27,7 +28,7 @@ public class EnemyHealthHandler : MonoBehaviour
 
         Debug.Log($"Enemy Clicked: {_enemy._enemyStat.enemyName}");
 
-        TakeDamage(1000);
+        TakeDamage(1000, null);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -49,11 +50,26 @@ public class EnemyHealthHandler : MonoBehaviour
         //}
     }
 
-    public void TakeDamage(int damage)
+    public void TakeDamage(int damage, ProjectileData projectileData)
     {
+        // 슬로우 적용전에 적이 죽으면 에러
         if (!_enemy.isAlive) return;
-        
+
         currentHealth -= damage;
+
+        if (_enemy.isAlive)
+        {
+            if (projectileData != null && projectileData.slowEffect > 0)
+            {
+                _enemy._enemyMovement.ApplySlow(projectileData.slowEffect, projectileData.slowTime);
+            }
+
+            // 스턴 미구현
+            //if (projectileData != null && projectileData.stunTime > 0)
+            //{
+            //    _enemy._enemyMovement.ApplyStun(projectileData.stunTime);
+            //}
+        }
 
         if (currentHealth <= 0)
         {
@@ -63,8 +79,6 @@ public class EnemyHealthHandler : MonoBehaviour
 
     private void DeathMotion(HitTarget target)
     {
-        if (!_enemy.isAlive) return;
-        
         _enemy.isAlive = false;
 
         switch (target)
@@ -83,6 +97,7 @@ public class EnemyHealthHandler : MonoBehaviour
 
         _enemy._poolManager.ReturnEnemy(this.gameObject);
     }
+
 }
 
 
