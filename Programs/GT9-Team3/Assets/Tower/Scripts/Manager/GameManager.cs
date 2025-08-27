@@ -257,5 +257,19 @@ public class GameManager : MonoBehaviour
     // 적 베이스 찾기 (김원진)
     // Find the enemy base transform in the scene
     public Vector3 BasePosition => baseTransform != null ? baseTransform.position : Vector3.zero;
+
+    public void Earn50G()
+    {
+        _resourceManager.Earn(ResourceType.Gold, 50);
+        _hudCanvas.UpdateTilePiece();
+    }
+
+    public void Earn0G(int amount)
+    {
+        _resourceManager.Earn(ResourceType.Gold, amount);
+        _hudCanvas.UpdateTilePiece();
+
+    }
+
 }
 
