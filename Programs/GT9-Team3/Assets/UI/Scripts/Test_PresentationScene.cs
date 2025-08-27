@@ -8,7 +8,7 @@ public class Test_PresentationScene : MonoBehaviour
     void Start()
     {
         int stageID = StageManager.Instance.SelectedStageID;
-        Debug.Log("presentationScene¿¡¼­µµ Stage_ID: " + stageID);
+        Debug.Log("---------------------------- presentationSceneì—ì„œë„ Stage_ID: " + stageID + "----------------------------");
     }
 
     // Update is called once per frame
