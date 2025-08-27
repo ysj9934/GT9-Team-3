@@ -9,6 +9,8 @@ public class EnemyHealthHandler : MonoBehaviour
 {
     private Enemy _enemy;
 
+    public event Action OnDeath;
+
     public float currentHealth;
 
     private void Awake()
@@ -80,6 +82,9 @@ public class EnemyHealthHandler : MonoBehaviour
     private void DeathMotion(HitTarget target)
     {
         _enemy.isAlive = false;
+
+        OnDeath?.Invoke();
+        OnDeath = null;
 
         switch (target)
         { 

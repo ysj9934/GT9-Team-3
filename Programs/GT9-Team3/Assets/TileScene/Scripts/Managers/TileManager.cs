@@ -305,7 +305,9 @@ public class TileManager : MonoBehaviour
             //path = FindConnectedPathBFS(startTileRoad, endTileRoad);
 
             if (path != null && path.Count > 0)
+            {
                 GetPathfinder();
+            }
         }
     }
     
@@ -360,6 +362,7 @@ public class TileManager : MonoBehaviour
         }
 
         WaveManager.Instance.SetPath(pathTrans);
+        _gameManager._hudCanvas.TurnOnStartWave();
     }
 
     public void CloseAllUI(TileUI exceptUI)

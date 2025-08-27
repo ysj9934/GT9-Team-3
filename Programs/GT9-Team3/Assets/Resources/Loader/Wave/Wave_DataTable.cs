@@ -42,7 +42,7 @@ public class Wave_DataTable
     public List<int> SpawnSequence;
 
     /// <summary>
-    /// SpawnStartTime
+    /// spawnStartTime
     /// </summary>
     public List<float> SpawnStartTime;
 
@@ -57,17 +57,17 @@ public class Wave_DataTable
     public List<int> EnemyID;
 
     /// <summary>
-    /// SpawnBatchSize
+    /// spawnBatchSize
     /// </summary>
     public List<int> SpawnBatchSize;
 
     /// <summary>
-    /// SpawnRepeat
+    /// spawnRepeat
     /// </summary>
     public List<int> SpawnRepeat;
 
     /// <summary>
-    /// SpawnintervalSec
+    /// spawnintervalSec
     /// </summary>
     public List<float> SpawnintervalSec;
 

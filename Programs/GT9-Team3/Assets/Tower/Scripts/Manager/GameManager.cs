@@ -29,7 +29,7 @@ public class GameManager : MonoBehaviour
     public int gameStageLevel;
     public int gameRoundLevel;
     public int gameWaveLevel;
-    public List<Wave_DataTable> stageWaveIdList = new List<Wave_DataTable>();
+    public List<Wave_DataTable> stageWaveList = new List<Wave_DataTable>();
     public int tempLevel;
 
     // 게임 일시정지 및 재개
@@ -50,6 +50,7 @@ public class GameManager : MonoBehaviour
     {
         // Initialize Manager
         _tileManager = TileManager.Instance;
+        _waveManager = WaveManager.Instance;
         _poolManager = ObjectPoolManager.Instance;
         _dataManager = DataManager.Instance;
         _resourceManager = ResourceManager.Instance;
@@ -72,6 +73,11 @@ public class GameManager : MonoBehaviour
         if (_tileManager == null)
         {
             ValidateMessage(_tileManager.name);
+            return false;
+        }
+        else if (_waveManager == null)
+        {
+            ValidateMessage(_waveManager.name);
             return false;
         }
         else if (_poolManager == null)
@@ -98,7 +104,6 @@ public class GameManager : MonoBehaviour
         {
             return true;
         }
-        
     }
 
     public void ValidateMessage(string obj)
@@ -127,14 +132,15 @@ public class GameManager : MonoBehaviour
             // update stage information in GameManager
             gameWorldLevel = stageData.worldCode;
             gameStageLevel = stageData.stageCode;
+            stageWaveList = stageData.stageWaveList;
 
             // send stage data to HUDCanvas
-
+            // 3. WaveManager에 스테이지 정보 전달
+            SendStageDataToWaveManager();
+            // 2. TileManager에 스테이지 정보 전달
             // 1. HUDCanvas에 스테이지 정보 전달
             SendStageDataToHUD();
-            // 2. TileManager에 스테이지 정보 전달
-            // 3. WaveManager에 스테이지 정보 전달
-
+            
             // 4. TileManager 세팅
             //InitializeTiles();
         }
@@ -157,7 +163,7 @@ public class GameManager : MonoBehaviour
     public void SendStageDataToHUD()
     {
         _hudCanvas.ReceiveStageData(
-            new StageDataToHUD
+            new StageData
                 (
                     gameWorldLevel,
                     gameStageLevel,
@@ -167,9 +173,9 @@ public class GameManager : MonoBehaviour
             );
     }
 
-    public StageDataToTileManager SendStageDataToTileManager()
+    public StageData SendStageDataToTileManager()
     {
-        return new StageDataToTileManager
+        return new StageData
             (
                 gameWorldLevel,
                 gameStageLevel,
@@ -178,12 +184,28 @@ public class GameManager : MonoBehaviour
             );
     }
 
-    public StageDataToWaveManager SendStageDataToWaveManager()
+    public void SendStageDataToWaveManager()
     {
-        return new StageDataToWaveManager
+        _waveManager.ReceiveStageData(
+            new StageData
             (
-                stageWaveIdList
-            );
+                stageWaveList
+            )
+        );
+        
+    }
+
+    public void ReceiveStageDataFromWaveManager(StageData stageData)
+    {
+        if (stageData != null)
+        {
+            gameRoundLevel = stageData.roundCode;
+            SendStageDataToHUD();
+        }
+        else
+        {
+            Debug.LogError("StageData is Null");
+        }
     }
 
 
@@ -193,8 +215,6 @@ public class GameManager : MonoBehaviour
         this.gameWorldLevel = level;
         _tileManager.UpdateWorldLevel(this.gameWorldLevel);
     }
-
-
 
     public void UpdateTempLevel(int level)
     {
@@ -208,17 +228,7 @@ public class GameManager : MonoBehaviour
         //WaveManager.Instance.StartWave();
     }
 
-    // TEMP
-    // 적 스폰
-    public void SpanwEnemy(Enemy_DataTable_EnemyStatTable jsonData)
-    {
-        GameObject enemyObj = _poolManager.GetEnemy();
-        if (enemyObj != null)
-        {
-            //var config = EnemyConfigManager.Instance.CreateConfigFromJson(jsonData);
-            //enemyObj.GetComponent<Enemy>().Setup(config);
-        }
-    }
+    
 
 #if UNITY_EDITOR
     [ContextMenu("Spawn Test Enemy")]
@@ -249,43 +259,3 @@ public class GameManager : MonoBehaviour
     public Vector3 BasePosition => baseTransform != null ? baseTransform.position : Vector3.zero;
 }
 
-public class StageDataToHUD
-{
-    public int worldCode;
-    public int stageCode;
-    public int roundCode;
-    public int waveCode;
-
-    public StageDataToHUD(int worldCode, int stageCode, int roundCode, int waveCode)
-    {
-        this.worldCode = worldCode;
-        this.stageCode = stageCode;
-        this.roundCode = roundCode;
-        this.waveCode = waveCode;
-    }
-}
-
-public class StageDataToTileManager
-{
-    public int worldCode;
-    public int stageCode;
-    public int roundCode;
-    public int waveCode;
-
-    public StageDataToTileManager(int worldCode, int stageCode, int roundCode, int waveCode)
-    {
-        this.worldCode = worldCode;
-        this.stageCode = stageCode;
-        this.roundCode = roundCode;
-        this.waveCode = waveCode;
-    }
-}
-public class StageDataToWaveManager
-{
-    public List<Wave_DataTable> stageWaveList;
-
-    public StageDataToWaveManager(List<Wave_DataTable> stageWaveList)
-    {
-        this.stageWaveList = stageWaveList;
-    }
-}
