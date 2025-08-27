@@ -1,9 +1,24 @@
 using UnityEngine;
-using UnityEngine.SceneManagement; // ¾À ·Îµå¸¦ À§ÇØ ÇÊ¿ä
+using UnityEngine.SceneManagement; // ì”¬ ë¡œë“œë¥¼ ìœ„í•´ í•„ìš”
 
 public class SceneLoader : MonoBehaviour
 {
-    // ¹öÆ°ÀÌ³ª ÀÌº¥Æ®¿¡¼­ È£Ãâ
+    public static SceneLoader Instance { get; private set; }
+
+    private void Awake()
+    {
+        if (Instance != null)
+        {
+            Destroy(gameObject);
+        }
+        else
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+    }
+
+    // ë²„íŠ¼ì´ë‚˜ ì´ë²¤íŠ¸ì—ì„œ í˜¸ì¶œ
     public void LoadSceneByName(string sceneName)
     {
         SceneManager.LoadScene(sceneName);
