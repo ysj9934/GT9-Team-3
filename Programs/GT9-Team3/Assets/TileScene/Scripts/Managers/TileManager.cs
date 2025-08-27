@@ -50,6 +50,9 @@ public class TileManager : MonoBehaviour
     public List<TileInfo> tileInfoList;
     public List<Vector2> spawnTransform;
 
+    // 타일 생성
+     
+    
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -65,7 +68,42 @@ public class TileManager : MonoBehaviour
     {
         _gameManager = GameManager.Instance;
         
-        Initialize();
+        //Initialize();
+    }
+    
+    private void Update()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            if (EventSystem.current.IsPointerOverGameObject())
+                return;
+            
+            int layerMask = LayerMask.GetMask("Ground");
+            
+            Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            RaycastHit2D hit = Physics2D.Raycast(mousePos, Vector2.zero, Mathf.Infinity, layerMask);
+
+            
+            // place on tower first
+            
+            // ground second
+            
+            if (hit.collider != null)
+            {
+                Debug.Log("Hit: " + hit.collider.name);
+                
+                TileInfo tileInfo = hit.collider.GetComponent<TileInfo>();
+                if (tileInfo != null)
+                {
+                    CloseAllUI(tileInfo._tileUI);
+                    tileInfo._tileUI.tileUI.SetActive(!tileInfo._tileUI.tileUI.activeSelf);
+                }
+            }
+            else
+            {
+                CloseAllUI(null);
+            }
+        }
     }
 
     public void Initialize()
@@ -109,6 +147,11 @@ public class TileManager : MonoBehaviour
     public void UpdateWorldLevel(int level)
     {
         worldLevel = level;
+
+        foreach (var tileGrid in tileGridList)
+        {
+            tileGrid.UpdateWorldLevel(worldLevel);
+        }
 
         foreach (var tileInfo in tileInfoList)
         {
@@ -308,7 +351,7 @@ public class TileManager : MonoBehaviour
         Pathfinder pathfinder = go.GetComponent<Pathfinder>();
         pathfinder.Initialize(path);
 
-        HUD_Canvas.Instance.customSetting.waveSystembutton.interactable = true;
+        SettingCanvas.Instance.customSetting.waveSystembutton.interactable = true;
 
         List<Transform> pathTrans = new List<Transform>();
         foreach (var tile in path)
@@ -326,5 +369,27 @@ public class TileManager : MonoBehaviour
             if (tileInfo._tileUI != exceptUI)
                 tileInfo._tileUI.CloseUI();
         }
+    }
+
+    
+    // Inventory
+    public List<GameObject> inventoryList = new List<GameObject>();
+    [SerializeField] public Transform content;
+    [SerializeField] public GameObject inventoryItemTilePrefab;
+    [SerializeField] public GameObject inventoryItemPrefab;
+    [SerializeField] public GameObject tileItemPrefab;
+
+    public void CreateTile()
+    {
+        GameObject go = Instantiate(inventoryItemTilePrefab, Vector2.zero, Quaternion.identity);
+        go.transform.SetParent(this.transform);
+        
+        go.SetActive(false);
+        GameObject uigo = Instantiate(inventoryItemPrefab, content);
+        UI_Inventory_ItemImage itemImage = uigo.GetComponentInChildren<UI_Inventory_ItemImage>();
+        itemImage.gameObject.SetActive(true);
+        // itemImage.GetComponent<Image>().image = tileItemPrefab.GetComponent<Image>().image;
+        
+        inventoryList.Add(uigo);
     }
 }

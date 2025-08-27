@@ -413,8 +413,8 @@ GameObject:
   - component: {fileID: 7245924172506157425}
   - component: {fileID: 3393446993597103773}
   - component: {fileID: 2982584885388269913}
-  - component: {fileID: 2189250654693083992}
   - component: {fileID: -2173191702149847333}
+  - component: {fileID: -6803482057391497009}
   m_Layer: 0
   m_Name: WhiteWolf
   m_TagString: Untagged
@@ -431,7 +431,7 @@ Transform:
   m_GameObject: {fileID: 3393446993597103771}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.55, y: 0.55, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -566,20 +566,6 @@ CapsuleCollider2D:
   m_Offset: {x: -0.5, y: 1.7}
   m_Size: {x: 5.6, y: 3.2}
   m_Direction: 1
---- !u!114 &2189250654693083992
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3393446993597103771}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 192de757adfe1fe4494a008461f64ef0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  animator: {fileID: 0}
-  attackInterval: 1.5
 --- !u!114 &-2173191702149847333
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -592,7 +578,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69857a8437832a74e9edfee50be39a09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemy: {fileID: 0}
+  _enemy: {fileID: 0}
+--- !u!114 &-6803482057391497009
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3393446993597103771}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef7e94862ed7a544d85491846149f3b2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 0}
+  attackInterval: 1.5
 --- !u!1 &3393446993826080843
 GameObject:
   m_ObjectHideFlags: 0

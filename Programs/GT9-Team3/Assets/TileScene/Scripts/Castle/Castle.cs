@@ -1,41 +1,63 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using UnityEditor.EditorTools;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class Castle : MonoBehaviour
 {
-    public HUD_CastleHP castleHUD;
+    public GameManager _gameManager;
+    public HUDCanvas _hudCanvas;
 
     public int currentHealth;
     public int maxHealth = 100;
 
     public bool isDead;
 
-
     private void Awake()
     {
-        
+        _gameManager = GameManager.Instance;
+        _hudCanvas = _gameManager._hudCanvas;
+
+        if (IsValidate())
+        {
+            GetCastleData();
+            ResetButton();
+        }
+    }
+    private bool IsValidate()
+    {
+        if (_gameManager == null)
+        {
+            ValidateMessage(_gameManager.name);
+            return false;
+        }
+        else if (_hudCanvas == null)
+        {
+            ValidateMessage(_hudCanvas.name);
+            return false;
+        }
+        else
+        {
+            return true;
+        }
     }
 
-    public void Start()
+    private void ValidateMessage(string obj)
     {
-        currentHealth = maxHealth;
-        castleHUD = HUD_Canvas.Instance.castleHUD;
-        if (castleHUD != null)
-            castleHUD.Initialize(this);
-            castleHUD.UpdateHPbar();
+        Debug.LogError($"{obj} is Valid");
+    }
+
+    public void GetCastleData()
+    {
+        _hudCanvas.SetCastleData(this);
     }
 
     public void ResetButton()
     {
         currentHealth = maxHealth;
-        castleHUD = HUD_Canvas.Instance.castleHUD;
-        if (castleHUD != null)
-            castleHUD.Initialize(this);
-        castleHUD.UpdateHPbar();
-
+        _hudCanvas.UpdateHPBar();
         isDead = false;
     }
 
@@ -44,8 +66,8 @@ public class Castle : MonoBehaviour
         if (isDead) return;
 
         currentHealth -= damage;
-        
-        castleHUD.UpdateHPbar();
+
+        _hudCanvas.UpdateHPBar();
 
         if (currentHealth <= 0)
         {
@@ -56,8 +78,9 @@ public class Castle : MonoBehaviour
     public void DestroyBasement()
     {
         isDead = true;
-        
-        HUD_Canvas.Instance.gameDefeatHUD.ShowDefeatPanel();
+
+        Debug.Log("GameOver");
+        //SettingCanvas.Instance.gameDefeatHUD.ShowDefeatPanel();
     }
 
 }
