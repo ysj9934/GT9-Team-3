@@ -2,10 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HUD_Canvas : MonoBehaviour
+public class SettingCanvas : MonoBehaviour
 {
 
-    public static HUD_Canvas Instance { get; private set; }
+    public static SettingCanvas Instance { get; private set; }
 
     public HUD_CustomSetting customSetting;
     public HUD_CastleHP castleHUD;

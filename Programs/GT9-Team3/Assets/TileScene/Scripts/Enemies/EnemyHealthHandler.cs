@@ -91,7 +91,8 @@ public class EnemyHealthHandler : MonoBehaviour
 
                 // 처치 보상
                 ResourceManager.Instance.Earn(ResourceType.Gold, _enemy._enemyStat.enemyTilePieceAmount);
-                HUD_Canvas.Instance.castleHUD.UpdateGold();
+
+                HUDCanvas.Instance.UpdateTilePiece();
                 break;
         }
 

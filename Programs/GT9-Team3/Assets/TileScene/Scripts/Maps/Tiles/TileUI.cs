@@ -38,7 +38,7 @@ public class TileUI : MonoBehaviour
     //     _tileInfo._tileManager.CloseAllUI(this);
     //
     //     tileUI.SetActive(!tileUI.activeSelf);
-    //     HUD_Canvas.Instance.customSetting.waveSystembutton.interactable = false;
+    //     SettingCanvas.Instance.customSetting.waveSystembutton.interactable = false;
     // }
 
     // private void Update()

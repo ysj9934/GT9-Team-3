@@ -128,7 +128,7 @@ public class BlockInfo : MonoBehaviour
         TowerSellUI.Instance.Show(tower);
         Debug.Log($"Tower data applied: {(float)bp.CostValue / 4}");
         ResourceManager.Instance.Spend(bp.CostType, (float)bp.CostValue / 4);
-        HUD_Canvas.Instance.castleHUD.UpdateGold();
+        HUDCanvas.Instance.UpdateTilePiece();
 
         hasTower = true;
         Debug.Log("Placed tower");
@@ -172,7 +172,7 @@ public class BlockInfo : MonoBehaviour
         Debug.Log("타워 제거 및 골드 환급");
         ResourceManager.Instance.Earn(currentTower.data.makeCost, (float)currentTower.data.sellValue / 4);
 
-        HUD_Canvas.Instance.castleHUD.UpdateGold();
+        HUDCanvas.Instance.UpdateTilePiece();
 
         Tower1 tower = GetComponentInChildren<Tower1>();
         Destroy(tower.gameObject);

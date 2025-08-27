@@ -25,7 +25,6 @@ public class DataManager : MonoBehaviour
     public int worldCode;
     public int stageCode;
 
-
     private void Awake()
     {
         if (Instance != null)
@@ -55,7 +54,7 @@ public class DataManager : MonoBehaviour
         ClearStageData();
 
         // valid check
-        if (IsValid(stageId))
+        if (IsValidate(stageId))
         {
             this.stageId = stageId;
             SetStageWaveList(this.stageId);
@@ -64,6 +63,11 @@ public class DataManager : MonoBehaviour
         }
         
         Debug.Log("selected Stage_ID: " + stageId);
+    }
+
+    public StageData SendStageData()
+    {
+        return new StageData(stageId, worldCode, stageCode, stageWaveIdList);
     }
 
     private void ClearStageData()
@@ -91,7 +95,7 @@ public class DataManager : MonoBehaviour
         }
     }
 
-    private bool IsValid(int stageId)
+    private bool IsValidate(int stageId)
     {
         if (stageId < 100)
         {
@@ -106,5 +110,21 @@ public class DataManager : MonoBehaviour
         }
 
         return true;
+    }
+}
+
+public class StageData
+{
+    public int stageId;
+    public List<Wave_DataTable> stageWaveIdList;
+    public int worldCode;
+    public int stageCode;
+
+    public StageData(int stageId, int worldCode, int stageCode, List<Wave_DataTable> stageWaveIdList)
+    {
+        this.stageId = stageId;
+        this.worldCode = worldCode;
+        this.stageCode = stageCode;
+        this.stageWaveIdList = stageWaveIdList;
     }
 }

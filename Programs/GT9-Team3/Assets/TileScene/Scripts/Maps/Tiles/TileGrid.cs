@@ -22,6 +22,8 @@ public class TileGrid : MonoBehaviour
     public int tileCol;
     public int tileRow;
 
+    public BlockInfo[] blockInfos;
+
     protected virtual void Awake()
     {
         _tileManager = TileManager.Instance;
@@ -32,6 +34,7 @@ public class TileGrid : MonoBehaviour
         UpdateMapping(pos);
         tileIndex = UpdateTileIndex();
         UpdateSpriteOrder();
+        SetBlockInfos();
     }
 
     protected void UpdateMapping(Vector2 pos)
@@ -67,6 +70,19 @@ public class TileGrid : MonoBehaviour
         foreach (SpriteRenderer sr in spriteRenderers)
         {
             sr.sortingOrder = sr.sortingOrder * tileIndex - 1000;
+        }
+    }
+
+    private void SetBlockInfos()
+    {
+        blockInfos = GetComponentsInChildren<BlockInfo>();
+    }
+
+    public void UpdateWorldLevel(int level)
+    {
+        foreach (var blockInfo in blockInfos)
+        {
+            blockInfo.UpdateWorldLevel(level);
         }
     }
 }

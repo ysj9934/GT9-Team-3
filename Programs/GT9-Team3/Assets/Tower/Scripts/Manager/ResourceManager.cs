@@ -11,8 +11,18 @@ public class ResourceManager : MonoBehaviour
 
     void Awake()
     {
-        Instance = this;
+        if (Instance != null)
+        {
+            Destroy(gameObject);
+        }
+        else
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
 
+
+        // Initialize resources
         resources[ResourceType.Gold] = 120;
         resources[ResourceType.Tilepiece] = 5000;
     }
@@ -44,7 +54,7 @@ public class ResourceManager : MonoBehaviour
             resources[type] = 0;
 
         resources[type] += amount;
-        Debug.Log($"[ÀÚ¿ø] {type} +{amount} È¹µæ, ÇöÀç: {resources[type]}");
+        Debug.Log($"[ìì›] {type} +{amount} íšë“, í˜„ì¬: {resources[type]}");
     }
 
     public float ShowTilePiece()

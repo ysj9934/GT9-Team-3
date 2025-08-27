@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2403574331052832503}
   - component: {fileID: 2712210646757001218}
+  - component: {fileID: 4018486269634363918}
   m_Layer: 0
   m_Name: Block_09
   m_TagString: Untagged
@@ -84,6 +85,28 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &4018486269634363918
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 610106726931920783}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b1d65d331981814aa1b8b83df5e14a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _tileInfo: {fileID: 0}
+  _blockData: {fileID: 11400000, guid: 43d12c25e6929994781a38df9f801608, type: 2}
+  spriteRenderer: {fileID: 2712210646757001218}
+  blockCategory: 3
+  blockSerialNumber: 0
+  level: 1
+  hasTower: 0
+  towerUI: {fileID: 0}
+  towerPrefab: {fileID: 0}
+  towerUIdnjswls: {fileID: 0}
 --- !u!1 &1648578658134522860
 GameObject:
   m_ObjectHideFlags: 0
@@ -149,6 +172,7 @@ MonoBehaviour:
   originTileRow: 0
   tileCol: 0
   tileRow: 0
+  blockInfos: []
 --- !u!1 &1788098168564396996
 GameObject:
   m_ObjectHideFlags: 0
@@ -159,6 +183,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1162526709556789408}
   - component: {fileID: 1264313231161061193}
+  - component: {fileID: 2008795591739040453}
   m_Layer: 0
   m_Name: Block_06
   m_TagString: Untagged
@@ -233,6 +258,28 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &2008795591739040453
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1788098168564396996}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b1d65d331981814aa1b8b83df5e14a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _tileInfo: {fileID: 0}
+  _blockData: {fileID: 11400000, guid: 43d12c25e6929994781a38df9f801608, type: 2}
+  spriteRenderer: {fileID: 1264313231161061193}
+  blockCategory: 3
+  blockSerialNumber: 0
+  level: 1
+  hasTower: 0
+  towerUI: {fileID: 0}
+  towerPrefab: {fileID: 0}
+  towerUIdnjswls: {fileID: 0}
 --- !u!1 &1847586589511693259
 GameObject:
   m_ObjectHideFlags: 0
@@ -243,6 +290,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3624128361507801654}
   - component: {fileID: 2207671192544985524}
+  - component: {fileID: 8145818260375687171}
   m_Layer: 0
   m_Name: Block_04
   m_TagString: Untagged
@@ -317,6 +365,28 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &8145818260375687171
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1847586589511693259}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b1d65d331981814aa1b8b83df5e14a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _tileInfo: {fileID: 0}
+  _blockData: {fileID: 11400000, guid: 43d12c25e6929994781a38df9f801608, type: 2}
+  spriteRenderer: {fileID: 2207671192544985524}
+  blockCategory: 3
+  blockSerialNumber: 0
+  level: 1
+  hasTower: 0
+  towerUI: {fileID: 0}
+  towerPrefab: {fileID: 0}
+  towerUIdnjswls: {fileID: 0}
 --- !u!1 &3603191715656481102
 GameObject:
   m_ObjectHideFlags: 0
@@ -327,6 +397,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5857053518812145703}
   - component: {fileID: 709891631451819281}
+  - component: {fileID: 5598452939642772971}
   m_Layer: 0
   m_Name: Block_02
   m_TagString: Untagged
@@ -401,6 +472,28 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &5598452939642772971
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3603191715656481102}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b1d65d331981814aa1b8b83df5e14a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _tileInfo: {fileID: 0}
+  _blockData: {fileID: 11400000, guid: 43d12c25e6929994781a38df9f801608, type: 2}
+  spriteRenderer: {fileID: 709891631451819281}
+  blockCategory: 3
+  blockSerialNumber: 0
+  level: 1
+  hasTower: 0
+  towerUI: {fileID: 0}
+  towerPrefab: {fileID: 0}
+  towerUIdnjswls: {fileID: 0}
 --- !u!1 &6147224970073993967
 GameObject:
   m_ObjectHideFlags: 0
@@ -411,6 +504,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8090061847958085566}
   - component: {fileID: 7872213532575208381}
+  - component: {fileID: 369668952735881046}
   m_Layer: 0
   m_Name: Block_05
   m_TagString: Untagged
@@ -485,6 +579,28 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &369668952735881046
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6147224970073993967}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b1d65d331981814aa1b8b83df5e14a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _tileInfo: {fileID: 0}
+  _blockData: {fileID: 11400000, guid: 43d12c25e6929994781a38df9f801608, type: 2}
+  spriteRenderer: {fileID: 7872213532575208381}
+  blockCategory: 3
+  blockSerialNumber: 0
+  level: 1
+  hasTower: 0
+  towerUI: {fileID: 0}
+  towerPrefab: {fileID: 0}
+  towerUIdnjswls: {fileID: 0}
 --- !u!1 &7238323784144970063
 GameObject:
   m_ObjectHideFlags: 0
@@ -495,6 +611,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8038443480207144798}
   - component: {fileID: 94148841625407520}
+  - component: {fileID: 1749856525663790021}
   m_Layer: 0
   m_Name: Block_07
   m_TagString: Untagged
@@ -569,6 +686,28 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1749856525663790021
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7238323784144970063}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b1d65d331981814aa1b8b83df5e14a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _tileInfo: {fileID: 0}
+  _blockData: {fileID: 11400000, guid: 43d12c25e6929994781a38df9f801608, type: 2}
+  spriteRenderer: {fileID: 94148841625407520}
+  blockCategory: 3
+  blockSerialNumber: 0
+  level: 1
+  hasTower: 0
+  towerUI: {fileID: 0}
+  towerPrefab: {fileID: 0}
+  towerUIdnjswls: {fileID: 0}
 --- !u!1 &7752450106345168841
 GameObject:
   m_ObjectHideFlags: 0
@@ -579,6 +718,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9111475780788707816}
   - component: {fileID: 8634064966309896115}
+  - component: {fileID: 1321287680895489026}
   m_Layer: 0
   m_Name: Block_03
   m_TagString: Untagged
@@ -653,6 +793,28 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1321287680895489026
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7752450106345168841}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b1d65d331981814aa1b8b83df5e14a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _tileInfo: {fileID: 0}
+  _blockData: {fileID: 11400000, guid: 43d12c25e6929994781a38df9f801608, type: 2}
+  spriteRenderer: {fileID: 8634064966309896115}
+  blockCategory: 3
+  blockSerialNumber: 0
+  level: 1
+  hasTower: 0
+  towerUI: {fileID: 0}
+  towerPrefab: {fileID: 0}
+  towerUIdnjswls: {fileID: 0}
 --- !u!1 &8702464124201984642
 GameObject:
   m_ObjectHideFlags: 0
@@ -663,6 +825,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1964128997557909106}
   - component: {fileID: 7639452125797650699}
+  - component: {fileID: 3607204673476914887}
   m_Layer: 0
   m_Name: Block_08
   m_TagString: Untagged
@@ -737,6 +900,28 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &3607204673476914887
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8702464124201984642}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b1d65d331981814aa1b8b83df5e14a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _tileInfo: {fileID: 0}
+  _blockData: {fileID: 11400000, guid: 43d12c25e6929994781a38df9f801608, type: 2}
+  spriteRenderer: {fileID: 7639452125797650699}
+  blockCategory: 3
+  blockSerialNumber: 0
+  level: 1
+  hasTower: 0
+  towerUI: {fileID: 0}
+  towerPrefab: {fileID: 0}
+  towerUIdnjswls: {fileID: 0}
 --- !u!1 &9066670237810714182
 GameObject:
   m_ObjectHideFlags: 0
@@ -747,6 +932,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8678887369321031511}
   - component: {fileID: 104053435134150706}
+  - component: {fileID: 6441708870276193222}
   m_Layer: 0
   m_Name: Block_01
   m_TagString: Untagged
@@ -821,3 +1007,25 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &6441708870276193222
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9066670237810714182}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b1d65d331981814aa1b8b83df5e14a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _tileInfo: {fileID: 0}
+  _blockData: {fileID: 11400000, guid: 43d12c25e6929994781a38df9f801608, type: 2}
+  spriteRenderer: {fileID: 104053435134150706}
+  blockCategory: 3
+  blockSerialNumber: 0
+  level: 1
+  hasTower: 0
+  towerUI: {fileID: 0}
+  towerPrefab: {fileID: 0}
+  towerUIdnjswls: {fileID: 0}

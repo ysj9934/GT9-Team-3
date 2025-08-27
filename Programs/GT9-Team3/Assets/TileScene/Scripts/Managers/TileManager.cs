@@ -68,7 +68,7 @@ public class TileManager : MonoBehaviour
     {
         _gameManager = GameManager.Instance;
         
-        Initialize();
+        //Initialize();
     }
     
     private void Update()
@@ -147,6 +147,11 @@ public class TileManager : MonoBehaviour
     public void UpdateWorldLevel(int level)
     {
         worldLevel = level;
+
+        foreach (var tileGrid in tileGridList)
+        {
+            tileGrid.UpdateWorldLevel(worldLevel);
+        }
 
         foreach (var tileInfo in tileInfoList)
         {
@@ -346,7 +351,7 @@ public class TileManager : MonoBehaviour
         Pathfinder pathfinder = go.GetComponent<Pathfinder>();
         pathfinder.Initialize(path);
 
-        HUD_Canvas.Instance.customSetting.waveSystembutton.interactable = true;
+        SettingCanvas.Instance.customSetting.waveSystembutton.interactable = true;
 
         List<Transform> pathTrans = new List<Transform>();
         foreach (var tile in path)
