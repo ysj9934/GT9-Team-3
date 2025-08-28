@@ -92,7 +92,7 @@ public class TileManager : MonoBehaviour
             this.gameWorldLevel = stageData.worldCode;
             this.gameRoundLevel = stageData.roundCode;
 
-            if (this.gameRoundLevel != 7)
+            if (this.gameRoundLevel < 2)
             {
                 mapExtendLevel = 1;
             }
@@ -107,7 +107,7 @@ public class TileManager : MonoBehaviour
             switch (mapExtendLevel)
             {
                 case 1:
-                    //Initialize();
+                    Initialize();
                     break;
                 case 2:
                     InitializeMapResize();

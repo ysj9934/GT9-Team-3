@@ -33,6 +33,13 @@ public class HUDCanvas : MonoBehaviour
     [SerializeField] Button waveStartBtn;
     private Image waveStartImage;
 
+    // GameSpeed
+    [SerializeField] Button gameSpeed1xBtn;
+    [SerializeField] Button gameSpeed2xBtn;
+    [SerializeField] Button gameSpeed5xBtn;
+    // GamePause
+    [SerializeField] Button pauseBtn;
+
     // DefeatPanel
     public GameDefeat _gameDefeatPanel;
 
@@ -50,6 +57,9 @@ public class HUDCanvas : MonoBehaviour
     private void Start()
     {
         _gameManager = GameManager.Instance;
+
+        gameSpeed2xBtn.gameObject.SetActive(false);
+        gameSpeed5xBtn.gameObject.SetActive(false);
 
         _gameDefeatPanel = GetComponentInChildren<GameDefeat>();
         _gameDefeatPanel.Initialize(this);
@@ -165,5 +175,42 @@ public class HUDCanvas : MonoBehaviour
         TurnOffPathfinder();
         _gameManager._waveManager.StartWave();
 
+    }
+
+    // GameSpeed
+    public void SetGameSpeed1x()
+    {
+        gameSpeed1xBtn.gameObject.SetActive(false);
+        gameSpeed2xBtn.gameObject.SetActive(true);
+        gameSpeed5xBtn.gameObject.SetActive(false);
+        _gameManager.GameSpeed2x();
+        
+    }
+
+    public void SetGameSpeed2x()
+    {
+        gameSpeed1xBtn.gameObject.SetActive(false);
+        gameSpeed2xBtn.gameObject.SetActive(false);
+        gameSpeed5xBtn.gameObject.SetActive(true);
+        _gameManager.GameSpeed5x();
+        
+    }
+
+    public void SetGameSpeed5x()
+    {
+        gameSpeed1xBtn.gameObject.SetActive(true);
+        gameSpeed2xBtn.gameObject.SetActive(false);
+        gameSpeed5xBtn.gameObject.SetActive(false);
+        _gameManager.ResumeGame();
+    }
+    // GamePause
+    public void SetGamePause()
+    {
+        _gameManager.PauseGame();
+        gameSpeed1xBtn.gameObject.SetActive(false);
+        gameSpeed2xBtn.gameObject.SetActive(false);
+        gameSpeed5xBtn.gameObject.SetActive(false);
+
+        SetGameSpeed5x();
     }
 }

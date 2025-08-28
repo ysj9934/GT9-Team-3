@@ -116,17 +116,13 @@ public class WaveManager : MonoBehaviour
         this.currentWaveLevel = waveNum;
         this.currentRoundLevel = ((waveNum - 1) / 3) + 1;
 
+        SendWaveData();
+
         if (waveNum % 3 == 1)
         {
             _gameManager._hudCanvas.TurnOnPathfinder();
             _gameManager._tileManager.isUIActive = true;
             _gameManager._tileManager.isMoveActive = true;
-
-            if (waveNum == 4)
-            {
-                // Map 확장
-                _gameManager.MapExtend(true);
-            }
         }
         else
         {
@@ -135,7 +131,7 @@ public class WaveManager : MonoBehaviour
             _gameManager._tileManager.isMoveActive = false;
         }
 
-        SendWaveData();
+        
     }
 
     public void SendWaveData()

@@ -139,7 +139,7 @@ public class GameManager : MonoBehaviour
             SendStageDataToHUD();
 
             // 4. TileManager 세팅
-            _tileManager.Initialize();
+            //_tileManager.Initialize();
         }
         else 
         {
@@ -191,6 +191,11 @@ public class GameManager : MonoBehaviour
         {
             gameRoundLevel = stageData.roundCode;
             SendStageDataToHUD();
+
+            if (gameRoundLevel == 2)
+            {
+                MapExtend();
+            }
         }
         else
         {
@@ -198,7 +203,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void MapExtend(bool isOpen)
+    public void MapExtend()
     {
         SendStageDataToTileManager();
     }
@@ -226,6 +231,12 @@ public class GameManager : MonoBehaviour
     public void GameSpeed2x()
     {
         Time.timeScale = 2f;
+        isGamePaused = false;
+    }
+
+    public void GameSpeed5x()
+    {
+        Time.timeScale = 5f;
         isGamePaused = false;
     }
 
