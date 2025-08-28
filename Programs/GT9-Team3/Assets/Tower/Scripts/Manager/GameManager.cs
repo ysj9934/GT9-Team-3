@@ -192,8 +192,9 @@ public class GameManager : MonoBehaviour
             gameRoundLevel = stageData.roundCode;
             SendStageDataToHUD();
 
-            if (gameRoundLevel == 2)
+            if (stageData.worldCode == 7)
             {
+                Debug.Log("MapExtend 01");
                 MapExtend();
             }
         }
