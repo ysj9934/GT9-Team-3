@@ -78,7 +78,7 @@ public class TowerSellUI : MonoBehaviour
         slowEffectText.text = p.slowEffect.ToString();
         slowTimeText.text = $"{p.slowTime}/s";
         ccTimeText.text = $"{p.stunTime}/s";
-        //tileRangeText.text = $"{p.tileRange}/Tile";
+        tileRangeText.text = $"{p.impactRadius}/Tile";
     }
 
     public void Hide()

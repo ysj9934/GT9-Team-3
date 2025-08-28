@@ -37,7 +37,7 @@ public class TowerData : ScriptableObject
 
 }
 
-public enum AttackType { Single, AreaOfEffect }
+public enum AttackType { Single, Multi }
 public enum EnemyType { Ground_Unit, Air_Unit }
 public enum TargetPriority { Boss, Base_Range, Lowest_HP, Base_Closest }
 public enum ResourceType { Gold, Mana, Crystal, Tilepiece }
