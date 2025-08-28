@@ -12,7 +12,7 @@ public class TowerBuildUI : MonoBehaviour
     public TowerOptionItem itemPrefab;
 
     [Header("Catalog")]
-    public List<TowerBlueprint> options;  // 노출할 타워 종류들
+    [SerializeField] public List<TowerBlueprint> options;  // 노출할 타워 종류들
 
     private TowerPlacer placer;
     private Vector3Int pendingCell;
