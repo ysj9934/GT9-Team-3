@@ -23,7 +23,7 @@ public class ResourceManager : MonoBehaviour
 
 
         // Initialize resources
-        resources[ResourceType.Gold] = 120;
+        //resources[ResourceType.Gold] = 120;
         resources[ResourceType.Tilepiece] = 5000;
     }
 
@@ -66,4 +66,5 @@ public class ResourceManager : MonoBehaviour
     {
         return resources.ContainsKey(ResourceType.Gold) ? resources[ResourceType.Gold] : 0;
     }
+
 }

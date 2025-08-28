@@ -7,7 +7,7 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Tower Defense/Tower Blueprint")]
 public class TowerBlueprint : ScriptableObject
 {
-    public string towerID;              // JSON에서 매칭할 ID
+    public int towerID;              // JSON에서 매칭할 ID
     public string displayName;
     public Sprite icon;
 
@@ -39,8 +39,10 @@ public class TowerBlueprint : ScriptableObject
 
         TowerDataMapper.ApplyToSO(data, row);
 
-        if (data.projectileData != null && int.TryParse(data.projectileData.projectileID, out int projID))
+        if (data.projectileData != null)
         {
+            int projID = data.projectileData.projectileID;
+
             if (projectileTable.TryGetValue(projID, out var projRow))
             {
                 ProjectileDataMapper.ApplyToSO(data.projectileData, projRow);

@@ -31,16 +31,19 @@ public class TowerDataMapper
 
         so.targetOrder = BuildPriorityArray(row.Target_Order1, row.Target_Order2, row.Target_Order3, row.Target_Order4);
 
-        so.makeCost = ResourceType.Gold;        // 현재는 전부 Gold
+        so.makeCost = ResourceType.Tilepiece;   
         so.makeValue = row.Make_Value;
 
-        so.sellCost = ResourceType.Gold;
+        so.sellCost = ResourceType.Tilepiece;
         so.sellValue = row.Sell_Value;
 
-        so.UpgradeCost = ResourceType.Gold;
+        so.UpgradeCost = ResourceType.Tilepiece;
         so.UpgradeValue = row.Upgrade_Value;
 
         so.attackSpeed = row.Attack_Speed;
+
+        if (so.projectileData == null)
+            so.projectileData = ScriptableObject.CreateInstance<ProjectileData>();
 
         Debug.Log($"[TowerDataMapper] 스탯 매핑 완료: ID = {row.key}, 이름 = {row.Inner_Name}, 레벨 = {row.Tower_Grade}, 생성비용 = {row.Make_Value}, 판매가 = {row.Sell_Value}");
 

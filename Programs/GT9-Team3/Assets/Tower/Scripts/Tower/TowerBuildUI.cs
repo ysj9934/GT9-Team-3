@@ -34,9 +34,6 @@ public class TowerBuildUI : MonoBehaviour
             bp.ApplyLoadedData(towerTable, projectileTable);
         }
 
-        Debug.Log($"ProjectileDataLoader.Instance is null? -> {ProjectileDataLoader.Instance == null}");
-        Debug.Log($"TowerDataLoader.Instance is null? -> {TowerDataTableLoader.Instance == null}");
-
     }
 
     void Awake() => Hide();

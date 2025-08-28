@@ -170,7 +170,7 @@ public class BlockInfo : MonoBehaviour
     public void RemoveTower(Tower1 currentTower)
     {
         Debug.Log("타워 제거 및 골드 환급");
-        ResourceManager.Instance.Earn(currentTower.data.makeCost, (float)currentTower.data.sellValue / 4);
+        ResourceManager.Instance.Earn(currentTower.towerdata.makeCost, (float)currentTower.towerdata.sellValue / 4);
 
         HUDCanvas.Instance.UpdateTilePiece();
 
