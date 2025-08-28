@@ -185,6 +185,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: TileManager
       objectReference: {fileID: 0}
+    - target: {fileID: 8976502372533630626, guid: 1309173f8e2f8cd43aacf64911676477, type: 3}
+      propertyPath: isMoveActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1987,6 +1991,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7115c9290e565440a4cedbb7c6c2883, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!224 &1427001036 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 5519162514608376895, guid: d3b11d66b91500546ad29c6c15908038, type: 3}
+  m_PrefabInstance: {fileID: 178147239445250659}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1435867450
 GameObject:
   m_ObjectHideFlags: 0
@@ -3148,7 +3157,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 5519162514608376895, guid: d3b11d66b91500546ad29c6c15908038, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7823741649468965593}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d3b11d66b91500546ad29c6c15908038, type: 3}
 --- !u!114 &197551793144243866
@@ -3757,7 +3769,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 3246103441196327110}
+    m_TransformParent: {fileID: 1427001036}
     m_Modifications:
     - target: {fileID: 3703779106560028331, guid: a2a8ba8eeb33abd4ab8dae77dc6f5cce, type: 3}
       propertyPath: m_AnchorMax.x
@@ -3889,15 +3901,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6918372728511671098, guid: a2a8ba8eeb33abd4ab8dae77dc6f5cce, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 6918372728511671098, guid: a2a8ba8eeb33abd4ab8dae77dc6f5cce, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 4289958125801208289}
     - targetCorrespondingSourceObject: {fileID: 8003237508537823469, guid: a2a8ba8eeb33abd4ab8dae77dc6f5cce, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7792158699726014006}
@@ -5436,8 +5445,7 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 7823741649468965593}
+  m_Children: []
   m_Father: {fileID: 4244446181316759645}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -5793,18 +5801,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
---- !u!114 &4289958125801208289
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7823741649468965596}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e885785d0cc65444c850afcc04756f49, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!224 &4363517079114817302
 RectTransform:
   m_ObjectHideFlags: 0
@@ -7834,7 +7830,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4289958125801208289}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: HUD_GameDefeat, Assembly-CSharp
         m_MethodName: ResetGame
         m_Mode: 1
@@ -7916,11 +7912,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &7823741649468965596 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6918372728511671098, guid: a2a8ba8eeb33abd4ab8dae77dc6f5cce, type: 3}
-  m_PrefabInstance: {fileID: 722207472379596959}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &7923247169194738044
 MonoBehaviour:
   m_ObjectHideFlags: 0

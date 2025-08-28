@@ -94,7 +94,7 @@ public class TowerBuildUI : MonoBehaviour
         if (!ResourceManager.Instance.CanAfford(bp.CostType, bp.CostValue)) return;
 
         //placer.PlaceTowerFromUI2(bp);
-        _blockInfo.SetTower(bp);
+        _blockInfo.SetTowerPlace(bp);
 
         Hide();
     }

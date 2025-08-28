@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Cinemachine;
 using TMPro;
+using Unity.Burst.CompilerServices;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -14,45 +15,55 @@ using Random = UnityEngine.Random;
 /// <summary>
 /// TileManager
 /// created by: yoon
-/// created at: 2025.08.18
 /// description:
-/// TileManager refactoring
+/// 타일에 관한 전체적인 관리를 담당합니다.
 /// </summary>
+/// <remark>
+/// created at: 2025.08.18
+/// created at: 2025.08.28
+/// TileManager refactoring
+/// </remark>
 public class TileManager : MonoBehaviour
 {
     public static TileManager Instance { get; private set; }
     
-    // 참조
-    // Reference
+    // Managers
     public GameManager _gameManager;
+    public TowerBuildUI towerUIdnjswls;
+    public TowerSellUI towerSellUI;
 
-    // ??? ?????? ????
-    // tile size setting
+    // Manager Info
     public readonly float[] tileSize = { 1.4475f, 0.84f };
     public int tileLength = 5;
+    public int gameWorldLevel;
+    public int gameRoundLevel;
+    public int mapExtendLevel = 1;
 
-    public int worldLevel = 1;
-    public int tempLevel = 1;
-
-    // ??? ?????? ????
+    // Tile Prefabs
     [SerializeField] public GameObject[] tilePrefabs;
     [SerializeField] public GameObject tileGridPrefab;
     [SerializeField] public GameObject tileCastlePrefab;
     [SerializeField] public GameObject tileSpawnPrefab;
 
+    // Tile Info
     public TileData[,] tileMap;
+    public Vector2 spawnTransform;
     public TileData startTile;
     public TileData endTile;
-
-    [SerializeField] private GameObject pathfinderPrefab;
-    public List<TileData> path;
+    public List<GameObject> tileAllCategoryList;
     public List<TileGrid> tileGridList;
     public List<TileInfo> tileInfoList;
-    public List<Vector2> spawnTransform;
 
-    // 타일 생성
-     
-    
+    // Path Info
+    [SerializeField] private GameObject pathfinderPrefab;
+    public List<TileData> path;
+
+    // Tile UI Active
+    public bool isUIActive = false;
+    public bool isMoveActive = false;
+
+    // Tile Create (Inventory / shop)
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -62,74 +73,83 @@ public class TileManager : MonoBehaviour
         }
 
         Instance = this;
+
+        tileAllCategoryList = new List<GameObject>();
     }
 
     private void Start()
     {
         _gameManager = GameManager.Instance;
-        
-        //Initialize();
+        towerSellUI = TowerSellUI.Instance;
+        towerUIdnjswls = FindObjectOfType<TowerBuildUI>(true);
     }
-    
-    private void Update()
-    {
-        if (Input.GetMouseButtonDown(0))
-        {
-            if (EventSystem.current.IsPointerOverGameObject())
-                return;
-            
-            int layerMask = LayerMask.GetMask("Ground");
-            
-            Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            RaycastHit2D hit = Physics2D.Raycast(mousePos, Vector2.zero, Mathf.Infinity, layerMask);
 
-            
-            // place on tower first
-            
-            // ground second
-            
-            if (hit.collider != null)
+    // 데이터가 2번 호출되므로 초기화를 진행해도 된다.
+    public void ReceiveStageData(StageData stageData)
+    {
+        if (stageData != null)
+        {
+            this.gameWorldLevel = stageData.worldCode;
+            this.gameRoundLevel = stageData.roundCode;
+
+            if (this.gameRoundLevel != 7)
             {
-                Debug.Log("Hit: " + hit.collider.name);
-                
-                TileInfo tileInfo = hit.collider.GetComponent<TileInfo>();
-                if (tileInfo != null)
-                {
-                    CloseAllUI(tileInfo._tileUI);
-                    tileInfo._tileUI.tileUI.SetActive(!tileInfo._tileUI.tileUI.activeSelf);
-                }
+                mapExtendLevel = 1;
             }
             else
             {
-                CloseAllUI(null);
+                mapExtendLevel = 2;
             }
+
+            tileLength = 3 + (2 * mapExtendLevel);
+
+
+            switch (mapExtendLevel)
+            {
+                case 1:
+                    Initialize();
+                    break;
+                case 2:
+                    InitializeMapResize();
+                    break;
+                default:
+                    Debug.LogWarning("Invalid mapExtendLevel");
+                    break;
+            }
+        }
+        else
+        {
+            Debug.LogError("StageData is Null");
         }
     }
 
+    /// <summary>
+    /// Initialize
+    /// 초기화
+    /// </summary>
     public void Initialize()
     {
-        InitializeTileMap(tileLength);
+        SetMapResize(tileLength);
         SetTileGrid(tileLength);
         SetTileRoad(tileLength);
         SetSpawnerPosition();
+        SetWorldTile(gameWorldLevel);
     }
 
-    // tileMap ????
-    // Initialize the tile map with the given dimensions
-    private void InitializeTileMap(int tileLength)
-    {
-        tileMap = new TileData[tileLength, tileLength];
-    }
 
-    public void SetTempInitlaize()
+    /// <summary>
+    /// Resize Map
+    /// 맵 크기 재조정
+    /// </summary>
+    public void InitializeMapResize()
     {
-        InitializeTileMap(tileLength);
+        SetMapResize(tileLength);
         SetTileGrid(tileLength);
         SetSpawnerPosition();
 
         foreach (var tileInfo in tileInfoList)
         {
-            tileInfo.InitializeTemp(tileInfo.transform.position);
+            tileInfo.MapExtend(tileInfo.transform.position);
         }
 
         TileCastle tileCastle = endTile as TileCastle;
@@ -143,32 +163,148 @@ public class TileManager : MonoBehaviour
         }
     }
 
-    // 월드 변경시 타일 변경
-    public void UpdateWorldLevel(int level)
+    /// <summary>
+    /// Set Tile World Version
+    /// 월드 변경시 타일 변경
+    /// </summary>
+    /// <param name="level">gameWorldLevel</param>
+    private void SetWorldTile(int level)
     {
-        worldLevel = level;
-
-        foreach (var tileGrid in tileGridList)
+        foreach (var tile in tileAllCategoryList)
         {
-            tileGrid.UpdateWorldLevel(worldLevel);
+            TileGrid tileGrid = tile.GetComponent<TileGrid>();
+            TileData tileData = tile.GetComponent<TileData>();
+            if (tileGrid != null)
+            {
+                tileGrid.UpdateWorldLevel(level);
+            }
+            else if (tileData != null)
+            {
+                tileData.UpdateWorldLevel(level);
+            }
+        }
+    }
+
+    /// <summary>
+    /// Tile Map 크기 재조정
+    /// Map resize dimensions
+    /// </summary>
+    /// <param name="tileLength">타일 종횡 길이</param>
+    private void SetMapResize(int tileLength)
+    {
+        tileMap = new TileData[tileLength, tileLength];
+    }
+
+    private void Update()
+    {
+        if (EventSystem.current.IsPointerOverGameObject())
+            return;
+
+        if (Input.GetMouseButtonDown(0))
+        {
+            Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            RaycastHit2D[] hits = Physics2D.RaycastAll(mousePos, Vector2.zero);
+
+            TileInfo fallbackTile = null;
+            Tower1 fallbackTower = null;
+
+            foreach (var hit in hits)
+            {
+                if (hit.collider != null)
+                {
+                    // Block Click Event
+                    BlockInfo blockInfo = hit.collider.GetComponent<BlockInfo>();
+                    if (blockInfo != null)
+                    {
+                        if (towerUIdnjswls.root.gameObject.activeSelf)
+                        {
+                            blockInfo.CloseTowerInstallerUI();
+                        }
+                        else
+                        {
+                            blockInfo.OpenTowerInstallerUI();
+                        }
+                        CloseTileUI(null);
+                        CloseTowerInfoUI();
+                        return;
+                    }
+
+                    if (fallbackTile == null)
+                    {
+                        TileInfo tileInfo = hit.collider.GetComponent<TileInfo>();
+                        if (tileInfo != null)
+                        {
+                            fallbackTile = tileInfo;
+                        }
+                    }
+
+                    if (fallbackTower == null)
+                    {
+                        Tower1 tower = hit.collider.GetComponent<Tower1>();
+                        if (tower != null)
+                        {
+                            fallbackTower = tower;
+                        }
+                    }
+                }
+            }
+
+            if (fallbackTower != null)
+            { 
+                // 타워 선택시 event
+            }
+            else if (fallbackTile != null)
+            {
+                CloseTowerInstallUI();
+
+                if (isUIActive)
+                {
+                    CloseTileUI(fallbackTile._tileUI);
+                    _gameManager._hudCanvas.TurnOffStartWave();
+                    fallbackTile._tileUI.tileUI.SetActive(!fallbackTile._tileUI.tileUI.activeSelf);
+                }
+
+                if (isMoveActive)
+                {
+                    TileMovePress(fallbackTile);
+                }
+            }
+            else
+            {
+                // 타일이 아닌 곳을 찍을 경우 UI 닫기
+                CloseTileUI(null);
+                CloseTowerInstallUI();
+                CloseTowerInfoUI();
+            }
         }
 
+        TileUICollider(isUIActive);
+    }
+
+    private void TileUICollider(bool isUIActive)
+    { 
         foreach (var tileInfo in tileInfoList)
         {
-            tileInfo.UpdateWorldLevel(worldLevel);
+            tileInfo.collider2D.enabled = isUIActive;
         }
-        
-        startTile.UpdateWorldLevel(worldLevel);
-        endTile.UpdateWorldLevel(worldLevel);
     }
 
-    public void UpdateTempLevel(int level)
+    /// <summary>
+    /// Save Tile Data 
+    /// 타일을 클릭하여 타일 정보 저장
+    /// </summary>
+    /// <param name="tileInfo">선택된 타일</param>
+    private void TileMovePress(TileInfo tileInfo)
     {
-        tempLevel = level;
-        tileLength = 3 + (2 * tempLevel);
+        tileInfo._tileMove.TileMovePress();
     }
 
-    public void SetTileGrid(int tileLength)
+    /// <summary>
+    /// Set Tile Grid
+    /// 그리드 타일 설치
+    /// </summary>
+    /// <param name="tileLength">타일 길이</param>
+    private void SetTileGrid(int tileLength)
     {
         tileGridList = new List<TileGrid>();
         _gameManager.DestroyOfType<TileGrid>();
@@ -177,8 +313,11 @@ public class TileManager : MonoBehaviour
         {
             for (int col = 0; col < tileLength; col++)
             {
-                Vector2 pos = new Vector2(col * tileSize[0] - row * tileSize[0], (col + row) * -tileSize[1] + tileSize[1] * 2 + (tileSize[1] * 2 * tempLevel));
-                GameObject go = Instantiate(tileGridPrefab, 
+                Vector2 pos = new Vector2(
+                    col * tileSize[0] - row * tileSize[0], 
+                    (col + row) * -tileSize[1] + tileSize[1] * 2 + (tileSize[1] * 2 * mapExtendLevel));
+                GameObject go = Instantiate(
+                    tileGridPrefab, 
                     pos, 
                     Quaternion.identity);
                 go.transform.SetParent(transform);
@@ -186,20 +325,31 @@ public class TileManager : MonoBehaviour
                 tileGrid.Initialize(pos);
 
                 tileGridList.Add(tileGrid);
+                tileAllCategoryList.Add(go);
             }
         }
     }
 
-    public void SetTileRoad(int tileLength)
+    /// <summary>
+    /// Set Tile Road
+    /// 길 타일 설치 + 성 타일 설치
+    /// </summary>
+    /// <param name="tileLength">타일 길이</param>
+
+    private void SetTileRoad(int tileLength)
     {
         tileInfoList = new List<TileInfo>();
         int baseNumber = 0;
+
         for (int row = 0; row < 3; row++)
         {
             for (int col = 0; col < 3; col++)
             {
+                // Set Tile Road
                 if (baseNumber != 4){
-                    Vector2 pos = new Vector2(col * tileSize[0] - row * tileSize[0], (col + row) * -tileSize[1] + tileSize[1] * 2);
+                    Vector2 pos = new Vector2(
+                        col * tileSize[0] - row * tileSize[0], 
+                        (col + row) * -tileSize[1] + tileSize[1] * 2);
                     GameObject go = Instantiate(
                         tilePrefabs[UnityEngine.Random.Range(0, tilePrefabs.Length)],
                         pos,
@@ -208,11 +358,15 @@ public class TileManager : MonoBehaviour
                     TileInfo tileInfo = go.GetComponent<TileInfo>();
                     tileInfo.Initialize(pos);
 
-
                     tileInfoList.Add(tileInfo);
+                    tileAllCategoryList.Add(go);
                 }
-                else {
-                    Vector2 pos = new Vector2(col * tileSize[0] - row * tileSize[0], (col + row) * -tileSize[1] + tileSize[1] * 2);
+                // Set Tile Castle with Castle
+                else
+                {
+                    Vector2 pos = new Vector2(
+                        col * tileSize[0] - row * tileSize[0], 
+                        (col + row) * -tileSize[1] + tileSize[1] * 2);
                     GameObject go = Instantiate(
                         tileCastlePrefab,
                         pos,
@@ -223,6 +377,7 @@ public class TileManager : MonoBehaviour
                     _gameManager.baseTransform = tileCastle.gameObject.transform;
 
                     endTile = tileCastle;
+                    tileAllCategoryList.Add(go);
                 }
                     
                 baseNumber++;
@@ -230,7 +385,66 @@ public class TileManager : MonoBehaviour
         }
     }
 
-    // 이웃한 타일 정보 보기
+    /// <summary>
+    /// Set Spawner Tile
+    /// 스포너 타일 지정
+    /// </summary>
+    private void SetSpawnerPosition()
+    {
+        spawnTransform = new Vector2();
+        ClearSpawner();
+
+        switch (mapExtendLevel)
+        {
+            case 1:
+                spawnTransform = tileGridList[4].transform.position;
+                break;
+            case 2:
+                spawnTransform = tileGridList[6].transform.position;
+                break;
+        }
+
+        CreateSpawner();
+    }
+
+    /// <summary>
+    /// Remove Spawner Tile
+    /// 스포너 타일 제거
+    /// </summary>
+    private void ClearSpawner()
+    {
+        _gameManager.DestroyOfType<TileSpawner>();
+    }
+
+    /// <summary>
+    /// Create Spawner Tile
+    /// 스포너 타일 생성
+    /// </summary>
+    private void CreateSpawner()
+    {
+        if (spawnTransform != null)
+        {
+            Vector2 pos = spawnTransform;
+            GameObject go = Instantiate(
+                tileSpawnPrefab,
+                pos,
+                Quaternion.identity);
+            go.transform.SetParent(transform);
+            TileSpawner tileSpawner = go.GetComponent<TileSpawner>();
+            tileSpawner.Initialize(pos);
+
+            startTile = tileSpawner;
+        }
+        else
+        {
+            return;
+        }
+    }
+
+    /// <summary>
+    /// Set Neignbor Tiles
+    /// 이웃한 타일 정보 보기
+    /// </summary>
     public void SetNeighbors()
     {
         for (int row = 0; row < tileLength; row++)
@@ -245,51 +459,14 @@ public class TileManager : MonoBehaviour
         }
     }
 
-    public void SetSpawnerPosition()
-    {
-        spawnTransform = new List<Vector2>();
-        ClearSpawner();
-
-        switch (tempLevel)
-        {
-            case 1:
-                spawnTransform.Add(tileGridList[4].transform.position);
-                break;
-            case 2:
-                spawnTransform.Add(tileGridList[6].transform.position);
-                break;
-        }
-
-        CreateSpawner();
-    }
-    
-    public void CreateSpawner()
-    {
-        if (spawnTransform.Count == 0)
-            return;
-        
-        Vector2 pos = spawnTransform[0];
-        GameObject go = Instantiate(
-            tileSpawnPrefab, 
-            pos, 
-            Quaternion.identity);
-        go.transform.SetParent(transform);
-        TileSpawner tileSpawner = go.GetComponent<TileSpawner>();
-        tileSpawner.Initialize(pos);
-
-        startTile = tileSpawner;
-    }
-    
-    
-    public void ClearSpawner()
-    {
-        _gameManager.DestroyOfType<TileSpawner>();
-    }
-
+    /// <summary>
+    /// Show Connected Pathroute
+    /// 연결된 길 보기
+    /// </summary>
     public void ShowConnectedPath()
     {
         SetNeighbors();
-        CloseAllUI(null);
+        CloseTileUI(null);
 
         if (startTile == null)
         {
@@ -302,15 +479,25 @@ public class TileManager : MonoBehaviour
         else
         {
             path = FindConnectedPath(startTile, endTile);
-            //path = FindConnectedPathBFS(startTileRoad, endTileRoad);
 
             if (path != null && path.Count > 0)
             {
-                GetPathfinder();
+                SetPathfinder(path);
+            }
+            else
+            {
+                Debug.LogWarning("No length has been allocated for this array");
             }
         }
     }
     
+    /// <summary>
+    /// Find Conntected Path
+    /// 연결된 길 찾기
+    /// </summary>
+    /// <param name="startTile">스포너 타일</param>
+    /// <param name="endTile">성 타일</param>
+    /// <returns></returns>
     public List<TileData> FindConnectedPath(TileData startTile, TileData endTile)
     {
         Debug.Log("FindConnectedPath");
@@ -347,13 +534,19 @@ public class TileManager : MonoBehaviour
         return false;
     }
     
-    public void GetPathfinder()
+    /// <summary>
+    /// Set Pathfinder
+    /// 패스파인더 설치
+    /// </summary>
+    public void SetPathfinder(List<TileData> path)
     {
-        GameObject go = Instantiate(pathfinderPrefab, startTile.transform);
+        GameObject go = Instantiate
+            (
+                pathfinderPrefab, 
+                startTile.transform
+            );
         Pathfinder pathfinder = go.GetComponent<Pathfinder>();
         pathfinder.Initialize(path);
-
-        SettingCanvas.Instance.customSetting.waveSystembutton.interactable = true;
 
         List<Transform> pathTrans = new List<Transform>();
         foreach (var tile in path)
@@ -361,11 +554,16 @@ public class TileManager : MonoBehaviour
             pathTrans.Add(tile.transform);
         }
 
-        WaveManager.Instance.SetPath(pathTrans);
+        _gameManager._waveManager.SetPath(pathTrans);
         _gameManager._hudCanvas.TurnOnStartWave();
     }
 
-    public void CloseAllUI(TileUI exceptUI)
+    /// <summary>
+    /// Close Tile UI
+    /// 타일에 게시된 UI 모두 닫기
+    /// </summary>
+    /// <param name="exceptUI">선택된 TileUI 제외</param>
+    public void CloseTileUI(TileUI exceptUI)
     {
         foreach (var tileInfo in tileInfoList)
         {
@@ -374,7 +572,25 @@ public class TileManager : MonoBehaviour
         }
     }
 
-    
+    /// <summary>
+    /// Close Tower Installer UI
+    /// 타워 설치 UI 닫기
+    /// </summary>
+    public void CloseTowerInstallUI()
+    {
+        towerUIdnjswls.Hide();
+    }
+
+    /// <summary>
+    /// Close Tower Info UI
+    /// 타워 정보 UI 닫기
+    /// </summary>
+    public void CloseTowerInfoUI()
+    {
+        towerSellUI.Hide();
+    }
+
+
     // Inventory
     public List<GameObject> inventoryList = new List<GameObject>();
     [SerializeField] public Transform content;

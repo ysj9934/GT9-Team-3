@@ -20,7 +20,6 @@ public class GameManager : MonoBehaviour
     // Canvas
     public HUDCanvas _hudCanvas;
 
-
     public Transform baseTransform;
 
     // 게임 레벨
@@ -63,9 +62,6 @@ public class GameManager : MonoBehaviour
             // Load Data from DataManager
             ReceiveStageData();
         }
-
-        // 추후 삭제 필요
-        InitializeTiles();
     }
 
     private bool IsValidate()
@@ -138,6 +134,7 @@ public class GameManager : MonoBehaviour
             // 3. WaveManager에 스테이지 정보 전달
             SendStageDataToWaveManager();
             // 2. TileManager에 스테이지 정보 전달
+            SendStageDataToTileManager();
             // 1. HUDCanvas에 스테이지 정보 전달
             SendStageDataToHUD();
             
@@ -153,12 +150,12 @@ public class GameManager : MonoBehaviour
 
     // 초기 타일 배치
     // Initial tile placement
-    public void InitializeTiles()
-    {
-        // 타일 생성
-        _tileManager.Initialize();
-        _tileManager.SetSpawnerPosition();
-    }
+    //public void InitializeTiles()
+    //{
+    //    // 타일 생성
+    //    _tileManager.Initialize();
+    //    _tileManager.SetSpawnerPosition();
+    //}
 
     public void SendStageDataToHUD()
     {
@@ -173,14 +170,17 @@ public class GameManager : MonoBehaviour
             );
     }
 
-    public StageData SendStageDataToTileManager()
+    public void SendStageDataToTileManager()
     {
-        return new StageData
+        _tileManager.ReceiveStageData
             (
-                gameWorldLevel,
-                gameStageLevel,
-                gameRoundLevel,
-                gameWaveLevel
+                new StageData
+                (
+                    gameWorldLevel,
+                    gameStageLevel,
+                    gameRoundLevel,
+                    gameWaveLevel
+                )
             );
     }
 
@@ -208,27 +208,11 @@ public class GameManager : MonoBehaviour
         }
     }
 
-
-
-    public void UpdateWorldLevel(int level)
+    public void MapExtend(bool isOpen)
     {
-        this.gameWorldLevel = level;
-        _tileManager.UpdateWorldLevel(this.gameWorldLevel);
+        SendStageDataToTileManager();
     }
 
-    public void UpdateTempLevel(int level)
-    {
-        this.tempLevel = level;
-
-        _tileManager.UpdateTempLevel(this.tempLevel);
-    }
-
-    public void WaveStartButton()
-    {
-        //WaveManager.Instance.StartWave();
-    }
-
-    
 
 #if UNITY_EDITOR
     [ContextMenu("Spawn Test Enemy")]

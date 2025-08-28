@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Resources;
+using Unity.VisualScripting;
 using UnityEditor.EditorTools;
 using UnityEngine;
 using UnityEngine.AI;
@@ -109,8 +110,6 @@ public class WaveManager : MonoBehaviour
         this.spawnBatchSize = stageData.SpawnBatchSize;
         this.spawnRepeat = stageData.SpawnRepeat;
         this.spawnintervalSec = stageData.SpawnintervalSec;
-        
-
     }
 
     // send wave and round data
@@ -122,10 +121,20 @@ public class WaveManager : MonoBehaviour
         if (waveNum % 3 == 1)
         {
             _gameManager._hudCanvas.TurnOnPathfinder();
+            _gameManager._tileManager.isUIActive = true;
+            _gameManager._tileManager.isMoveActive = true;
+
+            if (waveNum == 4)
+            {
+                // Map 확장
+                _gameManager.MapExtend(true);
+            }
         }
         else
         {
             _gameManager._hudCanvas.TurnOnStartWave();
+            _gameManager._tileManager.isUIActive = false;
+            _gameManager._tileManager.isMoveActive = false;
         }
 
         SendWaveData();
@@ -155,8 +164,10 @@ public class WaveManager : MonoBehaviour
         if (!isWaveRoutine)
         {
             // wave start 버튼 켜기
-            
+
             // 2. TileUI (회전 불가하도록 수정)
+            _gameManager._tileManager.isUIActive = true;
+            _gameManager._tileManager.isMoveActive = true;
             // 3. 웨이브 스폰 시키기
             waveRoutine = StartCoroutine(AwakeWave());
             // 3-1. 웨이브 패배시 Wave재시작 할 수 있도록..
@@ -167,6 +178,8 @@ public class WaveManager : MonoBehaviour
         {
             // wave시작 버튼 끄기
             _gameManager._hudCanvas.TurnOffStartWave();
+            _gameManager._tileManager.isUIActive = false;
+            _gameManager._tileManager.isMoveActive = false;
         }
     }
 
@@ -185,6 +198,8 @@ public class WaveManager : MonoBehaviour
     {
         int index = 0;
         isWaveRoutine = true;
+        _gameManager._tileManager.isUIActive = false;
+        _gameManager._tileManager.isMoveActive = false;
         _gameManager._hudCanvas.TurnOffStartWave();
 
         while (spawnStartTime[index] > -1)

@@ -75,9 +75,9 @@ public class TilePlaceOnTower : MonoBehaviour
             foreach (var (prefabIndex, blockIndex) in blockList)
             {
                 if (!hasTower)
-                    _tileInfo.blockInfos[prefabIndex][blockIndex].PlaceTower(bp);
+                    _tileInfo.blockInfos[prefabIndex][blockIndex].TowerInstall(bp);
                 else
-                    _tileInfo.blockInfos[prefabIndex][blockIndex].RemoveTower(tower);
+                    _tileInfo.blockInfos[prefabIndex][blockIndex].TowerRemove(tower);
             }
 
         }
