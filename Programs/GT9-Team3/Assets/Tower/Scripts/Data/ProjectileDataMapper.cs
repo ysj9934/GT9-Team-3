@@ -9,7 +9,7 @@ public class ProjectileDataMapper
         so.projectileName = row.Inner_Name;
         so.damage = (int)row.Damage;
         so.speed = row.Projectile_Speed;
-        so.aoeRadius = row.Attack_Radius;
+        so.impactRadius = row.Attack_Radius;
         so.slowEffect = row.Slow_Effect;
         so.slowTime = row.Slow_Time;
         so.stunTime = row.Stun_Time;

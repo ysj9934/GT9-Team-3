@@ -61,16 +61,17 @@ public class EnemyHealthHandler : MonoBehaviour
 
         if (_enemy.isAlive)
         {
+            // 슬로우
             if (projectileData != null && projectileData.slowEffect > 0)
             {
                 _enemy._enemyMovement.ApplySlow(projectileData.slowEffect, projectileData.slowTime);
             }
 
-            // 스턴 미구현
-            //if (projectileData != null && projectileData.stunTime > 0)
-            //{
-            //    _enemy._enemyMovement.ApplyStun(projectileData.stunTime);
-            //}
+            // 스턴
+            if (projectileData != null && projectileData.stunTime > 0)
+            {
+                _enemy._enemyMovement.ApplyStun(projectileData.stunTime);
+            }
         }
 
         if (currentHealth <= 0)

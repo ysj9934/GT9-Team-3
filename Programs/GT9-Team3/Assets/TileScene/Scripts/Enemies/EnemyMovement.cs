@@ -9,6 +9,10 @@ public class EnemyMovement : MonoBehaviour
     private Transform[] pathPoints;
     private int currentPathIndex = 0;
 
+    // 스턴
+    private bool isStunned = false;
+    private float stunTimer = 0f;
+
     private void Start()
     {
         _enemy = GetComponent<Enemy>();
@@ -33,6 +37,16 @@ public class EnemyMovement : MonoBehaviour
 
         if (!_enemy.isAlive) return;
 
+        if (isStunned)
+        {
+            stunTimer -= Time.deltaTime;
+            if (stunTimer <= 0f)
+            {
+                isStunned = false;
+            }
+            return; // 스턴 중엔 이동 스킵
+        }
+
         Transform target = pathPoints[currentPathIndex];
 
         // MoveTowards를 사용해 목표점까지 정확히 이동
@@ -49,6 +63,7 @@ public class EnemyMovement : MonoBehaviour
         //{
         //    currentPathIndex = 0;
         //}
+
     }
 
     // 원진 : 상태이상 적용 함수
@@ -67,5 +82,12 @@ public class EnemyMovement : MonoBehaviour
         _enemy._enemyStat.enemyMovementSpeed = originalSpeed;
     }
 
+    public void ApplyStun(float duration)
+    {
+        if (duration <= 0f) return;
+
+        isStunned = true;
+        stunTimer = duration;
+    }
 
 }
