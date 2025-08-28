@@ -67,4 +67,14 @@ public class ResourceManager : MonoBehaviour
         return resources.ContainsKey(ResourceType.Gold) ? resources[ResourceType.Gold] : 0;
     }
 
+    public float showCrystal()
+    {
+        return resources.ContainsKey(ResourceType.Crystal) ? resources[ResourceType.Crystal] : 0;
+    }
+
+    public float showResource(ResourceType resourceType)
+    {
+        return resources.ContainsKey(resourceType) ? resources[resourceType] : 0;
+    }
+
 }
