@@ -13,56 +13,89 @@ using UnityEngine.Tilemaps;
 /// </summary>
 public class TileData : MonoBehaviour
 {
+    // Managers
     public TileManager _tileManager;
-    public TileRoadConnector _tileRoadConnector;
+
+    // Tile Component
     public TileUI _tileUI;
     public TileMove _tileMove;
+    public TileRoadConnector _tileRoadConnector;
 
+    // Tile Info
     [SerializeField] public TileCategory tileCategory;
     [SerializeField] public TileShape tileShape;
-
-    [Header("Tile Neighbors")]
-    public TileData up;
-    public TileData down;
-    public TileData left;
-    public TileData right;
-    
-    public bool connectedUp;
-    public bool connectedDown;
-    public bool connectedLeft;
-    public bool connectedRight;
-    
     public int tileIndex;
     public int originTileCol = -1;
     public int originTileRow = -1;
     public int tileCol;
     public int tileRow;
 
+    // Tile Neighbors
+    [Header("Tile Neighbors")]
+    public TileData up;
+    public TileData down;
+    public TileData left;
+    public TileData right;
     
+    // Tile Connect Road
+    public bool connectedUp;
+    public bool connectedDown;
+    public bool connectedLeft;
+    public bool connectedRight;
 
     protected virtual void Awake()
     {
         _tileManager = TileManager.Instance;
     }
 
-    private void Start()
+    protected virtual void Start()
     {
-        _tileRoadConnector = GetComponent<TileRoadConnector>();
         _tileUI = GetComponent<TileUI>();
         _tileMove = GetComponent<TileMove>();
+        _tileRoadConnector = GetComponent<TileRoadConnector>();
+        
+        IsValidate();
+    }
+
+    protected virtual bool IsValidate()
+    {
+        if (_tileManager == null)
+        {
+            ValidateMessage(_tileManager.name);
+            return false;
+        }
+        else if (_tileRoadConnector == null)
+        {
+            ValidateMessage(_tileRoadConnector.name);
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
+
+    public void ValidateMessage(string obj)
+    {
+        Debug.LogError($"{obj} is Valid");
     }
 
     public virtual void Initialize(Vector2 pos)
     {
         UpdateMapping(pos);
-        tileIndex = UpdateTileIndex();
+        UpdateTileIndex();
         _tileManager.SetNeighbors();
     }
 
+    /// <summary>
+    /// Tile Mapping
+    /// Tile의 위치 갱신시 Map정보 수정
+    /// </summary>
+    /// <param name="pos">타일 위치 정보</param>
     public virtual void UpdateMapping(Vector2 pos)
     {
         float originX = 0f;
-        float originY = _tileManager.tileSize[1] * 2 + (_tileManager.tileSize[1] * 2 * _tileManager.tempLevel);
+        float originY = _tileManager.tileSize[1] * 2 + (_tileManager.tileSize[1] * 2 * _tileManager.mapExtendLevel);
 
         float dx = pos.x - originX;
         float dy = originY - pos.y;
@@ -79,15 +112,31 @@ public class TileData : MonoBehaviour
         this.tileCol = colIndex;
         this.tileRow = rowIndex;
         
-        _tileManager.tileMap[originTileRow, originTileCol] = null;
-        
+        _tileManager.tileMap[originTileRow, originTileCol] = null; 
         //if (tileCol > _tileManager.tileLength &&
         //    tileRow > _tileManager.tileLength &&
         //    tileCol < -1 &&
         //    tileRow < -1)
-            _tileManager.tileMap[tileRow, tileCol] = this;
+        _tileManager.tileMap[tileRow, tileCol] = this;
     }
-    
+
+    /// <summary>
+    /// Tile Index
+    /// Tile의 위치 갱신 시 Index번호 수정
+    /// </summary>
+    /// <returns>타일 인덱스</returns>
+    public int UpdateTileIndex()
+    {
+        return tileIndex = tileCol + tileRow * _tileManager.tileLength + 1;
+    }
+
+    /// <summary>
+    /// Tile Mapping from neighbors
+    /// Tile Mapping을 통하여 타일 주변의 이웃한 타일 정보 찾기
+    /// </summary>
+    /// <param name="tileMap">TileManager의 TileMap</param>
+    /// <param name="maxRow">타일 세로 길이</param>
+    /// <param name="maxCol">타일 가로 길이</param>
     public void SetNeighbors(TileData[,] tileMap, int maxRow, int maxCol)
     {
         if (tileRow > 0) up = tileMap[tileRow - 1, tileCol];
@@ -95,14 +144,12 @@ public class TileData : MonoBehaviour
         if (tileCol > 0) left = tileMap[tileRow, tileCol - 1];
         if (tileCol < maxCol - 1) right = tileMap[tileRow, tileCol + 1];
     }
-    
+
+    /// <summary>
+    /// Tile World Level
+    /// World Level 갱신시 타일 성격 변화
+    /// </summary>
+    /// <param name="level">월드 레벨</param>
     public virtual void UpdateWorldLevel(int level)
     {}
-    
-    public int UpdateTileIndex()
-    {
-        return tileCol + tileRow * _tileManager.tileLength + 1;
-    }
-
-    
 }

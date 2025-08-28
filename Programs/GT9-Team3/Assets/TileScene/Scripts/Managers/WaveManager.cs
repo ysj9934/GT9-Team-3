@@ -1,6 +1,7 @@
-using Assets.FantasyMonsters.Common.Scripts;
 using System.Collections;
 using System.Collections.Generic;
+using System.Resources;
+using Unity.VisualScripting;
 using UnityEditor.EditorTools;
 using UnityEngine;
 using UnityEngine.AI;
@@ -12,13 +13,22 @@ public class WaveManager : MonoBehaviour
     private GameManager _gameManager;
     public ObjectPoolManager _poolManager;
 
-    List<Transform> path = new List<Transform>();
+    public List<Transform> path = new List<Transform>();
+    public List<Wave_DataTable> stageWaveList = new List<Wave_DataTable>();
 
-    List<float> SpawnStartTime = new List<float>();
-    List<int> EnemyId = new List<int>();
-    List<int> SpawnBatchSize = new List<int>();
-    List<int> SpawnRepeat = new List<int>();
-    List<float> SpawnintervalSec = new List<float>();
+    private int currentWaveLevel;
+    private int currentRoundLevel;
+    private int waveIndex;
+    private bool isWaveReady = false;
+    private bool isWaveRoutine = false;
+
+    private List<float> spawnStartTime = new List<float>();
+    private List<int> enemyId = new List<int>();
+    private List<int> spawnBatchSize = new List<int>();
+    private List<int> spawnRepeat = new List<int>();
+    private List<float> spawnintervalSec = new List<float>();
+
+    public int aliveEnemyCount = 0;
 
     private void Awake()
     {
@@ -30,6 +40,35 @@ public class WaveManager : MonoBehaviour
         _gameManager = GameManager.Instance;
         _poolManager = ObjectPoolManager.Instance;
 
+        if (IsValidate())
+        {
+            isWaveReady = false;
+            isWaveRoutine = false;
+        }
+
+    }
+
+    private bool IsValidate()
+    {
+        if (_gameManager == null)
+        {
+            ValidateMessage(_gameManager.name);
+            return false;
+        }
+        else if (_poolManager == null)
+        {
+            ValidateMessage(_poolManager.name);
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
+
+    public void ValidateMessage(string obj)
+    {
+        Debug.LogError($"{obj} is Valid");
     }
 
     public void SetPath(List<Transform> path)
@@ -37,51 +76,146 @@ public class WaveManager : MonoBehaviour
         this.path = path;
     }
 
-    public void SpawnWave(int monsterID)
+    /// <summary>
+    /// Wave Setting
+    /// </summary>
+    public void ReceiveStageData(StageData stageData)
     {
-        float spawnTime = 1.1f;
-        //int monsterID = 1000;
-        float interval = 0.5f; // 간격 조절 가능
-
-        for (int i = 0; i < 5; i++)
+        if (stageData != null)
         {
-            StartCoroutine(SpawnEnemyWithDelay(i * spawnTime, monsterID));
+            this.stageWaveList = stageData.stageWaveList;
+            SetWaveSystem(stageWaveList[0]);
         }
-
+        else
+        {
+            Debug.LogError("StageData is Null");
+        }
     }
 
-    public void SpawnWaves(int waveID)
+    public void SetWaveSystem(Wave_DataTable stageData)
     {
-        WaveSystem(waveID);
+        if (stageData == null)
+        {
+            Debug.LogError("WaveDataLoader is not initialized.");
+        }
+
+        waveIndex = stageData.key % 10;
+
+        UpdateWaveLevel(waveIndex);
+
+        this.spawnStartTime = stageData.SpawnStartTime;
+        this.enemyId = stageData.EnemyID;
+        this.spawnBatchSize = stageData.SpawnBatchSize;
+        this.spawnRepeat = stageData.SpawnRepeat;
+        this.spawnintervalSec = stageData.SpawnintervalSec;
+    }
+
+    // send wave and round data
+    public void UpdateWaveLevel(int waveNum)
+    {
+        this.currentWaveLevel = waveNum;
+        this.currentRoundLevel = ((waveNum - 1) / 3) + 1;
+
+        SendWaveData();
+
+        if (waveNum % 3 == 1)
+        {
+            _gameManager._hudCanvas.TurnOnPathfinder();
+            _gameManager._tileManager.isUIActive = true;
+            _gameManager._tileManager.isMoveActive = true;
+        }
+        else
+        {
+            _gameManager._hudCanvas.TurnOnStartWave();
+            _gameManager._tileManager.isUIActive = false;
+            _gameManager._tileManager.isMoveActive = false;
+        }
+
         
-        StartCoroutine(AwakeWave());
+    }
+
+    public void SendWaveData()
+    {
+        _gameManager.ReceiveStageDataFromWaveManager(
+            new StageData
+            (
+                currentWaveLevel,
+                currentRoundLevel
+            )
+        );
         
+    }
+
+    
+    public Coroutine waveRoutine;
+
+    /// <summary>
+    /// start wave
+    /// </summary>
+    public void StartWave()
+    {
+        // 1. wave start 버튼을 누르기
+        if (!isWaveRoutine)
+        {
+            // wave start 버튼 켜기
+
+            // 2. TileUI (회전 불가하도록 수정)
+            _gameManager._tileManager.isUIActive = true;
+            _gameManager._tileManager.isMoveActive = true;
+            // 3. 웨이브 스폰 시키기
+            waveRoutine = StartCoroutine(AwakeWave());
+            // 3-1. 웨이브 패배시 Wave재시작 할 수 있도록..
+            // 4. 웨이브 종료시 다음 웨이브 Setting
+            // 5. Round가 커질 시 tileUI회전 가능하도록
+        }
+        else
+        {
+            // wave시작 버튼 끄기
+            _gameManager._hudCanvas.TurnOffStartWave();
+            _gameManager._tileManager.isUIActive = false;
+            _gameManager._tileManager.isMoveActive = false;
+        }
+    }
+
+    // When Castle destroy
+    public void StopWave()
+    { 
+        if (waveRoutine != null)
+        {
+            StopCoroutine(waveRoutine);
+            waveRoutine = null;
+            isWaveRoutine = false;
+        }
     }
 
     IEnumerator AwakeWave()
     {
         int index = 0;
-        while (SpawnStartTime[index] > -1)
+        isWaveRoutine = true;
+        _gameManager._tileManager.isUIActive = false;
+        _gameManager._tileManager.isMoveActive = false;
+        _gameManager._hudCanvas.TurnOffStartWave();
+
+        while (spawnStartTime[index] > -1)
         {
-            float delay = index == 0 ? SpawnStartTime[0] : SpawnStartTime[index] - SpawnStartTime[index - 1]; 
+            float delay = index == 0 ? spawnStartTime[0] : spawnStartTime[index] - spawnStartTime[index - 1]; 
             yield return new WaitForSeconds(delay);
             
-            for (int j = 0; j < SpawnRepeat[index]; j++)
+            for (int j = 0; j < spawnRepeat[index]; j++)
             {
-                StartCoroutine(SpawnEnemyWithDelay(j * SpawnintervalSec[index], EnemyId[index]));    
+                StartCoroutine(SpawnEnemyWithDelay(j * spawnintervalSec[index], enemyId[index]));    
             }
-            
-            Debug.Log($"Wave {index} 생성");
             
             index++;
         }
+
+        waveRoutine = null;
     }
 
     // 적 유닛 생성 시스템
     IEnumerator SpawnEnemyWithDelay(float spawnTime, int monsterID)
     {
         yield return new WaitForSeconds(spawnTime);
-        Debug.Log($"Enemy 생성");
 
         var config = EnemyConfigManager.Instance.GetConfig(monsterID);
         if (config == null)
@@ -90,10 +224,10 @@ public class WaveManager : MonoBehaviour
             yield break;
         }
 
-        SpanwEnemy(config);
+        SpawnEnemy(config);
     }
 
-    public void SpanwEnemy(EnemyConfig config)
+    public void SpawnEnemy(EnemyConfig config)
     {
         GameObject enemyObj = _poolManager.GetEnemy();
         if (enemyObj != null)
@@ -101,12 +235,56 @@ public class WaveManager : MonoBehaviour
             Enemy enemy = enemyObj.GetComponent<Enemy>();
             enemy._enemyStat.Setup(config);
             enemy._enemyMovement.pathPoint(path);
+
+            aliveEnemyCount++;
+            enemy._enemyHealthHandler.OnDeath += HandleEnemyDeath;
         }
     }
 
-    public void WaveSystem(int waveID)
+    private void HandleEnemyDeath()
     { 
-        // key = 10101;
+        aliveEnemyCount--;
+
+        if (aliveEnemyCount <= 0 && waveRoutine == null)
+        {
+            EndWave();
+        }
+    }
+
+    private void EndWave()
+    {
+        isWaveRoutine = false;
+
+        Debug.Log("WaveEnd");
+
+        if (waveIndex < 9)
+        {
+            SetWaveSystem(stageWaveList[waveIndex]);
+        }
+        else
+        {
+            // HUD에서 승리 panel
+            Debug.Log("Victory");
+        }
+        
+    }
+
+
+    /// <summary>
+    /// Test
+    /// </summary>
+
+    public void SpawnWaves(int waveID)
+    {
+        WaveSystem(waveID);
+
+        StartCoroutine(AwakeWave());
+    }
+
+    // Test WaveSystem UI에 연동되어 있음.
+    public void WaveSystem(int waveID)
+    {
+        Debug.Log($"WaveSystem 버튼 연동으로 들어왔습니다. : {waveID}");
         var jsonData = _gameManager._dataManager.WaveDataLoader.GetByKey(waveID);
 
         if (jsonData == null)
@@ -114,11 +292,10 @@ public class WaveManager : MonoBehaviour
             Debug.LogError($"웨이브 ID {waveID}에 대한 JSON 데이터 없음");
         }
         
-        this.SpawnStartTime = jsonData.SpawnStartTime;
-        this.EnemyId = jsonData.EnemyID;
-        this.SpawnBatchSize = jsonData.SpawnBatchSize;
-        this.SpawnRepeat = jsonData.SpawnRepeat;
-        this.SpawnintervalSec = jsonData.SpawnintervalSec;
+        this.spawnStartTime = jsonData.SpawnStartTime;
+        this.enemyId = jsonData.EnemyID;
+        this.spawnBatchSize = jsonData.SpawnBatchSize;
+        this.spawnRepeat = jsonData.SpawnRepeat;
+        this.spawnintervalSec = jsonData.SpawnintervalSec;
     }
-
 }

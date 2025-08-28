@@ -24,7 +24,7 @@ public class Enemy : MonoBehaviour
 
     private void Start()
     {
-        _enemyAnimationController = GetComponentInChildren<EnemyAnimationController>();
+        
     }
 
     

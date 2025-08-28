@@ -2,14 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Resources;
 using TMPro;
+using UnityEditor.EditorTools;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class HUDCanvas : MonoBehaviour
 {
+    // Managers
     public GameManager _gameManager;
 
     public static HUDCanvas Instance { get; private set; }
+
 
     // StageInfoHUD
     [SerializeField] private TextMeshProUGUI worldPanelText;
@@ -24,18 +27,83 @@ public class HUDCanvas : MonoBehaviour
 
     [SerializeField] TextMeshProUGUI resourceTilePieceAmountText;
 
+    // WaveStartButton
+    [SerializeField] Button pathfinderBtn;
+    private Image pathfinderImage;
+    [SerializeField] Button waveStartBtn;
+    private Image waveStartImage;
+
+    // GameSpeed
+    [SerializeField] Button gameSpeed1xBtn;
+    [SerializeField] Button gameSpeed2xBtn;
+    [SerializeField] Button gameSpeed5xBtn;
+    // GamePause
+    [SerializeField] Button pauseBtn;
+
+    // DefeatPanel
+    public GameDefeat _gameDefeatPanel;
+
+    // ResultPanel
+    public GameResult _gameResultPanel;
+
     private void Awake()
     {
         Instance = this;
+
+        pathfinderImage = pathfinderBtn.GetComponent<Image>();
+        waveStartImage = waveStartBtn.GetComponent<Image>();
     }
 
     private void Start()
     {
-        UpdateTilePiece();
+        _gameManager = GameManager.Instance;
+
+        gameSpeed2xBtn.gameObject.SetActive(false);
+        gameSpeed5xBtn.gameObject.SetActive(false);
+
+        _gameDefeatPanel = GetComponentInChildren<GameDefeat>();
+        _gameDefeatPanel.Initialize(this);
+        _gameResultPanel = GetComponentInChildren<GameResult>();
+        _gameResultPanel.Initialize(this);
+
+        if (IsValidate())
+        {
+            UpdateTilePiece();
+
+            TurnOffStartWave();
+        }
+    }
+
+    private bool IsValidate()
+    {
+        if (_gameManager == null)
+        {
+            ValidateMessage(_gameManager.name);
+            return false;
+        }
+        else if (pathfinderImage == null)
+        {
+            ValidateMessage(pathfinderImage.name);
+            return false;
+        }
+        else if (waveStartImage == null)
+        {
+            ValidateMessage(waveStartImage.name);
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
+
+    public void ValidateMessage(string obj)
+    {
+        Debug.LogError($"{obj} is Valid");
     }
 
     // StageInfoHUD
-    public void ReceiveStageData(StageDataToHUD stageData)
+    public void ReceiveStageData(StageData stageData)
     {
         if (stageData != null)
         {
@@ -65,5 +133,84 @@ public class HUDCanvas : MonoBehaviour
     public void UpdateTilePiece()
     {
         resourceTilePieceAmountText.text = $"{ResourceManager.Instance.showGold()}";
+    }
+
+    public void TurnOnPathfinder()
+    {
+        Debug.Log("TurnOnPathfinder");
+        pathfinderImage.color = new Color(0f, 0f, 0f);
+        pathfinderBtn.interactable = true;
+    }
+
+    public void TurnOffPathfinder()
+    {
+        Debug.Log("TurnOffPathfinder");
+        pathfinderImage.color = new Color(0.7f, 0.7f, 0.7f);
+        pathfinderBtn.interactable = false;
+    }
+
+    public void TurnOnStartWave()
+    {
+        Debug.Log("TurnOnStartWave");
+        waveStartImage.color = new Color(0f, 0f, 0f);
+        waveStartBtn.interactable = true;
+    }
+
+    public void TurnOffStartWave()
+    {
+        Debug.Log("TurnOffStartWave");
+        waveStartImage.color = new Color(0.7f, 0.7f, 0.7f);
+        waveStartBtn.interactable = false;
+    }
+
+    // PathfindereButton
+    public void SetPathfinder()
+    {
+        _gameManager._tileManager.ShowConnectedPath();
+    }
+
+    // WaveStartButton
+    public void StartWave()
+    { 
+        TurnOffPathfinder();
+        _gameManager._waveManager.StartWave();
+
+    }
+
+    // GameSpeed
+    public void SetGameSpeed1x()
+    {
+        gameSpeed1xBtn.gameObject.SetActive(false);
+        gameSpeed2xBtn.gameObject.SetActive(true);
+        gameSpeed5xBtn.gameObject.SetActive(false);
+        _gameManager.GameSpeed2x();
+        
+    }
+
+    public void SetGameSpeed2x()
+    {
+        gameSpeed1xBtn.gameObject.SetActive(false);
+        gameSpeed2xBtn.gameObject.SetActive(false);
+        gameSpeed5xBtn.gameObject.SetActive(true);
+        _gameManager.GameSpeed5x();
+        
+    }
+
+    public void SetGameSpeed5x()
+    {
+        gameSpeed1xBtn.gameObject.SetActive(true);
+        gameSpeed2xBtn.gameObject.SetActive(false);
+        gameSpeed5xBtn.gameObject.SetActive(false);
+        _gameManager.ResumeGame();
+    }
+    // GamePause
+    public void SetGamePause()
+    {
+        _gameManager.PauseGame();
+        gameSpeed1xBtn.gameObject.SetActive(false);
+        gameSpeed2xBtn.gameObject.SetActive(false);
+        gameSpeed5xBtn.gameObject.SetActive(false);
+
+        SetGameSpeed5x();
     }
 }

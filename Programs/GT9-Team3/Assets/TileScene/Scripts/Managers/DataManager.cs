@@ -39,15 +39,16 @@ public class DataManager : MonoBehaviour
 
         enemyDataLoader = new Enemy_DataTableLoader();
         waveDataLoader = new Wave_DataTableLoader();
-    }
 
+        // Test 
+        SelectedStage(105);
+    }
 
     /// <summary>
     /// title: selected Stage
     /// created by : yoons, heechun
     /// created at : 25.08.27
     /// </summary>
-
     public void SelectedStage(int stageId)
     {
         // initialize previous stage data
@@ -63,6 +64,25 @@ public class DataManager : MonoBehaviour
         }
         
         Debug.Log("selected Stage_ID: " + stageId);
+    }
+
+    public void RestartStage(int stageId)
+    {
+        // initialize previous stage data
+        ClearStageData();
+
+        // valid check
+        if (IsValidate(stageId))
+        {
+            this.stageId = stageId;
+            SetStageWaveList(this.stageId);
+            this.worldCode = stageId / 100;
+            this.stageCode = stageId % 10;
+        }
+
+        Debug.Log("selected Stage_ID: " + stageId);
+
+        GameManager.Instance.ReceiveStageData();
     }
 
     public StageData SendStageData()
@@ -116,15 +136,45 @@ public class DataManager : MonoBehaviour
 public class StageData
 {
     public int stageId;
-    public List<Wave_DataTable> stageWaveIdList;
+    public List<Wave_DataTable> stageWaveList;
     public int worldCode;
     public int stageCode;
+    public int roundCode;
+    public int waveCode;
 
-    public StageData(int stageId, int worldCode, int stageCode, List<Wave_DataTable> stageWaveIdList)
+    // DataManager To GameManager
+    public StageData(int stageId, int worldCode, int stageCode, List<Wave_DataTable> stageWaveList)
     {
         this.stageId = stageId;
         this.worldCode = worldCode;
         this.stageCode = stageCode;
-        this.stageWaveIdList = stageWaveIdList;
+        this.stageWaveList = stageWaveList;
+    }
+
+    // GameManager To HUD
+    public StageData(int worldCode, int stageCode, int roundCode, int waveCode)
+    {
+        this.worldCode = worldCode;
+        this.stageCode = stageCode;
+        this.roundCode = roundCode;
+        this.waveCode = waveCode;
+    }
+
+    // GameManager To TileManager
+    public StageData(int worldCode)
+    {
+
+    }
+
+    // GameManager To WaveManager
+    public StageData(List<Wave_DataTable> stageWaveList)
+    {
+        this.stageWaveList = stageWaveList;
+    }
+
+    public StageData(int waveCode, int roundCode)
+    {
+        this.waveCode = waveCode;
+        this.roundCode = roundCode;
     }
 }
