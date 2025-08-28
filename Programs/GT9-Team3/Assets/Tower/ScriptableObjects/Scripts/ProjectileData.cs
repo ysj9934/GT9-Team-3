@@ -5,7 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "NewProjectileData", menuName = "Tower Defense/Projectile Data")]
 public class ProjectileData : ScriptableObject
 {
-    public string projectileID;
+    public int projectileID;
     public string projectileName;
     public float speed;
     public int damage;

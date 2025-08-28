@@ -25,6 +25,7 @@ public class TowerSellUI : MonoBehaviour
     public TextMeshProUGUI targetCountText;
     public TextMeshProUGUI attackTypeText;
     public TextMeshProUGUI sellValueText;
+    public TextMeshProUGUI upgradeValueText;
     public TextMeshProUGUI slowEffectText;
     public TextMeshProUGUI slowTimeText;
     public TextMeshProUGUI ccTimeText;
@@ -39,7 +40,7 @@ public class TowerSellUI : MonoBehaviour
     public void Show(Tower1 tower)
     {
 
-        if (tower == null || tower.data == null || tower.blueprint == null)
+        if (tower == null || tower.towerdata == null || tower.blueprint == null)
         {
             Debug.LogWarning("[TowerSellUI] 타워 데이터가 아직 초기화되지 않음");
             return;
@@ -61,7 +62,7 @@ public class TowerSellUI : MonoBehaviour
         // 왼쪽 고정 위치로 이동
         root.anchoredPosition = anchoredPosition;
 
-        TowerData d = tower.data;
+        TowerData d = tower.towerdata;
 
         towerIconImage.sprite = tower.blueprint.icon;     // TowerBluePrint에서 받아옴
         towerNameText.text = d.innerName;
@@ -71,14 +72,15 @@ public class TowerSellUI : MonoBehaviour
         targetCountText.text = d.targetCount.ToString();
         attackTypeText.text = d.attackType.ToString();
         sellValueText.text = $"Cost : {d.sellValue}";
+        upgradeValueText.text = $"Cost : {d.UpgradeValue}";
 
-        ProjectileData p = tower.data.projectileData;
+        ProjectileData p = tower.towerdata.projectileData;
 
         damageText.text = p.damage.ToString();
         slowEffectText.text = p.slowEffect.ToString();
         slowTimeText.text = $"{p.slowTime}/s";
         ccTimeText.text = $"{p.stunTime}/s";
-        //tileRangeText.text = $"{p.tileRange}/Tile";
+        tileRangeText.text = $"{p.impactRadius}/Tile";
     }
 
     public void Hide()
@@ -126,5 +128,28 @@ public class TowerSellUI : MonoBehaviour
         //    Destroy(currentTower.gameObject);
         //    panel.SetActive(false);
         //}
+    }
+
+    public void Refresh(Tower1 tower)
+    {
+        // 내부적으로 tower.data에서 정보 불러와 텍스트나 이미지 업데이트
+        TowerData d = tower.towerdata;
+        ProjectileData p = d.projectileData;
+
+        towerIconImage.sprite = tower.blueprint.icon;
+        towerNameText.text = d.innerName;
+        levelText.text = $"Lv.{d.towerLevel}";
+        attackSpeedText.text = $"{d.attackSpeed}/s";
+        rangeText.text = d.attackRange.ToString();
+        targetCountText.text = d.targetCount.ToString();
+        attackTypeText.text = d.attackType.ToString();
+        sellValueText.text = $"Cost : {d.sellValue}";
+        upgradeValueText.text = $"Cost : {d.UpgradeValue}";
+
+        damageText.text = p.damage.ToString();
+        slowEffectText.text = p.slowEffect.ToString();
+        slowTimeText.text = $"{p.slowTime}/s";
+        ccTimeText.text = $"{p.stunTime}/s";
+        tileRangeText.text = $"{p.impactRadius}/Tile";
     }
 }

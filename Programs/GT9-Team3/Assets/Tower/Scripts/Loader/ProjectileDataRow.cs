@@ -75,7 +75,6 @@ public class ProjectileDataRow
     /// Buff_Tower_Count
     /// </summary>
     public int Buff_Tower_Count;
-
 }
 public class ProjectileDataTableLoader
 {

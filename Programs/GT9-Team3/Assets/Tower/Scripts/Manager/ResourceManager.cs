@@ -23,10 +23,8 @@ public class ResourceManager : MonoBehaviour
 
 
         // Initialize resources
-        resources[ResourceType.Gold] = 120;
+        //resources[ResourceType.Gold] = 120;
         resources[ResourceType.Tilepiece] = 5000;
-        resources[ResourceType.Crystal] = 5000;
-        resources[ResourceType.Mana] = 50;
     }
 
     public bool CanAfford(ResourceType type, float cost)
@@ -69,13 +67,4 @@ public class ResourceManager : MonoBehaviour
         return resources.ContainsKey(ResourceType.Gold) ? resources[ResourceType.Gold] : 0;
     }
 
-    public float showCrystal()
-    {
-        return resources.ContainsKey(ResourceType.Crystal) ? resources[ResourceType.Crystal] : 0;
-    }
-
-    public float showResource(ResourceType resourceType)
-    { 
-        return resources.ContainsKey(resourceType) ? resources[resourceType] : 0;
-    }
 }

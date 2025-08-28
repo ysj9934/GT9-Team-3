@@ -75,7 +75,6 @@ public class ObjectPoolManager : MonoBehaviour
         if (obj == null) return;
 
         obj.layer = newLayer;
-        Debug.Log($"Set Layer: {obj.name} → {LayerMask.LayerToName(newLayer)}");
 
         foreach (Transform child in obj.transform)
         {
