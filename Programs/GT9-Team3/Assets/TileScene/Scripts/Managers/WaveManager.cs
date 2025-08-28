@@ -79,8 +79,6 @@ public class WaveManager : MonoBehaviour
     /// <summary>
     /// Wave Setting
     /// </summary>
-    
-    // Setting Stage wave
     public void ReceiveStageData(StageData stageData)
     {
         if (stageData != null)
@@ -152,12 +150,12 @@ public class WaveManager : MonoBehaviour
         
     }
 
+    
+    public Coroutine waveRoutine;
+
     /// <summary>
     /// start wave
     /// </summary>
-
-    public Coroutine waveRoutine;
-
     public void StartWave()
     {
         // 1. wave start 버튼을 누르기

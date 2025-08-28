@@ -44,9 +44,6 @@ public class DataManager : MonoBehaviour
         SelectedStage(105);
     }
 
-    
-
-
     /// <summary>
     /// title: selected Stage
     /// created by : yoons, heechun
@@ -67,6 +64,25 @@ public class DataManager : MonoBehaviour
         }
         
         Debug.Log("selected Stage_ID: " + stageId);
+    }
+
+    public void RestartStage(int stageId)
+    {
+        // initialize previous stage data
+        ClearStageData();
+
+        // valid check
+        if (IsValidate(stageId))
+        {
+            this.stageId = stageId;
+            SetStageWaveList(this.stageId);
+            this.worldCode = stageId / 100;
+            this.stageCode = stageId % 10;
+        }
+
+        Debug.Log("selected Stage_ID: " + stageId);
+
+        GameManager.Instance.ReceiveStageData();
     }
 
     public StageData SendStageData()

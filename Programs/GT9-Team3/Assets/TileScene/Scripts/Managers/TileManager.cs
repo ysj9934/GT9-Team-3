@@ -107,7 +107,7 @@ public class TileManager : MonoBehaviour
             switch (mapExtendLevel)
             {
                 case 1:
-                    Initialize();
+                    //Initialize();
                     break;
                 case 2:
                     InitializeMapResize();
@@ -174,6 +174,7 @@ public class TileManager : MonoBehaviour
         {
             TileGrid tileGrid = tile.GetComponent<TileGrid>();
             TileData tileData = tile.GetComponent<TileData>();
+
             if (tileGrid != null)
             {
                 tileGrid.UpdateWorldLevel(level);

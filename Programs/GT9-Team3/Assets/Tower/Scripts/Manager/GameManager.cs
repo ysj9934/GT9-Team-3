@@ -119,7 +119,7 @@ public class GameManager : MonoBehaviour
     }
 
     // Load data from DataManager
-    private void ReceiveStageData()
+    public void ReceiveStageData()
     {
         StageData stageData = _dataManager.SendStageData();
         if (stageData != null)
@@ -137,25 +137,15 @@ public class GameManager : MonoBehaviour
             SendStageDataToTileManager();
             // 1. HUDCanvas에 스테이지 정보 전달
             SendStageDataToHUD();
-            
+
             // 4. TileManager 세팅
-            //InitializeTiles();
+            _tileManager.Initialize();
         }
         else 
         {
             Debug.LogError("StageData is Null");
         }
     }
-
-
-    // 초기 타일 배치
-    // Initial tile placement
-    //public void InitializeTiles()
-    //{
-    //    // 타일 생성
-    //    _tileManager.Initialize();
-    //    _tileManager.SetSpawnerPosition();
-    //}
 
     public void SendStageDataToHUD()
     {
@@ -211,6 +201,32 @@ public class GameManager : MonoBehaviour
     public void MapExtend(bool isOpen)
     {
         SendStageDataToTileManager();
+    }
+
+    /// <summary>
+    /// Pause Game
+    /// 게임 정지
+    /// </summary>
+    public void PauseGame()
+    {
+        Time.timeScale = 0;
+        isGamePaused = true;
+    }
+
+    /// <summary>
+    /// Resume Game
+    /// 게임 재개
+    /// </summary>
+    public void ResumeGame()
+    {
+        Time.timeScale = 1f;
+        isGamePaused = false;
+    }
+
+    public void GameSpeed2x()
+    {
+        Time.timeScale = 2f;
+        isGamePaused = false;
     }
 
 

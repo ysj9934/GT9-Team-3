@@ -8,9 +8,11 @@ using UnityEngine.UI;
 
 public class HUDCanvas : MonoBehaviour
 {
+    // Managers
     public GameManager _gameManager;
 
     public static HUDCanvas Instance { get; private set; }
+
 
     // StageInfoHUD
     [SerializeField] private TextMeshProUGUI worldPanelText;
@@ -31,6 +33,12 @@ public class HUDCanvas : MonoBehaviour
     [SerializeField] Button waveStartBtn;
     private Image waveStartImage;
 
+    // DefeatPanel
+    public GameDefeat _gameDefeatPanel;
+
+    // ResultPanel
+    public GameResult _gameResultPanel;
+
     private void Awake()
     {
         Instance = this;
@@ -42,6 +50,11 @@ public class HUDCanvas : MonoBehaviour
     private void Start()
     {
         _gameManager = GameManager.Instance;
+
+        _gameDefeatPanel = GetComponentInChildren<GameDefeat>();
+        _gameDefeatPanel.Initialize(this);
+        _gameResultPanel = GetComponentInChildren<GameResult>();
+        _gameResultPanel.Initialize(this);
 
         if (IsValidate())
         {
