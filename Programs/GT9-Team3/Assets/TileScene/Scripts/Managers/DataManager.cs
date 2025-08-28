@@ -52,7 +52,6 @@ public class DataManager : MonoBehaviour
     /// created by : yoons, heechun
     /// created at : 25.08.27
     /// </summary>
-
     public void SelectedStage(int stageId)
     {
         // initialize previous stage data

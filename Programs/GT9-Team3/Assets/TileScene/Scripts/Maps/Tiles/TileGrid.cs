@@ -49,8 +49,11 @@ public class TileGrid : MonoBehaviour
         Debug.LogError($"{obj} is Valid");
     }
 
-    // Tile Initialize
-    // 타일 정보 초기화
+    /// <summary>
+    /// Tile Initialize
+    /// 타일 정보 초기화 
+    /// </summary>
+    /// <param name="pos">타일 위치</param>
     public void Initialize(Vector2 pos)
     {
         CacheOriginOrders();
@@ -60,8 +63,10 @@ public class TileGrid : MonoBehaviour
         UpdateSpriteOrder();
     }
 
-    // Cache Block Origin Order
-    // 블럭의 최초 위치를 저장
+    /// <summary>
+    /// Cache Block Origin Order
+    /// 블럭의 최초 위치를 저장
+    /// </summary>
     private void CacheOriginOrders()
     {
         if (originOrderInitialized) return;
@@ -77,12 +82,15 @@ public class TileGrid : MonoBehaviour
         originOrderInitialized = true;
     }
 
-    // Tile Mapping
-    // Tile의 위치를 저장
+    /// <summary>
+    /// Tile Mapping
+    /// Tile의 위치를 저장
+    /// </summary>
+    /// <param name="pos">타일 위치</param>
     protected void UpdateMapping(Vector2 pos)
     {
         float originX = 0f;
-        float originY = _tileManager.tileSize[1] * 2 + (_tileManager.tileSize[1] * 2 * _tileManager.tempLevel);
+        float originY = _tileManager.tileSize[1] * 2 + (_tileManager.tileSize[1] * 2 * _tileManager.mapExtendLevel);
 
         float dx = pos.x - originX;
         float dy = originY - pos.y;
@@ -96,23 +104,31 @@ public class TileGrid : MonoBehaviour
         this.tileCol = colIndex;
         this.tileRow = rowIndex;
     }
-    
-    // Tile Index
-    // Tile의 Index번호 작성
+
+    /// <summary>
+    /// Tile Index
+    /// Tile의 Index번호 작성
+    /// </summary>
+    /// <returns></returns>
     protected int UpdateTileIndex()
     {
         return tileIndex = tileCol + tileRow * _tileManager.tileLength + 1;
     }
-    
-    // Set Block Infos
-    // 소유하고 있는 블럭을 저장
+
+
+    /// <summary>
+    /// Set Block Infos
+    /// 소유하고 있는 블럭을 저장
+    /// </summary>
     private void SetBlockInfos()
     {
         blockInfos = GetComponentsInChildren<BlockInfo>();
     }
 
-    // sorting order blocks
-    // 블록의 order를 위치값에 맞게 지정
+    /// <summary>
+    /// sorting order blocks
+    /// 블록의 order를 위치값에 맞게 지정
+    /// </summary>    
     private void UpdateSpriteOrder()
     {
         SpriteRenderer[] spriteRenderers = GetComponentsInChildren<SpriteRenderer>();

@@ -216,14 +216,15 @@ public class TileManager : MonoBehaviour
                     BlockInfo blockInfo = hit.collider.GetComponent<BlockInfo>();
                     if (blockInfo != null)
                     {
-                        if (towerUIdnjswls.root.gameObject.activeSelf)
-                        {
-                            blockInfo.CloseTowerInstallerUI();
-                        }
-                        else
-                        {
-                            blockInfo.OpenTowerInstallerUI();
-                        }
+                        //if (towerUIdnjswls.root.gameObject.activeSelf)
+                        //{
+                        //    blockInfo.CloseTowerInstallerUI();
+                        //}
+                        //else
+                        //{
+                        //    blockInfo.OpenTowerInstallerUI();
+                        //}
+                        blockInfo.OpenTowerInstallerUI();
                         CloseTileUI(null);
                         CloseTowerInfoUI();
                         return;
