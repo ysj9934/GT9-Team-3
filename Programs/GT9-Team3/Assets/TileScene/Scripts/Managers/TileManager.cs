@@ -92,6 +92,8 @@ public class TileManager : MonoBehaviour
             this.gameWorldLevel = stageData.worldCode;
             this.gameRoundLevel = stageData.roundCode;
 
+            Debug.Log("gameRoundLevel" + gameRoundLevel);
+
             if (this.gameRoundLevel < 2)
             {
                 mapExtendLevel = 1;
