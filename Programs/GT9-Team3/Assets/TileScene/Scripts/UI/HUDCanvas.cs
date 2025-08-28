@@ -11,6 +11,8 @@ public class HUDCanvas : MonoBehaviour
 
     public static HUDCanvas Instance { get; private set; }
 
+    public TowerSellUI sellUI;
+
     // StageInfoHUD
     [SerializeField] private TextMeshProUGUI worldPanelText;
     [SerializeField] private TextMeshProUGUI stagePanelText;

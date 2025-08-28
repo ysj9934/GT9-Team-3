@@ -129,4 +129,27 @@ public class TowerSellUI : MonoBehaviour
         //    panel.SetActive(false);
         //}
     }
+
+    public void Refresh(Tower1 tower)
+    {
+        // 내부적으로 tower.data에서 정보 불러와 텍스트나 이미지 업데이트
+        TowerData d = tower.towerdata;
+        ProjectileData p = d.projectileData;
+
+        towerIconImage.sprite = tower.blueprint.icon;
+        towerNameText.text = d.innerName;
+        levelText.text = $"Lv.{d.towerLevel}";
+        attackSpeedText.text = $"{d.attackSpeed}/s";
+        rangeText.text = d.attackRange.ToString();
+        targetCountText.text = d.targetCount.ToString();
+        attackTypeText.text = d.attackType.ToString();
+        sellValueText.text = $"Cost : {d.sellValue}";
+        upgradeValueText.text = $"Cost : {d.UpgradeValue}";
+
+        damageText.text = p.damage.ToString();
+        slowEffectText.text = p.slowEffect.ToString();
+        slowTimeText.text = $"{p.slowTime}/s";
+        ccTimeText.text = $"{p.stunTime}/s";
+        tileRangeText.text = $"{p.impactRadius}/Tile";
+    }
 }

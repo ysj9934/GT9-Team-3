@@ -25,9 +25,10 @@ public class TowerDataMapper
 
     public static void ApplyToSO(TowerData so, TowerDataRow row)
     {
-
+        so.towerID = row.key;
         so.innerName = row.Inner_Name;
         so.towerLevel = row.Tower_Grade;
+        so.useProjectile = row.Use_Projectile;
 
         so.targetOrder = BuildPriorityArray(row.Target_Order1, row.Target_Order2, row.Target_Order3, row.Target_Order4);
 
@@ -42,8 +43,8 @@ public class TowerDataMapper
 
         so.attackSpeed = row.Attack_Speed;
 
-        if (so.projectileData == null)
-            so.projectileData = ScriptableObject.CreateInstance<ProjectileData>();
+        //if (so.projectileData == null)
+        //    so.projectileData = ScriptableObject.CreateInstance<ProjectileData>();
 
         Debug.Log($"[TowerDataMapper] 스탯 매핑 완료: ID = {row.key}, 이름 = {row.Inner_Name}, 레벨 = {row.Tower_Grade}, 생성비용 = {row.Make_Value}, 판매가 = {row.Sell_Value}");
 

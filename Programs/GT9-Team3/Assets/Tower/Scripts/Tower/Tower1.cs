@@ -68,8 +68,13 @@ public class Tower1 : MonoBehaviour
 
     public void ApplyData(TowerData d)
     {
-        towerdata = d;
+        towerdata = Instantiate(d);
         cooldownTimer = 0f;
+
+        if (d.projectileData != null)
+        {
+            towerdata.projectileData = Instantiate(d.projectileData);
+        }
 
         if (rangeVisual != null)
         {
@@ -206,30 +211,38 @@ public class Tower1 : MonoBehaviour
         ResourceManager.Instance.Spend(towerdata.UpgradeCost, towerdata.UpgradeValue);
             
         // ID 증가 및 데이터 갱신
-        int nextID = towerdata.towerID + 1;
+        int nextTowerID = towerdata.towerID + 1;
+        int nextProjectileID = towerdata.projectileData.projectileID + 1;
 
         var towerTable = TowerDataTableLoader.Instance.ItemsDict;
         var projectileTable = ProjectileDataLoader.Instance.ItemsDict;
 
-
-        if (towerTable.TryGetValue(nextID, out var newRow))
+        // Tower 업그레이드
+        if (towerTable.TryGetValue(nextTowerID, out var newTowerRow))
         {
-            TowerDataMapper.ApplyToSO(towerdata, newRow);
+            TowerDataMapper.ApplyToSO(towerdata, newTowerRow);
 
-            if (int.TryParse(newRow.Use_Projectile, out int projID) &&
-                projectileTable.TryGetValue(projID, out var projRow))
+            // Projectile 업그레이드
+            if (projectileTable.TryGetValue(nextProjectileID, out var newProjRow))
             {
-                ProjectileDataMapper.ApplyToSO(towerdata.projectileData, projRow);
+                if (towerdata.projectileData == null)
+                    towerdata.projectileData = ScriptableObject.CreateInstance<ProjectileData>();
+
+                ProjectileDataMapper.ApplyToSO(towerdata.projectileData, newProjRow);
+
+                Debug.Log($"[ProjectileUpgrade] 성공 → ID: {nextProjectileID}");
+            }
+            else
+            {
+                Debug.LogWarning($"[ProjectileUpgrade] ID {nextProjectileID}에 해당하는 데이터 없음");
             }
 
-            Debug.Log($"[TowerUpgrade] 성공 → ID: {nextID}");
-            Debug.Log($"Upgrade된 타워가 참조하는 발사체 ID: {newRow.Use_Projectile}");
-
+            Debug.Log($"[TowerUpgrade] 성공 → ID: {nextTowerID}");
             return true;
         }
         else
         {
-            Debug.LogWarning($"[Upgrade] ID {nextID}에 해당하는 데이터 없음");
+            Debug.LogWarning($"[TowerUpgrade] ID {nextTowerID}에 해당하는 데이터 없음");
             return false;
         }
     }
