@@ -220,6 +220,7 @@ public class BlockInfo : MonoBehaviour
             go.transform.SetParent(transform);
             Tower1 tower = go.GetComponent<Tower1>();
             tower.enabled = true;
+            tower.rangeVisual.SetActive(false);
             Collider2D collider = go.GetComponent<Collider2D>();
             collider.enabled = true;
         }

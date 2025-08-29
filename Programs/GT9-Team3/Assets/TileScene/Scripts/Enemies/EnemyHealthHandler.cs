@@ -24,14 +24,14 @@ public class EnemyHealthHandler : MonoBehaviour
     }
 
     // 예제 용도: 마우스 클릭으로 데미지 입히기
-    private void OnMouseDown()
-    {
-        if (!_enemy.isAlive) return;
+    //private void OnMouseDown()
+    //{
+    //    if (!_enemy.isAlive) return;
 
-        Debug.Log($"Enemy Clicked: {_enemy._enemyStat.enemyName}");
+    //    Debug.Log($"Enemy Clicked: {_enemy._enemyStat.enemyName}");
 
-        TakeDamage(1000, null);
-    }
+    //    TakeDamage(1000, null);
+    //}
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
