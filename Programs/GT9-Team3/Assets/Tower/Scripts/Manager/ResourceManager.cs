@@ -25,7 +25,7 @@ public class ResourceManager : MonoBehaviour
         Initialize();
         Add(ResourceType.Tilepiece, 5000);
         //Add(ResourceType.Crystal, 100);
-        Add(ResourceType.Mana, 100);
+        Add(ResourceType.Mana, 50);
     }
 
     private void Initialize()
@@ -65,4 +65,5 @@ public class ResourceManager : MonoBehaviour
         resources[type] += amount;
         Debug.Log($"[자원] {type} +{amount} 획득, 현재: {resources[type]}");
     }
+
 }

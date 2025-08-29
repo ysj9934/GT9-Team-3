@@ -81,7 +81,6 @@ public class Castle : MonoBehaviour
 
         Debug.Log("GameOver");
 
-
         _gameManager.PauseGame();
         _gameManager._waveManager.StopWave();
         HUDCanvas.Instance._gameDefeatPanel.OpenWindow();

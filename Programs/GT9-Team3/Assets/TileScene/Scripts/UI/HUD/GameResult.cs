@@ -9,14 +9,17 @@ public class GameResult : MonoBehaviour
 {
     private HUDCanvas _hudCanvas;
 
+    [SerializeField] TextMeshProUGUI resultText;
     [SerializeField] TextMeshProUGUI staminaAmountText;
     [SerializeField] Button staminaShopBtn;
     [SerializeField] TextMeshProUGUI worldStageText;
+    [SerializeField] TextMeshProUGUI rewardAmountText;
     [SerializeField] Button exitGameBtn;
     [SerializeField] Button restartGameBtn;
     [SerializeField] Button rewardADvBtn;
     private int gameWorldLevel;
     private int gameStageLevel;
+    private int rewardGold;
 
     public HUDCanvas Initialize(HUDCanvas hudCanvas)
     {
@@ -33,11 +36,27 @@ public class GameResult : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    public void OpenWindow()
-    { 
+    public void OpenWindow(bool isWin)
+    {
+        rewardGold = WaveManager.Instance.rewardGold;
+        ResultText(isWin);
+        rewardAmountText.text = $"{rewardGold}";
+        
         gameObject.SetActive(true);
 
         // 게임 데이터 저장
+    }
+
+    public void ResultText(bool isWin)
+    {
+        if (isWin)
+        {
+            resultText.text = "Victory";
+        }
+        else
+        {
+            resultText.text = "Defeat";
+        }
     }
 
     private void ViewHoldingStamina()
@@ -60,7 +79,7 @@ public class GameResult : MonoBehaviour
         Debug.Log("GameExit to go MapUI");
 
         CloseWindow();
-
+        ResourceManager.Instance.Earn(ResourceType.Gold, rewardGold);
         SceneLoader.Instance.LoadSceneByName("Map UI");
     }
 
@@ -75,6 +94,7 @@ public class GameResult : MonoBehaviour
             
 
             Debug.Log("게임 재시작");
+            ResourceManager.Instance.Earn(ResourceType.Gold, rewardGold);
             DataManager.Instance.RestartStage(DataManager.Instance.stageId);
             CloseWindow();
             restartGameBtn.enabled = true;
@@ -83,5 +103,16 @@ public class GameResult : MonoBehaviour
         {
             Debug.Log("not enough stamina");
         }
+    }
+
+    public void GameReward2x()
+    {
+        Debug.Log("Reward2x to go MapUI");
+        // 광고 시청
+
+
+        CloseWindow();
+        ResourceManager.Instance.Earn(ResourceType.Gold, rewardGold * 2);
+        SceneLoader.Instance.LoadSceneByName("Map UI");
     }
 }
