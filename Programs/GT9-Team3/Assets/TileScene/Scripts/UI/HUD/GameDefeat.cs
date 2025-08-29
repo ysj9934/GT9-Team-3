@@ -35,7 +35,7 @@ public class GameDefeat : MonoBehaviour
         gameObject.SetActive(false);
 
         // game result 로 이동
-        _hudCanvas._gameResultPanel.OpenWindow();
+        _hudCanvas._gameResultPanel.OpenWindow(false);
     }
 
     public void OpenWindow()
@@ -49,7 +49,7 @@ public class GameDefeat : MonoBehaviour
     /// </summary>
     private void ViewHoldingCrystal()
     {
-        holdDiaAmountText.text = ResourceManager.Instance.showResource(ResourceType.Crystal).ToString();
+        holdDiaAmountText.text = ResourceManager.Instance.GetAmount(ResourceType.Crystal).ToString();
     }
 
     /// <summary>

@@ -42,6 +42,7 @@ public class EnemyHealthHandler : MonoBehaviour
         {
             // 성에 도달했을 때 처리
             castle.TakeDamage((int)_enemy._enemyStat.enemyAttackDamage);
+            Debug.Log("castle touch");
             DeathMotion(HitTarget.Castle);
         }
         //else if (projectile != null)
@@ -85,6 +86,7 @@ public class EnemyHealthHandler : MonoBehaviour
         _enemy.isAlive = false;
 
         OnDeath?.Invoke();
+        _enemy._gameManager._waveManager.activeEnemies.Remove(this.gameObject);
         OnDeath = null;
 
         switch (target)
@@ -96,9 +98,8 @@ public class EnemyHealthHandler : MonoBehaviour
                 Debug.Log($"{_enemy._enemyStat.enemyName} has reached the castle and is destroyed.");
 
                 // 처치 보상
-                ResourceManager.Instance.Earn(ResourceType.Gold, _enemy._enemyStat.enemyTilePieceAmount);
-
-                HUDCanvas.Instance.UpdateTilePiece();
+                ResourceManager.Instance.Earn(ResourceType.Tilepiece, _enemy._enemyStat.enemyTilePieceAmount);
+                HUDCanvas.Instance.ShowTilePiece();
                 break;
         }
 

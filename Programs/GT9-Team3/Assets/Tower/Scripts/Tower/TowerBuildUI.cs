@@ -90,15 +90,16 @@ public class TowerBuildUI : MonoBehaviour
     {
         if (!ResourceManager.Instance.CanAfford(bp.CostType, bp.CostValue)) return;
 
+        _blockInfo.SetTowerPlace(bp);
         // 타워 설치
-        Tower1 newTower = _blockInfo.SetTowerPlace(bp);
+        //Tower1 newTower = _blockInfo.SetTowerPlace(bp);
 
         Hide();
 
-        HUDCanvas.Instance.upgradeUI.SetTargetTower(newTower);
-        HUDCanvas.Instance.sellUI.Refresh(newTower);
+        //HUDCanvas.Instance.upgradeUI.SetTargetTower(newTower);
+        //HUDCanvas.Instance.sellUI.Refresh(newTower);
 
-        newTower.ShowAttackRange();
+        //newTower.ShowAttackRange();
     }
 
 }

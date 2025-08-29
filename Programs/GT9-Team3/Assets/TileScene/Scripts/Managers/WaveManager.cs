@@ -10,18 +10,23 @@ public class WaveManager : MonoBehaviour
 {
     public static WaveManager Instance { get; private set; }
 
+    // Managers
     private GameManager _gameManager;
     public ObjectPoolManager _poolManager;
 
     public List<Transform> path = new List<Transform>();
     public List<Wave_DataTable> stageWaveList = new List<Wave_DataTable>();
+    public List<GameObject> activeEnemies = new List<GameObject>();
 
+    // Wave Info & check
     private int currentWaveLevel;
     private int currentRoundLevel;
-    private int waveIndex;
+    public int waveIndex;
     private bool isWaveReady = false;
     private bool isWaveRoutine = false;
+    public int rewardGold = 0;
 
+    // Wave Data
     private List<float> spawnStartTime = new List<float>();
     private List<int> enemyId = new List<int>();
     private List<int> spawnBatchSize = new List<int>();
@@ -84,6 +89,9 @@ public class WaveManager : MonoBehaviour
         if (stageData != null)
         {
             this.stageWaveList = stageData.stageWaveList;
+            ResourceManager.Instance.resources[ResourceType.Tilepiece] = stageWaveList[0].StageStartTilePiece;
+            HUDCanvas.Instance.ShowTilePiece();
+            this.rewardGold = 0;
             SetWaveSystem(stageWaveList[0]);
         }
         else
@@ -108,6 +116,7 @@ public class WaveManager : MonoBehaviour
         this.spawnBatchSize = stageData.SpawnBatchSize;
         this.spawnRepeat = stageData.SpawnRepeat;
         this.spawnintervalSec = stageData.SpawnintervalSec;
+        this.rewardGold += stageData.RewardGoldAmount;
     }
 
     // send wave and round data
@@ -121,14 +130,19 @@ public class WaveManager : MonoBehaviour
         if (waveNum % 3 == 1)
         {
             _gameManager._hudCanvas.TurnOnPathfinder();
+            _gameManager._hudCanvas.TurnOffStartWave();
             _gameManager._tileManager.isUIActive = true;
             _gameManager._tileManager.isMoveActive = true;
+
+            path.Clear();
         }
         else
         {
             _gameManager._hudCanvas.TurnOnStartWave();
             _gameManager._tileManager.isUIActive = false;
             _gameManager._tileManager.isMoveActive = false;
+
+            
         }
 
         
@@ -148,17 +162,24 @@ public class WaveManager : MonoBehaviour
 
     
     public Coroutine waveRoutine;
+    public List<Coroutine> enemySpawnRoutines;
 
     /// <summary>
     /// start wave
     /// </summary>
     public void StartWave()
     {
+        if (path.Count < 1 || path[0] == null)
+        {
+            Debug.LogError("path is valid");
+            return;
+        }
+        
         // 1. wave start 버튼을 누르기
         if (!isWaveRoutine)
         {
             // wave start 버튼 켜기
-
+            aliveEnemyCount = 0;
             // 2. TileUI (회전 불가하도록 수정)
             _gameManager._tileManager.isUIActive = true;
             _gameManager._tileManager.isMoveActive = true;
@@ -177,15 +198,44 @@ public class WaveManager : MonoBehaviour
         }
     }
 
-    // When Castle destroy
+    /// <summary>
+    /// Game Defeat
+    /// 게임 패배후 초기화
+    /// </summary>
     public void StopWave()
-    { 
+    {
+        rewardGold -= stageWaveList[waveIndex - 1].RewardGoldAmount;
+
         if (waveRoutine != null)
         {
-            StopCoroutine(AwakeWave());
+            StopCoroutine(waveRoutine);
             waveRoutine = null;
             isWaveRoutine = false;
         }
+
+        if (enemySpawnRoutines.Count > 0)
+        {
+            foreach (var r in enemySpawnRoutines)
+            { 
+                StopCoroutine(r);
+            }
+            enemySpawnRoutines.Clear();
+        }
+
+        path.Clear();
+        aliveEnemyCount = 0;
+
+        
+    }
+
+    public void ReturnAllEnemies()
+    {
+        foreach (var enemy in activeEnemies)
+        {
+            enemy.GetComponent<EnemyHealthHandler>().OnDeath -= HandleEnemyDeath;
+            _poolManager.ReturnEnemy(enemy);
+        }
+        activeEnemies.Clear();
     }
 
     IEnumerator AwakeWave()
@@ -195,6 +245,7 @@ public class WaveManager : MonoBehaviour
         _gameManager._tileManager.isUIActive = false;
         _gameManager._tileManager.isMoveActive = false;
         _gameManager._hudCanvas.TurnOffStartWave();
+        enemySpawnRoutines = new List<Coroutine>();
 
         while (spawnStartTime[index] > -1)
         {
@@ -203,7 +254,8 @@ public class WaveManager : MonoBehaviour
             
             for (int j = 0; j < spawnRepeat[index]; j++)
             {
-                StartCoroutine(SpawnEnemyWithDelay(j * spawnintervalSec[index], enemyId[index]));    
+                Coroutine spawnroutine = StartCoroutine(SpawnEnemyWithDelay(j * spawnintervalSec[index], enemyId[index]));    
+                enemySpawnRoutines.Add(spawnroutine);
             }
             
             index++;
@@ -217,6 +269,8 @@ public class WaveManager : MonoBehaviour
     {
         yield return new WaitForSeconds(spawnTime);
 
+        if (!isWaveRoutine) yield break;
+
         var config = EnemyConfigManager.Instance.GetConfig(monsterID);
         if (config == null)
         {
@@ -227,6 +281,8 @@ public class WaveManager : MonoBehaviour
         SpawnEnemy(config);
     }
 
+    
+
     public void SpawnEnemy(EnemyConfig config)
     {
         GameObject enemyObj = _poolManager.GetEnemy();
@@ -234,11 +290,20 @@ public class WaveManager : MonoBehaviour
         {
             Enemy enemy = enemyObj.GetComponent<Enemy>();
             enemy._enemyStat.Setup(config);
+            EnemyEnhanced(enemy);
             enemy._enemyMovement.pathPoint(path);
 
             aliveEnemyCount++;
             enemy._enemyHealthHandler.OnDeath += HandleEnemyDeath;
+
+            activeEnemies.Add(enemyObj);
         }
+    }
+
+    private void EnemyEnhanced(Enemy enemy)
+    {
+        enemy._enemyStat.enemyMaxHP *= 1.01f * waveIndex;
+        enemy._enemyHealthHandler.InitializeHealth();
     }
 
     private void HandleEnemyDeath()
@@ -265,10 +330,11 @@ public class WaveManager : MonoBehaviour
         {
             // HUD에서 승리 panel
             Debug.Log("Victory");
-        }
-        
-    }
 
+            _gameManager.PauseGame();
+            HUDCanvas.Instance._gameResultPanel.OpenWindow(true);
+        }   
+    }
 
     /// <summary>
     /// Test

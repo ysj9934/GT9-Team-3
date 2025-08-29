@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class TowerUpgradeUI : MonoBehaviour
 {
+    public BlockInfo _blockInfo;
     private Tower1 selectedTower;
 
     private TowerData towerdata;
@@ -30,9 +31,10 @@ public class TowerUpgradeUI : MonoBehaviour
 
             // 선택된 타워 다시 갱신
             selectedTower.UpdateTowerVisual(selectedTower.towerdata.towerLevel);
-
+            selectedTower.blockInfo.SetTowerUpgrade(selectedTower);
             // UI 정보 새로고침
             HUDCanvas.Instance.sellUI.Refresh(selectedTower);
+            TowerSellUI.Instance.Hide();
         }
         else
         {

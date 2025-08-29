@@ -64,7 +64,8 @@ public class TowerSellUI : MonoBehaviour
 
         TowerData d = tower.towerdata;
 
-        towerIconImage.sprite = tower.blueprint.icon;     // TowerBluePrint에서 받아옴
+        //towerIconImage.sprite = tower.blueprint.icon;     // TowerBluePrint에서 받아옴
+        towerIconImage.sprite = tower.GetCurrentTowerSprite();
         towerNameText.text = d.innerName;
         levelText.text = $"Lv.{d.towerLevel}";
         attackSpeedText.text = $"{d.attackSpeed}/s";
@@ -117,7 +118,8 @@ public class TowerSellUI : MonoBehaviour
             currentTower.blockInfo.blockSerialNumber, 
             true, 
             null,
-            currentTower);
+            currentTower,
+            false);
 
         panel.SetActive(false);
 

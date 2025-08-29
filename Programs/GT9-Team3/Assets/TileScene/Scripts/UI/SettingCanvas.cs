@@ -8,8 +8,8 @@ public class SettingCanvas : MonoBehaviour
     public static SettingCanvas Instance { get; private set; }
 
     public HUD_CustomSetting customSetting;
-    public HUD_CastleHP castleHUD;
-    public HUD_GameDefeat gameDefeatHUD;
+    //public HUD_CastleHP castleHUD;
+    //public HUD_GameDefeat gameDefeatHUD;
 
     private void Awake()
     {
@@ -19,13 +19,13 @@ public class SettingCanvas : MonoBehaviour
     private void Start()
     {
         customSetting = GetComponentInChildren<HUD_CustomSetting>();
-        castleHUD = GetComponentInChildren<HUD_CastleHP>();
-        gameDefeatHUD = GetComponentInChildren<HUD_GameDefeat>();
+        //castleHUD = GetComponentInChildren<HUD_CastleHP>();
+        //gameDefeatHUD = GetComponentInChildren<HUD_GameDefeat>();
 
-        if (gameDefeatHUD != null)
-        { 
-            gameDefeatHUD.gameObject.SetActive(false);
-        }
+        //if (gameDefeatHUD != null)
+        //{ 
+        //    gameDefeatHUD.gameObject.SetActive(false);
+        //}
     }
 
 
