@@ -174,9 +174,7 @@ public class WaveManager : MonoBehaviour
             Debug.LogError("path is valid");
             return;
         }
-
         
-
         // 1. wave start 버튼을 누르기
         if (!isWaveRoutine)
         {
@@ -329,13 +327,10 @@ public class WaveManager : MonoBehaviour
             // HUD에서 승리 panel
             Debug.Log("Victory");
 
-            ResourceManager.Instance.Earn(ResourceType.Gold, rewardGold);
             _gameManager.PauseGame();
-            HUDCanvas.Instance._gameDefeatPanel.OpenWindow();
-        }
-        
+            HUDCanvas.Instance._gameResultPanel.OpenWindow(true);
+        }   
     }
-
 
     /// <summary>
     /// Test
