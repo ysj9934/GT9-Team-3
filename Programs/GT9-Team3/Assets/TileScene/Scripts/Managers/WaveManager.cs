@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Resources;
@@ -302,7 +303,7 @@ public class WaveManager : MonoBehaviour
 
     private void EnemyEnhanced(Enemy enemy)
     {
-        enemy._enemyStat.enemyMaxHP *= 1.01f * waveIndex;
+        enemy._enemyStat.enemyMaxHP *= Mathf.Pow(1.01f, (float) waveIndex);
         enemy._enemyHealthHandler.InitializeHealth();
     }
 

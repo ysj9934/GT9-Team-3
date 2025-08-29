@@ -98,6 +98,7 @@ public class DataManager : MonoBehaviour
 
         GameManager.Instance.DestroyOfType<Projectile>();
         WaveManager.Instance.ReturnAllEnemies();
+        TowerSellUI.Instance.Hide();
     }
 
     private void SetStageWaveList(int stageId)
