@@ -351,6 +351,7 @@ public class TileManager : MonoBehaviour
     /// <param name="tileLength">타일 길이</param>
     private void SetTileGrid(int tileLength)
     {
+        _gameManager = GameManager.Instance;
         tileGridList = new List<TileGrid>();
         _gameManager.DestroyOfType<TileGrid>();
 

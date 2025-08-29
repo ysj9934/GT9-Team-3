@@ -1,12 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.Collections.LowLevel.Unsafe;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using static UnityEditor.PlayerSettings;
-using static UnityEngine.RuleTile.TilingRuleOutput;
-using Random = UnityEngine.Random;
 
 
 public class BlockInfo : MonoBehaviour

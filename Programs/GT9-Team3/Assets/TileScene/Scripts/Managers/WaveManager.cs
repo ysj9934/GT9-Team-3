@@ -2,11 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Resources;
-using Unity.VisualScripting;
-using UnityEditor.EditorTools;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
-using UnityEngine.AI;
 
 public class WaveManager : MonoBehaviour
 {
@@ -150,6 +146,8 @@ public class WaveManager : MonoBehaviour
 
     public void SendWaveData()
     {
+        _gameManager = GameManager.Instance;
+
         _gameManager.ReceiveStageDataFromWaveManager(
             new StageData
             (
