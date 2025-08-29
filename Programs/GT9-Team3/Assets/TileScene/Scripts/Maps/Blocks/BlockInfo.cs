@@ -11,11 +11,10 @@ public class BlockInfo : MonoBehaviour
 {
     // Block Parent
     public TileInfo _tileInfo;
-    public TileDirection _tileDirection;
 
     // Block Component
     [SerializeField] public SpriteRenderer spriteRenderer;
-    [SerializeField] public Collider2D _collider;
+    private Collider2D _collider;
 
     // Block Info
     [SerializeField] public BlockData _blockData;
@@ -30,8 +29,7 @@ public class BlockInfo : MonoBehaviour
     private void Awake()
     {
         _tileInfo = GetComponentInParent<TileInfo>(true);
-        _tileDirection = GetComponentInParent<TileDirection>();
-        //_collider = GetComponent<Collider2D>();
+        _collider = GetComponent<Collider2D>();
         towerUIdnjswls = FindObjectOfType<TowerBuildUI>(true);
         towerPlacerdnjswls = FindObjectOfType<TowerPlacer>(true);
     }
@@ -48,14 +46,14 @@ public class BlockInfo : MonoBehaviour
     // 업데이트가 가야 할거 같은 코드 
     private void OnEnable()
     {
-        //Tower1 tower = GetComponentInChildren<Tower1>();
-        //if (BlockCategory.PlaceTower == blockCategory)
-        //{
-        //    if (tower != null)
-        //        _collider.enabled = false;
-        //    else
-        //        _collider.enabled = true;
-        //}
+        Tower1 tower = GetComponentInChildren<Tower1>();
+        if (BlockCategory.PlaceTower == blockCategory)
+        {
+            if (tower != null)
+                _collider.enabled = false;
+            else
+                _collider.enabled = true;
+        }
     }
 
     /// <summary>
@@ -92,14 +90,29 @@ public class BlockInfo : MonoBehaviour
     /// Tower 위치 설정
     /// </summary>
     /// <param name="bp">타워 청사진</param>
-    public void SetTowerPlace(TowerBlueprint bp)
+    public Tower1 SetTowerPlace(TowerBlueprint bp)
     {
-        _tileInfo._tilePlaceOnTower.HandleTowerPlacement(blockSerialNumber, hasTower, bp, null, false, _tileDirection);
-    }
+        _tileInfo._tilePlaceOnTower.HandleTowerPlacement(blockSerialNumber, hasTower, bp, null);
 
-    public void SetTowerUpgrade(Tower1 tower)
-    {
-        _tileInfo._tilePlaceOnTower.HandleTowerPlacement(blockSerialNumber, hasTower, null, tower, true, _tileDirection);
+        Vector2 pos = new Vector2(transform.position.x, transform.position.y + 0.37f);
+        GameObject go = Instantiate(bp.towerPrefab, pos, Quaternion.identity);
+        go.transform.SetParent(transform);
+
+        Tower1 tower = go.GetComponent<Tower1>();
+        tower.ApplyData(bp);
+        tower.ApplyData(bp.data);
+        tower.Intialize(this);
+
+        TowerSellUI.Instance.Show(tower);
+
+        ResourceManager.Instance.Spend(bp.CostType, (float)bp.CostValue / 4);
+        HUDCanvas.Instance.UpdateTilePiece();
+
+        hasTower = true;
+        if (hasTower && _collider != null)
+            _collider.enabled = false;
+
+        return tower;
     }
 
     /// <summary>
@@ -122,7 +135,7 @@ public class BlockInfo : MonoBehaviour
         go.transform.SetParent(transform); 
         Tower1 tower = go.GetComponent<Tower1>();
         tower.ApplyData(bp);
-        //tower.ApplyData(bp.data);
+        tower.ApplyData(bp.data);
         tower.Intialize(this);
 
         TowerSellUI.Instance.Show(tower);
@@ -130,7 +143,7 @@ public class BlockInfo : MonoBehaviour
         // Tower Install Cost
         // 타워 설치 비용
         ResourceManager.Instance.Spend(bp.CostType, (float)bp.CostValue / 4);
-        HUDCanvas.Instance.ShowTilePiece();
+        HUDCanvas.Instance.UpdateTilePiece();
 
         hasTower = true;
 
@@ -147,7 +160,7 @@ public class BlockInfo : MonoBehaviour
     {
         //Debug.Log("타워 제거 및 골드 환급");
         ResourceManager.Instance.Earn(currentTower.towerdata.makeCost, (float)currentTower.towerdata.sellValue / 4);
-        HUDCanvas.Instance.ShowTilePiece();
+        HUDCanvas.Instance.UpdateTilePiece();
 
         Tower1 tower = GetComponentInChildren<Tower1>(true);
         Destroy(tower.gameObject);
@@ -156,19 +169,5 @@ public class BlockInfo : MonoBehaviour
 
         if (_collider != null && !hasTower)
             _collider.enabled = true;
-    }
-
-    public void TowerUpgrade(Tower1 currentTower)
-    {
-        Debug.Log("Upgrade");
-        Tower1 hasTower = GetComponentInChildren<Tower1>(true);
-        Destroy(hasTower.gameObject);
-        Vector2 pos = new Vector2(transform.position.x, transform.position.y + 0.37f);
-        GameObject go = Instantiate(currentTower.gameObject, pos, Quaternion.identity);
-        go.transform.SetParent(transform);
-        Tower1 tower = go.GetComponent<Tower1>();
-        tower.enabled = true;
-        Collider2D collider = go.GetComponent<Collider2D>();
-        collider.enabled = true;
     }
 }

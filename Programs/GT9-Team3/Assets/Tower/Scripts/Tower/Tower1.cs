@@ -71,6 +71,11 @@ public class Tower1 : MonoBehaviour
             Debug.LogWarning("[타워] 발사체 프리팹 또는 데이터가 연결되지 않았습니다.");
         }
     }
+    public void ShowAttackRange()
+    {
+        if (rangeVisual != null)
+            rangeVisual.SetActive(true);
+    }
 
     public void ApplyData(TowerData d)
     {
