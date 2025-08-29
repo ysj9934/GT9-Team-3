@@ -34,6 +34,7 @@ public class TowerUpgradeUI : MonoBehaviour
             selectedTower.blockInfo.SetTowerUpgrade(selectedTower);
             // UI 정보 새로고침
             HUDCanvas.Instance.sellUI.Refresh(selectedTower);
+            TowerSellUI.Instance.Hide();
         }
         else
         {

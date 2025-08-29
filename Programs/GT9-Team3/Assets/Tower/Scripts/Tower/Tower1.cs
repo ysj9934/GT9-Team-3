@@ -19,7 +19,6 @@ public class Tower1 : MonoBehaviour
     [SerializeField] private List<Sprite> levelSprites;          // 레벨별 스프라이트
     [SerializeField] private GameObject auraEffect;              // 오로라 이펙트 오브젝트 (4레벨 이상에만 표시)
 
-    public int level;
 
     private void Awake()
     {
