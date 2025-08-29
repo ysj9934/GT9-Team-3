@@ -19,6 +19,8 @@ public class Tower1 : MonoBehaviour
     [SerializeField] private List<Sprite> levelSprites;          // 레벨별 스프라이트
     [SerializeField] private GameObject auraEffect;              // 오로라 이펙트 오브젝트 (4레벨 이상에만 표시)
 
+    public int level;
+
     private void Awake()
     {
         rangeVisual = transform.Find("RangeVisual")?.gameObject;
@@ -243,6 +245,8 @@ public class Tower1 : MonoBehaviour
             }
 
             Debug.Log($"[TowerUpgrade] 성공 → ID: {nextTowerID}");
+
+            
             return true;
         }
         else
@@ -250,6 +254,8 @@ public class Tower1 : MonoBehaviour
             Debug.LogWarning($"[TowerUpgrade] ID {nextTowerID}에 해당하는 데이터 없음");
             return false;
         }
+
+        
     }
 
     // 업그레이드 이미지 갱신

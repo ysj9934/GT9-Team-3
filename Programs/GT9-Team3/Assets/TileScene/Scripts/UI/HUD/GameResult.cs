@@ -89,10 +89,10 @@ public class GameResult : MonoBehaviour
     {
         Debug.Log("GameRetry");
 
-        if (ResourceManager.Instance.CanAfford(ResourceType.Mana, 10))
+        if (ResourceManager.Instance.CanAfford(ResourceType.Mana, 5))
         {
             restartGameBtn.enabled = false;
-            ResourceManager.Instance.Spend(ResourceType.Mana, 10);
+            ResourceManager.Instance.Spend(ResourceType.Mana, 5);
             
 
             Debug.Log("게임 재시작");

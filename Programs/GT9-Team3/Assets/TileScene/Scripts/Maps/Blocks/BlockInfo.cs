@@ -92,7 +92,12 @@ public class BlockInfo : MonoBehaviour
     /// <param name="bp">타워 청사진</param>
     public void SetTowerPlace(TowerBlueprint bp)
     {
-        _tileInfo._tilePlaceOnTower.HandleTowerPlacement(blockSerialNumber, hasTower, bp, null);
+        _tileInfo._tilePlaceOnTower.HandleTowerPlacement(blockSerialNumber, hasTower, bp, null, false);
+    }
+
+    public void SetTowerUpgrade(Tower1 tower)
+    {
+        _tileInfo._tilePlaceOnTower.HandleTowerPlacement(blockSerialNumber, hasTower, null, tower, true);
     }
 
     /// <summary>
@@ -115,7 +120,7 @@ public class BlockInfo : MonoBehaviour
         go.transform.SetParent(transform); 
         Tower1 tower = go.GetComponent<Tower1>();
         tower.ApplyData(bp);
-        tower.ApplyData(bp.data);
+        //tower.ApplyData(bp.data);
         tower.Intialize(this);
 
         TowerSellUI.Instance.Show(tower);
@@ -149,5 +154,15 @@ public class BlockInfo : MonoBehaviour
 
         if (_collider != null && !hasTower)
             _collider.enabled = true;
+    }
+
+    public void TowerUpgrade(Tower1 currentTower)
+    {
+        Debug.Log("Upgrade");
+        Tower1 hasTower = GetComponentInChildren<Tower1>(true);
+        Destroy(hasTower.gameObject);
+        Vector2 pos = new Vector2(transform.position.x, transform.position.y + 0.37f);
+        GameObject go = Instantiate(currentTower.gameObject, pos, Quaternion.identity);
+        go.transform.SetParent(transform);
     }
 }

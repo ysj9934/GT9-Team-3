@@ -117,7 +117,8 @@ public class TowerSellUI : MonoBehaviour
             currentTower.blockInfo.blockSerialNumber, 
             true, 
             null,
-            currentTower);
+            currentTower,
+            false);
 
         panel.SetActive(false);
 

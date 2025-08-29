@@ -65,8 +65,8 @@ public class TilePlaceOnTower : MonoBehaviour
     {
         _tileInfo = GetComponent<TileInfo>();
     }
-    
-    public void HandleTowerPlacement(int blockCase, bool hasTower, TowerBlueprint bp, Tower1 tower)
+
+    public void HandleTowerPlacement(int blockCase, bool hasTower, TowerBlueprint bp, Tower1 tower, bool hasUpgrade)
     {
         int SerialNumber = ((int)_tileInfo.tileDirector + 1) * 10 + blockCase;
         
@@ -76,10 +76,11 @@ public class TilePlaceOnTower : MonoBehaviour
             {
                 if (!hasTower)
                     _tileInfo.blockInfos[prefabIndex][blockIndex].TowerInstall(bp);
-                else
-                    _tileInfo.blockInfos[prefabIndex][blockIndex].TowerRemove(tower);
+                else if (hasTower && hasUpgrade)
+                    _tileInfo.blockInfos[prefabIndex][blockIndex].TowerUpgrade(tower);
+                else if (hasTower)
+                    _tileInfo.blockInfos[prefabIndex][blockIndex].TowerRemove(tower); ;
             }
-
         }
         else
         {
