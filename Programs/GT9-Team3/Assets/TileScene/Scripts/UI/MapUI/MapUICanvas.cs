@@ -63,16 +63,19 @@ public class MapUICanvas : MonoBehaviour
             Debug.Log("Stamiana earn");
             _resourceManager.Earn(ResourceType.Mana, 1);
         }
+
         ShowStaminaAmount();
     }
 
     public void AddGoldAmount()
     {
         Debug.Log("Gold Add");
+        ShowGoldAmount();
     }
 
     public void AddDiaAmount()
     {
         Debug.Log("Diamond Add");
+        ShowDiaAmount();
     }
 }
