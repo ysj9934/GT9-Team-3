@@ -66,10 +66,17 @@ public class TilePlaceOnTower : MonoBehaviour
         _tileInfo = GetComponent<TileInfo>();
     }
 
-    public void HandleTowerPlacement(int blockCase, bool hasTower, TowerBlueprint bp, Tower1 tower, bool hasUpgrade)
+    public void HandleTowerPlacement(int blockCase, bool hasTower, TowerBlueprint bp, Tower1 tower, bool hasUpgrade, TileDirection tileDirection)
     {
         int SerialNumber = ((int)_tileInfo.tileDirector + 1) * 10 + blockCase;
-        
+
+        TileDirection tileDirection1 = tileDirection;
+
+        foreach (var tiledirection in _tileInfo.rotatedPrefabs)
+        {
+            tiledirection.gameObject.SetActive(true);
+        }
+
         if (towerBlockMap.TryGetValue(SerialNumber, out var blockList))
         {
             foreach (var (prefabIndex, blockIndex) in blockList)
@@ -79,13 +86,20 @@ public class TilePlaceOnTower : MonoBehaviour
                 else if (hasTower && hasUpgrade)
                     _tileInfo.blockInfos[prefabIndex][blockIndex].TowerUpgrade(tower);
                 else if (hasTower)
-                    _tileInfo.blockInfos[prefabIndex][blockIndex].TowerRemove(tower); ;
+                    _tileInfo.blockInfos[prefabIndex][blockIndex].TowerRemove(tower);
             }
         }
         else
         {
             Debug.Log($"No tower placement defined for blockCase {SerialNumber}");
         }
+
+        foreach (var tiledirection in _tileInfo.rotatedPrefabs)
+        {
+            tiledirection.gameObject.SetActive(false);
+        }
+
+        tileDirection1.gameObject.SetActive(true);
     }
 
 }

@@ -11,10 +11,11 @@ public class BlockInfo : MonoBehaviour
 {
     // Block Parent
     public TileInfo _tileInfo;
+    public TileDirection _tileDirection;
 
     // Block Component
     [SerializeField] public SpriteRenderer spriteRenderer;
-    private Collider2D _collider;
+    [SerializeField] public Collider2D _collider;
 
     // Block Info
     [SerializeField] public BlockData _blockData;
@@ -29,7 +30,8 @@ public class BlockInfo : MonoBehaviour
     private void Awake()
     {
         _tileInfo = GetComponentInParent<TileInfo>(true);
-        _collider = GetComponent<Collider2D>();
+        _tileDirection = GetComponentInParent<TileDirection>();
+        //_collider = GetComponent<Collider2D>();
         towerUIdnjswls = FindObjectOfType<TowerBuildUI>(true);
         towerPlacerdnjswls = FindObjectOfType<TowerPlacer>(true);
     }
@@ -46,14 +48,14 @@ public class BlockInfo : MonoBehaviour
     // 업데이트가 가야 할거 같은 코드 
     private void OnEnable()
     {
-        Tower1 tower = GetComponentInChildren<Tower1>();
-        if (BlockCategory.PlaceTower == blockCategory)
-        {
-            if (tower != null)
-                _collider.enabled = false;
-            else
-                _collider.enabled = true;
-        }
+        //Tower1 tower = GetComponentInChildren<Tower1>();
+        //if (BlockCategory.PlaceTower == blockCategory)
+        //{
+        //    if (tower != null)
+        //        _collider.enabled = false;
+        //    else
+        //        _collider.enabled = true;
+        //}
     }
 
     /// <summary>
@@ -92,12 +94,12 @@ public class BlockInfo : MonoBehaviour
     /// <param name="bp">타워 청사진</param>
     public void SetTowerPlace(TowerBlueprint bp)
     {
-        _tileInfo._tilePlaceOnTower.HandleTowerPlacement(blockSerialNumber, hasTower, bp, null, false);
+        _tileInfo._tilePlaceOnTower.HandleTowerPlacement(blockSerialNumber, hasTower, bp, null, false, _tileDirection);
     }
 
     public void SetTowerUpgrade(Tower1 tower)
     {
-        _tileInfo._tilePlaceOnTower.HandleTowerPlacement(blockSerialNumber, hasTower, null, tower, true);
+        _tileInfo._tilePlaceOnTower.HandleTowerPlacement(blockSerialNumber, hasTower, null, tower, true, _tileDirection);
     }
 
     /// <summary>
@@ -164,5 +166,9 @@ public class BlockInfo : MonoBehaviour
         Vector2 pos = new Vector2(transform.position.x, transform.position.y + 0.37f);
         GameObject go = Instantiate(currentTower.gameObject, pos, Quaternion.identity);
         go.transform.SetParent(transform);
+        Tower1 tower = go.GetComponent<Tower1>();
+        tower.enabled = true;
+        Collider2D collider = go.GetComponent<Collider2D>();
+        collider.enabled = true;
     }
 }

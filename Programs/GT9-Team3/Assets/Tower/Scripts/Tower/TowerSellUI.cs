@@ -118,7 +118,8 @@ public class TowerSellUI : MonoBehaviour
             true, 
             null,
             currentTower,
-            false);
+            false,
+            null);
 
         panel.SetActive(false);
 
