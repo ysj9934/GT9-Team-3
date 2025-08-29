@@ -11,7 +11,7 @@ public class Tower1 : MonoBehaviour
     public ProjectileData projectileData;
     private float cooldownTimer;
 
-    private GameObject rangeVisual;
+    public GameObject rangeVisual;
 
     public TowerBlueprint blueprint;
 
@@ -50,7 +50,8 @@ public class Tower1 : MonoBehaviour
 
     }
 
-    public void Shoot(Transform target)
+
+public void Shoot(Transform target)
     {
         GameObject projectileObj = Instantiate(towerdata.projectilePrefab, transform.position, Quaternion.identity);
         Projectile projectile = projectileObj.GetComponent<Projectile>();
@@ -103,35 +104,35 @@ public class Tower1 : MonoBehaviour
         ApplyData(bp.data);
     }
 
-    private void OnMouseDown()
-    {
+    //private void OnMouseDown()
+    //{
 
-        bool isAlreadyOpen = TowerSellUI.Instance.IsOpenFor(this);
+    //    bool isAlreadyOpen = TowerSellUI.Instance.IsOpenFor(this);
 
-        // UI 열려있고 같은 타워를 누른 경우 닫기
-        if (isAlreadyOpen)
-        {
-            TowerSellUI.Instance.Hide();
+    //    // UI 열려있고 같은 타워를 누른 경우 닫기
+    //    if (isAlreadyOpen)
+    //    {
+    //        TowerSellUI.Instance.Hide();
 
-            if (rangeVisual != null)
-                rangeVisual.SetActive(false);
+    //        if (rangeVisual != null)
+    //            rangeVisual.SetActive(false);
 
-            return;
-        }
+    //        return;
+    //    }
 
-        // 다른 타워거나 처음 열리는 경우 기존 UI 닫고 새로 열기
-        TowerSellUI.Instance.Show(this);
+    //    // 다른 타워거나 처음 열리는 경우 기존 UI 닫고 새로 열기
+    //    TowerSellUI.Instance.Show(this);
 
-        if (rangeVisual != null)
-            rangeVisual.SetActive(true);
+    //    if (rangeVisual != null)
+    //        rangeVisual.SetActive(true);
 
-        // 업그레이드 정보
-        TowerUpgradeUI ui = FindObjectOfType<TowerUpgradeUI>();
-        if (ui != null)
-        {
-            ui.SetTargetTower(this);
-        }
-    }
+    //    // 업그레이드 정보
+    //    TowerUpgradeUI ui = FindObjectOfType<TowerUpgradeUI>();
+    //    if (ui != null)
+    //    {
+    //        ui.SetTargetTower(this);
+    //    }
+    //}
 
     // 우선순위 
     private Enemy1 FindTarget()

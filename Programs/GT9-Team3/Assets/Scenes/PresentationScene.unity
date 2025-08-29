@@ -359,6 +359,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea7f52e79cb2b994c941479f4721dc0b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _blockInfo: {fileID: 0}
 --- !u!1001 &129374453
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -431,6 +432,22 @@ PrefabInstance:
       propertyPath: tilePrefabs.Array.data[3]
       value: 
       objectReference: {fileID: 7936289938698289828, guid: e1c6c05b07b84c1438ef4d4664407c58, type: 3}
+    - target: {fileID: 8976502372533630626, guid: 1309173f8e2f8cd43aacf64911676477, type: 3}
+      propertyPath: tileHardModePrefabs.Array.data[0]
+      value: 
+      objectReference: {fileID: 5640010735581920036, guid: 83141aa939433dc41a14b0ff532be006, type: 3}
+    - target: {fileID: 8976502372533630626, guid: 1309173f8e2f8cd43aacf64911676477, type: 3}
+      propertyPath: tileHardModePrefabs.Array.data[1]
+      value: 
+      objectReference: {fileID: 8240947508694223969, guid: b11f39c6f9ea0524b8e6c2e815e910c2, type: 3}
+    - target: {fileID: 8976502372533630626, guid: 1309173f8e2f8cd43aacf64911676477, type: 3}
+      propertyPath: tileHardModePrefabs.Array.data[2]
+      value: 
+      objectReference: {fileID: 8185493614075263715, guid: 14fffdc39354f8649bc1114273bce79e, type: 3}
+    - target: {fileID: 8976502372533630626, guid: 1309173f8e2f8cd43aacf64911676477, type: 3}
+      propertyPath: tileHardModePrefabs.Array.data[3]
+      value: 
+      objectReference: {fileID: 7936289938698289828, guid: 28c5be61a1960164f9529ecfc092f041, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -5303,6 +5320,7 @@ MonoBehaviour:
   pauseBtn: {fileID: 9217756248265065745}
   _gameDefeatPanel: {fileID: 0}
   _gameResultPanel: {fileID: 0}
+  upgradeUI: {fileID: 0}
   sellUI: {fileID: 1871540204}
 --- !u!224 &1486318347185087933
 RectTransform:

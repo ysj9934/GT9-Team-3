@@ -42,6 +42,7 @@ public class TileManager : MonoBehaviour
 
     // Tile Prefabs
     [SerializeField] public GameObject[] tilePrefabs;
+    [SerializeField] public GameObject[] tileHardModePrefabs;
     [SerializeField] public GameObject tileGridPrefab;
     [SerializeField] public GameObject tileCastlePrefab;
     [SerializeField] public GameObject tileSpawnPrefab;
@@ -54,6 +55,7 @@ public class TileManager : MonoBehaviour
     public List<GameObject> tileAllCategoryList;
     public List<TileGrid> tileGridList;
     public List<TileInfo> tileInfoList;
+    public bool isHardMode;
 
     // Path Info
     [SerializeField] private GameObject pathfinderPrefab;
@@ -92,33 +94,44 @@ public class TileManager : MonoBehaviour
         {
             this.gameWorldLevel = stageData.worldCode;
             this.gameRoundLevel = stageData.roundCode;
+            this.isHardMode = stageData.isHardMode;
 
             //Debug.Log("gameRoundLevel" + gameRoundLevel);
-
-            if (stageData.waveCode < 7)
+            if (!isHardMode)
             {
-                mapExtendLevel = 1;
+                if (stageData.waveCode < 7)
+                {
+                    mapExtendLevel = 1;
+                }
+                else
+                {
+                    mapExtendLevel = 2;
+                }
+
+                tileLength = 3 + (2 * mapExtendLevel);
+
+
+                switch (mapExtendLevel)
+                {
+                    case 1:
+                        Initialize();
+                        break;
+                    case 2:
+                        InitializeMapResize();
+                        break;
+                    default:
+                        Debug.LogWarning("Invalid mapExtendLevel");
+                        break;
+                }
             }
             else
             {
                 mapExtendLevel = 2;
+                tileLength = 3 + (2 * mapExtendLevel);
+
+                Initialize();
             }
-
-            tileLength = 3 + (2 * mapExtendLevel);
-
-
-            switch (mapExtendLevel)
-            {
-                case 1:
-                    Initialize();
-                    break;
-                case 2:
-                    InitializeMapResize();
-                    break;
-                default:
-                    Debug.LogWarning("Invalid mapExtendLevel");
-                    break;
-            }
+            
         }
         else
         {
@@ -177,6 +190,9 @@ public class TileManager : MonoBehaviour
     /// <param name="level">gameWorldLevel</param>
     private void SetWorldTile(int level)
     {
+        if (isHardMode)
+            level = 1;
+
         foreach (var tile in tileAllCategoryList)
         {
             TileGrid tileGrid = tile.GetComponent<TileGrid>();
@@ -208,7 +224,9 @@ public class TileManager : MonoBehaviour
         if (EventSystem.current.IsPointerOverGameObject())
             return;
 
-        if (Input.GetMouseButtonDown(0))
+
+        if (Input.GetMouseButtonDown(0) ||
+            (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began))
         {
             Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             RaycastHit2D[] hits = Physics2D.RaycastAll(mousePos, Vector2.zero);
@@ -224,14 +242,6 @@ public class TileManager : MonoBehaviour
                     BlockInfo blockInfo = hit.collider.GetComponent<BlockInfo>();
                     if (blockInfo != null)
                     {
-                        //if (towerUIdnjswls.root.gameObject.activeSelf)
-                        //{
-                        //    blockInfo.CloseTowerInstallerUI();
-                        //}
-                        //else
-                        //{
-                        //    blockInfo.OpenTowerInstallerUI();
-                        //}
                         blockInfo.OpenTowerInstallerUI();
                         CloseTileUI(null);
                         CloseTowerInfoUI();
@@ -259,8 +269,34 @@ public class TileManager : MonoBehaviour
             }
 
             if (fallbackTower != null)
-            { 
+            {
+                CloseTowerInstallUI();
                 // 타워 선택시 event
+                bool isAlreadyOpen = TowerSellUI.Instance.IsOpenFor(fallbackTower);
+
+                if (isAlreadyOpen)
+                {
+                    TowerSellUI.Instance.Hide();
+
+                    if (fallbackTower.rangeVisual != null)
+                        fallbackTower.rangeVisual.SetActive(false);
+
+                    return;
+                }
+
+                // 다른 타워거나 처음 열리는 경우 기존 UI 닫고 새로 열기
+                TowerSellUI.Instance.Show(fallbackTower);
+
+                if (fallbackTower.rangeVisual != null)
+                    fallbackTower.rangeVisual.SetActive(fallbackTower);
+
+                // 업그레이드 정보
+                TowerUpgradeUI ui = FindObjectOfType<TowerUpgradeUI>();
+                if (ui != null)
+                {
+                    ui.SetTargetTower(fallbackTower);
+                }
+
             }
             else if (fallbackTile != null)
             {
@@ -351,48 +387,100 @@ public class TileManager : MonoBehaviour
         _gameManager.DestroyOfType<TileData>();
         int baseNumber = 0;
 
-        for (int row = 0; row < 3; row++)
+        if (!isHardMode)
         {
-            for (int col = 0; col < 3; col++)
+            for (int row = 0; row < 3; row++)
             {
-                // Set Tile Road
-                if (baseNumber != 4){
-                    Vector2 pos = new Vector2(
-                        col * tileSize[0] - row * tileSize[0], 
-                        (col + row) * -tileSize[1] + tileSize[1] * 2);
-                    GameObject go = Instantiate(
-                        tilePrefabs[UnityEngine.Random.Range(0, tilePrefabs.Length)],
-                        pos,
-                        Quaternion.identity);
-                    go.transform.SetParent(transform);
-                    TileInfo tileInfo = go.GetComponent<TileInfo>();
-                    tileInfo.Initialize(pos);
-
-                    tileInfoList.Add(tileInfo);
-                    tileAllCategoryList.Add(go);
-                }
-                // Set Tile Castle with Castle
-                else
+                for (int col = 0; col < 3; col++)
                 {
-                    Vector2 pos = new Vector2(
-                        col * tileSize[0] - row * tileSize[0], 
-                        (col + row) * -tileSize[1] + tileSize[1] * 2);
-                    GameObject go = Instantiate(
-                        tileCastlePrefab,
-                        pos,
-                        Quaternion.identity);
-                    go.transform.SetParent(transform);
-                    TileCastle tileCastle = go.GetComponent<TileCastle>();
-                    tileCastle.Initialize(pos);
-                    _gameManager.baseTransform = tileCastle.gameObject.transform;
+                    // Set Tile Road
+                    if (baseNumber != 4)
+                    {
+                        Vector2 pos = new Vector2(
+                            col * tileSize[0] - row * tileSize[0],
+                            (col + row) * -tileSize[1] + tileSize[1] * 2);
+                        GameObject go = Instantiate(
+                            tilePrefabs[UnityEngine.Random.Range(0, tilePrefabs.Length)],
+                            pos,
+                            Quaternion.identity);
+                        go.transform.SetParent(transform);
+                        TileInfo tileInfo = go.GetComponent<TileInfo>();
+                        tileInfo.Initialize(pos);
 
-                    endTile = tileCastle;
-                    tileAllCategoryList.Add(go);
+                        tileInfoList.Add(tileInfo);
+                        tileAllCategoryList.Add(go);
+                    }
+                    // Set Tile Castle with Castle
+                    else
+                    {
+                        Vector2 pos = new Vector2(
+                            col * tileSize[0] - row * tileSize[0],
+                            (col + row) * -tileSize[1] + tileSize[1] * 2);
+                        GameObject go = Instantiate(
+                            tileCastlePrefab,
+                            pos,
+                            Quaternion.identity);
+                        go.transform.SetParent(transform);
+                        TileCastle tileCastle = go.GetComponent<TileCastle>();
+                        tileCastle.Initialize(pos);
+                        _gameManager.baseTransform = tileCastle.gameObject.transform;
+
+                        endTile = tileCastle;
+                        tileAllCategoryList.Add(go);
+                    }
+
+                    baseNumber++;
                 }
-                    
-                baseNumber++;
             }
         }
+        else
+        {
+            for (int row = 0; row < 5; row++)
+            {
+                for (int col = 0; col < 5; col++)
+                {
+                    // Set Tile Road
+                    if (baseNumber != 12)
+                    {
+                        Vector2 pos = new Vector2(
+                            col * tileSize[0] - row * tileSize[0],
+                            (col + row) * -tileSize[1] + tileSize[1] * 2 + (tileSize[1] * mapExtendLevel));
+                        GameObject go = Instantiate(
+                            tileHardModePrefabs[UnityEngine.Random.Range(0, tilePrefabs.Length)],
+                            pos,
+                            Quaternion.identity);
+                        go.transform.SetParent(transform);
+                        TileInfo tileInfo = go.GetComponent<TileInfo>();
+                        tileInfo.Initialize(pos);
+
+                        tileInfoList.Add(tileInfo);
+                        tileAllCategoryList.Add(go);
+                    }
+                    // Set Tile Castle with Castle
+                    else
+                    {
+                        Vector2 pos = new Vector2(
+                            col * tileSize[0] - row * tileSize[0],
+                            (col + row) * -tileSize[1] + tileSize[1] * 2 + (tileSize[1] * mapExtendLevel));
+                        GameObject go = Instantiate(
+                            tileCastlePrefab,
+                            pos,
+                            Quaternion.identity);
+                        go.transform.SetParent(transform);
+                        TileCastle tileCastle = go.GetComponent<TileCastle>();
+                        tileCastle.Initialize(pos);
+                        _gameManager.baseTransform = tileCastle.gameObject.transform;
+
+                        endTile = tileCastle;
+                        tileAllCategoryList.Add(go);
+                    }
+
+                    baseNumber++;
+                }
+            }
+        }
+
+        
     }
 
     /// <summary>

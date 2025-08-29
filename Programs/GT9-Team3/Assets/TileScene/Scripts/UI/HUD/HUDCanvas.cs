@@ -215,8 +215,8 @@ public class HUDCanvas : MonoBehaviour
         _gameManager.PauseGame();
         gameSpeed1xBtn.gameObject.SetActive(false);
         gameSpeed2xBtn.gameObject.SetActive(false);
-        gameSpeed5xBtn.gameObject.SetActive(false);
+        gameSpeed5xBtn.gameObject.SetActive(true);
 
-        SetGameSpeed5x();
+        //SetGameSpeed5x();
     }
 }

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class EnemyAnimationController : MonoBehaviour
 {
+    public Enemy _enemy;
     public Animator animator;
 
     public float attackInterval = 1.5f;  // 1�� ����
@@ -22,7 +23,12 @@ public class EnemyAnimationController : MonoBehaviour
     {
         animator = GetComponent<Animator>();
         // Animator�� �ڵ����� �⺻ ���º��� �����
+        _enemy = GetComponentInParent<Enemy>();
+        _enemy.SetAnimationController(this);
     }
+
+    
+
 
     void Update()
     {

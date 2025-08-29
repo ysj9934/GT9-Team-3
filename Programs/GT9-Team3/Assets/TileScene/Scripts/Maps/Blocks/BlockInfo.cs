@@ -71,7 +71,10 @@ public class BlockInfo : MonoBehaviour
     /// <param name="level">월드 레벨</param>
     public void UpdateWorldLevel(int level)
     {
-        spriteRenderer.sprite = _blockData.sprites[level - 1];
+        if (level < 4)
+            spriteRenderer.sprite = _blockData.sprites[level - 1];
+        else
+            spriteRenderer.sprite = _blockData.sprites[0];
     }
 
     /// <summary>
@@ -217,6 +220,7 @@ public class BlockInfo : MonoBehaviour
             go.transform.SetParent(transform);
             Tower1 tower = go.GetComponent<Tower1>();
             tower.enabled = true;
+            tower.rangeVisual.SetActive(false);
             Collider2D collider = go.GetComponent<Collider2D>();
             collider.enabled = true;
         }

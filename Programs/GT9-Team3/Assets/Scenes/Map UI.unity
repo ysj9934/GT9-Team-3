@@ -260,18 +260,18 @@ PrefabInstance:
     - target: {fileID: 2798830316006123831, guid: db67cc82b8271fe4ead26cbf112e0299, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 1584511946}
+      objectReference: {fileID: 754729741}
     - target: {fileID: 2798830316006123831, guid: db67cc82b8271fe4ead26cbf112e0299, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2798830316006123831, guid: db67cc82b8271fe4ead26cbf112e0299, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: ShowPopup
+      value: EnterHardMode
       objectReference: {fileID: 0}
     - target: {fileID: 2798830316006123831, guid: db67cc82b8271fe4ead26cbf112e0299, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: PopUp, Assembly-CSharp
+      value: MapUICanvas, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 2798830316006123831, guid: db67cc82b8271fe4ead26cbf112e0299, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
@@ -3098,6 +3098,18 @@ MonoBehaviour:
       - m_Target: {fileID: 554466273}
         m_TargetAssemblyTypeName: DataManager, Assembly-CSharp
         m_MethodName: SelectedStage
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 104
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 754729741}
+        m_TargetAssemblyTypeName: MapUICanvas, Assembly-CSharp
+        m_MethodName: TextWorldStageInfo
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -7836,6 +7848,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _resourceManager: {fileID: 0}
   Startbutton: {fileID: 527312844}
+  worldStageInfoText: {fileID: 973251865}
   staminaHoldingAmountText: {fileID: 1545928206}
   goldHoldingAmountText: {fileID: 1855444628}
   diaHoldingAmountText: {fileID: 838036467}
@@ -7911,6 +7924,18 @@ MonoBehaviour:
       - m_Target: {fileID: 554466273}
         m_TargetAssemblyTypeName: DataManager, Assembly-CSharp
         m_MethodName: SelectedStage
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 101
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 754729741}
+        m_TargetAssemblyTypeName: MapUICanvas, Assembly-CSharp
+        m_MethodName: TextWorldStageInfo
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -9080,6 +9105,18 @@ MonoBehaviour:
       - m_Target: {fileID: 554466273}
         m_TargetAssemblyTypeName: DataManager, Assembly-CSharp
         m_MethodName: SelectedStage
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 103
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 754729741}
+        m_TargetAssemblyTypeName: MapUICanvas, Assembly-CSharp
+        m_MethodName: TextWorldStageInfo
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -11134,6 +11171,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 754729741}
+        m_TargetAssemblyTypeName: MapUICanvas, Assembly-CSharp
+        m_MethodName: TextWorldStageInfo
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 105
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1200073665
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11718,6 +11767,18 @@ MonoBehaviour:
       - m_Target: {fileID: 554466273}
         m_TargetAssemblyTypeName: DataManager, Assembly-CSharp
         m_MethodName: SelectedStage
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 102
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 754729741}
+        m_TargetAssemblyTypeName: MapUICanvas, Assembly-CSharp
+        m_MethodName: TextWorldStageInfo
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

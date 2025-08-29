@@ -57,7 +57,8 @@ public class TileMove : MonoBehaviour
 
             TileMoveDrag();
 
-            if (Input.GetMouseButtonUp(0))
+            if (Input.GetMouseButtonUp(0) ||
+                (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Ended))
             {
                 TileMoveUp();
             }

@@ -24,6 +24,7 @@ public class DataManager : MonoBehaviour
     public List<Wave_DataTable> stageWaveIdList;
     public int worldCode;
     public int stageCode;
+    public bool isHardMode = false;
 
     private void Awake()
     {
@@ -54,6 +55,11 @@ public class DataManager : MonoBehaviour
         // valid check
         if (IsValidate(stageId))
         {
+            if (stageId == 401)
+                isHardMode = true;
+            else 
+                isHardMode = false;
+
             this.stageId = stageId;
             SetStageWaveList(this.stageId);
             this.worldCode = stageId / 100;
@@ -86,7 +92,7 @@ public class DataManager : MonoBehaviour
 
     public StageData SendStageData()
     {
-        return new StageData(stageId, worldCode, stageCode, stageWaveIdList);
+        return new StageData(stageId, worldCode, stageCode, stageWaveIdList, isHardMode);
     }
 
     private void ClearStageData()
@@ -146,23 +152,26 @@ public class StageData
     public int stageCode;
     public int roundCode;
     public int waveCode;
+    public bool isHardMode;
 
     // DataManager To GameManager
-    public StageData(int stageId, int worldCode, int stageCode, List<Wave_DataTable> stageWaveList)
+    public StageData(int stageId, int worldCode, int stageCode, List<Wave_DataTable> stageWaveList, bool isHardMode)
     {
         this.stageId = stageId;
         this.worldCode = worldCode;
         this.stageCode = stageCode;
         this.stageWaveList = stageWaveList;
+        this.isHardMode = isHardMode;
     }
 
     // GameManager To HUD
-    public StageData(int worldCode, int stageCode, int roundCode, int waveCode)
+    public StageData(int worldCode, int stageCode, int roundCode, int waveCode, bool isHardMode)
     {
         this.worldCode = worldCode;
         this.stageCode = stageCode;
         this.roundCode = roundCode;
         this.waveCode = waveCode;
+        this.isHardMode = isHardMode;
     }
 
     // GameManager To TileManager
@@ -172,9 +181,10 @@ public class StageData
     }
 
     // GameManager To WaveManager
-    public StageData(List<Wave_DataTable> stageWaveList)
+    public StageData(List<Wave_DataTable> stageWaveList, bool isHardMode)
     {
         this.stageWaveList = stageWaveList;
+        this.isHardMode = isHardMode;
     }
 
     public StageData(int waveCode, int roundCode)
