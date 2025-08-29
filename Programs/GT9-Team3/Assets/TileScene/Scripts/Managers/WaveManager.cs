@@ -182,7 +182,7 @@ public class WaveManager : MonoBehaviour
     { 
         if (waveRoutine != null)
         {
-            StopCoroutine(waveRoutine);
+            StopCoroutine(AwakeWave());
             waveRoutine = null;
             isWaveRoutine = false;
         }

@@ -80,6 +80,9 @@ public class Castle : MonoBehaviour
         isDead = true;
 
         Debug.Log("GameOver");
+
+
+        //_gameManager.PauseGame();
         _gameManager._waveManager.StopWave();
         HUDCanvas.Instance._gameDefeatPanel.OpenWindow();
     }
