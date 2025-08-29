@@ -123,7 +123,7 @@ public class BlockInfo : MonoBehaviour
         // Tower Install Cost
         // 타워 설치 비용
         ResourceManager.Instance.Spend(bp.CostType, (float)bp.CostValue / 4);
-        HUDCanvas.Instance.UpdateTilePiece();
+        HUDCanvas.Instance.ShowTilePiece();
 
         hasTower = true;
 
@@ -140,7 +140,7 @@ public class BlockInfo : MonoBehaviour
     {
         //Debug.Log("타워 제거 및 골드 환급");
         ResourceManager.Instance.Earn(currentTower.towerdata.makeCost, (float)currentTower.towerdata.sellValue / 4);
-        HUDCanvas.Instance.UpdateTilePiece();
+        HUDCanvas.Instance.ShowTilePiece();
 
         Tower1 tower = GetComponentInChildren<Tower1>(true);
         Destroy(tower.gameObject);

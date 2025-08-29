@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Cinemachine;
 using TMPro;
@@ -94,7 +95,7 @@ public class TileManager : MonoBehaviour
 
             Debug.Log("gameRoundLevel" + gameRoundLevel);
 
-            if (this.gameRoundLevel < 2)
+            if (stageData.waveCode < 7)
             {
                 mapExtendLevel = 1;
             }
@@ -131,6 +132,10 @@ public class TileManager : MonoBehaviour
     /// </summary>
     public void Initialize()
     {
+        tileAllCategoryList = new List<GameObject>();
+        path = new List<TileData>();
+        isUIActive = true;
+        isMoveActive = true;
         SetMapResize(tileLength);
         SetTileGrid(tileLength);
         SetTileRoad(tileLength);
@@ -343,6 +348,7 @@ public class TileManager : MonoBehaviour
     private void SetTileRoad(int tileLength)
     {
         tileInfoList = new List<TileInfo>();
+        _gameManager.DestroyOfType<TileData>();
         int baseNumber = 0;
 
         for (int row = 0; row < 3; row++)

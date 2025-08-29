@@ -42,7 +42,7 @@ public class GameResult : MonoBehaviour
 
     private void ViewHoldingStamina()
     {
-        staminaAmountText.text = $"{ResourceManager.Instance.showResource(ResourceType.Mana).ToString()} / 99";
+        staminaAmountText.text = $"{ResourceManager.Instance.GetAmount(ResourceType.Mana).ToString()} / 99";
     }
 
     public void GoShop()
@@ -72,6 +72,7 @@ public class GameResult : MonoBehaviour
         {
             restartGameBtn.enabled = false;
             ResourceManager.Instance.Spend(ResourceType.Mana, 10);
+            
 
             Debug.Log("게임 재시작");
             DataManager.Instance.RestartStage(DataManager.Instance.stageId);

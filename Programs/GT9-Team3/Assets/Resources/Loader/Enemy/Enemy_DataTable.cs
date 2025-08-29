@@ -7,7 +7,7 @@ using UnityEngine;
 public class Enemy_DataTable
 {
     /// <summary>
-    /// key
+    /// Enemy_ID
     /// </summary>
     public int key;
 
@@ -24,7 +24,7 @@ public class Enemy_DataTable
     /// <summary>
     /// MaxHP
     /// </summary>
-    public int MaxHP;
+    public float MaxHP;
 
     /// <summary>
     /// MovementSpeed
@@ -34,7 +34,7 @@ public class Enemy_DataTable
     /// <summary>
     /// AttackDamage
     /// </summary>
-    public int AttackDamage;
+    public float AttackDamage;
 
     /// <summary>
     /// AttackSpeed
@@ -59,7 +59,7 @@ public class Enemy_DataTable
     /// <summary>
     /// Defense
     /// </summary>
-    public int Defense;
+    public float Defense;
 
     /// <summary>
     /// TilePieceAmount

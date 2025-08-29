@@ -41,7 +41,7 @@ public class DataManager : MonoBehaviour
         waveDataLoader = new Wave_DataTableLoader();
 
         // Test 
-        SelectedStage(105);
+        //SelectedStage(105);
     }
 
     /// <summary>
@@ -51,9 +51,6 @@ public class DataManager : MonoBehaviour
     /// </summary>
     public void SelectedStage(int stageId)
     {
-        // initialize previous stage data
-        ClearStageData();
-
         // valid check
         if (IsValidate(stageId))
         {
@@ -64,6 +61,8 @@ public class DataManager : MonoBehaviour
         }
         
         Debug.Log("selected Stage_ID: " + stageId);
+        //if (GameManager.Instance != null)
+        //    GameManager.Instance.ResumeGame();
     }
 
     public void RestartStage(int stageId)
@@ -82,7 +81,7 @@ public class DataManager : MonoBehaviour
 
         Debug.Log("selected Stage_ID: " + stageId);
 
-        GameManager.Instance.ReceiveStageData();
+        GameManager.Instance.ReStartStage();
     }
 
     public StageData SendStageData()
@@ -96,10 +95,15 @@ public class DataManager : MonoBehaviour
         stageWaveIdList = new List<Wave_DataTable>();
         worldCode = 0;
         stageCode = 0;
+
+        GameManager.Instance.DestroyOfType<Projectile>();
+        WaveManager.Instance.ReturnAllEnemies();
     }
 
     private void SetStageWaveList(int stageId)
     {
+        stageWaveIdList = new List<Wave_DataTable>();
+
         foreach (var items in waveDataLoader.ItemsList)
         {
             if (items.Stage_ID == this.stageId)

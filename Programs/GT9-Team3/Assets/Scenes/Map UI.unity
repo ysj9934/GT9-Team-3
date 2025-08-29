@@ -5261,10 +5261,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1194067286}
-        m_TargetAssemblyTypeName: SceneLoader, Assembly-CSharp
-        m_MethodName: LoadSceneByName
-        m_Mode: 5
+      - m_Target: {fileID: 754729741}
+        m_TargetAssemblyTypeName: MapUICanvas, Assembly-CSharp
+        m_MethodName: StageStartButton
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -7694,6 +7694,7 @@ GameObject:
   - component: {fileID: 754729740}
   - component: {fileID: 754729739}
   - component: {fileID: 754729738}
+  - component: {fileID: 754729741}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -7821,6 +7822,19 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!114 &754729741
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 754729736}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a026d5a6783cc004d9ec0f6e009845f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Startbutton: {fileID: 527312844}
 --- !u!1 &761396398 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2431038463367654988, guid: 015f790d76dce4a2cbea56eb3e7f9eb3, type: 3}
@@ -9845,50 +9859,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 908581945530025065, guid: 2fa4b6688706943c2b17013c1c1b805f, type: 3}
   m_PrefabInstance: {fileID: 383364255}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1018362348
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1018362350}
-  - component: {fileID: 1018362351}
-  m_Layer: 0
-  m_Name: StageManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1018362350
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1018362348}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 576.4447, y: 588.323, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1018362351
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1018362348}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4d9bf8b6a4d7fc442800d44ee9da03e7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!224 &1027528016 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6331772760235340289, guid: df2dbb8ddfa9d4613a4b82ee72d19c60, type: 3}
@@ -10713,17 +10683,6 @@ PrefabInstance:
       addedObject: {fileID: 331072826}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 990bbecbfff0d4a3599e4042e6ba1f74, type: 3}
---- !u!114 &1194067286 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1987151235700782081, guid: e71c22e9e37c0ee4fbd48a6f2bbd58d7, type: 3}
-  m_PrefabInstance: {fileID: 1536419460}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 088031a6723bee048a86d85119633c9c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &1195462178
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -14314,15 +14273,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2897495367749339676, guid: e71c22e9e37c0ee4fbd48a6f2bbd58d7, type: 3}
       propertyPath: m_Name
-      value: SceneLoader (1)
+      value: SceneLoader
       objectReference: {fileID: 0}
     - target: {fileID: 8297090760023782438, guid: e71c22e9e37c0ee4fbd48a6f2bbd58d7, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 962
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8297090760023782438, guid: e71c22e9e37c0ee4fbd48a6f2bbd58d7, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 542
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8297090760023782438, guid: e71c22e9e37c0ee4fbd48a6f2bbd58d7, type: 3}
       propertyPath: m_LocalPosition.z
@@ -20822,7 +20781,6 @@ SceneRoots:
   - {fileID: 266231761}
   - {fileID: 591316209}
   - {fileID: 754729737}
-  - {fileID: 1018362350}
   - {fileID: 982759089}
   - {fileID: 7211202305753815914}
   - {fileID: 1536419460}

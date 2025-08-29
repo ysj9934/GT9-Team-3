@@ -17,7 +17,7 @@ public class GameManager : MonoBehaviour
     public DataManager _dataManager;
     public ResourceManager _resourceManager;
 
-    // Canvas
+    // MapUICanvas
     public HUDCanvas _hudCanvas;
 
     public Transform baseTransform;
@@ -29,7 +29,6 @@ public class GameManager : MonoBehaviour
     public int gameRoundLevel;
     public int gameWaveLevel;
     public List<Wave_DataTable> stageWaveList = new List<Wave_DataTable>();
-    public int tempLevel;
 
     // 게임 일시정지 및 재개
     public bool isGamePaused = false;
@@ -54,7 +53,7 @@ public class GameManager : MonoBehaviour
         _dataManager = DataManager.Instance;
         _resourceManager = ResourceManager.Instance;
 
-        // Initialize Canvas
+        // Initialize MapUICanvas
         _hudCanvas = HUDCanvas.Instance;
 
         if (IsValidate())
@@ -147,6 +146,24 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void ReStartStage()
+    {
+        // 이전 데이터 초기화하기 
+        ClearGameManager();
+        _hudCanvas.SetGameSpeed5x();
+
+        ReceiveStageData();
+    }
+
+    public void ClearGameManager()
+    {
+        gameWorldLevel = 0;
+        gameStageLevel = 0;
+        gameRoundLevel = 0;
+        gameWaveLevel = 0;
+        stageWaveList = new List<Wave_DataTable>();
+    }
+
     public void SendStageDataToHUD()
     {
         _hudCanvas.ReceiveStageData(
@@ -189,10 +206,11 @@ public class GameManager : MonoBehaviour
     {
         if (stageData != null)
         {
+            gameWaveLevel = stageData.waveCode;
             gameRoundLevel = stageData.roundCode;
             SendStageDataToHUD();
 
-            if (stageData.worldCode == 7)
+            if (gameWaveLevel == 7)
             {
                 Debug.Log("MapExtend 01");
                 MapExtend();
@@ -215,6 +233,7 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void PauseGame()
     {
+        Debug.Log("PauseGame");
         Time.timeScale = 0;
         isGamePaused = true;
     }
@@ -225,6 +244,7 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void ResumeGame()
     {
+        Debug.Log("ResumeGame");
         Time.timeScale = 1f;
         isGamePaused = false;
     }
@@ -273,13 +293,13 @@ public class GameManager : MonoBehaviour
     public void Earn50G()
     {
         _resourceManager.Earn(ResourceType.Gold, 50);
-        _hudCanvas.UpdateTilePiece();
+        _hudCanvas.ShowTilePiece();
     }
 
     public void Earn0G(int amount)
     {
         _resourceManager.Earn(ResourceType.Gold, amount);
-        _hudCanvas.UpdateTilePiece();
+        _hudCanvas.ShowTilePiece();
 
     }
 

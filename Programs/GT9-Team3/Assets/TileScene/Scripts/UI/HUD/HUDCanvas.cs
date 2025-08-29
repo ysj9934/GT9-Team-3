@@ -70,7 +70,7 @@ public class HUDCanvas : MonoBehaviour
 
         if (IsValidate())
         {
-            UpdateTilePiece();
+            ShowTilePiece();
 
             TurnOffStartWave();
         }
@@ -132,9 +132,9 @@ public class HUDCanvas : MonoBehaviour
         castleHealthSlider.value = healthPercent;
     }
 
-    public void UpdateTilePiece()
+    public void ShowTilePiece()
     {
-        resourceTilePieceAmountText.text = $"{ResourceManager.Instance.showResource(ResourceType.Tilepiece)}";
+        resourceTilePieceAmountText.text = $"{ResourceManager.Instance.GetAmount(ResourceType.Tilepiece)}";
     }
 
     public void TurnOnPathfinder()

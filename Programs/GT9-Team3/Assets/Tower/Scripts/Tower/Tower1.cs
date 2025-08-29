@@ -209,6 +209,7 @@ public class Tower1 : MonoBehaviour
 
         // 리소스 차감
         ResourceManager.Instance.Spend(towerdata.UpgradeCost, towerdata.UpgradeValue);
+        HUDCanvas.Instance.ShowTilePiece();
             
         // ID 증가 및 데이터 갱신
         int nextTowerID = towerdata.towerID + 1;

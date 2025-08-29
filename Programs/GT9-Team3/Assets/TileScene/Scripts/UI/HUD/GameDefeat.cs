@@ -49,7 +49,7 @@ public class GameDefeat : MonoBehaviour
     /// </summary>
     private void ViewHoldingCrystal()
     {
-        holdDiaAmountText.text = ResourceManager.Instance.showResource(ResourceType.Crystal).ToString();
+        holdDiaAmountText.text = ResourceManager.Instance.GetAmount(ResourceType.Crystal).ToString();
     }
 
     /// <summary>
