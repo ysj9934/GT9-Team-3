@@ -134,9 +134,9 @@ public class TowerSellUI : MonoBehaviour
     {
         // 내부적으로 tower.data에서 정보 불러와 텍스트나 이미지 업데이트
         TowerData d = tower.towerdata;
-        ProjectileData p = d.projectileData;
 
-        towerIconImage.sprite = tower.blueprint.icon;
+        towerIconImage.sprite = tower.GetCurrentTowerSprite();
+        //towerIconImage.sprite = tower.blueprint.icon;
         towerNameText.text = d.innerName;
         levelText.text = $"Lv.{d.towerLevel}";
         attackSpeedText.text = $"{d.attackSpeed}/s";
@@ -145,6 +145,8 @@ public class TowerSellUI : MonoBehaviour
         attackTypeText.text = d.attackType.ToString();
         sellValueText.text = $"Cost : {d.sellValue}";
         upgradeValueText.text = $"Cost : {d.UpgradeValue}";
+
+        ProjectileData p = d.projectileData;
 
         damageText.text = p.damage.ToString();
         slowEffectText.text = p.slowEffect.ToString();
