@@ -292,13 +292,13 @@ public class GameManager : MonoBehaviour
 
     public void Earn50G()
     {
-        _resourceManager.Earn(ResourceType.Gold, 50);
+        _resourceManager.Earn(ResourceType.Tilepiece, 50);
         _hudCanvas.ShowTilePiece();
     }
 
     public void Earn0G(int amount)
     {
-        _resourceManager.Earn(ResourceType.Gold, amount);
+        _resourceManager.Earn(ResourceType.Tilepiece, amount);
         _hudCanvas.ShowTilePiece();
 
     }

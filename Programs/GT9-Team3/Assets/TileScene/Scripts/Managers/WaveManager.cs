@@ -203,7 +203,9 @@ public class WaveManager : MonoBehaviour
     /// 게임 패배후 초기화
     /// </summary>
     public void StopWave()
-    { 
+    {
+        rewardGold -= stageWaveList[waveIndex - 1].RewardGoldAmount;
+
         if (waveRoutine != null)
         {
             StopCoroutine(waveRoutine);
@@ -222,6 +224,8 @@ public class WaveManager : MonoBehaviour
 
         path.Clear();
         aliveEnemyCount = 0;
+
+        
     }
 
     public void ReturnAllEnemies()

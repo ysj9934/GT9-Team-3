@@ -4,7 +4,10 @@ using UnityEngine;
 
 public class TowerUpgradeUI : MonoBehaviour
 {
+    public BlockInfo _blockInfo;
     private Tower1 selectedTower;
+
+    private TowerData towerdata;
 
 
     public void SetTargetTower(Tower1 tower)
@@ -19,6 +22,7 @@ public class TowerUpgradeUI : MonoBehaviour
         if (selectedTower == null)
         {
             Debug.LogWarning("선택된 타워가 없습니다!");
+            return;
         }
 
         if (selectedTower.TryUpgrade())
@@ -26,10 +30,11 @@ public class TowerUpgradeUI : MonoBehaviour
             Debug.Log("업그레이드 성공");
 
             // 선택된 타워 다시 갱신
-            SetTargetTower(selectedTower);
-
+            selectedTower.UpdateTowerVisual(selectedTower.towerdata.towerLevel);
+            selectedTower.blockInfo.SetTowerUpgrade(selectedTower);
             // UI 정보 새로고침
             HUDCanvas.Instance.sellUI.Refresh(selectedTower);
+            TowerSellUI.Instance.Hide();
         }
         else
         {

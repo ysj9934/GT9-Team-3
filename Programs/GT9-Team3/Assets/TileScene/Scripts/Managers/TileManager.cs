@@ -93,7 +93,7 @@ public class TileManager : MonoBehaviour
             this.gameWorldLevel = stageData.worldCode;
             this.gameRoundLevel = stageData.roundCode;
 
-            Debug.Log("gameRoundLevel" + gameRoundLevel);
+            //Debug.Log("gameRoundLevel" + gameRoundLevel);
 
             if (stageData.waveCode < 7)
             {

@@ -15,6 +15,11 @@ public class Tower1 : MonoBehaviour
 
     public TowerBlueprint blueprint;
 
+    [SerializeField] private SpriteRenderer towerSprite;         // 타워 이미지
+    [SerializeField] private List<Sprite> levelSprites;          // 레벨별 스프라이트
+    [SerializeField] private GameObject auraEffect;              // 오로라 이펙트 오브젝트 (4레벨 이상에만 표시)
+
+
     private void Awake()
     {
         rangeVisual = transform.Find("RangeVisual")?.gameObject;
@@ -64,6 +69,11 @@ public class Tower1 : MonoBehaviour
         {
             Debug.LogWarning("[타워] 발사체 프리팹 또는 데이터가 연결되지 않았습니다.");
         }
+    }
+    public void ShowAttackRange()
+    {
+        if (rangeVisual != null)
+            rangeVisual.SetActive(true);
     }
 
     public void ApplyData(TowerData d)
@@ -239,6 +249,8 @@ public class Tower1 : MonoBehaviour
             }
 
             Debug.Log($"[TowerUpgrade] 성공 → ID: {nextTowerID}");
+
+            
             return true;
         }
         else
@@ -246,6 +258,27 @@ public class Tower1 : MonoBehaviour
             Debug.LogWarning($"[TowerUpgrade] ID {nextTowerID}에 해당하는 데이터 없음");
             return false;
         }
+
+        
+    }
+
+    // 업그레이드 이미지 갱신
+    public void UpdateTowerVisual(int level)
+    {
+        if (level - 1 < levelSprites.Count)
+        {
+            towerSprite.sprite = levelSprites[level - 1];
+        }
+
+        if (auraEffect != null)
+        {
+            auraEffect.SetActive(level >= 4);
+        }
+    }
+
+    public Sprite GetCurrentTowerSprite()
+    {
+        return towerSprite.sprite;
     }
 
 }

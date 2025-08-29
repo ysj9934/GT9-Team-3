@@ -46,11 +46,15 @@ public class HUDCanvas : MonoBehaviour
     // ResultPanel
     public GameResult _gameResultPanel;
 
+    public TowerUpgradeUI upgradeUI;
     public TowerSellUI sellUI;
 
     private void Awake()
     {
-        Instance = this;
+        if (Instance == null) Instance = this;
+        else Destroy(gameObject);
+
+        if (sellUI != null) sellUI.Hide();
 
         pathfinderImage = pathfinderBtn.GetComponent<Image>();
         waveStartImage = waveStartBtn.GetComponent<Image>();
