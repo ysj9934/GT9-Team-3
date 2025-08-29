@@ -10,6 +10,7 @@ public class MapUICanvas : MonoBehaviour
     public ResourceManager _resourceManager;
 
     [SerializeField] private Button Startbutton;
+    [SerializeField] private TextMeshProUGUI worldStageInfoText;
     [SerializeField] private TextMeshProUGUI staminaHoldingAmountText;
     [SerializeField] private TextMeshProUGUI goldHoldingAmountText;
     [SerializeField] private TextMeshProUGUI diaHoldingAmountText;
@@ -28,11 +29,25 @@ public class MapUICanvas : MonoBehaviour
 
     public void StageStartButton()
     {
-        if (!_resourceManager.CanAfford(ResourceType.Mana, 5)) return;
-
-        _resourceManager.Spend(ResourceType.Mana, 5);
-        SceneLoader.Instance.LoadSceneByName("PresentationScene");
+        if (_resourceManager.CanAfford(ResourceType.Mana, 5))
+        {
+            _resourceManager.Spend(ResourceType.Mana, 5);
+            SceneLoader.Instance.LoadSceneByName("PresentationScene");
+        }
+        else
+        {
+            Debug.Log("Not enought Stamina");
+        }
+            
     }
+
+    public void TextWorldStageInfo(int stageId)
+    {
+        int worldText = stageId / 100;
+        int stageText = stageId % 10;
+        worldStageInfoText.text = $"World {worldText} - Stage {stageText}";
+    }
+
 
     public float ShowResourceAmount(ResourceType type)
     {
@@ -78,4 +93,19 @@ public class MapUICanvas : MonoBehaviour
         Debug.Log("Diamond Add");
         ShowDiaAmount();
     }
+
+    public void EnterHardMode()
+    {
+        if (ResourceManager.Instance.CanAfford(ResourceType.Mana, 10))
+        {
+            ResourceManager.Instance.Spend(ResourceType.Mana, 10);
+            DataManager.Instance.SelectedStage(401);
+            SceneLoader.Instance.LoadSceneByName("PresentationScene");
+        }
+        else
+        {
+            Debug.Log("Not enought Stamina");
+        }
+    }
+
 }

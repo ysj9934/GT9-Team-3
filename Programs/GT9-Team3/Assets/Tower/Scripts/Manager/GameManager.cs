@@ -32,6 +32,7 @@ public class GameManager : MonoBehaviour
 
     // 게임 일시정지 및 재개
     public bool isGamePaused = false;
+    public bool isHardMode;
 
     private void Awake()
     {
@@ -128,6 +129,7 @@ public class GameManager : MonoBehaviour
             gameWorldLevel = stageData.worldCode;
             gameStageLevel = stageData.stageCode;
             stageWaveList = stageData.stageWaveList;
+            isHardMode = stageData.isHardMode;
 
             // send stage data to HUDCanvas
             // 3. WaveManager에 스테이지 정보 전달
@@ -172,7 +174,8 @@ public class GameManager : MonoBehaviour
                     gameWorldLevel,
                     gameStageLevel,
                     gameRoundLevel,
-                    gameWaveLevel
+                    gameWaveLevel,
+                    isHardMode
                 )
             );
     }
@@ -186,7 +189,8 @@ public class GameManager : MonoBehaviour
                     gameWorldLevel,
                     gameStageLevel,
                     gameRoundLevel,
-                    gameWaveLevel
+                    gameWaveLevel,
+                    isHardMode
                 )
             );
     }
@@ -196,7 +200,8 @@ public class GameManager : MonoBehaviour
         _waveManager.ReceiveStageData(
             new StageData
             (
-                stageWaveList
+                stageWaveList,
+                isHardMode
             )
         );
         

@@ -20,7 +20,7 @@ public class EnemyMovement : MonoBehaviour
 
     public void pathPoint(List<Transform> path)
     {
-        gameObject.transform.position = path[0].transform.position + new Vector3(0f, -0.16f, 0f);
+        gameObject.transform.position = path[0].transform.position + new Vector3(0f, 0.16f, 0f);
         currentPathIndex = 0;
 
         int childCount = path.Count;
@@ -50,7 +50,7 @@ public class EnemyMovement : MonoBehaviour
         Transform target = pathPoints[currentPathIndex];
 
         // MoveTowards를 사용해 목표점까지 정확히 이동
-        Vector2 pos = target.position + new Vector3(0f, -0.16f, 0f);
+        Vector2 pos = target.position + new Vector3(0f, 0.16f, 0f);
         transform.position = Vector3.MoveTowards(transform.position, pos, _enemy._enemyStat.enemyMovementSpeed * Time.deltaTime);
 
         // 목표점에 도달했으면 다음 지점으로 이동

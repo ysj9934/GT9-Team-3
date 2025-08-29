@@ -45,20 +45,38 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _gameManager: {fileID: 0}
+  towerUIdnjswls: {fileID: 0}
+  towerSellUI: {fileID: 0}
   tileLength: 5
-  worldLevel: 1
-  tempLevel: 1
+  gameWorldLevel: 0
+  gameRoundLevel: 0
+  mapExtendLevel: 1
   tilePrefabs:
-  - {fileID: 8240947508694223969, guid: 6eace172b3cbc9f4082fed72b12eece4, type: 3}
-  - {fileID: 8185493614075263715, guid: f2fb3fd2b82d07f4292d96d23ca0c330, type: 3}
-  - {fileID: 7936289938698289828, guid: 368eac32b1dfd6f4fb5c28817b44a95b, type: 3}
+  - {fileID: 5640010735581920036, guid: c3ab808bc1baae64b83ea9ea068ceaf4, type: 3}
+  - {fileID: 8240947508694223969, guid: 3975148732437544fa6257ca49ffe771, type: 3}
+  - {fileID: 8185493614075263715, guid: 495768a4482b9154a8142277cfa1fc00, type: 3}
+  - {fileID: 7936289938698289828, guid: e1c6c05b07b84c1438ef4d4664407c58, type: 3}
+  tileHardModePrefabs:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   tileGridPrefab: {fileID: 1648578658134522860, guid: d4c4867eb3844ae4cacd9621fc7884de, type: 3}
   tileCastlePrefab: {fileID: 1648578658134522860, guid: 72b2f12649d1c3b4db71e23d74144a46, type: 3}
   tileSpawnPrefab: {fileID: 2012721464780551075, guid: 7e286290d78285743a7d2adea0c43073, type: 3}
+  spawnTransform: {x: 0, y: 0}
   startTile: {fileID: 0}
   endTile: {fileID: 0}
-  pathfinderPrefab: {fileID: 2678620220463419942, guid: c39df59ea4e072d4f8b41eb031dc0fb4, type: 3}
-  path: []
+  tileAllCategoryList: []
   tileGridList: []
   tileInfoList: []
-  spawnTransform: []
+  isHardMode: 0
+  pathfinderPrefab: {fileID: 2678620220463419942, guid: c39df59ea4e072d4f8b41eb031dc0fb4, type: 3}
+  path: []
+  isUIActive: 0
+  isMoveActive: 0
+  inventoryList: []
+  content: {fileID: 0}
+  inventoryItemTilePrefab: {fileID: 0}
+  inventoryItemPrefab: {fileID: 0}
+  tileItemPrefab: {fileID: 0}

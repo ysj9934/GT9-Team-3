@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Resources;
 using Unity.VisualScripting;
 using UnityEditor.EditorTools;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -26,6 +27,7 @@ public class WaveManager : MonoBehaviour
     private bool isWaveReady = false;
     private bool isWaveRoutine = false;
     public int rewardGold = 0;
+    public bool isHardMode;
 
     // Wave Data
     private List<float> spawnStartTime = new List<float>();
@@ -90,6 +92,7 @@ public class WaveManager : MonoBehaviour
         if (stageData != null)
         {
             this.stageWaveList = stageData.stageWaveList;
+            this.isHardMode = stageData.isHardMode;
             ResourceManager.Instance.resources[ResourceType.Tilepiece] = stageWaveList[0].StageStartTilePiece;
             HUDCanvas.Instance.ShowTilePiece();
             this.rewardGold = 0;
@@ -142,11 +145,7 @@ public class WaveManager : MonoBehaviour
             _gameManager._hudCanvas.TurnOnStartWave();
             _gameManager._tileManager.isUIActive = false;
             _gameManager._tileManager.isMoveActive = false;
-
-            
         }
-
-        
     }
 
     public void SendWaveData()
@@ -303,7 +302,7 @@ public class WaveManager : MonoBehaviour
 
     private void EnemyEnhanced(Enemy enemy)
     {
-        enemy._enemyStat.enemyMaxHP *= Mathf.Pow(1.01f, (float) waveIndex);
+        enemy._enemyStat.enemyMaxHP *= Mathf.Pow(1.02f, (float) waveIndex);
         enemy._enemyHealthHandler.InitializeHealth();
     }
 
@@ -323,18 +322,27 @@ public class WaveManager : MonoBehaviour
 
         Debug.Log("WaveEnd");
 
-        if (waveIndex < 9)
+        if (!isHardMode)
         {
-            SetWaveSystem(stageWaveList[waveIndex]);
+            if (waveIndex < 9)
+            {
+                SetWaveSystem(stageWaveList[waveIndex]);
+            }
+            else
+            {
+                // HUD에서 승리 panel
+                Debug.Log("Victory");
+
+                _gameManager.PauseGame();
+                HUDCanvas.Instance._gameResultPanel.OpenWindow(true);
+            }
         }
         else
         {
-            // HUD에서 승리 panel
             Debug.Log("Victory");
-
             _gameManager.PauseGame();
             HUDCanvas.Instance._gameResultPanel.OpenWindow(true);
-        }   
+        }
     }
 
     /// <summary>
