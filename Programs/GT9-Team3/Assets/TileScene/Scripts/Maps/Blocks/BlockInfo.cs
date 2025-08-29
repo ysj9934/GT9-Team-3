@@ -90,9 +90,29 @@ public class BlockInfo : MonoBehaviour
     /// Tower 위치 설정
     /// </summary>
     /// <param name="bp">타워 청사진</param>
-    public void SetTowerPlace(TowerBlueprint bp)
+    public Tower1 SetTowerPlace(TowerBlueprint bp)
     {
         _tileInfo._tilePlaceOnTower.HandleTowerPlacement(blockSerialNumber, hasTower, bp, null);
+
+        Vector2 pos = new Vector2(transform.position.x, transform.position.y + 0.37f);
+        GameObject go = Instantiate(bp.towerPrefab, pos, Quaternion.identity);
+        go.transform.SetParent(transform);
+
+        Tower1 tower = go.GetComponent<Tower1>();
+        tower.ApplyData(bp);
+        tower.ApplyData(bp.data);
+        tower.Intialize(this);
+
+        TowerSellUI.Instance.Show(tower);
+
+        ResourceManager.Instance.Spend(bp.CostType, (float)bp.CostValue / 4);
+        HUDCanvas.Instance.UpdateTilePiece();
+
+        hasTower = true;
+        if (hasTower && _collider != null)
+            _collider.enabled = false;
+
+        return tower;
     }
 
     /// <summary>
