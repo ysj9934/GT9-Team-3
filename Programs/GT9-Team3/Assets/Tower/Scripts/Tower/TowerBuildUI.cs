@@ -12,7 +12,7 @@ public class TowerBuildUI : MonoBehaviour
     public TowerOptionItem itemPrefab;
 
     [Header("Catalog")]
-    public List<TowerBlueprint> options;  // 노출할 타워 종류들
+    [SerializeField] public List<TowerBlueprint> options;  // 노출할 타워 종류들
 
     private TowerPlacer placer;
     private Vector3Int pendingCell;
@@ -33,9 +33,6 @@ public class TowerBuildUI : MonoBehaviour
         {
             bp.ApplyLoadedData(towerTable, projectileTable);
         }
-
-        Debug.Log($"ProjectileDataLoader.Instance is null? -> {ProjectileDataLoader.Instance == null}");
-        Debug.Log($"TowerDataLoader.Instance is null? -> {TowerDataTableLoader.Instance == null}");
 
     }
 
@@ -93,9 +90,16 @@ public class TowerBuildUI : MonoBehaviour
     {
         if (!ResourceManager.Instance.CanAfford(bp.CostType, bp.CostValue)) return;
 
-        //placer.PlaceTowerFromUI2(bp);
-        _blockInfo.SetTower(bp);
+        _blockInfo.SetTowerPlace(bp);
+        // 타워 설치
+        //Tower1 newTower = _blockInfo.SetTowerPlace(bp);
 
         Hide();
+
+        //HUDCanvas.Instance.upgradeUI.SetTargetTower(newTower);
+        //HUDCanvas.Instance.sellUI.Refresh(newTower);
+
+        //newTower.ShowAttackRange();
     }
+
 }

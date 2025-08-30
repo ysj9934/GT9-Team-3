@@ -1,13 +1,13 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using UnityEditor.EditorTools;
 using UnityEngine;
 
 public class EnemyHealthHandler : MonoBehaviour
 {
     private Enemy _enemy;
+
+    public event Action OnDeath;
 
     public float currentHealth;
 
@@ -22,14 +22,14 @@ public class EnemyHealthHandler : MonoBehaviour
     }
 
     // 예제 용도: 마우스 클릭으로 데미지 입히기
-    private void OnMouseDown()
-    {
-        if (!_enemy.isAlive) return;
+    //private void OnMouseDown()
+    //{
+    //    if (!_enemy.isAlive) return;
 
-        Debug.Log($"Enemy Clicked: {_enemy._enemyStat.enemyName}");
+    //    Debug.Log($"Enemy Clicked: {_enemy._enemyStat.enemyName}");
 
-        TakeDamage(1000, null);
-    }
+    //    TakeDamage(1000, null);
+    //}
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -40,6 +40,7 @@ public class EnemyHealthHandler : MonoBehaviour
         {
             // 성에 도달했을 때 처리
             castle.TakeDamage((int)_enemy._enemyStat.enemyAttackDamage);
+            Debug.Log("castle touch");
             DeathMotion(HitTarget.Castle);
         }
         //else if (projectile != null)
@@ -82,6 +83,10 @@ public class EnemyHealthHandler : MonoBehaviour
     {
         _enemy.isAlive = false;
 
+        OnDeath?.Invoke();
+        _enemy._gameManager._waveManager.activeEnemies.Remove(this.gameObject);
+        OnDeath = null;
+
         switch (target)
         { 
             case HitTarget.Castle:
@@ -91,9 +96,8 @@ public class EnemyHealthHandler : MonoBehaviour
                 Debug.Log($"{_enemy._enemyStat.enemyName} has reached the castle and is destroyed.");
 
                 // 처치 보상
-                ResourceManager.Instance.Earn(ResourceType.Gold, _enemy._enemyStat.enemyTilePieceAmount);
-
-                HUDCanvas.Instance.UpdateTilePiece();
+                ResourceManager.Instance.Earn(ResourceType.Tilepiece, _enemy._enemyStat.enemyTilePieceAmount);
+                HUDCanvas.Instance.ShowTilePiece();
                 break;
         }
 

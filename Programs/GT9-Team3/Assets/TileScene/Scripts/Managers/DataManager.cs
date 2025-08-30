@@ -24,6 +24,7 @@ public class DataManager : MonoBehaviour
     public List<Wave_DataTable> stageWaveIdList;
     public int worldCode;
     public int stageCode;
+    public bool isHardMode = false;
 
     private void Awake()
     {
@@ -39,16 +40,38 @@ public class DataManager : MonoBehaviour
 
         enemyDataLoader = new Enemy_DataTableLoader();
         waveDataLoader = new Wave_DataTableLoader();
-    }
 
+        // Test 
+        //SelectedStage(105);
+    }
 
     /// <summary>
     /// title: selected Stage
     /// created by : yoons, heechun
     /// created at : 25.08.27
     /// </summary>
-
     public void SelectedStage(int stageId)
+    {
+        // valid check
+        if (IsValidate(stageId))
+        {
+            if (stageId == 401)
+                isHardMode = true;
+            else 
+                isHardMode = false;
+
+            this.stageId = stageId;
+            SetStageWaveList(this.stageId);
+            this.worldCode = stageId / 100;
+            this.stageCode = stageId % 10;
+        }
+        
+        Debug.Log("selected Stage_ID: " + stageId);
+        //if (GameManager.Instance != null)
+        //    GameManager.Instance.ResumeGame();
+    }
+
+    public void RestartStage(int stageId)
     {
         // initialize previous stage data
         ClearStageData();
@@ -61,13 +84,15 @@ public class DataManager : MonoBehaviour
             this.worldCode = stageId / 100;
             this.stageCode = stageId % 10;
         }
-        
+
         Debug.Log("selected Stage_ID: " + stageId);
+
+        GameManager.Instance.ReStartStage();
     }
 
     public StageData SendStageData()
     {
-        return new StageData(stageId, worldCode, stageCode, stageWaveIdList);
+        return new StageData(stageId, worldCode, stageCode, stageWaveIdList, isHardMode);
     }
 
     private void ClearStageData()
@@ -76,10 +101,16 @@ public class DataManager : MonoBehaviour
         stageWaveIdList = new List<Wave_DataTable>();
         worldCode = 0;
         stageCode = 0;
+
+        GameManager.Instance.DestroyOfType<Projectile>();
+        WaveManager.Instance.ReturnAllEnemies();
+        TowerSellUI.Instance.Hide();
     }
 
     private void SetStageWaveList(int stageId)
     {
+        stageWaveIdList = new List<Wave_DataTable>();
+
         foreach (var items in waveDataLoader.ItemsList)
         {
             if (items.Stage_ID == this.stageId)
@@ -116,15 +147,49 @@ public class DataManager : MonoBehaviour
 public class StageData
 {
     public int stageId;
-    public List<Wave_DataTable> stageWaveIdList;
+    public List<Wave_DataTable> stageWaveList;
     public int worldCode;
     public int stageCode;
+    public int roundCode;
+    public int waveCode;
+    public bool isHardMode;
 
-    public StageData(int stageId, int worldCode, int stageCode, List<Wave_DataTable> stageWaveIdList)
+    // DataManager To GameManager
+    public StageData(int stageId, int worldCode, int stageCode, List<Wave_DataTable> stageWaveList, bool isHardMode)
     {
         this.stageId = stageId;
         this.worldCode = worldCode;
         this.stageCode = stageCode;
-        this.stageWaveIdList = stageWaveIdList;
+        this.stageWaveList = stageWaveList;
+        this.isHardMode = isHardMode;
+    }
+
+    // GameManager To HUD
+    public StageData(int worldCode, int stageCode, int roundCode, int waveCode, bool isHardMode)
+    {
+        this.worldCode = worldCode;
+        this.stageCode = stageCode;
+        this.roundCode = roundCode;
+        this.waveCode = waveCode;
+        this.isHardMode = isHardMode;
+    }
+
+    // GameManager To TileManager
+    public StageData(int worldCode)
+    {
+
+    }
+
+    // GameManager To WaveManager
+    public StageData(List<Wave_DataTable> stageWaveList, bool isHardMode)
+    {
+        this.stageWaveList = stageWaveList;
+        this.isHardMode = isHardMode;
+    }
+
+    public StageData(int waveCode, int roundCode)
+    {
+        this.waveCode = waveCode;
+        this.roundCode = roundCode;
     }
 }

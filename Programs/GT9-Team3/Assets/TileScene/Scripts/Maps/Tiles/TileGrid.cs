@@ -1,46 +1,95 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Resources;
 using UnityEngine;
 
 public class TileGrid : MonoBehaviour
 {
+    // Managers
     public TileManager _tileManager;
 
+    // Tile Component
     [SerializeField] public TileCategory tileCategory;
     [SerializeField] public TileShape tileShape;
 
-    [Header("Tile Neighbors")]
-    public TileData up;
-    public TileData down;
-    public TileData left;
-    public TileData right;
-    
+    // Tile Info
     public int tileIndex;
-    public int originTileCol = -1;
-    public int originTileRow = -1;
     public int tileCol;
     public int tileRow;
 
+    // Block Info
     public BlockInfo[] blockInfos;
+    public Dictionary<SpriteRenderer, int> originBlockOrder = new Dictionary<SpriteRenderer, int>();
+    private bool originOrderInitialized = false;
 
-    protected virtual void Awake()
+    private void Awake()
     {
         _tileManager = TileManager.Instance;
-    }
-    
-    public void Initialize(Vector2 pos)
-    {
-        UpdateMapping(pos);
-        tileIndex = UpdateTileIndex();
-        UpdateSpriteOrder();
-        SetBlockInfos();
+
+        IsValidate();
     }
 
+    private bool IsValidate()
+    {
+        if (_tileManager == null)
+        {
+            ValidateMessage(_tileManager.name);
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
+
+    public void ValidateMessage(string obj)
+    {
+        Debug.LogError($"{obj} is Valid");
+    }
+
+    /// <summary>
+    /// Tile Initialize
+    /// 타일 정보 초기화 
+    /// </summary>
+    /// <param name="pos">타일 위치</param>
+    public void Initialize(Vector2 pos)
+    {
+        CacheOriginOrders();
+        UpdateMapping(pos);
+        UpdateTileIndex();
+        SetBlockInfos();
+        UpdateSpriteOrder();
+    }
+
+    /// <summary>
+    /// Cache Block Origin Order
+    /// 블럭의 최초 위치를 저장
+    /// </summary>
+    private void CacheOriginOrders()
+    {
+        if (originOrderInitialized) return;
+
+        SpriteRenderer[] spriteRenderers = GetComponentsInChildren<SpriteRenderer>();
+        originBlockOrder.Clear();
+
+        foreach (SpriteRenderer sr in spriteRenderers)
+        {
+            originBlockOrder[sr] = sr.sortingOrder;
+        }
+
+        originOrderInitialized = true;
+    }
+
+    /// <summary>
+    /// Tile Mapping
+    /// Tile의 위치를 저장
+    /// </summary>
+    /// <param name="pos">타일 위치</param>
     protected void UpdateMapping(Vector2 pos)
     {
         float originX = 0f;
-        float originY = _tileManager.tileSize[1] * 2 + (_tileManager.tileSize[1] * 2);
+        float originY = _tileManager.tileSize[1] * 2 + (_tileManager.tileSize[1] * 2 * _tileManager.mapExtendLevel);
 
         float dx = pos.x - originX;
         float dy = originY - pos.y;
@@ -51,31 +100,43 @@ public class TileGrid : MonoBehaviour
         int colIndex = Mathf.RoundToInt(col);
         int rowIndex = Mathf.RoundToInt(row);
 
-        originTileCol = this.tileCol;
-        originTileRow = this.tileRow;
-
         this.tileCol = colIndex;
         this.tileRow = rowIndex;
     }
-    
+
+    /// <summary>
+    /// Tile Index
+    /// Tile의 Index번호 작성
+    /// </summary>
+    /// <returns></returns>
     protected int UpdateTileIndex()
     {
-        return tileCol + tileRow * _tileManager.tileLength + 1;
+        return tileIndex = tileCol + tileRow * _tileManager.tileLength + 1;
     }
-    
+
+
+    /// <summary>
+    /// Set Block Infos
+    /// 소유하고 있는 블럭을 저장
+    /// </summary>
+    private void SetBlockInfos()
+    {
+        blockInfos = GetComponentsInChildren<BlockInfo>();
+    }
+
+    /// <summary>
+    /// sorting order blocks
+    /// 블록의 order를 위치값에 맞게 지정
+    /// </summary>    
     private void UpdateSpriteOrder()
-    { 
+    {
         SpriteRenderer[] spriteRenderers = GetComponentsInChildren<SpriteRenderer>();
 
         foreach (SpriteRenderer sr in spriteRenderers)
         {
-            sr.sortingOrder = sr.sortingOrder * tileIndex - 1000;
+            int baseOrder = originBlockOrder.ContainsKey(sr) ? originBlockOrder[sr] : 0;
+            sr.sortingOrder = baseOrder + (tileIndex * 10) - 1000;
         }
-    }
-
-    private void SetBlockInfos()
-    {
-        blockInfos = GetComponentsInChildren<BlockInfo>();
     }
 
     public void UpdateWorldLevel(int level)
@@ -85,4 +146,5 @@ public class TileGrid : MonoBehaviour
             blockInfo.UpdateWorldLevel(level);
         }
     }
+
 }

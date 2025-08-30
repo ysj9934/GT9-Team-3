@@ -17,8 +17,6 @@ public class TileUI : MonoBehaviour
 {
     private TileInfo _tileInfo;
     [SerializeField] public GameObject tileUI;
-
-    private bool isActive = false;
     
     private void Awake()
     {
@@ -30,12 +28,15 @@ public class TileUI : MonoBehaviour
         _tileInfo = GetComponent<TileInfo>();
     }
 
+    // 타일 선택시 Update의 GetMouseButtonDown으로 작업시 RaycastHit에서 모든 TileInfo를 호출하려한다.
+    // 그래서 하나에서 관리하도록한다.
+
     //  private void OnMouseDown()
     // {
     //     if (EventSystem.current.IsPointerOverGameObject())
     //         return;
     //
-    //     _tileInfo._tileManager.CloseAllUI(this);
+    //     _tileInfo._tileManager.CloseTileUI(this);
     //
     //     tileUI.SetActive(!tileUI.activeSelf);
     //     SettingCanvas.Instance.customSetting.waveSystembutton.interactable = false;
@@ -73,13 +74,13 @@ public class TileUI : MonoBehaviour
     //             // Debug.Log
     //             if (tileInfo != null)
     //             {
-    //                 _tileInfo._tileManager.CloseAllUI(this);
+    //                 _tileInfo._tileManager.CloseTileUI(this);
     //                 this.tileUI.SetActive(!tileUI.activeSelf);
     //             }
     //         }
     //         else
     //         {
-    //             _tileInfo._tileManager.CloseAllUI(null);
+    //             _tileInfo._tileManager.CloseTileUI(null);
     //         }
     //     }
     // }

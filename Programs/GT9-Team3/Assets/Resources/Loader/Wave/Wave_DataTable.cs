@@ -12,6 +12,11 @@ public class Wave_DataTable
     public int key;
 
     /// <summary>
+    /// Inner_Name
+    /// </summary>
+    public string Inner_Name;
+
+    /// <summary>
     /// Stage_ID
     /// </summary>
     public int Stage_ID;
@@ -32,24 +37,19 @@ public class Wave_DataTable
     public int WaveInRound;
 
     /// <summary>
-    /// Reward_ID
+    /// StageStartTilePiece
     /// </summary>
-    public int Reward_ID;
+    public int StageStartTilePiece;
 
     /// <summary>
-    /// SpawnSequence
+    /// RewardGoldAmount
     /// </summary>
-    public List<int> SpawnSequence;
+    public int RewardGoldAmount;
 
     /// <summary>
     /// SpawnStartTime
     /// </summary>
     public List<float> SpawnStartTime;
-
-    /// <summary>
-    /// SpawnerID
-    /// </summary>
-    public List<int> SpawnerID;
 
     /// <summary>
     /// EnemyID
