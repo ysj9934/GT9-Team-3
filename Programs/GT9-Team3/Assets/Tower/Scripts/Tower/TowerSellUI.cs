@@ -31,9 +31,10 @@ public class TowerSellUI : MonoBehaviour
     public TextMeshProUGUI ccTimeText;
     public TextMeshProUGUI tileRangeText;
 
-    void Awake()
+    public void Init()
     {
         Instance = this;
+        Debug.LogError("TowerSellUI Instance awake ");
         Hide();
     }
 

@@ -77,6 +77,8 @@ public class TileManager : MonoBehaviour
 
         Instance = this;
 
+        Debug.LogError("TileManager Instance Error");
+
         tileAllCategoryList = new List<GameObject>();
     }
 
@@ -688,7 +690,7 @@ public class TileManager : MonoBehaviour
     /// </summary>
     public void CloseTowerInfoUI()
     {
-        towerSellUI.Hide();
+        TowerSellUI.Instance.Hide();
     }
 
 

@@ -5,6 +5,7 @@ using UnityEngine;
 public class TowerBuildUI : MonoBehaviour
 {
     public BlockInfo _blockInfo;
+    public TowerSellUI _towerSellUI;
 
     [Header("Wiring")]
     public RectTransform root;            // Panel 루트
@@ -29,14 +30,16 @@ public class TowerBuildUI : MonoBehaviour
         var towerTable = TowerDataTableLoader.Instance.ItemsDict;
         var projectileTable = ProjectileDataLoader.Instance.ItemsDict;
 
+        _towerSellUI.Init();
+
         foreach (var bp in options)
         {
             bp.ApplyLoadedData(towerTable, projectileTable);
         }
 
-    }
 
-    void Awake() => Hide();
+        Hide();
+    }
 
     public void ShowAt(TowerPlacer caller, Vector3Int cell, Vector3 world, Vector2 screenPos)
     {
