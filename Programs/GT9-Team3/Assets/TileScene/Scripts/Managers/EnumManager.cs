@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Tile
+/// </summary>
 public enum TileDirector
 {
     Degree_0,
@@ -43,3 +46,17 @@ public enum BlockCategory
     PlaceTower,
     None,
 }
+
+
+/// <summary>
+/// Enemy
+/// </summary>
+public enum HitTarget
+{
+    Castle,
+    Projectile,
+}
+
+/// <summary>
+/// Tower
+/// </summary>

@@ -1,30 +1,37 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Resources;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
+
+    // Manager
     public TileManager _tileManager;
+    public WaveManager _waveManager;
+    public ObjectPoolManager _poolManager;
+    public DataManager _dataManager;
+    public ResourceManager _resourceManager;
+
+    // MapUICanvas
+    public HUDCanvas _hudCanvas;
 
     public Transform baseTransform;
 
-    // °ÔÀÓ ·¹º§
+    // ê²Œì„ ë ˆë²¨
     // GameLevel
-    public int gameWorldLevel = 1;
-    public int gameStageLevel = 1;
-    public int gameRoundLevel = 1;
-    public int gameWaveLevel = 1;
-    [SerializeField] private TextMeshProUGUI gameWorldLevelText;
-    [SerializeField] private TextMeshProUGUI gameStageLevelText;
-    [SerializeField] private TextMeshProUGUI gameRoundLevelText;
-    //[SerializeField] private TextMeshProUGUI gameWorldLevelText;
+    public int gameWorldLevel;
+    public int gameStageLevel;
+    public int gameRoundLevel;
+    public int gameWaveLevel;
+    public List<Wave_DataTable> stageWaveList = new List<Wave_DataTable>();
 
-    // °ÔÀÓ ÀÏ½ÃÁ¤Áö ¹× Àç°³
+    // ê²Œì„ ì¼ì‹œì •ì§€ ë° ì¬ê°œ
     public bool isGamePaused = false;
-
-    [SerializeField] public GameObject gameDefeatPanel;
+    public bool isHardMode;
 
     private void Awake()
     {
@@ -39,15 +46,65 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        // Initialize Manager
         _tileManager = TileManager.Instance;
+        _waveManager = WaveManager.Instance;
+        _poolManager = ObjectPoolManager.Instance;
+        _dataManager = DataManager.Instance;
+        _resourceManager = ResourceManager.Instance;
 
-        if (gameDefeatPanel != null)
-            gameDefeatPanel.SetActive(false);
+        // Initialize MapUICanvas
+        _hudCanvas = HUDCanvas.Instance;
 
-        // Ã¹ Å¸ÀÏ ¹èÄ¡
-        // first tile placement
-        //InitializeTiles();
-    }   
+        if (IsValidate())
+        {
+            // Load Data from DataManager
+            ReceiveStageData();
+        }
+    }
+
+    private bool IsValidate()
+    {
+        if (_tileManager == null)
+        {
+            ValidateMessage(_tileManager.name);
+            return false;
+        }
+        else if (_waveManager == null)
+        {
+            ValidateMessage(_waveManager.name);
+            return false;
+        }
+        else if (_poolManager == null)
+        {
+            ValidateMessage(_poolManager.name);
+            return false;
+        }
+        else if (_dataManager == null)
+        {
+            ValidateMessage(_dataManager.name);
+            return false;
+        }
+        else if (_resourceManager == null)
+        {
+            ValidateMessage(_resourceManager.name);
+            return false;
+        }
+        else if (_hudCanvas == null)
+        {
+            ValidateMessage(_hudCanvas.name);
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
+
+    public void ValidateMessage(string obj)
+    {
+        Debug.LogError($"{obj} is Valid");
+    }
 
 
     public void DestroyOfType<T>() where T : Component
@@ -60,25 +117,195 @@ public class GameManager : MonoBehaviour
         }
     }
 
-
-
-    // ÃÊ±â Å¸ÀÏ ¹èÄ¡
-    // Initial tile placement
-    public void InitializeTiles()
+    // Load data from DataManager
+    public void ReceiveStageData()
     {
-        // Å¸ÀÏ »ı¼º
-        _tileManager.Initialize();
-        _tileManager.SetSpawnerPosition();
+        StageData stageData = _dataManager.SendStageData();
+        if (stageData != null)
+        {
+            // 0. GameManagerì— ìŠ¤í…Œì´ì§€ ì •ë³´ ê°±ì‹ 
+            // update stage information in GameManager
+            gameWorldLevel = stageData.worldCode;
+            gameStageLevel = stageData.stageCode;
+            stageWaveList = stageData.stageWaveList;
+            isHardMode = stageData.isHardMode;
+
+            // send stage data to HUDCanvas
+            // 3. WaveManagerì— ìŠ¤í…Œì´ì§€ ì •ë³´ ì „ë‹¬
+            SendStageDataToWaveManager();
+            // 2. TileManagerì— ìŠ¤í…Œì´ì§€ ì •ë³´ ì „ë‹¬
+            SendStageDataToTileManager();
+            // 1. HUDCanvasì— ìŠ¤í…Œì´ì§€ ì •ë³´ ì „ë‹¬
+            SendStageDataToHUD();
+
+            // 4. TileManager ì„¸íŒ…
+            //_tileManager.Initialize();
+        }
+        else 
+        {
+            Debug.LogError("StageData is Null");
+        }
+    }
+
+    public void ReStartStage()
+    {
+        // ì´ì „ ë°ì´í„° ì´ˆê¸°í™”í•˜ê¸° 
+        ClearGameManager();
+        _hudCanvas.SetGameSpeed5x();
+
+        ReceiveStageData();
+    }
+
+    public void ClearGameManager()
+    {
+        gameWorldLevel = 0;
+        gameStageLevel = 0;
+        gameRoundLevel = 0;
+        gameWaveLevel = 0;
+        stageWaveList = new List<Wave_DataTable>();
+    }
+
+    public void SendStageDataToHUD()
+    {
+        _hudCanvas.ReceiveStageData(
+            new StageData
+                (
+                    gameWorldLevel,
+                    gameStageLevel,
+                    gameRoundLevel,
+                    gameWaveLevel,
+                    isHardMode
+                )
+            );
+    }
+
+    public void SendStageDataToTileManager()
+    {
+        _tileManager.ReceiveStageData
+            (
+                new StageData
+                (
+                    gameWorldLevel,
+                    gameStageLevel,
+                    gameRoundLevel,
+                    gameWaveLevel,
+                    isHardMode
+                )
+            );
+    }
+
+    public void SendStageDataToWaveManager()
+    {
+        _waveManager.ReceiveStageData(
+            new StageData
+            (
+                stageWaveList,
+                isHardMode
+            )
+        );
+        
+    }
+
+    public void ReceiveStageDataFromWaveManager(StageData stageData)
+    {
+        if (stageData != null)
+        {
+            gameWaveLevel = stageData.waveCode;
+            gameRoundLevel = stageData.roundCode;
+            SendStageDataToHUD();
+
+            if (gameWaveLevel == 7)
+            {
+                Debug.Log("MapExtend 01");
+                MapExtend();
+            }
+        }
+        else
+        {
+            Debug.LogError("StageData is Null");
+        }
+    }
+
+    public void MapExtend()
+    {
+        SendStageDataToTileManager();
+    }
+
+    /// <summary>
+    /// Pause Game
+    /// ê²Œì„ ì •ì§€
+    /// </summary>
+    public void PauseGame()
+    {
+        Debug.Log("PauseGame");
+        Time.timeScale = 0;
+        isGamePaused = true;
+    }
+
+    /// <summary>
+    /// Resume Game
+    /// ê²Œì„ ì¬ê°œ
+    /// </summary>
+    public void ResumeGame()
+    {
+        Debug.Log("ResumeGame");
+        Time.timeScale = 1f;
+        isGamePaused = false;
+    }
+
+    public void GameSpeed2x()
+    {
+        Time.timeScale = 2f;
+        isGamePaused = false;
+    }
+
+    public void GameSpeed5x()
+    {
+        Time.timeScale = 5f;
+        isGamePaused = false;
     }
 
 
-    public void WaveStartButton()
+#if UNITY_EDITOR
+    [ContextMenu("Spawn Test Enemy")]
+    void SpawnTestEnemy()
     {
-        WaveManager.Instance.StartWave();
+        GameObject enemyObj = _poolManager.GetEnemy();
+        if (enemyObj != null)
+        {
+            var testJson = new Enemy_DataTable_EnemyStatTable
+            {
+                key = 1000,
+                Enemy_Inner_Name = "ê¸°ì–´ë‹¤ë‹ˆëŠ” êµ¼ë²µì´",
+                MaxHP = 100,
+                MovementSpeed = 3.5f
+            };
+
+            //var config = EnemyConfigManager.Instance.CreateConfigFromJson(testJson);
+            //var enemy = Instantiate(config.enemyPrefab);
+            //enemyObj.GetComponent<Enemy>().Setup(config);
+        }
     }
+#endif
 
 
-    // Àû º£ÀÌ½º Ã£±â (±è¿øÁø)
+
+    // ì  ë² ì´ìŠ¤ ì°¾ê¸° (ê¹€ì›ì§„)
     // Find the enemy base transform in the scene
     public Vector3 BasePosition => baseTransform != null ? baseTransform.position : Vector3.zero;
+
+    public void Earn50G()
+    {
+        _resourceManager.Earn(ResourceType.Tilepiece, 50);
+        _hudCanvas.ShowTilePiece();
+    }
+
+    public void Earn0G(int amount)
+    {
+        _resourceManager.Earn(ResourceType.Tilepiece, amount);
+        _hudCanvas.ShowTilePiece();
+
+    }
+
 }
+

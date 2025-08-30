@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 5932334716008133942}
   - component: {fileID: 4642634569280288501}
-  - component: {fileID: 6202643734470108363}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -46,25 +45,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _tileManager: {fileID: 0}
-  baseTransform: {fileID: 0}
+  _poolManager: {fileID: 0}
+  _dataManager: {fileID: 0}
+  baseTransform: {fileID: 8335545637110372168, guid: c1dcb7414bc303e4e8dc667d23946979, type: 3}
   gameWorldLevel: 1
   gameStageLevel: 1
   gameRoundLevel: 1
   gameWaveLevel: 1
+  tempLevel: 1
   gameWorldLevelText: {fileID: 0}
   gameStageLevelText: {fileID: 0}
   gameRoundLevelText: {fileID: 0}
   isGamePaused: 0
   gameDefeatPanel: {fileID: 0}
---- !u!114 &6202643734470108363
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7137989918780723894}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e3553896f4b14c44e91fdae655aa3195, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

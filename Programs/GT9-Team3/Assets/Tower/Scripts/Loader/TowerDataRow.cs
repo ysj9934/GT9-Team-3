@@ -32,24 +32,34 @@ public class TowerDataRow
     public string Attack_type;
 
     /// <summary>
-    /// Target Order1
+    /// Target_Order1
     /// </summary>
     public string Target_Order1;
 
     /// <summary>
-    /// Target Order2
+    /// Target_Order2
     /// </summary>
     public string Target_Order2;
 
     /// <summary>
-    /// Target Order3
+    /// Target_Order3
     /// </summary>
     public string Target_Order3;
 
     /// <summary>
-    /// Target Order4
+    /// Target_Order4
     /// </summary>
     public string Target_Order4;
+
+    /// <summary>
+    /// Attack_Range
+    /// </summary>
+    public int Attack_Range;
+
+    /// <summary>
+    /// Attack_Speed
+    /// </summary>
+    public float Attack_Speed;
 
     /// <summary>
     /// Upgrade_Cost

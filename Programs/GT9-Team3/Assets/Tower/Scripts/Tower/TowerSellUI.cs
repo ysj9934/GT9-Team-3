@@ -2,33 +2,52 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class TowerSellUI : MonoBehaviour
 {
     private Tower1 currentTarget;
-    public RectTransform root;      // ÆĞ³Î ·çÆ®
-    public Vector2 anchoredPosition = new Vector2(0, 0);  // ¿ŞÂÊ À§Ä¡ °íÁ¤
+    public RectTransform root;      // íŒ¨ë„ ë£¨íŠ¸
+    public Vector2 anchoredPosition = new Vector2(0, 0);  // ì™¼ìª½ ìœ„ì¹˜ ê³ ì •
 
     public static TowerSellUI Instance;
 
     public GameObject panel;
     private Tower1 currentTower;
 
-    // ±âÈ¹ ÇÁ¸®Æé
+    // ê¸°íš í”„ë¦¬í©
+    public Image towerIconImage;
     public TextMeshProUGUI towerNameText;
     public TextMeshProUGUI levelText;
     public TextMeshProUGUI damageText;
     public TextMeshProUGUI attackSpeedText;
+    public TextMeshProUGUI rangeText;
+    public TextMeshProUGUI targetCountText;
+    public TextMeshProUGUI attackTypeText;
+    public TextMeshProUGUI sellValueText;
+    public TextMeshProUGUI upgradeValueText;
+    public TextMeshProUGUI slowEffectText;
+    public TextMeshProUGUI slowTimeText;
+    public TextMeshProUGUI ccTimeText;
+    public TextMeshProUGUI tileRangeText;
 
-    void Awake()
+    public void Init()
     {
         Instance = this;
+        Debug.LogError("TowerSellUI Instance awake ");
         Hide();
     }
 
     public void Show(Tower1 tower)
     {
-        // ±âÁ¸ Å¸¿öÀÇ »ç°Å¸® ¼û±è
+
+        if (tower == null || tower.towerdata == null || tower.blueprint == null)
+        {
+            Debug.LogWarning("[TowerSellUI] íƒ€ì›Œ ë°ì´í„°ê°€ ì•„ì§ ì´ˆê¸°í™”ë˜ì§€ ì•ŠìŒ");
+            return;
+        }
+
+        // ê¸°ì¡´ íƒ€ì›Œì˜ ì‚¬ê±°ë¦¬ ìˆ¨ê¹€
         if (currentTarget != null && currentTarget != tower)
         {
             Transform prevRV = currentTarget.transform.Find("RangeVisual");
@@ -41,18 +60,34 @@ public class TowerSellUI : MonoBehaviour
 
         root.gameObject.SetActive(true);
 
-        // ¿ŞÂÊ °íÁ¤ À§Ä¡·Î ÀÌµ¿
+        // ì™¼ìª½ ê³ ì • ìœ„ì¹˜ë¡œ ì´ë™
         root.anchoredPosition = anchoredPosition;
 
-        //towerNameText.text = tower.data.innerName;
-        //levelText.text = $"Lv.{tower.data.towerLevel}";
-        //damageText.text = tower.data.damage.ToString();
-        //attackSpeedText.text = $"{tower.data.attackSpeed}/s";
+        TowerData d = tower.towerdata;
+
+        //towerIconImage.sprite = tower.blueprint.icon;     // TowerBluePrintì—ì„œ ë°›ì•„ì˜´
+        towerIconImage.sprite = tower.GetCurrentTowerSprite();
+        towerNameText.text = d.innerName;
+        levelText.text = $"Lv.{d.towerLevel}";
+        attackSpeedText.text = $"{d.attackSpeed}/s";
+        rangeText.text = d.attackRange.ToString();
+        targetCountText.text = d.targetCount.ToString();
+        attackTypeText.text = d.attackType.ToString();
+        sellValueText.text = $"Cost : {d.sellValue}";
+        upgradeValueText.text = $"Cost : {d.UpgradeValue}";
+
+        ProjectileData p = tower.towerdata.projectileData;
+
+        damageText.text = p.damage.ToString();
+        slowEffectText.text = p.slowEffect.ToString();
+        slowTimeText.text = $"{p.slowTime}/s";
+        ccTimeText.text = $"{p.stunTime}/s";
+        tileRangeText.text = $"{p.impactRadius}/Tile";
     }
 
     public void Hide()
     {
-        // »ç°Å¸® ²¨ÁÖ±â
+        // ì‚¬ê±°ë¦¬ êº¼ì£¼ê¸°
         if (currentTarget != null)
         {
             Transform rv = currentTarget.transform.Find("RangeVisual");
@@ -78,22 +113,48 @@ public class TowerSellUI : MonoBehaviour
 
     public void OnClickSell()
     {
-        Debug.Log("ÆÇ¸Å ¹öÆ° ´­¸²");
+        Debug.Log("íŒë§¤ ë²„íŠ¼ ëˆŒë¦¼");
 
         currentTower.blockInfo._tileInfo._tilePlaceOnTower.HandleTowerPlacement(
             currentTower.blockInfo.blockSerialNumber, 
             true, 
             null,
-            currentTower);
+            currentTower,
+            false);
 
         panel.SetActive(false);
 
         //if (currentTower != null)
         //{
-        //    Debug.Log("Å¸¿ö Á¦°Å ¹× °ñµå È¯±Ş");
+        //    Debug.Log("íƒ€ì›Œ ì œê±° ë° ê³¨ë“œ í™˜ê¸‰");
         //    ResourceManager.Instance.Earn(currentTower.data.makeCost, currentTower.data.sellValue);
         //    Destroy(currentTower.gameObject);
         //    panel.SetActive(false);
         //}
+    }
+
+    public void Refresh(Tower1 tower)
+    {
+        // ë‚´ë¶€ì ìœ¼ë¡œ tower.dataì—ì„œ ì •ë³´ ë¶ˆëŸ¬ì™€ í…ìŠ¤íŠ¸ë‚˜ ì´ë¯¸ì§€ ì—…ë°ì´íŠ¸
+        TowerData d = tower.towerdata;
+
+        towerIconImage.sprite = tower.GetCurrentTowerSprite();
+        //towerIconImage.sprite = tower.blueprint.icon;
+        towerNameText.text = d.innerName;
+        levelText.text = $"Lv.{d.towerLevel}";
+        attackSpeedText.text = $"{d.attackSpeed}/s";
+        rangeText.text = d.attackRange.ToString();
+        targetCountText.text = d.targetCount.ToString();
+        attackTypeText.text = d.attackType.ToString();
+        sellValueText.text = $"Cost : {d.sellValue}";
+        upgradeValueText.text = $"Cost : {d.UpgradeValue}";
+
+        ProjectileData p = d.projectileData;
+
+        damageText.text = p.damage.ToString();
+        slowEffectText.text = p.slowEffect.ToString();
+        slowTimeText.text = $"{p.slowTime}/s";
+        ccTimeText.text = $"{p.stunTime}/s";
+        tileRangeText.text = $"{p.impactRadius}/Tile";
     }
 }
