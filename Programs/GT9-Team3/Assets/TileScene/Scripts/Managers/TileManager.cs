@@ -77,7 +77,7 @@ public class TileManager : MonoBehaviour
 
         Instance = this;
 
-        Debug.LogError("TileManager Instance Error");
+        //Debug.LogError("TileManager Instance Error"); 
 
         tileAllCategoryList = new List<GameObject>();
     }
