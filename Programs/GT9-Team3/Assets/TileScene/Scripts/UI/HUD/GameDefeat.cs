@@ -14,6 +14,8 @@ public class GameDefeat : MonoBehaviour
     [SerializeField] private Button watchADvReviveBtn;
     [SerializeField] private Button giveCryReviveBtn;
 
+    
+
     private void Awake()
     {
         _hudCanvas = GetComponentInParent<HUDCanvas>();
@@ -69,6 +71,24 @@ public class GameDefeat : MonoBehaviour
     public void ReviveToADv()
     {
         Debug.Log("Adv revive");
+
+        // 광고 시청
+        AdsManager.Instance.ShowRewardedAd(() =>
+        {
+          
+            Debug.Log("광고 시청 완료 - 부활 처리");
+
+            // 패널 닫기
+            gameObject.SetActive(false);
+
+            // castle 체력 초기화
+
+            // 웨이브 다시 시작?
+
+            // 속도 초기화
+            HUDCanvas.Instance.SetGameSpeed5x();
+
+        });
     }
 
     /// <summary>

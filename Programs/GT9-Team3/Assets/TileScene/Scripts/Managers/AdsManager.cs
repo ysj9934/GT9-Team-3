@@ -9,7 +9,7 @@ public class AdsManager : MonoBehaviour
     private RewardedAd rewardedAd;
     private Action onAdRewarded;
 
-    [SerializeField] private string rewardedAdUnitId = "ca-app-pub-3940256099942544/5224354917"; // 테스트 ID
+    [SerializeField] private string rewardedAdUnitId = "ca-app-pub-9623407653018480~7943626435";
 
     void Awake()
     {
@@ -32,16 +32,16 @@ public class AdsManager : MonoBehaviour
         {
             if (error != null)
             {
-                Debug.LogError("RewardedAd Load Failed: " + error.GetMessage());
+                Debug.LogError("보상형 광고 로드 실패: " + error.GetMessage());
                 return;
             }
 
             rewardedAd = ad;
-            Debug.Log("RewardedAd Loaded");
+            Debug.Log("보상형 광고 로드 완료");
 
             rewardedAd.OnAdFullScreenContentClosed += () =>
             {
-                Debug.Log("RewardedAd Closed");
+                Debug.Log("광고 창이 닫혔습니다");
                 LoadRewardedAd(); // 자동 재로딩
             };
         });
@@ -54,14 +54,13 @@ public class AdsManager : MonoBehaviour
             onAdRewarded = onReward;
             rewardedAd.Show(reward =>
             {
-                Debug.Log($"User rewarded: {reward.Amount} {reward.Type}");
+                Debug.Log($"사용자가 보상을 획득했습니다: {reward.Amount} {reward.Type}");
                 onAdRewarded?.Invoke();
             });
         }
         else
         {
-            Debug.Log("Ad not ready");
+            Debug.Log("광고가 아직 준비되지 않았습니다");
         }
     }
 }
-

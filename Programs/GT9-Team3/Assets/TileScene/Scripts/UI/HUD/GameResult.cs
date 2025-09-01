@@ -112,13 +112,18 @@ public class GameResult : MonoBehaviour
     public void GameReward2x()
     {
         Debug.Log("Reward2x to go MapUI");
+
         // 광고 시청
+        AdsManager.Instance.ShowRewardedAd(() =>
+        {
+            CloseWindow();
 
+            // 광고 시청 성공 시 2배 보상
+            ResourceManager.Instance.Earn(ResourceType.Gold, rewardGold * 2);
+            Debug.Log($"{ResourceManager.Instance.GetAmount(ResourceType.Gold)}");
 
-        CloseWindow();
-        ResourceManager.Instance.Earn(ResourceType.Gold, rewardGold * 2);
-        Debug.Log($"{ResourceManager.Instance.GetAmount(ResourceType.Gold)}");
-        _hudCanvas.SetGameSpeed5x();
-        SceneLoader.Instance.LoadSceneByName("Map UI");
+            _hudCanvas.SetGameSpeed5x();
+            SceneLoader.Instance.LoadSceneByName("Map UI");
+        });
     }
 }
