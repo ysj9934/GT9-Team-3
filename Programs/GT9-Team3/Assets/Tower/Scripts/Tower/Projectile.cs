@@ -16,7 +16,7 @@ public class Projectile : MonoBehaviour
 
     void Update()
     {
-        if(target == null)
+        if (target == null)
         {
             Destroy(gameObject);
             return;
@@ -26,7 +26,7 @@ public class Projectile : MonoBehaviour
         transform.position += direaction * data.speed * Time.deltaTime;
 
         float distance = Vector3.Distance(transform.position, target.position);
-        if(distance < 0.1f)
+        if (distance < 0.1f)
         {
             HitTarget();
         }
@@ -34,17 +34,50 @@ public class Projectile : MonoBehaviour
 
     void HitTarget()
     {
-        Enemy1 enemy = target.GetComponent<Enemy1>();
-        if (enemy != null)
-        {
-            enemy.TakeDamage(data.damage);
-        }
 
-        if(data.impactEffectPrefab)
+        if (data.impactEffectPrefab)
         {
             Instantiate(data.impactEffectPrefab, transform.position, Quaternion.identity);
         }
 
+        // 스플래쉬 공격
+        if (data.impactRadius > 0f)
+        {
+            Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(transform.position, data.impactRadius, LayerMask.GetMask("Enemy"));
+            Debug.Log($"스플래시 타격: {hitEnemies.Length}명 감지됨");
+
+            foreach (var collider in hitEnemies)
+            {
+                Enemy1 enemy = collider.GetComponent<Enemy1>();
+                if (enemy != null)
+                {
+                    enemy.TakeDamage(data.damage, data);
+                    Debug.Log($"스플래시 적중: {enemy.name} / 데미지: {data.damage}");
+                }
+
+            }
+        }
+        else
+        {
+            Enemy1 enemy = target.GetComponent<Enemy1>();
+            if (enemy != null)
+            {
+                enemy.TakeDamage(data.damage, data);
+            }
+        }
+
         Destroy(gameObject);
     }
+
+#if UNITY_EDITOR
+    private void OnDrawGizmosSelected()
+    {
+        if (data != null && data.impactRadius > 0f)
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere(transform.position, data.impactRadius);
+        }
+    }
+#endif
+
 }

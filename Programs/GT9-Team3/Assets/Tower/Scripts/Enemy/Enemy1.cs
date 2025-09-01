@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Enemy1 : MonoBehaviour
 {
-    public Enemy enemy;
+    public Enemy _enemy;
 
     //[SerializeField] public int maxHP = 10;
     //private int currentHP;
@@ -18,21 +18,14 @@ public class Enemy1 : MonoBehaviour
         }
     }
 
-    private void Awake()
+    private void Start()
     {
-        enemy = GetComponent<Enemy>();
+        _enemy = GetComponentInParent<Enemy>();
     }
 
-    public void TakeDamage(int damage)
+    public void TakeDamage(int damage, ProjectileData projectileData)
     {
-        enemy.currentHp -= damage;
-        Debug.Log($"[피격] {gameObject.name} 체력: {enemy.currentHp}");
+        _enemy._enemyHealthHandler.TakeDamage(damage, projectileData);
     }
-
-    //private void Die()
-    //{
-    //    Debug.Log($"[사망] {gameObject.name}");
-    //    Destroy(gameObject);
-    //}
 
 }
