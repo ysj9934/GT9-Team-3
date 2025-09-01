@@ -6,6 +6,7 @@ public class ProjectileDataMapper
 {
     public static void ApplyToSO(ProjectileData so, ProjectileDataRow row)
     {
+        so.projectileID = row.Key;
         so.projectileName = row.Inner_Name;
         so.damage = (int)row.Damage;
         so.speed = row.Projectile_Speed;

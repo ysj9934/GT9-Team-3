@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Resources;
 using TMPro;
-using UnityEditor.EditorTools;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -17,9 +16,8 @@ public class GameManager : MonoBehaviour
     public DataManager _dataManager;
     public ResourceManager _resourceManager;
 
-    // Canvas
+    // MapUICanvas
     public HUDCanvas _hudCanvas;
-
 
     public Transform baseTransform;
 
@@ -29,11 +27,11 @@ public class GameManager : MonoBehaviour
     public int gameStageLevel;
     public int gameRoundLevel;
     public int gameWaveLevel;
-    public List<Wave_DataTable> stageWaveIdList = new List<Wave_DataTable>();
-    public int tempLevel;
+    public List<Wave_DataTable> stageWaveList = new List<Wave_DataTable>();
 
     // 게임 일시정지 및 재개
     public bool isGamePaused = false;
+    public bool isHardMode;
 
     private void Awake()
     {
@@ -50,11 +48,12 @@ public class GameManager : MonoBehaviour
     {
         // Initialize Manager
         _tileManager = TileManager.Instance;
+        _waveManager = WaveManager.Instance;
         _poolManager = ObjectPoolManager.Instance;
         _dataManager = DataManager.Instance;
         _resourceManager = ResourceManager.Instance;
 
-        // Initialize Canvas
+        // Initialize MapUICanvas
         _hudCanvas = HUDCanvas.Instance;
 
         if (IsValidate())
@@ -62,9 +61,6 @@ public class GameManager : MonoBehaviour
             // Load Data from DataManager
             ReceiveStageData();
         }
-
-        // 추후 삭제 필요
-        InitializeTiles();
     }
 
     private bool IsValidate()
@@ -72,6 +68,11 @@ public class GameManager : MonoBehaviour
         if (_tileManager == null)
         {
             ValidateMessage(_tileManager.name);
+            return false;
+        }
+        else if (_waveManager == null)
+        {
+            ValidateMessage(_waveManager.name);
             return false;
         }
         else if (_poolManager == null)
@@ -98,7 +99,6 @@ public class GameManager : MonoBehaviour
         {
             return true;
         }
-        
     }
 
     public void ValidateMessage(string obj)
@@ -118,7 +118,7 @@ public class GameManager : MonoBehaviour
     }
 
     // Load data from DataManager
-    private void ReceiveStageData()
+    public void ReceiveStageData()
     {
         StageData stageData = _dataManager.SendStageData();
         if (stageData != null)
@@ -127,16 +127,19 @@ public class GameManager : MonoBehaviour
             // update stage information in GameManager
             gameWorldLevel = stageData.worldCode;
             gameStageLevel = stageData.stageCode;
+            stageWaveList = stageData.stageWaveList;
+            isHardMode = stageData.isHardMode;
 
             // send stage data to HUDCanvas
-
+            // 3. WaveManager에 스테이지 정보 전달
+            SendStageDataToWaveManager();
+            // 2. TileManager에 스테이지 정보 전달
+            SendStageDataToTileManager();
             // 1. HUDCanvas에 스테이지 정보 전달
             SendStageDataToHUD();
-            // 2. TileManager에 스테이지 정보 전달
-            // 3. WaveManager에 스테이지 정보 전달
 
             // 4. TileManager 세팅
-            //InitializeTiles();
+            //_tileManager.Initialize();
         }
         else 
         {
@@ -144,81 +147,124 @@ public class GameManager : MonoBehaviour
         }
     }
 
-
-    // 초기 타일 배치
-    // Initial tile placement
-    public void InitializeTiles()
+    public void ReStartStage()
     {
-        // 타일 생성
-        _tileManager.Initialize();
-        _tileManager.SetSpawnerPosition();
+        // 이전 데이터 초기화하기 
+        ClearGameManager();
+        _hudCanvas.SetGameSpeed5x();
+
+        ReceiveStageData();
+    }
+
+    public void ClearGameManager()
+    {
+        gameWorldLevel = 0;
+        gameStageLevel = 0;
+        gameRoundLevel = 0;
+        gameWaveLevel = 0;
+        stageWaveList = new List<Wave_DataTable>();
     }
 
     public void SendStageDataToHUD()
     {
         _hudCanvas.ReceiveStageData(
-            new StageDataToHUD
+            new StageData
                 (
                     gameWorldLevel,
                     gameStageLevel,
                     gameRoundLevel,
-                    gameWaveLevel
+                    gameWaveLevel,
+                    isHardMode
                 )
             );
     }
 
-    public StageDataToTileManager SendStageDataToTileManager()
+    public void SendStageDataToTileManager()
     {
-        return new StageDataToTileManager
+        _tileManager.ReceiveStageData
             (
-                gameWorldLevel,
-                gameStageLevel,
-                gameRoundLevel,
-                gameWaveLevel
+                new StageData
+                (
+                    gameWorldLevel,
+                    gameStageLevel,
+                    gameRoundLevel,
+                    gameWaveLevel,
+                    isHardMode
+                )
             );
     }
 
-    public StageDataToWaveManager SendStageDataToWaveManager()
+    public void SendStageDataToWaveManager()
     {
-        return new StageDataToWaveManager
+        _waveManager.ReceiveStageData(
+            new StageData
             (
-                stageWaveIdList
-            );
+                stageWaveList,
+                isHardMode
+            )
+        );
+        
     }
 
-
-
-    public void UpdateWorldLevel(int level)
+    public void ReceiveStageDataFromWaveManager(StageData stageData)
     {
-        this.gameWorldLevel = level;
-        _tileManager.UpdateWorldLevel(this.gameWorldLevel);
-    }
-
-
-
-    public void UpdateTempLevel(int level)
-    {
-        this.tempLevel = level;
-
-        _tileManager.UpdateTempLevel(this.tempLevel);
-    }
-
-    public void WaveStartButton()
-    {
-        //WaveManager.Instance.StartWave();
-    }
-
-    // TEMP
-    // 적 스폰
-    public void SpanwEnemy(Enemy_DataTable_EnemyStatTable jsonData)
-    {
-        GameObject enemyObj = _poolManager.GetEnemy();
-        if (enemyObj != null)
+        if (stageData != null)
         {
-            //var config = EnemyConfigManager.Instance.CreateConfigFromJson(jsonData);
-            //enemyObj.GetComponent<Enemy>().Setup(config);
+            gameWaveLevel = stageData.waveCode;
+            gameRoundLevel = stageData.roundCode;
+            SendStageDataToHUD();
+
+            if (gameWaveLevel == 7)
+            {
+                Debug.Log("MapExtend 01");
+                MapExtend();
+            }
+        }
+        else
+        {
+            Debug.LogError("StageData is Null");
         }
     }
+
+    public void MapExtend()
+    {
+        SendStageDataToTileManager();
+    }
+
+    /// <summary>
+    /// Pause Game
+    /// 게임 정지
+    /// </summary>
+    public void PauseGame()
+    {
+        Debug.Log("PauseGame");
+        Time.timeScale = 0;
+        isGamePaused = true;
+    }
+
+    /// <summary>
+    /// Resume Game
+    /// 게임 재개
+    /// </summary>
+    public void ResumeGame()
+    {
+        Debug.Log("ResumeGame");
+        Time.timeScale = 1f;
+        isGamePaused = false;
+    }
+
+    public void GameSpeed2x()
+    {
+        Time.timeScale = 2f;
+        isGamePaused = false;
+    }
+
+    public void GameSpeed5x()
+    {
+        Time.timeScale = 5f;
+        isGamePaused = false;
+    }
+
 
 #if UNITY_EDITOR
     [ContextMenu("Spawn Test Enemy")]
@@ -247,45 +293,19 @@ public class GameManager : MonoBehaviour
     // 적 베이스 찾기 (김원진)
     // Find the enemy base transform in the scene
     public Vector3 BasePosition => baseTransform != null ? baseTransform.position : Vector3.zero;
-}
 
-public class StageDataToHUD
-{
-    public int worldCode;
-    public int stageCode;
-    public int roundCode;
-    public int waveCode;
-
-    public StageDataToHUD(int worldCode, int stageCode, int roundCode, int waveCode)
+    public void Earn50G()
     {
-        this.worldCode = worldCode;
-        this.stageCode = stageCode;
-        this.roundCode = roundCode;
-        this.waveCode = waveCode;
+        _resourceManager.Earn(ResourceType.Tilepiece, 50);
+        _hudCanvas.ShowTilePiece();
     }
-}
 
-public class StageDataToTileManager
-{
-    public int worldCode;
-    public int stageCode;
-    public int roundCode;
-    public int waveCode;
-
-    public StageDataToTileManager(int worldCode, int stageCode, int roundCode, int waveCode)
+    public void Earn0G(int amount)
     {
-        this.worldCode = worldCode;
-        this.stageCode = stageCode;
-        this.roundCode = roundCode;
-        this.waveCode = waveCode;
-    }
-}
-public class StageDataToWaveManager
-{
-    public List<Wave_DataTable> stageWaveList;
+        _resourceManager.Earn(ResourceType.Tilepiece, amount);
+        _hudCanvas.ShowTilePiece();
 
-    public StageDataToWaveManager(List<Wave_DataTable> stageWaveList)
-    {
-        this.stageWaveList = stageWaveList;
     }
+
 }
+

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
+    public GameManager _gameManager;
     public ObjectPoolManager _poolManager;
 
     public EnemyStat _enemyStat;
@@ -15,6 +16,7 @@ public class Enemy : MonoBehaviour
 
     private void Awake()
     {
+        _gameManager = GameManager.Instance;
         _poolManager = ObjectPoolManager.Instance;
 
         _enemyStat = GetComponent<EnemyStat>();
@@ -22,9 +24,9 @@ public class Enemy : MonoBehaviour
         _enemyMovement = GetComponent<EnemyMovement>();
     }
 
-    private void Start()
+    public EnemyAnimationController SetAnimationController(EnemyAnimationController enemyAni)
     {
-        _enemyAnimationController = GetComponentInChildren<EnemyAnimationController>();
+        return _enemyAnimationController = enemyAni;
     }
 
     

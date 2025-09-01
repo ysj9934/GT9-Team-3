@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using UnityEditor.EditorTools;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -79,8 +78,13 @@ public class Castle : MonoBehaviour
     {
         isDead = true;
 
+        _gameManager._waveManager.StopWave();
+
         Debug.Log("GameOver");
-        //SettingCanvas.Instance.gameDefeatHUD.ShowDefeatPanel();
+
+        _gameManager.PauseGame();
+        
+        HUDCanvas.Instance._gameDefeatPanel.OpenWindow();
     }
 
 }

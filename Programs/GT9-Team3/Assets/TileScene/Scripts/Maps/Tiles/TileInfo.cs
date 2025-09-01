@@ -4,13 +4,16 @@ using UnityEngine;
 
 public class TileInfo : TileData
 {
+    // Tile Component
     public TilePlaceOnTower _tilePlaceOnTower;
-    
+    public PolygonCollider2D collider2D;
+
+    // Tile Info
     public GameObject[] rotatedPrefabs;
     public TileDirector tileDirector;
     
+    // Block Info
     public Dictionary<int, BlockInfo[]> blockInfos = new Dictionary<int, BlockInfo[]>();
-    
     public Dictionary<SpriteRenderer, int> originBlockOrder = new Dictionary<SpriteRenderer, int>();
     private bool originOrderInitialized = false;
     
@@ -18,8 +21,14 @@ public class TileInfo : TileData
     {
         base.Awake();
         _tilePlaceOnTower = GetComponent<TilePlaceOnTower>();
+        collider2D = GetComponent<PolygonCollider2D>();
     }
 
+    /// <summary>
+    /// Tile Initialize
+    /// Tile 초기화
+    /// </summary>
+    /// <param name="pos">타일 위치</param>
     public override void Initialize(Vector2 pos)
     {
         base.Initialize(pos);
@@ -28,17 +37,29 @@ public class TileInfo : TileData
         UpdateSpriteOrder();
     }
 
-    public void InitializeTemp(Vector2 pos)
+    /// <summary>
+    /// Cache Block Origin Order
+    /// 블럭의 최초 위치를 저장
+    /// </summary>
+    private void CacheOriginOrders()
     {
-        base.Initialize(pos);
-        UpdateSpriteOrder();
-    }   
+        if (originOrderInitialized) return;
 
-    public override void UpdateMapping(Vector2 pos)
-    {
-        base.UpdateMapping(pos);
+        SpriteRenderer[] spriteRenderers = GetComponentsInChildren<SpriteRenderer>(true);
+        originBlockOrder.Clear();
+
+        foreach (SpriteRenderer sr in spriteRenderers)
+        {
+            originBlockOrder[sr] = sr.sortingOrder;
+        }
+
+        originOrderInitialized = true;
     }
 
+    /// <summary>
+    /// Set Block List
+    /// 하위 블록 정보 저장
+    /// </summary>
     private void SetBlockInfos()
     {
         for (int index = 0; index < rotatedPrefabs.Length; index++)
@@ -48,17 +69,20 @@ public class TileInfo : TileData
         }
     }
 
-    public void UpdateWorldLevel(int level)
+    /// <summary>
+    /// Set Block Infos
+    /// 소유하고 있는 블럭을 저장
+    /// </summary>
+    /// <param name="pos">타일 위치</param>
+    public override void UpdateMapping(Vector2 pos)
     {
-        for (int index = 0; index < blockInfos.Count; index++)
-        {
-            foreach (var blockInfo in blockInfos[index])
-            {
-                blockInfo.UpdateWorldLevel(level);
-            }
-        }
+        base.UpdateMapping(pos);
     }
-    
+
+    /// <summary>
+    /// sorting order blocks
+    /// 블록의 order를 위치값에 맞게 지정
+    /// </summary>
     public void UpdateSpriteOrder()
     {
         foreach (var blockInfo in blockInfos)
@@ -91,21 +115,31 @@ public class TileInfo : TileData
             }
         }
     }
-    
-    // 최초 블럭 sortingOrder저장
-    private void CacheOriginOrders()
+
+    /// <summary>
+    /// Tile World Level
+    /// World Level 갱신시 타일 성격 변화
+    /// </summary>
+    /// <param name="level">월드 레벨</param>
+    public override void UpdateWorldLevel(int level)
     {
-        if (originOrderInitialized) return;
-
-        SpriteRenderer[] spriteRenderers = GetComponentsInChildren<SpriteRenderer>(true);
-        originBlockOrder.Clear();
-
-        foreach (SpriteRenderer sr in spriteRenderers)
+        for (int index = 0; index < blockInfos.Count; index++)
         {
-            originBlockOrder[sr] = sr.sortingOrder;
+            foreach (var blockInfo in blockInfos[index])
+            {
+                blockInfo.UpdateWorldLevel(level);
+            }
         }
-        
-        originOrderInitialized = true;
     }
-    
+
+    /// <summary>
+    /// Tile MapExtend
+    /// 맵 확장시 재배치
+    /// </summary>
+    /// <param name="pos">타일 위치</param>
+    public void MapExtend(Vector2 pos)
+    {
+        base.Initialize(pos);
+        UpdateSpriteOrder();
+    }
 }

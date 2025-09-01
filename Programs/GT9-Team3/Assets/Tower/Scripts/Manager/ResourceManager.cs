@@ -7,7 +7,7 @@ public class ResourceManager : MonoBehaviour
 {
     public static ResourceManager Instance { get; private set; }
 
-    public Dictionary<ResourceType, float> resources = new();
+    public Dictionary<ResourceType, float> resources = new Dictionary<ResourceType, float>();
 
     void Awake()
     {
@@ -21,10 +21,19 @@ public class ResourceManager : MonoBehaviour
             DontDestroyOnLoad(gameObject);
         }
 
-
         // Initialize resources
-        resources[ResourceType.Gold] = 120;
-        resources[ResourceType.Tilepiece] = 5000;
+        Initialize();
+        Add(ResourceType.Tilepiece, 5000);
+        //Add(ResourceType.Crystal, 100);
+        Add(ResourceType.Mana, 50);
+    }
+
+    private void Initialize()
+    {
+        resources[ResourceType.Gold] = 0;
+        resources[ResourceType.Mana] = 0;
+        resources[ResourceType.Crystal] = 0;
+        resources[ResourceType.Tilepiece] = 0;
     }
 
     public bool CanAfford(ResourceType type, float cost)
@@ -57,13 +66,4 @@ public class ResourceManager : MonoBehaviour
         Debug.Log($"[자원] {type} +{amount} 획득, 현재: {resources[type]}");
     }
 
-    public float ShowTilePiece()
-    {
-        return resources.ContainsKey(ResourceType.Tilepiece) ? resources[ResourceType.Tilepiece] : 0;
-    }
-
-    public float showGold()
-    {
-        return resources.ContainsKey(ResourceType.Gold) ? resources[ResourceType.Gold] : 0;
-    }
 }
