@@ -6,7 +6,6 @@ public class DataManager : MonoBehaviour
 {
     public static DataManager Instance { get; private set; }
 
-
     private Enemy_DataTableLoader enemyDataLoader;
     public Enemy_DataTableLoader EnemyDataLoader
     {
