@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 8604494652745004179}
   - component: {fileID: 8629987856081304537}
   - component: {fileID: 8975399792633945120}
+  - component: {fileID: -4622149659507020793}
   m_Layer: 7
   m_Name: Tile_Corner_3
   m_TagString: Untagged
@@ -105,11 +106,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _tileManager: {fileID: 0}
-  _tileRoadConnector: {fileID: 0}
   _tileUI: {fileID: 0}
   _tileMove: {fileID: 0}
+  _tileRoadConnector: {fileID: 0}
   tileCategory: 0
   tileShape: 0
+  tileIndex: 0
+  originTileCol: 0
+  originTileRow: 0
+  tileCol: 0
+  tileRow: 0
   up: {fileID: 0}
   down: {fileID: 0}
   left: {fileID: 0}
@@ -118,12 +124,8 @@ MonoBehaviour:
   connectedDown: 0
   connectedLeft: 1
   connectedRight: 0
-  tileIndex: 0
-  originTileCol: 0
-  originTileRow: 0
-  tileCol: 0
-  tileRow: 0
   _tilePlaceOnTower: {fileID: 0}
+  collider2D: {fileID: 0}
   rotatedPrefabs:
   - {fileID: 565874293973599744}
   - {fileID: 3158787276015251721}
@@ -154,6 +156,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b23372755180ea4eb73d4132888ecc3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  originalPosition: {x: 0, y: 0}
+  originalColor: {r: 0, g: 0, b: 0, a: 0}
+  _sprites: []
+  isDragging: 0
+  isPressing: 0
+  pressTime: 0
 --- !u!114 &8604494652745004179
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -191,6 +199,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ce29adaf7ad4394f9bd42458b206d8c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &-4622149659507020793
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5640010735581920036}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d557d43e0b1128147b03a1f048408758, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tileUIPrefab: {fileID: 5086349439914438355, guid: f3ec8652ac8bba24e9d50a9751948296, type: 3}
+  tileObjectPrefab:
+  - {fileID: 5640010735581920036}
+  linkedUIObject: {fileID: 0}
+  linkedWorldObject: {fileID: 0}
 --- !u!1001 &3517769089673200552
 PrefabInstance:
   m_ObjectHideFlags: 0

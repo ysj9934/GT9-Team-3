@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 6936872313358850599}
   - component: {fileID: 9213490445961703029}
   - component: {fileID: 1208482132511062533}
+  - component: {fileID: 226716323052598458}
   m_Layer: 7
   m_Name: Tile_Cross_1
   m_TagString: Untagged
@@ -105,10 +106,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _tileManager: {fileID: 0}
-  _tileRoadConnector: {fileID: 0}
   _tileUI: {fileID: 0}
+  _tileMove: {fileID: 0}
+  _tileRoadConnector: {fileID: 0}
   tileCategory: 0
   tileShape: 3
+  tileIndex: 0
+  originTileCol: 0
+  originTileRow: 0
+  tileCol: 0
+  tileRow: 0
   up: {fileID: 0}
   down: {fileID: 0}
   left: {fileID: 0}
@@ -117,12 +124,8 @@ MonoBehaviour:
   connectedDown: 1
   connectedLeft: 1
   connectedRight: 1
-  tileIndex: 0
-  originTileCol: 0
-  originTileRow: 0
-  tileCol: 0
-  tileRow: 0
   _tilePlaceOnTower: {fileID: 0}
+  collider2D: {fileID: 0}
   rotatedPrefabs:
   - {fileID: 3595105687441904756}
   - {fileID: 2306765940960879926}
@@ -153,6 +156,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b23372755180ea4eb73d4132888ecc3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  originalPosition: {x: 0, y: 0}
+  originalColor: {r: 0, g: 0, b: 0, a: 0}
+  _sprites: []
+  isDragging: 0
+  isPressing: 0
+  pressTime: 0
 --- !u!114 &6936872313358850599
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -190,6 +199,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ce29adaf7ad4394f9bd42458b206d8c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &226716323052598458
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8240947508694223969}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d557d43e0b1128147b03a1f048408758, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tileUIPrefab: {fileID: 5912126955129273633, guid: e55e5d348ec9e384f8423dad387101cc, type: 3}
+  tileObjectPrefab:
+  - {fileID: 8240947508694223969}
+  linkedUIObject: {fileID: 0}
+  linkedWorldObject: {fileID: 0}
 --- !u!1001 &4789050897182063169
 PrefabInstance:
   m_ObjectHideFlags: 0

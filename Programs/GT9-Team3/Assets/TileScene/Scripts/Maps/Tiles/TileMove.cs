@@ -7,7 +7,13 @@ using UnityEngine.EventSystems;
 
 public class TileMove : MonoBehaviour
 {
+    // Managers
     private TileManager _tileManager;
+    private HUDCanvas _hudCanvas;
+
+
+    // Object Structure
+    private Camera _camera;
     private TileData _tileData;
     private TileInfo _tileInfo;
     private Collider2D _collider;
@@ -20,12 +26,24 @@ public class TileMove : MonoBehaviour
     public bool isPressing = false;
     public float pressTime = 0f;
 
+    // InventoryItem
+    private RectTransform inventoryContent;
+    private TileUIObject tileUIObject;
+
     private void Awake()
     {
         _tileManager = TileManager.Instance;
+        _hudCanvas = HUDCanvas.Instance;
+        _camera = Camera.main;
+
         _tileData = GetComponent<TileData>();
         _tileInfo = GetComponent<TileInfo>();
         _collider = GetComponent<PolygonCollider2D>();
+    }
+
+    private void Start()
+    {
+        inventoryContent = _hudCanvas._itemHudUI.inventoryContent;
     }
     
     public void TileMovePress()
@@ -55,14 +73,65 @@ public class TileMove : MonoBehaviour
                 }
             }
 
+            if (!isDragging) return;
+
             TileMoveDrag();
 
             if (Input.GetMouseButtonUp(0) ||
                 (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Ended))
             {
-                TileMoveUp();
+
+                isDragging = false;
+
+                if (EventSystem.current.IsPointerOverGameObject())
+                {
+
+                    // 본인을 끄고 게임에 영향을 받지 않은 구역으로 이동시킨다.
+                    gameObject.SetActive(false);
+                    //gameObject.transform.position = new Vector2(5, 5);
+
+                    //// 연결된 UIObject가 없는 경우
+                    if (_tileInfo._tileLink.linkedUIObject == null)
+                    {
+                        LinkedUIObject();
+                    }
+
+                    // 연결된 UIObject가 있는 경우
+                    GameObject uiItem = _tileInfo._tileLink.linkedUIObject;
+                    uiItem.SetActive(true);
+
+                    var itemImage = uiItem.GetComponent<TileUIObject>();
+                    itemImage.Initialize(inventoryContent);
+
+                    // 양방향 연결 설정
+                    itemImage.link = _tileInfo._tileLink;
+                    _tileInfo._tileLink.linkedUIObject = uiItem;
+                    _tileInfo._tileLink.linkedWorldObject = this.gameObject;
+
+                    RectTransform uiRect = uiItem.GetComponent<RectTransform>();
+                    uiRect.SetParent(itemImage.inventoryContent, false);
+                    uiRect.anchoredPosition = Vector2.zero;
+                }
+
+                if (gameObject.activeSelf)
+                {
+                    TileMoveUp();
+                }
+                
+
             }
         }
+    }
+
+    private void LinkedUIObject()
+    { 
+        
+        _tileInfo._tileLink.linkedUIObject = Instantiate(_tileInfo._tileLink.tileUIPrefab);
+        _tileInfo._tileLink.linkedUIObject.name = _tileInfo._tileLink.linkedUIObject.name;
+
+        tileUIObject = _tileInfo._tileLink.linkedUIObject.GetComponent<TileUIObject>();
+        tileUIObject.Initialize(inventoryContent);
+        tileUIObject.link = _tileInfo._tileLink;
     }
 
     private void TileMoveDrag()
@@ -224,10 +293,10 @@ public class TileMove : MonoBehaviour
                 UpdateGridPosition();
                 Debug.Log("this location already located");
             }
-            else
-            {
-                UpdateGridPosition();
-            }
+            //else
+            //{
+            //    UpdateGridPosition();
+            //}
         
             if (_collider != null)
                 _collider.enabled = true;

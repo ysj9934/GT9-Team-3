@@ -42,7 +42,7 @@ public class DataManager : MonoBehaviour
         waveDataLoader = new Wave_DataTableLoader();
 
         // Test 
-        //SelectedStage(105);
+        SelectedStage(105);
     }
 
     /// <summary>

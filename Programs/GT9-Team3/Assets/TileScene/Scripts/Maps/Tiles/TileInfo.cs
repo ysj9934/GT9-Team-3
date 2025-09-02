@@ -7,6 +7,7 @@ public class TileInfo : TileData
     // Tile Component
     public TilePlaceOnTower _tilePlaceOnTower;
     public PolygonCollider2D collider2D;
+    public TileLink _tileLink;
 
     // Tile Info
     public GameObject[] rotatedPrefabs;
@@ -22,6 +23,7 @@ public class TileInfo : TileData
         base.Awake();
         _tilePlaceOnTower = GetComponent<TilePlaceOnTower>();
         collider2D = GetComponent<PolygonCollider2D>();
+        _tileLink = GetComponent<TileLink>();
     }
 
     /// <summary>

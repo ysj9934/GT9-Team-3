@@ -692,26 +692,4 @@ public class TileManager : MonoBehaviour
     {
         TowerSellUI.Instance.Hide();
     }
-
-
-    // Inventory
-    public List<GameObject> inventoryList = new List<GameObject>();
-    [SerializeField] public Transform content;
-    [SerializeField] public GameObject inventoryItemTilePrefab;
-    [SerializeField] public GameObject inventoryItemPrefab;
-    [SerializeField] public GameObject tileItemPrefab;
-
-    public void CreateTile()
-    {
-        GameObject go = Instantiate(inventoryItemTilePrefab, Vector2.zero, Quaternion.identity);
-        go.transform.SetParent(this.transform);
-        
-        go.SetActive(false);
-        GameObject uigo = Instantiate(inventoryItemPrefab, content);
-        UI_Inventory_ItemImage itemImage = uigo.GetComponentInChildren<UI_Inventory_ItemImage>();
-        itemImage.gameObject.SetActive(true);
-        // itemImage.GetComponent<Image>().image = tileItemPrefab.GetComponent<Image>().image;
-        
-        inventoryList.Add(uigo);
-    }
 }

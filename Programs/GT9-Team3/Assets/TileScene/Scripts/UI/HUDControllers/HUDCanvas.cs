@@ -45,6 +45,9 @@ public class HUDCanvas : MonoBehaviour
     // ResultPanel
     public GameResult _gameResultPanel;
 
+    // ItemHubUI
+    public ItemHubUI _itemHudUI;
+
     public TowerUpgradeUI upgradeUI;
     public TowerSellUI sellUI;
 
@@ -70,6 +73,7 @@ public class HUDCanvas : MonoBehaviour
         _gameDefeatPanel.Initialize(this);
         _gameResultPanel = GetComponentInChildren<GameResult>();
         _gameResultPanel.Initialize(this);
+        _itemHudUI = GetComponentInChildren<ItemHubUI>();
 
         if (IsValidate())
         {
