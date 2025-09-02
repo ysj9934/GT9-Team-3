@@ -38,4 +38,7 @@ public class ItemHubUI : MonoBehaviour
         hudShopTabPanel.SetActive(false);
         hudInventoryTabPanel.SetActive(false);
     }
+
+    // Shop Tab
+
 }

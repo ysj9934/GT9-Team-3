@@ -33,6 +33,9 @@ public class TileManager : MonoBehaviour
     public TowerBuildUI towerUIdnjswls;
     public TowerSellUI towerSellUI;
 
+    // Controllers
+    public ShopController _shopController;
+
     // Manager Info
     public readonly float[] tileSize = { 1.4475f, 0.84f };
     public int tileLength = 5;
@@ -85,6 +88,7 @@ public class TileManager : MonoBehaviour
     private void Start()
     {
         _gameManager = GameManager.Instance;
+        _shopController = GetComponentInChildren<ShopController>();
         towerSellUI = TowerSellUI.Instance;
         towerUIdnjswls = FindObjectOfType<TowerBuildUI>(true);
     }
@@ -554,7 +558,7 @@ public class TileManager : MonoBehaviour
         {
             for (int col = 0; col < tileLength; col++)
             {
-                if (tileMap[row, col] != null)
+                if (tileMap[row, col] != null && !tileMap[row, col].isInInventory)
                 {
                     tileMap[row, col].SetNeighbors(tileMap, tileLength, tileLength);
                 }

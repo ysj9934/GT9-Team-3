@@ -73,6 +73,12 @@ public class TileMove : MonoBehaviour
                 }
             }
 
+            if (Input.GetMouseButtonUp(0))
+            {
+                isPressing = false;
+                pressTime = 0;
+            }
+
             if (!isDragging) return;
 
             TileMoveDrag();
@@ -85,12 +91,11 @@ public class TileMove : MonoBehaviour
 
                 if (EventSystem.current.IsPointerOverGameObject())
                 {
-
                     // 본인을 끄고 게임에 영향을 받지 않은 구역으로 이동시킨다.
                     gameObject.SetActive(false);
-                    //gameObject.transform.position = new Vector2(5, 5);
+                    _tileInfo.isInInventory = true;
 
-                    //// 연결된 UIObject가 없는 경우
+                    // 연결된 UIObject가 없는 경우
                     if (_tileInfo._tileLink.linkedUIObject == null)
                     {
                         LinkedUIObject();
@@ -111,21 +116,25 @@ public class TileMove : MonoBehaviour
                     RectTransform uiRect = uiItem.GetComponent<RectTransform>();
                     uiRect.SetParent(itemImage.inventoryContent, false);
                     uiRect.anchoredPosition = Vector2.zero;
+
+                    // 타일 연결정보 끊기
+                    CutTileConnectedInfo();
                 }
 
                 if (gameObject.activeSelf)
                 {
                     TileMoveUp();
                 }
-                
-
             }
         }
     }
 
+    /// <summary>
+    /// Linked UI Object
+    /// 링크 연동하기
+    /// </summary>
     private void LinkedUIObject()
     { 
-        
         _tileInfo._tileLink.linkedUIObject = Instantiate(_tileInfo._tileLink.tileUIPrefab);
         _tileInfo._tileLink.linkedUIObject.name = _tileInfo._tileLink.linkedUIObject.name;
 
@@ -267,40 +276,56 @@ public class TileMove : MonoBehaviour
 
             foreach (var sprite in _sprites)
             {
+                // TowerRange는 무시
+                TowerRange towerRange = sprite.GetComponent<TowerRange>();
+                //towerRange.gameObject.SetActive(false);
+                if (towerRange) continue;
+
                 if (isValid)
+                {
                     sprite.color = originalColor;
+                }
                 else
+                {
                     sprite.color = Color.red;
+                }
+                    
             }
         }
     }
     
     public void TileMoveUp()
     {
-        if (isDragging)
+        foreach (var sprite in _sprites)
         {
-            foreach (var sprite in _sprites)
-            {
-                sprite.color = originalColor;
-            }
+            TowerRange towerRange = sprite.GetComponent<TowerRange>();
+            if (towerRange) continue;
+
+            sprite.color = originalColor;
+        }
         
-            Collider2D hit = Physics2D.OverlapPoint(transform.position);
+        // Castle에 맞는 경우가 종종 있음
+        Collider2D hit = Physics2D.OverlapPoint(transform.position);
+        if (hit != null)
+        {
             TileData tileData = hit != null ? hit.GetComponent<TileData>() : null;
-    
-            if (tileData != null)
+            Castle tileCastle = hit != null ? hit.GetComponent<Castle>() : null;
+
+            if (tileData != null || tileCastle != null)
             {
                 transform.position = originalPosition;
                 UpdateGridPosition();
                 Debug.Log("this location already located");
             }
-            //else
-            //{
-            //    UpdateGridPosition();
-            //}
-        
-            if (_collider != null)
-                _collider.enabled = true;
+            else
+            {
+                UpdateGridPosition();
+            }
         }
+        
+
+        if (_collider != null)
+            _collider.enabled = true;
 
         isDragging = false;
         isPressing = false;
@@ -341,4 +366,9 @@ public class TileMove : MonoBehaviour
         }
     }
 
+    private void CutTileConnectedInfo()
+    {
+        _tileManager.tileMap[_tileInfo.tileRow, _tileInfo.tileCol] = null;
+        _tileManager.SetNeighbors();
+    }
 }

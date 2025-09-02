@@ -109,6 +109,7 @@ MonoBehaviour:
   _tileUI: {fileID: 0}
   _tileMove: {fileID: 0}
   _tileRoadConnector: {fileID: 0}
+  _tileLink: {fileID: 0}
   tileCategory: 0
   tileShape: 3
   tileIndex: 0
@@ -442,6 +443,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 7
       objectReference: {fileID: 0}
+    - target: {fileID: 6231276846603681227, guid: 86a6692ae9650844ca391512700d4b18, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6600601531297007046, guid: 86a6692ae9650844ca391512700d4b18, type: 3}
       propertyPath: m_Layer
       value: 7
@@ -500,6 +505,10 @@ PrefabInstance:
     - target: {fileID: 1007043785181671264, guid: 7fb8815be5b45674996308e2934d997f, type: 3}
       propertyPath: m_Layer
       value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 1007043785181671264, guid: 7fb8815be5b45674996308e2934d997f, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2965231853810502164, guid: 7fb8815be5b45674996308e2934d997f, type: 3}
       propertyPath: m_Layer
@@ -703,6 +712,10 @@ PrefabInstance:
     - target: {fileID: 6985506916176400010, guid: 5d854dc0b9a35504aa87fd631a1db6c2, type: 3}
       propertyPath: m_Layer
       value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 6985506916176400010, guid: 5d854dc0b9a35504aa87fd631a1db6c2, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7388856610625506561, guid: 5d854dc0b9a35504aa87fd631a1db6c2, type: 3}
       propertyPath: m_Layer

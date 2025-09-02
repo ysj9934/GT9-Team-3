@@ -7,8 +7,7 @@ public class TileInfo : TileData
     // Tile Component
     public TilePlaceOnTower _tilePlaceOnTower;
     public PolygonCollider2D collider2D;
-    public TileLink _tileLink;
-
+    
     // Tile Info
     public GameObject[] rotatedPrefabs;
     public TileDirector tileDirector;
@@ -23,7 +22,6 @@ public class TileInfo : TileData
         base.Awake();
         _tilePlaceOnTower = GetComponent<TilePlaceOnTower>();
         collider2D = GetComponent<PolygonCollider2D>();
-        _tileLink = GetComponent<TileLink>();
     }
 
     /// <summary>
@@ -37,6 +35,14 @@ public class TileInfo : TileData
         CacheOriginOrders();
         SetBlockInfos();
         UpdateSpriteOrder();
+    }
+
+    public void Initialize(TileLink tileLink)
+    {
+        _tileLink = tileLink;
+        _tileMove = GetComponent<TileMove>();
+        CacheOriginOrders();
+        SetBlockInfos();
     }
 
     /// <summary>

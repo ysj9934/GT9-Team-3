@@ -2,9 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class TileUIObject : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IBeginDragHandler, IEndDragHandler
 {
+    // Managers
+    private TileManager _tileManager;
+
     // Object Structure
     public TileLink link;
     private CanvasGroup canvasGroup;
@@ -16,11 +20,12 @@ public class TileUIObject : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
     private bool hasSpawned = false;
 
     // Object UX
-    //[SerializeField] private Image holdCircle;
+    [SerializeField] private Image holdCircle;
     private readonly float holdDuration = 0.5f;
 
     private void Awake()
     {
+        _tileManager = TileManager.Instance;
         canvasGroup = GetComponent<CanvasGroup>();
     }
 
@@ -35,13 +40,13 @@ public class TileUIObject : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
         {
             // Object UX
             holdTimer += Time.deltaTime;
-            //float progress = Mathf.Clamp01(holdTimer / holdDuration);
-            //holdCircle.fillAmount = progress;
+            float progress = Mathf.Clamp01(holdTimer / holdDuration);
+            holdCircle.fillAmount = progress;
 
             if (!hasSpawned && holdTimer >= holdDuration)
             {
                 // Object UX
-                //holdCircle.gameObject.SetActive(false);
+                holdCircle.gameObject.SetActive(false);
 
                 // Object SpawnWorldObject
                 hasSpawned = true;
@@ -55,24 +60,20 @@ public class TileUIObject : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
         isHolding = true;
         holdTimer = 0f;
         hasSpawned = false;
-        // canvasGroup.alpha = 0.5f;
-        // canvasGroup.blocksRaycasts = false;
 
         // Object UX
-        //holdCircle.fillAmount = 0f;
-        //holdCircle.gameObject.SetActive(true);
+        holdCircle.fillAmount = 0f;
+        holdCircle.gameObject.SetActive(true);
     }
 
     public void OnPointerUp(PointerEventData eventData)
     {
         isHolding = false;
         holdTimer = 0f;
-        // canvasGroup.alpha = 1f;
-        // canvasGroup.blocksRaycasts = true;
 
         // Object UX
-        //holdCircle.fillAmount = 0f;
-        //holdCircle.gameObject.SetActive(false);
+        holdCircle.fillAmount = 0f;
+        holdCircle.gameObject.SetActive(false);
     }
 
     public void OnBeginDrag(PointerEventData eventData)
@@ -91,21 +92,30 @@ public class TileUIObject : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
     /// <summary>
     /// WorldObject 생성 또는 링크
     /// </summary>
+    private bool isNewTile = false;
     private void SpawnWorldObject()
     {
         if (link.linkedWorldObject == null)
         {
             link.linkedWorldObject = Instantiate(link.tileObjectPrefab);
             link.linkedWorldObject.name = link.tileObjectPrefab.name;
+            isNewTile = true;
         }
         link.linkedUIObject = this.gameObject;
         link.linkedWorldObject.SetActive(true);
 
         TileInfo tileObject = link.linkedWorldObject.GetComponent<TileInfo>();
+        _tileManager.tileInfoList.Add(tileObject);
+        _tileManager.tileAllCategoryList.Add(tileObject.gameObject);
+        if (isNewTile)
+            tileObject.Initialize(link);
         tileObject._tileMove.isDragging = true;
         tileObject._tileLink = link;
         tileObject._tileLink.linkedUIObject = link.linkedUIObject;
+        tileObject.collider2D.enabled = true;
+        tileObject.gameObject.transform.SetParent(_tileManager.transform);
 
         link.linkedUIObject.SetActive(false);
+        tileObject.isInInventory = false;
     }
 }

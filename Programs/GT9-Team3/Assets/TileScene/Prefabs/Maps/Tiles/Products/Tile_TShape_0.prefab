@@ -109,6 +109,7 @@ MonoBehaviour:
   _tileUI: {fileID: 0}
   _tileMove: {fileID: 0}
   _tileRoadConnector: {fileID: 0}
+  _tileLink: {fileID: 0}
   tileCategory: 0
   tileShape: 2
   tileIndex: 0
@@ -211,9 +212,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d557d43e0b1128147b03a1f048408758, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tileUIPrefab: {fileID: 8155511771961487980, guid: ac13760c11fffb449be6b3250b071d01, type: 3}
-  tileObjectPrefab:
-  - {fileID: 5285485644323669535}
+  tileUIPrefab: {fileID: 8155511771961487980, guid: a9beebfe201d46845a3a38a04d53358b, type: 3}
+  tileObjectPrefab: {fileID: 5285485644323669535}
   linkedUIObject: {fileID: 0}
   linkedWorldObject: {fileID: 0}
 --- !u!1001 &689904073628440724
