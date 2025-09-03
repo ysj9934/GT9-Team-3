@@ -16,6 +16,15 @@ public class TileInfo : TileData
     public Dictionary<int, BlockInfo[]> blockInfos = new Dictionary<int, BlockInfo[]>();
     public Dictionary<SpriteRenderer, int> originBlockOrder = new Dictionary<SpriteRenderer, int>();
     private bool originOrderInitialized = false;
+    public List<Tower1> hasTowerList = new List<Tower1>();
+    public Dictionary<TowerCategory, int> towerInfo = new Dictionary<TowerCategory, int>()
+    {
+        { TowerCategory.Common, 0 },
+        { TowerCategory.Splash, 0 },
+        { TowerCategory.Slow, 0 },
+        { TowerCategory.Stun, 0 },
+        { TowerCategory.Doom, 0 }
+    };
     
     protected override void Awake()
     {

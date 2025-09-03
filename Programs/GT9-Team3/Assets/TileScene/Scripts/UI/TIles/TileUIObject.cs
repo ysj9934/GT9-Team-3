@@ -8,6 +8,7 @@ public class TileUIObject : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
 {
     // Managers
     private TileManager _tileManager;
+    private HUDCanvas _hudCanvas => HUDCanvas.Instance;
 
     // Object Structure
     public TileLink link;
@@ -23,10 +24,14 @@ public class TileUIObject : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
     [SerializeField] private Image holdCircle;
     private readonly float holdDuration = 0.5f;
 
+    // Object Functions
+    [SerializeField] private Button towerInfoButton;
+
     private void Awake()
     {
         _tileManager = TileManager.Instance;
         canvasGroup = GetComponent<CanvasGroup>();
+        link = GetComponent<TileLink>();
     }
 
     public void Initialize(RectTransform content)
@@ -118,4 +123,22 @@ public class TileUIObject : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
         link.linkedUIObject.SetActive(false);
         tileObject.isInInventory = false;
     }
+
+    public void SendItemData()
+    {
+        Vector2 mousePosition = Input.mousePosition;
+
+        if (link.linkedWorldObject != null)
+        {
+            TileInfo tileInfo = link.linkedWorldObject.GetComponent<TileInfo>();
+            _hudCanvas._itemHudUI.SetTowerInfo(tileInfo, mousePosition);
+        }
+        else
+        {
+            _hudCanvas._itemHudUI.SetTowerInfo(null, mousePosition);
+        }
+
+        _hudCanvas._itemHudUI.OpenTowerInfoPanel();
+    }
+
 }

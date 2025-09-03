@@ -80,8 +80,6 @@ public class TileManager : MonoBehaviour
 
         Instance = this;
 
-        Debug.LogError("TileManager Instance Error");
-
         tileAllCategoryList = new List<GameObject>();
     }
 
@@ -314,7 +312,7 @@ public class TileManager : MonoBehaviour
                 {
                     CloseTileUI(fallbackTile._tileUI);
                     _gameManager._hudCanvas.TurnOffStartWave();
-                    fallbackTile._tileUI.tileUI.SetActive(!fallbackTile._tileUI.tileUI.activeSelf);
+                    fallbackTile._tileUI.rotateUI.SetActive(!fallbackTile._tileUI.rotateUI.activeSelf);
                 }
 
                 if (isMoveActive)
@@ -328,6 +326,7 @@ public class TileManager : MonoBehaviour
                 CloseTileUI(null);
                 CloseTowerInstallUI();
                 CloseTowerInfoUI();
+                CloseTowerRangeUI();
             }
         }
 
@@ -675,7 +674,7 @@ public class TileManager : MonoBehaviour
         foreach (var tileInfo in tileInfoList)
         {
             if (tileInfo._tileUI != exceptUI)
-                tileInfo._tileUI.CloseUI();
+                tileInfo._tileUI.CloseRotateUI();
         }
     }
 
@@ -695,5 +694,17 @@ public class TileManager : MonoBehaviour
     public void CloseTowerInfoUI()
     {
         TowerSellUI.Instance.Hide();
+    }
+
+    public void CloseTowerRangeUI()
+    { 
+        foreach (var tileInfo in tileInfoList)
+        {
+            foreach (var tower in tileInfo.hasTowerList)
+            {
+                if (tower.rangeVisual != null)
+                    tower.rangeVisual.SetActive(false);
+            }
+        }
     }
 }

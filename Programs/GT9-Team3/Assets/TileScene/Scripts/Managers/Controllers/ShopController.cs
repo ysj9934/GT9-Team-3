@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class ShopController : MonoBehaviour
 {
-
     // Object Managers
     private HUDCanvas _hudCanvas;
 

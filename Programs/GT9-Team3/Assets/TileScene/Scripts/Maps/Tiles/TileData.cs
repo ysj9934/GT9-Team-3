@@ -115,18 +115,91 @@ public class TileData : MonoBehaviour
         this.tileCol = colIndex;
         this.tileRow = rowIndex;
 
-        if (!IsValidTilePosition(tileRow, tileCol))
+        // Castle를 부딪칠 경우
+        if (_tileManager.mapExtendLevel == 1 &&
+            this.gameObject.GetComponent<TileCastle>() == null)
         {
-            transform.position = _tileMove.originalPosition;
-            UpdateMapping(transform.position);
+            if (tileCol == 2 && tileRow == 2)
+            {
+                transform.position = _tileMove.originalPosition;
+                UpdateMapping(transform.position);
+            }
+            else if (originTileCol == 2 && originTileRow == 2)
+            {
+                _tileMove.LinkiedUI();
+            }
+        }
+        else if (_tileManager.mapExtendLevel == 2 &&
+            this.gameObject.GetComponent<TileCastle>() == null)
+        {
+            if (tileCol == 3 && tileRow == 3)
+            {
+                transform.position = _tileMove.originalPosition;
+                UpdateMapping(transform.position);
+            }
+            else if (originTileCol == 3 && originTileRow == 3)
+            {
+                _tileMove.LinkiedUI();
+            }
+        }
+
+        // 그리드 밖으로 나갔을 때
+        if (!IsValidTilePosition(tileRow, tileCol) &&
+            !IsValidTilePosition(originTileRow, originTileCol))
+        {
+            _tileMove.LinkiedUI();
+        }
+        else if (!IsValidTilePosition(tileRow, tileCol) &&
+                IsValidTilePosition(originTileRow, originTileCol))
+        {
+            if (_tileManager.tileMap[originTileRow, originTileCol] != null &&
+                _tileManager.tileMap[originTileRow, originTileCol] != this)
+            {
+                _tileMove.LinkiedUI();
+            }
+            else
+            {
+                transform.position = _tileMove.originalPosition;
+                UpdateMapping(transform.position);
+            }
+        }
+        else if (IsValidTilePosition(tileRow, tileCol) &&
+                !IsValidTilePosition(originTileRow, originTileCol))
+        {
+            if (_tileManager.tileMap[tileRow, tileCol] != null &&
+                _tileManager.tileMap[tileRow, tileCol] != this)
+            {
+                _tileMove.LinkiedUI();
+            }
+            else
+            {
+                _tileManager.tileMap[tileRow, tileCol] = this;
+            }
         }
         else
         {
-            if (IsValidTilePosition(originTileRow, originTileCol))
+            if (_tileManager.tileMap[tileRow, tileCol] != null &&
+                _tileManager.tileMap[tileRow, tileCol] != this)
             {
-                _tileManager.tileMap[originTileRow, originTileCol] = null;
+                if (_tileManager.tileMap[originTileRow, originTileCol] != null &&
+                _tileManager.tileMap[originTileRow, originTileCol] != this)
+                {
+                    _tileMove.LinkiedUI();
+                }
+                else
+                {
+                    _tileManager.tileMap[originTileRow, originTileCol] = this;
+                }
             }
-            _tileManager.tileMap[tileRow, tileCol] = this;
+            else
+            {
+                if (IsValidTilePosition(originTileRow, originTileCol))
+                {
+                    _tileManager.tileMap[originTileRow, originTileCol] = null;
+                }
+
+                _tileManager.tileMap[tileRow, tileCol] = this;
+            }
         }
     }
     private bool IsValidTilePosition(int row, int col)

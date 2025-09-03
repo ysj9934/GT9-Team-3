@@ -60,3 +60,11 @@ public enum HitTarget
 /// <summary>
 /// Tower
 /// </summary>
+public enum TowerCategory
+{ 
+    Common,
+    Splash,
+    Slow,
+    Stun,
+    Doom,
+}

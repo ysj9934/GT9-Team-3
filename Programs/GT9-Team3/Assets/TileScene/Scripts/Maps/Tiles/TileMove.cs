@@ -18,6 +18,8 @@ public class TileMove : MonoBehaviour
     private TileInfo _tileInfo;
     private Collider2D _collider;
     
+    private readonly float holdDuration = 0.5f;
+    
     public Vector2 originalPosition;
     public Color originalColor;
     public SpriteRenderer[] _sprites;
@@ -64,12 +66,18 @@ public class TileMove : MonoBehaviour
         {
             if (isPressing && !isDragging)
             {
+                _tileInfo._tileUI.OpenLoadingUI();
                 pressTime += Time.deltaTime;
+                float progress = Mathf.Clamp01(pressTime / holdDuration);
+                _tileInfo._tileUI.holdCircle.fillAmount = progress;
 
                 // 0.5초 이상 누르면 이동 모드로 전환
-                if (pressTime >= 0.5f)
+                if (pressTime >= holdDuration)
                 {
+                    _tileInfo._tileUI.CloseLoadingUI();
+
                     isDragging = true;
+                    _tileManager.CloseTowerRangeUI();
                 }
             }
 
@@ -77,6 +85,8 @@ public class TileMove : MonoBehaviour
             {
                 isPressing = false;
                 pressTime = 0;
+                _tileInfo._tileUI.holdCircle.fillAmount = 0f;
+                _tileInfo._tileUI.CloseLoadingUI();
             }
 
             if (!isDragging) return;
@@ -91,34 +101,7 @@ public class TileMove : MonoBehaviour
 
                 if (EventSystem.current.IsPointerOverGameObject())
                 {
-                    // 본인을 끄고 게임에 영향을 받지 않은 구역으로 이동시킨다.
-                    gameObject.SetActive(false);
-                    _tileInfo.isInInventory = true;
-
-                    // 연결된 UIObject가 없는 경우
-                    if (_tileInfo._tileLink.linkedUIObject == null)
-                    {
-                        LinkedUIObject();
-                    }
-
-                    // 연결된 UIObject가 있는 경우
-                    GameObject uiItem = _tileInfo._tileLink.linkedUIObject;
-                    uiItem.SetActive(true);
-
-                    var itemImage = uiItem.GetComponent<TileUIObject>();
-                    itemImage.Initialize(inventoryContent);
-
-                    // 양방향 연결 설정
-                    itemImage.link = _tileInfo._tileLink;
-                    _tileInfo._tileLink.linkedUIObject = uiItem;
-                    _tileInfo._tileLink.linkedWorldObject = this.gameObject;
-
-                    RectTransform uiRect = uiItem.GetComponent<RectTransform>();
-                    uiRect.SetParent(itemImage.inventoryContent, false);
-                    uiRect.anchoredPosition = Vector2.zero;
-
-                    // 타일 연결정보 끊기
-                    CutTileConnectedInfo();
+                    LinkiedUI();
                 }
 
                 if (gameObject.activeSelf)
@@ -141,6 +124,38 @@ public class TileMove : MonoBehaviour
         tileUIObject = _tileInfo._tileLink.linkedUIObject.GetComponent<TileUIObject>();
         tileUIObject.Initialize(inventoryContent);
         tileUIObject.link = _tileInfo._tileLink;
+    }
+
+    public void LinkiedUI()
+    {
+        // 본인을 끄고 게임에 영향을 받지 않은 구역으로 이동시킨다.
+        gameObject.SetActive(false);
+        _tileInfo.isInInventory = true;
+
+        // 연결된 UIObject가 없는 경우
+        if (_tileInfo._tileLink.linkedUIObject == null)
+        {
+            LinkedUIObject();
+        }
+
+        // 연결된 UIObject가 있는 경우
+        GameObject uiItem = _tileInfo._tileLink.linkedUIObject;
+        uiItem.SetActive(true);
+
+        var itemImage = uiItem.GetComponent<TileUIObject>();
+        itemImage.Initialize(inventoryContent);
+
+        // 양방향 연결 설정
+        itemImage.link = _tileInfo._tileLink;
+        _tileInfo._tileLink.linkedUIObject = uiItem;
+        _tileInfo._tileLink.linkedWorldObject = this.gameObject;
+
+        RectTransform uiRect = uiItem.GetComponent<RectTransform>();
+        uiRect.SetParent(itemImage.inventoryContent, false);
+        uiRect.anchoredPosition = Vector2.zero;
+
+        // 타일 연결정보 끊기
+        CutTileConnectedInfo();
     }
 
     private void TileMoveDrag()
@@ -368,7 +383,18 @@ public class TileMove : MonoBehaviour
 
     private void CutTileConnectedInfo()
     {
-        _tileManager.tileMap[_tileInfo.tileRow, _tileInfo.tileCol] = null;
+        if (IsValidTilePosition(_tileInfo.tileRow, _tileInfo.tileCol))
+        {
+            _tileManager.tileMap[_tileInfo.tileRow, _tileInfo.tileCol] = null;
+        }
+        
         _tileManager.SetNeighbors();
+    }
+
+    private bool IsValidTilePosition(int row, int col)
+    {
+        //Debug.Log($"Tile Position - Row: {row}, Col: {col}");
+        return row >= 0 && row < _tileManager.tileMap.GetLength(0) &&
+               col >= 0 && col < _tileManager.tileMap.GetLength(1);
     }
 }

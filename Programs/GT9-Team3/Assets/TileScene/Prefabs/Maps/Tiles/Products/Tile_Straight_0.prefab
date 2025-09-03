@@ -117,6 +117,7 @@ MonoBehaviour:
   originTileRow: 0
   tileCol: 0
   tileRow: 0
+  isInInventory: 0
   up: {fileID: 0}
   down: {fileID: 0}
   left: {fileID: 0}
@@ -187,7 +188,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4b8a7e073518fa43bcd405531e4ee60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tileUI: {fileID: 7091045544892817642}
+  rotateUI: {fileID: 7735199386201251279}
+  holdCircle: {fileID: 3355436072391278226}
 --- !u!114 &3182066314710628783
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -541,9 +543,20 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 1188886990268227417, guid: b6105a9bf89df4d41a4a00975d131995, type: 3}
   m_PrefabInstance: {fileID: 473317327072110293}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &7091045544892817642 stripped
+--- !u!114 &3355436072391278226 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2882700468642011207, guid: b6105a9bf89df4d41a4a00975d131995, type: 3}
+  m_PrefabInstance: {fileID: 473317327072110293}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!1 &7735199386201251279 stripped
 GameObject:
-  m_CorrespondingSourceObject: {fileID: 7276123490335868479, guid: b6105a9bf89df4d41a4a00975d131995, type: 3}
+  m_CorrespondingSourceObject: {fileID: 7910991943066450714, guid: b6105a9bf89df4d41a4a00975d131995, type: 3}
   m_PrefabInstance: {fileID: 473317327072110293}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &3151281347017472020

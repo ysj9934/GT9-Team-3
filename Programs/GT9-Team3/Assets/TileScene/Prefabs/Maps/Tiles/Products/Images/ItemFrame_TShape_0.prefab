@@ -538,6 +538,7 @@ MonoBehaviour:
   link: {fileID: -1941115206224470364, guid: f3ec8652ac8bba24e9d50a9751948296, type: 3}
   inventoryContent: {fileID: 0}
   holdCircle: {fileID: 7400633855986107723}
+  towerInfoButton: {fileID: 4258417317583417453}
 --- !u!114 &4209512174800613591
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -795,13 +796,77 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6826542706881673477, guid: 6de2c551c4e42414fbeb4dcf35b64b7a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4258417317583417453}
   m_SourcePrefab: {fileID: 100100000, guid: 6de2c551c4e42414fbeb4dcf35b64b7a, type: 3}
 --- !u!224 &1065294900465650696 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 4094530642892633273, guid: 6de2c551c4e42414fbeb4dcf35b64b7a, type: 3}
   m_PrefabInstance: {fileID: 3898430610642532529}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &7540927450556678580 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6826542706881673477, guid: 6de2c551c4e42414fbeb4dcf35b64b7a, type: 3}
+  m_PrefabInstance: {fileID: 3898430610642532529}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &4258417317583417453
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7540927450556678580}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Navigation:
+    m_Mode: 3
+    m_WrapAround: 0
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
+  m_Transition: 1
+  m_Colors:
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0.1
+  m_SpriteState:
+    m_HighlightedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 0}
+  m_AnimationTriggers:
+    m_NormalTrigger: Normal
+    m_HighlightedTrigger: Highlighted
+    m_PressedTrigger: Pressed
+    m_SelectedTrigger: Selected
+    m_DisabledTrigger: Disabled
+  m_Interactable: 1
+  m_TargetGraphic: {fileID: 0}
+  m_OnClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7776682383730673288}
+        m_TargetAssemblyTypeName: TileUIObject, Assembly-CSharp
+        m_MethodName: SendItemData
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1001 &7779760271517295658
 PrefabInstance:
   m_ObjectHideFlags: 0

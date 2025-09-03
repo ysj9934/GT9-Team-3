@@ -9,6 +9,7 @@ public class HUDCanvas : MonoBehaviour
 {
     // Managers
     public GameManager _gameManager;
+    public TileManager _tileManager;
 
     public static HUDCanvas Instance { get; private set; }
 
@@ -65,6 +66,7 @@ public class HUDCanvas : MonoBehaviour
     private void Start()
     {
         _gameManager = GameManager.Instance;
+        _tileManager = TileManager.Instance;
 
         gameSpeed2xBtn.gameObject.SetActive(false);
         gameSpeed5xBtn.gameObject.SetActive(false);
@@ -146,28 +148,28 @@ public class HUDCanvas : MonoBehaviour
 
     public void TurnOnPathfinder()
     {
-        Debug.Log("TurnOnPathfinder");
+        //Debug.Log("TurnOnPathfinder");
         pathfinderImage.color = new Color(0f, 0f, 0f);
         pathfinderBtn.interactable = true;
     }
 
     public void TurnOffPathfinder()
     {
-        Debug.Log("TurnOffPathfinder");
+        //Debug.Log("TurnOffPathfinder");
         pathfinderImage.color = new Color(0.7f, 0.7f, 0.7f);
         pathfinderBtn.interactable = false;
     }
 
     public void TurnOnStartWave()
     {
-        Debug.Log("TurnOnStartWave");
+        //Debug.Log("TurnOnStartWave");
         waveStartImage.color = new Color(0f, 0f, 0f);
         waveStartBtn.interactable = true;
     }
 
     public void TurnOffStartWave()
     {
-        Debug.Log("TurnOffStartWave");
+        //Debug.Log("TurnOffStartWave");
         waveStartImage.color = new Color(0.7f, 0.7f, 0.7f);
         waveStartBtn.interactable = false;
     }
