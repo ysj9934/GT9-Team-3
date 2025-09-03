@@ -65,28 +65,28 @@ public class ToggleSlider : MonoBehaviour
         Sprite targetSprite = isOn ? onSprite : offSprite;
         backgroundImage.sprite = targetSprite;
 
-        // 투명도 조정
+        // ?щ챸??議곗젙
         if (isOn)
         {
-            // ON → 불투명
+            // ON ??遺덊닾紐?
             backgroundImage.color = new Color(1f, 1f, 1f, 1f);
         }
         else
         {
-            // OFF → 완전 투명
+            // OFF ???꾩쟾 ?щ챸
             backgroundImage.color = new Color(1f, 1f, 1f, 0f);
         }
 
-        // 변경 후 로그
-        Debug.Log($"스프라이트 변경: {(backgroundImage.sprite != null ? backgroundImage.sprite.name : "null")} / 알파값: {backgroundImage.color.a}");
+        // 蹂寃???濡쒓렇
+        //Debug.Log($"?ㅽ봽?쇱씠??蹂寃? {(backgroundImage.sprite != null ? backgroundImage.sprite.name : "null")} / ?뚰뙆媛? {backgroundImage.color.a}");
 
-        // Canvas 강제 업데이트
+        // Canvas 媛뺤젣 ?낅뜲?댄듃
         Canvas.ForceUpdateCanvases();
     }
 
     void OnDestroy()
     {
-        // 메모리 누수 방지
+        // 硫붾え由??꾩닔 諛⑹?
         if (toggle != null)
         {
             toggle.onValueChanged.RemoveListener(OnToggleChanged);
