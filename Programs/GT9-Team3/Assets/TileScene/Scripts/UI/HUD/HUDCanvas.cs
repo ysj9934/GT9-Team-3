@@ -4,11 +4,14 @@ using System.Resources;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using static AdsManager;
 
 public class HUDCanvas : MonoBehaviour
 {
     // Managers
     public GameManager _gameManager;
+
+    private bool isTripleSpeedUnlocked = false;
 
     public static HUDCanvas Instance { get; private set; }
 
@@ -35,7 +38,7 @@ public class HUDCanvas : MonoBehaviour
     // GameSpeed
     [SerializeField] Button gameSpeed1xBtn;
     [SerializeField] Button gameSpeed2xBtn;
-    [SerializeField] Button gameSpeed5xBtn;
+    [SerializeField] Button gameSpeed3xBtn;
     // GamePause
     [SerializeField] Button pauseBtn;
 
@@ -64,7 +67,7 @@ public class HUDCanvas : MonoBehaviour
         _gameManager = GameManager.Instance;
 
         gameSpeed2xBtn.gameObject.SetActive(false);
-        gameSpeed5xBtn.gameObject.SetActive(false);
+        gameSpeed3xBtn.gameObject.SetActive(false);
 
         _gameDefeatPanel = GetComponentInChildren<GameDefeat>();
         _gameDefeatPanel.Initialize(this);
@@ -176,7 +179,7 @@ public class HUDCanvas : MonoBehaviour
 
     // WaveStartButton
     public void StartWave()
-    { 
+    {
         TurnOffPathfinder();
         _gameManager._waveManager.StartWave();
 
@@ -187,35 +190,68 @@ public class HUDCanvas : MonoBehaviour
     {
         gameSpeed1xBtn.gameObject.SetActive(false);
         gameSpeed2xBtn.gameObject.SetActive(true);
-        gameSpeed5xBtn.gameObject.SetActive(false);
+        gameSpeed3xBtn.gameObject.SetActive(false);
         _gameManager.GameSpeed2x();
-        
+
     }
 
     public void SetGameSpeed2x()
     {
-        gameSpeed1xBtn.gameObject.SetActive(false);
-        gameSpeed2xBtn.gameObject.SetActive(false);
-        gameSpeed5xBtn.gameObject.SetActive(true);
-        _gameManager.GameSpeed5x();
-        
+        if (isTripleSpeedUnlocked)
+        {
+            ActivateTripleSpeed();
+        }
+        else
+        {
+            AdsManager.Instance.ShowRewardedAd(RewardAdType.SpeedBoost, () =>
+            {
+                Debug.Log("광고 시청 완료 -> 3배속");
+                isTripleSpeedUnlocked = true;
+                ActivateTripleSpeed();
+            });
+        }
     }
 
-    public void SetGameSpeed5x()
+    private void ActivateTripleSpeed()
+    {
+        gameSpeed1xBtn.gameObject.SetActive(false);
+        gameSpeed2xBtn.gameObject.SetActive(false);
+        gameSpeed3xBtn.gameObject.SetActive(true);
+
+        _gameManager.GameSpeed3x();
+    }
+
+    public void SetGameSpeed3x()
     {
         gameSpeed1xBtn.gameObject.SetActive(true);
         gameSpeed2xBtn.gameObject.SetActive(false);
-        gameSpeed5xBtn.gameObject.SetActive(false);
+        gameSpeed3xBtn.gameObject.SetActive(false);
         _gameManager.ResumeGame();
     }
+
     // GamePause
     public void SetGamePause()
     {
         _gameManager.PauseGame();
         gameSpeed1xBtn.gameObject.SetActive(false);
         gameSpeed2xBtn.gameObject.SetActive(false);
-        gameSpeed5xBtn.gameObject.SetActive(true);
+        gameSpeed3xBtn.gameObject.SetActive(true);
 
-        //SetGameSpeed5x();
+        //SetGameSpeed3x();
     }
+
+    //public void ForceTripleSpeed()
+    //{
+    //    isTripleSpeedUnlocked = true;
+
+    //    ActivateTripleSpeed();
+
+    //    Debug.Log("광고 닫힘 후 강제 3배속 적용");
+    //}
+
+    public bool IsTripleSpeedUnlocked()
+    {
+        return isTripleSpeedUnlocked;
+    }
+
 }

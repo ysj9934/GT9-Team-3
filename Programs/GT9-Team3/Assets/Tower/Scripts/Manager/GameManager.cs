@@ -151,7 +151,7 @@ public class GameManager : MonoBehaviour
     {
         // 이전 데이터 초기화하기 
         ClearGameManager();
-        _hudCanvas.SetGameSpeed5x();
+        _hudCanvas.SetGameSpeed3x();
 
         ReceiveStageData();
     }
@@ -259,9 +259,9 @@ public class GameManager : MonoBehaviour
         isGamePaused = false;
     }
 
-    public void GameSpeed5x()
+    public void GameSpeed3x()
     {
-        Time.timeScale = 5f;
+        Time.timeScale = 3f;
         isGamePaused = false;
     }
 

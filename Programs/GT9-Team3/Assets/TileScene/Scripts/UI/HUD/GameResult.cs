@@ -4,6 +4,7 @@ using JetBrains.Annotations;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using static AdsManager;
 
 public class GameResult : MonoBehaviour
 {
@@ -82,7 +83,7 @@ public class GameResult : MonoBehaviour
         ResourceManager.Instance.Earn(ResourceType.Gold, rewardGold);
         Debug.Log($"{ResourceManager.Instance.GetAmount(ResourceType.Gold)}");
         SceneLoader.Instance.LoadSceneByName("Map UI");
-        _hudCanvas.SetGameSpeed5x();
+        _hudCanvas.SetGameSpeed3x();
     }
 
     public void GameRetry()
@@ -99,7 +100,7 @@ public class GameResult : MonoBehaviour
             ResourceManager.Instance.Earn(ResourceType.Gold, rewardGold);
             Debug.Log($"{ResourceManager.Instance.GetAmount(ResourceType.Gold)}");
             DataManager.Instance.RestartStage(DataManager.Instance.stageId);
-            _hudCanvas.SetGameSpeed5x();
+            _hudCanvas.SetGameSpeed3x();
             CloseWindow();
             restartGameBtn.enabled = true;
         }
@@ -114,7 +115,7 @@ public class GameResult : MonoBehaviour
         Debug.Log("Reward2x to go MapUI");
 
         // 광고 시청
-        AdsManager.Instance.ShowRewardedAd(() =>
+        AdsManager.Instance.ShowRewardedAd(RewardAdType.Result2x, () =>
         {
             CloseWindow();
 
@@ -122,7 +123,7 @@ public class GameResult : MonoBehaviour
             ResourceManager.Instance.Earn(ResourceType.Gold, rewardGold * 2);
             Debug.Log($"{ResourceManager.Instance.GetAmount(ResourceType.Gold)}");
 
-            _hudCanvas.SetGameSpeed5x();
+            //_hudCanvas.SetGameSpeed5x();
             SceneLoader.Instance.LoadSceneByName("Map UI");
         });
     }

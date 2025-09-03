@@ -1,15 +1,23 @@
 using GoogleMobileAds.Api;
 using UnityEngine;
 using System;
+using System.Collections.Generic;
 
 public class AdsManager : MonoBehaviour
 {
     public static AdsManager Instance;
 
-    private RewardedAd rewardedAd;
-    private Action onAdRewarded;
+    private Dictionary<string, RewardedAd> rewardedAds = new();
+    private Dictionary<string, Action> rewardCallbacks = new();
 
-    [SerializeField] private string rewardedAdUnitId = "ca-app-pub-9623407653018480~7943626435";
+    private RewardAdType currentAdType;
+
+    private readonly Dictionary<RewardAdType, string> adUnitIds = new()
+    {
+        { RewardAdType.Result2x, "ca-app-pub-9623407653018480/3840444484" },
+        { RewardAdType.SpeedBoost, "ca-app-pub-9623407653018480/4443365128" },
+        { RewardAdType.Retry, "ca-app-pub-9623407653018480/6230804106" }
+    };
 
     void Awake()
     {
@@ -22,45 +30,69 @@ public class AdsManager : MonoBehaviour
         Instance = this;
         DontDestroyOnLoad(gameObject);
 
-        MobileAds.Initialize(initStatus => { LoadRewardedAd(); });
+        MobileAds.Initialize(initStatus =>
+        {
+            foreach (var kvp in adUnitIds)
+                LoadRewardedAd(kvp.Key);
+        });
     }
 
-    public void LoadRewardedAd()
+    public void LoadRewardedAd(RewardAdType type)
     {
+        string adUnitId = adUnitIds[type];
+
         var request = new AdRequest();
-        RewardedAd.Load(rewardedAdUnitId, request, (ad, error) =>
+        RewardedAd.Load(adUnitId, request, (ad, error) =>
         {
             if (error != null)
             {
-                Debug.LogError("보상형 광고 로드 실패: " + error.GetMessage());
+                Debug.LogError($"[Ad:{type}] 로드 실패 - {error.GetMessage()}");
                 return;
             }
 
-            rewardedAd = ad;
-            Debug.Log("보상형 광고 로드 완료");
+            rewardedAds[type.ToString()] = ad;
+            Debug.Log($"[Ad:{type}] 로드 완료");
 
-            rewardedAd.OnAdFullScreenContentClosed += () =>
+            ad.OnAdFullScreenContentClosed += () =>
             {
-                Debug.Log("광고 창이 닫혔습니다");
-                LoadRewardedAd(); // 자동 재로딩
+                Debug.Log($"[Ad:{type}] 닫힘 → 재로드");
+                LoadRewardedAd(type);
+
+                //// 광고 닫힘 후 강제 속도 적용
+                //if (type == RewardAdType.SpeedBoost && HUDCanvas.Instance != null)
+                //{
+                //    HUDCanvas.Instance.ForceTripleSpeed();
+                //}
             };
         });
     }
 
-    public void ShowRewardedAd(Action onReward)
+    public void ShowRewardedAd(RewardAdType type, Action onRewarded)
     {
-        if (rewardedAd != null && rewardedAd.CanShowAd())
+        string key = type.ToString();
+
+        if (rewardedAds.TryGetValue(key, out var ad) && ad.CanShowAd())
         {
-            onAdRewarded = onReward;
-            rewardedAd.Show(reward =>
+            currentAdType = type;
+            rewardCallbacks[key] = onRewarded;
+
+            ad.Show(reward =>
             {
-                Debug.Log($"사용자가 보상을 획득했습니다: {reward.Amount} {reward.Type}");
-                onAdRewarded?.Invoke();
+                Debug.Log($"[Ad:{type}] 보상 지급됨: {reward.Amount} {reward.Type}");
+                rewardCallbacks[key]?.Invoke();
             });
         }
         else
         {
-            Debug.Log("광고가 아직 준비되지 않았습니다");
+            Debug.LogWarning($"[Ad:{type}] 광고 준비 안됨");
         }
     }
+
+    public enum RewardAdType
+    {
+        Result2x,
+        SpeedBoost,
+        Retry
+    }
+
 }
