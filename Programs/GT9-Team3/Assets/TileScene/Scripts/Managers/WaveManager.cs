@@ -90,7 +90,7 @@ public class WaveManager : MonoBehaviour
             this.stageWaveList = stageData.stageWaveList;
             this.isHardMode = stageData.isHardMode;
             ResourceManager.Instance.resources[ResourceType.Tilepiece] = stageWaveList[0].StageStartTilePiece;
-            HUDCanvas.Instance.ShowTilePiece();
+            HUDCanvas.Instance._hudResource.ShowTilePiece();
             this.rewardGold = 0;
             SetWaveSystem(stageWaveList[0]);
         }

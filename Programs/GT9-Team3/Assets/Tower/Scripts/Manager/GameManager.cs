@@ -167,7 +167,7 @@ public class GameManager : MonoBehaviour
 
     public void SendStageDataToHUD()
     {
-        _hudCanvas.ReceiveStageData(
+        _hudCanvas._hudStageInfo.ReceiveStageData(
             new StageData
                 (
                     gameWorldLevel,
@@ -297,13 +297,13 @@ public class GameManager : MonoBehaviour
     public void Earn50G()
     {
         _resourceManager.Earn(ResourceType.Tilepiece, 50);
-        _hudCanvas.ShowTilePiece();
+        _hudCanvas._hudResource.ShowTilePiece();
     }
 
     public void Earn0G(int amount)
     {
         _resourceManager.Earn(ResourceType.Tilepiece, amount);
-        _hudCanvas.ShowTilePiece();
+        _hudCanvas._hudResource.ShowTilePiece();
 
     }
 

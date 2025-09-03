@@ -13,19 +13,16 @@ public class HUDCanvas : MonoBehaviour
 
     public static HUDCanvas Instance { get; private set; }
 
-
     // StageInfoHUD
-    [SerializeField] private TextMeshProUGUI worldPanelText;
-    [SerializeField] private TextMeshProUGUI stagePanelText;
-    [SerializeField] private TextMeshProUGUI roundPanelText;
+    public HUDStageInfo _hudStageInfo;
 
-    // Castle & Resource
-    private Castle _castle;
-    [SerializeField] private Slider castleHealthSlider;
-    [SerializeField] private TextMeshProUGUI castleHealthText;
-    private float healthPercent;
+    // HUDWaveInfo
+    public HUDWaveInfo _hudWaveInfo;
 
-    [SerializeField] TextMeshProUGUI resourceTilePieceAmountText;
+    // HUDResource
+    public HUDResource _hudResource;
+
+   
 
     // WaveStartButton
     [SerializeField] Button pathfinderBtn;
@@ -71,6 +68,10 @@ public class HUDCanvas : MonoBehaviour
         gameSpeed2xBtn.gameObject.SetActive(false);
         gameSpeed5xBtn.gameObject.SetActive(false);
 
+        _hudStageInfo = GetComponentInChildren<HUDStageInfo>();
+        _hudWaveInfo = GetComponentInChildren<HUDWaveInfo>();
+        _hudResource = GetComponentInChildren<HUDResource>();
+
         _gameDefeatPanel = GetComponentInChildren<GameDefeat>();
         _gameDefeatPanel.Initialize(this);
         _gameResultPanel = GetComponentInChildren<GameResult>();
@@ -79,7 +80,7 @@ public class HUDCanvas : MonoBehaviour
 
         if (IsValidate())
         {
-            ShowTilePiece();
+            _hudResource.ShowTilePiece();
 
             TurnOffStartWave();
         }
@@ -111,39 +112,6 @@ public class HUDCanvas : MonoBehaviour
     public void ValidateMessage(string obj)
     {
         Debug.LogError($"{obj} is Valid");
-    }
-
-    // StageInfoHUD
-    public void ReceiveStageData(StageData stageData)
-    {
-        if (stageData != null)
-        {
-            worldPanelText.text = $"{stageData.worldCode}";
-            stagePanelText.text = $"{stageData.stageCode}";
-            roundPanelText.text = $"{stageData.roundCode}";
-        }
-        else
-        {
-            Debug.LogError("StageData is Null");
-        }
-    }
-
-    // Castle & Resource
-    public Castle SetCastleData(Castle castle)
-    {
-        return _castle = castle;
-    }
-
-    public void UpdateHPBar()
-    {
-        castleHealthText.text = $"{_castle.currentHealth}/{_castle.maxHealth}";
-        healthPercent = (float)_castle.currentHealth / _castle.maxHealth;
-        castleHealthSlider.value = healthPercent;
-    }
-
-    public void ShowTilePiece()
-    {
-        resourceTilePieceAmountText.text = $"{ResourceManager.Instance.GetAmount(ResourceType.Tilepiece)}";
     }
 
     public void TurnOnPathfinder()

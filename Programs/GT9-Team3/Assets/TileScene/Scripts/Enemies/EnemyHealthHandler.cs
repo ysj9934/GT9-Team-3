@@ -97,7 +97,7 @@ public class EnemyHealthHandler : MonoBehaviour
 
                 // 처치 보상
                 ResourceManager.Instance.Earn(ResourceType.Tilepiece, _enemy._enemyStat.enemyTilePieceAmount);
-                HUDCanvas.Instance.ShowTilePiece();
+                HUDCanvas.Instance._hudResource.ShowTilePiece();
                 break;
         }
 

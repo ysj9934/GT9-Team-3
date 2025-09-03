@@ -203,7 +203,7 @@ public class ItemHubUI : MonoBehaviour
         if (!_resourceManager.CanAfford(ResourceType.Tilepiece, 200)) return;
 
         _resourceManager.Spend(ResourceType.Tilepiece, 200);
-        _hudCanvas.ShowTilePiece();
+        _hudCanvas._hudResource.ShowTilePiece();
 
         TileShape tileShape = currentSelectedShopItem.itemShape;
 
