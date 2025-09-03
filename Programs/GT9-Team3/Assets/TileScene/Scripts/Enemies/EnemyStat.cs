@@ -136,7 +136,7 @@ public class EnemyStat : MonoBehaviour
 
                 /// <summary>
                 /// 체력 회복 3월드
-                /// 조건: 없ㅇ음
+                /// 조건: 없음
                 /// 대상: 전체 아군
                 /// 범위: 전체 맵
                 /// 액션: 5초마다 체력 40(상수) 회복
@@ -193,6 +193,8 @@ public class EnemyStat : MonoBehaviour
         // 외형 변경
         GameObject visual = Instantiate(config.enemyPrefab, visualRoot);
         visual.transform.localPosition = Vector2.zero;
+
+        _enemy.spriteRenderers = visual.GetComponentsInChildren<SpriteRenderer>();
 
         // 크기 변경
         visual.transform.localScale = new Vector2(this.enemySize, this.enemySize);

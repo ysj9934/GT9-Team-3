@@ -115,7 +115,9 @@ public class TileInfo : TileData
 
                     if (isTower)
                     {
-                        int towerOrder = 1000 + (tileIndex * 10);
+                        //int towerOrder = 1000 + (tileIndex * 10);
+                        //sr.sortingOrder = towerOrder;
+                        int towerOrder = Mathf.RoundToInt(-transform.position.y * 100) + 1000; // Y값 기준으로 반전
                         sr.sortingOrder = towerOrder;
                     }
                     else if (isRange)

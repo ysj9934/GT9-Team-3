@@ -113,9 +113,13 @@ public class BlockInfo : MonoBehaviour
         // Child of the block
         // Block에 귀속
         go.transform.SetParent(transform);
+        int towerOrder = Mathf.RoundToInt(-transform.position.y * 100) + 1000; // Y값 기준으로 반전
+        go.GetComponent<SpriteRenderer>().sortingOrder = towerOrder;
+
         Tower1 tower = go.GetComponent<Tower1>();
         tower.ApplyData(bp);
         tower.Intialize(this);
+
         
 
         string towerName = tower.towerdata.innerName;

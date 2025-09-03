@@ -67,7 +67,7 @@ public class EnemyHealthHandler : MonoBehaviour
         _enemy.isAlive = false;
 
         OnDeath?.Invoke();
-        //_enemy._gameManager._waveManager.activeEnemies.Remove(this.gameObject);
+        _enemy._gameManager._waveManager.activeEnemies.Remove(this.gameObject);
         OnDeath = null;
 
         switch (target)
