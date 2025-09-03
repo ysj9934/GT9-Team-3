@@ -19,6 +19,18 @@ public class DataManager : MonoBehaviour
         get { return waveDataLoader; }
     }
 
+    private EnemySkillListTableLoader enemySkillListTableLoader;
+    public EnemySkillListTableLoader EnemySkillListTableLoader
+    {
+        get { return enemySkillListTableLoader; }
+    }
+
+    private EnemySkillTableLoader enemySkillTableLoader;
+    public EnemySkillTableLoader EnemySkillTableLoader
+    {
+        get { return enemySkillTableLoader; }
+    }
+
     // Stage Setting
     public int stageId;
     public List<Wave_DataTable> stageWaveIdList;
@@ -40,9 +52,11 @@ public class DataManager : MonoBehaviour
 
         enemyDataLoader = new Enemy_DataTableLoader();
         waveDataLoader = new Wave_DataTableLoader();
+        enemySkillListTableLoader = new EnemySkillListTableLoader();
+        enemySkillTableLoader = new EnemySkillTableLoader();
 
         // Test 
-        SelectedStage(105);
+        SelectedStage(101);
     }
 
     /// <summary>
