@@ -58,6 +58,10 @@ public class HUDCanvas : MonoBehaviour
 
         pathfinderImage = pathfinderBtn.GetComponent<Image>();
         waveStartImage = waveStartBtn.GetComponent<Image>();
+
+        _hudStageInfo = GetComponentInChildren<HUDStageInfo>();
+        _hudWaveInfo = GetComponentInChildren<HUDWaveInfo>();
+        _hudResource = GetComponentInChildren<HUDResource>();
     }
 
     private void Start()

@@ -28,9 +28,138 @@ public class EnemyStat : MonoBehaviour
 
     [SerializeField] private Transform visualRoot;
 
+    private List<EnemySkillTable> activeSkills = new List<EnemySkillTable>();
+    private Dictionary<int, float> cooldownTimers = new Dictionary<int, float>();
+    private Dictionary<int, float> intervalTimers = new Dictionary<int, float>();
+    private HashSet<int> skillFlags = new HashSet<int>(); // 한 번만 발동되는 스킬 체크용
+
+
     private void Awake()
     {
         _enemy = GetComponent<Enemy>();
+    }
+
+    private void Update()
+    {
+        if (!_enemy.isAlive) return;
+
+
+        foreach (var skill in activeSkills)
+        {
+            cooldownTimers[skill.key] += Time.deltaTime;
+            intervalTimers[skill.key] += Time.deltaTime;
+            float coolDownValue = skill.Cooldown;
+            float intervalValue = skill.TriggerValue;
+            float effectValue = skill.EffectValue;
+
+            switch (skill.key)
+            {
+                /// <summary>
+                /// 체력회복 
+                /// 10초마다 체력 20(상수) 회복
+                /// </summary>
+                case 2000:
+                    // 완료
+
+                    if (intervalTimers[skill.key] < intervalValue) continue;
+
+                    if (cooldownTimers[skill.key] >= coolDownValue)
+                    {
+                        cooldownTimers[skill.key] = 0f;
+                        // 체력 회복
+                        _enemy._enemyHealthHandler.EnemyHeal(effectValue);
+                        Debug.LogWarning("Heal " + effectValue);
+                    }
+                    break;
+
+                /// <summary>
+                /// 고속질주
+                /// 조건: 체력이 50% 이하로 떨어졌을 때
+                /// 액션: 이동속도 30% 증가
+                /// </summary>
+                case 2003:
+                    // 완료
+                    float currentHealth = _enemy._enemyHealthHandler.currentHealth;
+
+                    if (!skillFlags.Contains(skill.key) && currentHealth <= enemyMaxHP / 2)
+                    {
+                        enemyMovementSpeed *= (1 + effectValue / 100);
+                        skillFlags.Add(skill.key); // 한 번 발동되었음을 기록
+                    }
+                    break;
+
+                /// <summary>
+                /// 전장 가속 오라
+                /// 조건: 없음
+                /// 대상: 전체 아군
+                /// 범위: 전체 맵
+                /// 액션: 이동속도 증가
+                /// </summary>
+                case 2004:
+                    // 완료
+                    if (skillFlags.Contains(skill.key)) break; // 이미 발동했으면 스킵
+
+                    GameManager.Instance._waveManager.activeEnemies.ForEach(enemy =>
+                    {
+                        if (enemy.TryGetComponent<EnemyStat>(out var enemyStat))
+                        {
+                            Debug.LogWarning("Speed Boost " + effectValue);
+                            enemyStat.enemyMovementSpeed *= (1 + effectValue / 100);
+                        }
+                    });
+
+                    skillFlags.Add(skill.key); // 한 번 발동되었음을 기록
+                    break;
+
+                /// <summary>
+                /// 전장 가속 오라 3월드
+                /// 조건: 패시브
+                /// 대상: 전체 아군
+                /// 범위: 전체 맵
+                /// 액션: 이동속도 증가
+                /// </summary>
+                case 2005:
+                    if (skillFlags.Contains(skill.key)) break; // 이미 발동했으면 스킵
+
+                    GameManager.Instance._waveManager.activeEnemies.ForEach(enemy =>
+                    {
+                        if (enemy.TryGetComponent<EnemyStat>(out var enemyStat))
+                        {
+                            enemyStat.enemyMovementSpeed *= (1 + effectValue / 100);
+                            Debug.LogWarning("Speed Boost " + effectValue);
+                        }
+                    });
+
+                    skillFlags.Add(skill.key); // 한 번 발동되었음을 기록
+
+                    break;
+
+                /// <summary>
+                /// 체력 회복 3월드
+                /// 조건: 없ㅇ음
+                /// 대상: 전체 아군
+                /// 범위: 전체 맵
+                /// 액션: 5초마다 체력 40(상수) 회복
+                /// </summary>
+                case 2006:
+
+                    if (intervalTimers[skill.key] < intervalValue) continue;
+                    
+                    if (cooldownTimers[skill.key] >= coolDownValue)
+                    {
+                        cooldownTimers[skill.key] = 0f;
+                        
+                        GameManager.Instance._waveManager.activeEnemies.ForEach(enemy =>
+                        {
+                            // 체력 회복
+                            _enemy._enemyHealthHandler.EnemyHeal(effectValue);
+                            Debug.LogWarning("Heal " + effectValue);
+                        });
+                    }
+                    break;
+            }
+            
+        }
     }
 
     public void Setup(EnemyConfig config)
@@ -71,73 +200,33 @@ public class EnemyStat : MonoBehaviour
         _enemy._enemyHealthHandler.InitializeHealth();
 
         if (enemySkillID > 0)
-            ApplyEnemySkills(enemySkillID);
-    }
-
-    public void ApplyEnemySkills(float enemySkillId)
-    {
-        int key = Mathf.FloorToInt(enemySkillId); // float → int 변환
-
-        if (!_enemy._gameManager._dataManager.EnemySkillListTableLoader.ItemsDict.TryGetValue(key, out var skillList))
+        //ApplyEnemySkills(enemySkillID);
         {
-            Debug.LogWarning($"Skill List ID {key} not found.");
-            return;
-        }
-
-        foreach (var skillId in skillList.Skill_ID)
-        {
-            if (!_enemy._gameManager._dataManager.EnemySkillTableLoader.ItemsDict.TryGetValue(skillId, out var skillData))
+            int key = Mathf.FloorToInt(config.enemySkillID);
+            if (_enemy._gameManager._dataManager.EnemySkillListTableLoader.ItemsDict.TryGetValue(key, out var skillList))
             {
-                Debug.LogWarning($"Skill ID {skillId} not found.");
-                return;
+                foreach (var skillId in skillList.Skill_ID)
+                {
+                    Debug.LogWarning("skillId " + skillId);
+
+                    if (_enemy._gameManager._dataManager.EnemySkillTableLoader.ItemsDict.TryGetValue(skillId, out var skillData))
+                    {
+                        activeSkills.Add(skillData);
+                        cooldownTimers[skillId] = 0f;
+                        intervalTimers[skillId] = 0f;
+                    }
+                }
             }
 
-            switch (skillId)
-            {
-                case 2000:
-                    // 체력이 일정 이하로 떨어졌을 때 이동속도 증가
-                    Skill_2000(skillData);
-                    break;
-                case 2001:
-                    // 체력이 일정 이하로 떨어졌을 때 이동속도 증가
-                    Skill_2001(skillData);
-                    break;
-                case 2003:
-                    // 체력이 일정 이하로 떨어졌을 때 이동속도 증가
-                    Skill_2003(skillData);
-                    break;
-                case 2004:
-                    Skill_2004(skillData);
-                    break;
-                // 다른 스킬 타입에 대한 케이스 추가
-                default:
-                    
-                    break;
-            }
         }
+        
     }
 
-    /// <summary>
-    /// 체력회복 
-    /// 10초마다 체력 20(상수) 회복
-    /// </summary>
-    /// <param name="skillData"></param>
+    
     public void Skill_2000(EnemySkillTable skillData)
     {
-        float coolDownTimer = 0f;
-        float coolDownValue = skillData.Cooldown;
-        float intervalTimer = 0f;
-
-        intervalTimer += Time.deltaTime;
-        if (intervalTimer < skillData.TriggerValue) return;
-
-        coolDownTimer += Time.deltaTime;
-        if (coolDownTimer >= coolDownValue)
-        { 
-            // 체력 회복
-            
-        }
-
+        
+        
     }
 
     public void Skill_2001(EnemySkillTable skillData)
@@ -145,53 +234,26 @@ public class EnemyStat : MonoBehaviour
         
     }
 
-    /// <summary>
-    /// 고속질주
-    /// 조건: 체력이 50% 이하로 떨어졌을 때
-    /// 액션: 이동속도 30% 증가
-    /// </summary>
-    /// <param name="skillData"></param>
+    
     public void Skill_2003(EnemySkillTable skillData)
     {
-        float castTimer = 0f;
-        int castValue = (int) skillData.CastTime;
-
-        if (_enemy._enemyHealthHandler.currentHealth <= enemyMaxHP / 2)
-        {
-            castTimer += Time.deltaTime;
-            if (castTimer >= castValue)
-                enemyMovementSpeed *= (1 + skillData.EffectValue / 100);
-        }
+        
     }
 
-    /// <summary>
-    /// 전장 가속 오라
-    /// 조건: 없음
-    /// 대상: 전체 아군
-    /// 범위: 전체 맵
-    /// 액션: 이동속도 증가
-    /// </summary>
-    /// <param name="skillData"></param>
+    
     public void Skill_2004(EnemySkillTable skillData)
     {
-        GameManager.Instance._waveManager.activeEnemies.ForEach(enemy =>
-        {
-            if (enemy.TryGetComponent<EnemyStat>(out var enemyStat))
-            {
-                enemyStat.enemyMovementSpeed *= (1 + skillData.EffectValue / 100);
-            }
-        });
+        
     }
 
-    /// <summary>
-    /// 전장 개조
-    /// 조건: 없음
-    /// 대상: 전체 아군
-    /// 범위: 전체 맵
-    /// 액션: 이동속도 증가
-    /// </summary>
+    
     /// <param name="skillData"></param>
     public void Skill_2005(EnemySkillTable skillData)
+    {
+        
+    }
+
+    public void Skill_2006(EnemySkillTable skillData)
     {
         
     }

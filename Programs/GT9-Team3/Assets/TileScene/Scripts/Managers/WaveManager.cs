@@ -117,6 +117,9 @@ public class WaveManager : MonoBehaviour
         this.spawnRepeat = stageData.SpawnRepeat;
         this.spawnintervalSec = stageData.SpawnintervalSec;
         this.rewardGold += stageData.RewardGoldAmount;
+
+        // UI 갱신
+        _gameManager._hudCanvas._hudWaveInfo.ResetEnemyCount();
     }
 
     // send wave and round data
@@ -127,6 +130,7 @@ public class WaveManager : MonoBehaviour
 
         SendWaveData();
 
+        // 라운드 변경
         if (waveNum % 3 == 1)
         {
             _gameManager._hudCanvas.TurnOnPathfinder();
@@ -135,6 +139,8 @@ public class WaveManager : MonoBehaviour
             _gameManager._tileManager.isMoveActive = true;
 
             path.Clear();
+            // Wave Progress UI 초기화
+            _gameManager._hudCanvas._hudWaveInfo.ResetWavePoint();
         }
         else
         {
@@ -280,7 +286,9 @@ public class WaveManager : MonoBehaviour
     }
 
     
-
+    /// <summary>
+    /// 적 유닛 생성
+    /// </summary>
     public void SpawnEnemy(EnemyConfig config)
     {
         GameObject enemyObj = _poolManager.GetEnemy();
@@ -291,8 +299,10 @@ public class WaveManager : MonoBehaviour
             EnemyEnhanced(enemy);
             enemy._enemyMovement.pathPoint(path);
 
+            // 남은 적 유닛 수 체크
             aliveEnemyCount++;
             enemy._enemyHealthHandler.OnDeath += HandleEnemyDeath;
+            _gameManager._hudCanvas._hudWaveInfo.UpdateWaveCount();
 
             activeEnemies.Add(enemyObj);
         }
@@ -307,6 +317,8 @@ public class WaveManager : MonoBehaviour
     private void HandleEnemyDeath()
     { 
         aliveEnemyCount--;
+        // UI 업데이트
+        _gameManager._hudCanvas._hudWaveInfo.UpdateEnemyCount();
 
         if (aliveEnemyCount <= 0 && waveRoutine == null)
         {
@@ -317,8 +329,7 @@ public class WaveManager : MonoBehaviour
     private void EndWave()
     {
         isWaveRoutine = false;
-
-        Debug.Log("WaveEnd");
+        aliveEnemyCount = 0;
 
         if (!isHardMode)
         {
@@ -370,5 +381,7 @@ public class WaveManager : MonoBehaviour
         this.spawnBatchSize = jsonData.SpawnBatchSize;
         this.spawnRepeat = jsonData.SpawnRepeat;
         this.spawnintervalSec = jsonData.SpawnintervalSec;
+
+        
     }
 }

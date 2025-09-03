@@ -21,20 +21,9 @@ public class EnemyHealthHandler : MonoBehaviour
         currentHealth = _enemy._enemyStat.enemyMaxHP;
     }
 
-    // 예제 용도: 마우스 클릭으로 데미지 입히기
-    //private void OnMouseDown()
-    //{
-    //    if (!_enemy.isAlive) return;
-
-    //    Debug.Log($"Enemy Clicked: {_enemy._enemyStat.enemyName}");
-
-    //    TakeDamage(1000, null);
-    //}
-
     private void OnTriggerEnter2D(Collider2D collision)
     {
         Castle castle = collision.GetComponent<Castle>();
-        //Projectile projectile = collision.GetComponent<Projectile>();
 
         if (castle != null)
         {
@@ -43,12 +32,6 @@ public class EnemyHealthHandler : MonoBehaviour
             Debug.Log("castle touch");
             DeathMotion(HitTarget.Castle);
         }
-        //else if (projectile != null)
-        //{
-        //    // 투사체에 맞았을 때 처리
-        //    TakeDamage(projectile.data.damage);
-        //    //projectile.Hit();
-        //}
     }
 
     public void TakeDamage(int damage, ProjectileData projectileData)
@@ -84,7 +67,7 @@ public class EnemyHealthHandler : MonoBehaviour
         _enemy.isAlive = false;
 
         OnDeath?.Invoke();
-        _enemy._gameManager._waveManager.activeEnemies.Remove(this.gameObject);
+        //_enemy._gameManager._waveManager.activeEnemies.Remove(this.gameObject);
         OnDeath = null;
 
         switch (target)
@@ -102,6 +85,19 @@ public class EnemyHealthHandler : MonoBehaviour
         }
 
         _enemy._poolManager.ReturnEnemy(this.gameObject);
+        
+    }
+
+    public void EnemyHeal(float value)
+    {
+        float maxHealth = _enemy._enemyStat.enemyMaxHP;
+
+        if (!_enemy.isAlive) return;
+
+        if (currentHealth >= maxHealth)
+        {
+            currentHealth = maxHealth;
+        }
     }
 
 }
