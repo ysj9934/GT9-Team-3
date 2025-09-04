@@ -418,6 +418,59 @@ public class WaveManager : MonoBehaviour
                    Color.white);
 
                 break;
+
+            case 30202:
+            case 30302:
+            case 30402:
+            case 30502:
+                // 타일 봉쇄 & 전장 개조 & 느린 타워
+                numberOfLocks = 1;
+                while (numberOfLocks > 0)
+                {
+                    int randomIndex = UnityEngine.Random.Range(1, path.Count - 1);
+                    TileInfo tileInfo = path[randomIndex].gameObject.GetComponent<TileInfo>();
+                    if (!tileInfo.isTileLocked)
+                    {
+                        tileInfo.WorldTileGimmic(true, true, true);
+                        numberOfLocks--;
+                    }
+                }
+
+                HUDCanvas.Instance._hudMessageUI.FloatingUIShow(
+                   "[분노]",
+                   "[월드보스]강철 괴수가 `타일봉쇄`, `전장개조`를 사용하였습니다.\n" +
+                   "`타일봉쇄`를 당한 타일은 해당 스테이지동안 회전하거나 옮길 수 없습니다.\n" +
+                   "`전장개조`를 당한 타일 위에서 적의 이동속도가 증가합니다. \n" +
+                   "`느린타워`를 당한 타워는 공격속도가 감소합니다.",
+                   Color.white);
+                break;
+
+            case 30205:
+            case 30305:
+            case 30405:
+            case 30505:
+                // 타일 봉쇄 & 전장 개조 & 느린 타워
+                numberOfLocks = 2;
+                while (numberOfLocks > 0)
+                {
+                    int randomIndex = UnityEngine.Random.Range(1, path.Count - 1);
+                    TileInfo tileInfo = path[randomIndex].gameObject.GetComponent<TileInfo>();
+                    if (!tileInfo.isTileLocked)
+                    {
+                        tileInfo.WorldTileGimmic(true, true, true);
+                        numberOfLocks--;
+                    }
+                }
+
+                HUDCanvas.Instance._hudMessageUI.FloatingUIShow(
+                   "[분노]",
+                   "[월드보스]죽음의 심판자가 `타일봉쇄`, `전장개조`, `느린 타워`를 사용하였습니다.\n" +
+                   "`타일봉쇄`를 당한 타일은 해당 스테이지동안 회전하거나 옮길 수 없습니다.\n" +
+                   "`전장개조`를 당한 타일 위에서 적의 이동속도가 증가합니다.\n" +
+                   "`느린타워`를 당한 타워는 공격속도가 감소합니다.",
+                   Color.white);
+                break;
+
         }
     }
 

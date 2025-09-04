@@ -118,7 +118,6 @@ public class HUDMessageUI : MonoBehaviour
         canvasGroup.alpha = 0f;
         onComplete?.Invoke();
         FloatingUI.SetActive(false);
-
     }
 
 
