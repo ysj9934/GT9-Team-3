@@ -4,6 +4,7 @@ using System.Resources;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using static AdsManager;
 
 public class HUDCanvas : MonoBehaviour
 {
@@ -12,6 +13,9 @@ public class HUDCanvas : MonoBehaviour
     public TileManager _tileManager;
 
     public static HUDCanvas Instance { get; private set; }
+
+    // Object Data
+    private bool isTripleSpeedUnlocked = false;
 
     // StageInfoHUD
     public HUDStageInfo _hudStageInfo;
@@ -31,7 +35,8 @@ public class HUDCanvas : MonoBehaviour
     // GameSpeed
     [SerializeField] Button gameSpeed1xBtn;
     [SerializeField] Button gameSpeed2xBtn;
-    [SerializeField] Button gameSpeed5xBtn;
+    [SerializeField] Button gameSpeed3xBtn;
+    //[SerializeField] Button gameSpeed5xBtn;
     // GamePause
     [SerializeField] Button pauseBtn;
 
@@ -71,7 +76,8 @@ public class HUDCanvas : MonoBehaviour
         _tileManager = TileManager.Instance;
 
         gameSpeed2xBtn.gameObject.SetActive(false);
-        gameSpeed5xBtn.gameObject.SetActive(false);
+        gameSpeed3xBtn.gameObject.SetActive(false);
+        //gameSpeed5xBtn.gameObject.SetActive(false);
 
         _hudStageInfo = GetComponentInChildren<HUDStageInfo>();
         _hudWaveInfo = GetComponentInChildren<HUDWaveInfo>();
@@ -165,25 +171,63 @@ public class HUDCanvas : MonoBehaviour
     {
         gameSpeed1xBtn.gameObject.SetActive(false);
         gameSpeed2xBtn.gameObject.SetActive(true);
-        gameSpeed5xBtn.gameObject.SetActive(false);
+        gameSpeed3xBtn.gameObject.SetActive(false);
+        //gameSpeed5xBtn.gameObject.SetActive(false);
         _gameManager.GameSpeed2x();
         
     }
 
+    //public void SetGameSpeed2x()
+    //{
+    //    gameSpeed1xBtn.gameObject.SetActive(false);
+    //    gameSpeed2xBtn.gameObject.SetActive(false);
+    //    gameSpeed5xBtn.gameObject.SetActive(true);
+    //    _gameManager.GameSpeed3x();
+        
+    //}
     public void SetGameSpeed2x()
+    {
+        if (isTripleSpeedUnlocked)
+        {
+            ActivateTripleSpeed();
+        }
+        else
+        {
+            AdsManager.Instance.ShowRewardedAd(RewardAdType.SpeedBoost, () =>
+            {
+                Debug.Log("광고 시청 완료 -> 3배속");
+                isTripleSpeedUnlocked = true;
+                _gameManager.PauseGame();
+            },
+            () =>
+            {
+                Debug.Log("광고 닫힘 → 게임 재개");
+
+                StartCoroutine(ApplySpeedBoostDelayed());
+            });
+        }
+    }
+    private IEnumerator ApplySpeedBoostDelayed()
+    {
+        yield return new WaitForEndOfFrame(); // 또는 yield return null;
+        ActivateTripleSpeed(); // 광고 닫힘 이후에 확실히 적용
+    }
+
+    private void ActivateTripleSpeed()
     {
         gameSpeed1xBtn.gameObject.SetActive(false);
         gameSpeed2xBtn.gameObject.SetActive(false);
-        gameSpeed5xBtn.gameObject.SetActive(true);
+        gameSpeed3xBtn.gameObject.SetActive(true);
+
         _gameManager.GameSpeed3x();
-        
     }
 
     public void SetGameSpeed3x()
     {
         gameSpeed1xBtn.gameObject.SetActive(true);
         gameSpeed2xBtn.gameObject.SetActive(false);
-        gameSpeed5xBtn.gameObject.SetActive(false);
+        gameSpeed3xBtn.gameObject.SetActive(false);
+        //gameSpeed5xBtn.gameObject.SetActive(false);
         _gameManager.ResumeGame();
     }
     // GamePause
@@ -192,7 +236,8 @@ public class HUDCanvas : MonoBehaviour
         _gameManager.PauseGame();
         gameSpeed1xBtn.gameObject.SetActive(false);
         gameSpeed2xBtn.gameObject.SetActive(false);
-        gameSpeed5xBtn.gameObject.SetActive(true);
+        gameSpeed3xBtn.gameObject.SetActive(true);
+        //gameSpeed5xBtn.gameObject.SetActive(true);
 
         //SetGameSpeed5x();
         _hudMessageUI.PopupUIShow(

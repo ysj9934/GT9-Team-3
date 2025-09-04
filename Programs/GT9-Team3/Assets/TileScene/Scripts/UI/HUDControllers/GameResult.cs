@@ -123,7 +123,10 @@ public class GameResult : MonoBehaviour
             ResourceManager.Instance.Earn(ResourceType.Gold, rewardGold * 2);
             Debug.Log($"{ResourceManager.Instance.GetAmount(ResourceType.Gold)}");
 
-            //_hudCanvas.SetGameSpeed5x();
+        },
+        () => {
+            _hudCanvas._gameManager.ResumeGame();
+
             SceneLoader.Instance.LoadSceneByName("Map UI");
         });
     }
