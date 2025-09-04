@@ -71,7 +71,7 @@ public class HUDMessageUI : MonoBehaviour
         PopupUI.SetActive(false);
     }
 
-    public void FloatingUIShow(string messageTitle, string messageDesc, Color color, float duration, Action onFinish = null)
+    public void FloatingUIShow(string messageTitle, string messageDesc, Color color, Action onFinish = null)
     {
         FloatingUI.SetActive(true);
 
@@ -80,20 +80,37 @@ public class HUDMessageUI : MonoBehaviour
         messageDescText.color = color;
         canvasGroup.alpha = 1f;
         onComplete = onFinish;
-        this.duration = duration;
 
         StartCoroutine(FloatAndFade());
     }
 
     private IEnumerator FloatAndFade()
     {
+        float visibleDuration = 2f;     // 보여주는 시간
+        float fadeDuration = 0.5f;        // 사라지는 시간
         float timer = 0f;
-        Vector3 startPos = transform.position;
 
-        while (timer < duration)
+        Vector3 startPos = transform.position;
+        Vector3 endPos = startPos + floatOffset;
+
+        // 1️⃣ 메시지 보여주는 단계 (3초)
+        while (timer < visibleDuration)
         {
-            transform.position = startPos + floatOffset * (timer / duration);
-            canvasGroup.alpha = Mathf.Lerp(1f, 0f, timer / duration);
+            transform.position = Vector3.Lerp(startPos, endPos, timer / visibleDuration);
+            canvasGroup.alpha = 1f;
+            timer += Time.deltaTime;
+            yield return null;
+        }
+
+        // 2️⃣ 메시지 사라지는 단계 (1초 페이드 아웃)
+        timer = 0f;
+        Vector3 fadeStartPos = transform.position;
+        Vector3 fadeEndPos = fadeStartPos + floatOffset * 0.5f;
+
+        while (timer < fadeDuration)
+        {
+            transform.position = Vector3.Lerp(fadeStartPos, fadeEndPos, timer / fadeDuration);
+            canvasGroup.alpha = Mathf.Lerp(1f, 0f, timer / fadeDuration);
             timer += Time.deltaTime;
             yield return null;
         }
@@ -101,6 +118,7 @@ public class HUDMessageUI : MonoBehaviour
         canvasGroup.alpha = 0f;
         onComplete?.Invoke();
         FloatingUI.SetActive(false);
+
     }
 
 

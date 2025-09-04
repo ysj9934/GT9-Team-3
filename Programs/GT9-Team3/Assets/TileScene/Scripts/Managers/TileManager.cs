@@ -600,8 +600,7 @@ public class TileManager : MonoBehaviour
                     "[경고]",
                     "현재 길이 연결되어 있지 않아 패스파인더를 실행할 수 없습니다.\n" +
                     "정확한 경로를 확인해 주세요.",
-                    Color.white,
-                    5);
+                    Color.white);
             }
         }
     }

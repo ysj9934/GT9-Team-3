@@ -160,6 +160,34 @@ public class EnemyStat : MonoBehaviour
             }
             
         }
+
+    }
+
+    private float originEnemyMovementSpeed = 0;
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        TileInfo tileInfo = collision.GetComponent<TileInfo>();
+        if (tileInfo != null)
+        {
+            if (tileInfo.isBattlefieldModified)
+            {
+                originEnemyMovementSpeed = enemyMovementSpeed;
+                enemyMovementSpeed *= (1 + 20 / 100);
+            }
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        TileInfo tileInfo = collision.GetComponent<TileInfo>();
+        if (tileInfo != null)
+        {
+            if (tileInfo.isBattlefieldModified)
+            {
+                enemyMovementSpeed = originEnemyMovementSpeed;
+            }
+        }
     }
 
     public void Setup(EnemyConfig config)

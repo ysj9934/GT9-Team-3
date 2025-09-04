@@ -102,6 +102,8 @@ public class WaveManager : MonoBehaviour
 
     public void SetWaveSystem(Wave_DataTable stageData)
     {
+        if (_gameManager.isGameOver) return;
+
         if (stageData == null)
         {
             Debug.LogError("WaveDataLoader is not initialized.");
@@ -231,8 +233,6 @@ public class WaveManager : MonoBehaviour
 
         path.Clear();
         aliveEnemyCount = 0;
-
-        
     }
 
     public void ReturnAllEnemies()
@@ -388,8 +388,7 @@ public class WaveManager : MonoBehaviour
                     "[분노]",
                     "[월드보스]쌍두 사냥개가 `타일봉쇄`를 사용하였습니다.\n" +
                     "`타일봉쇄`를 당한 타일은 해당 스테이지동안 회전하거나 옮길 수 없습니다.",
-                    Color.white,
-                    5);
+                    Color.white);
 
                 break;
             case 20302:
@@ -416,8 +415,7 @@ public class WaveManager : MonoBehaviour
                    "[월드보스]강철 괴수가 `타일봉쇄`, `전장개조`를 사용하였습니다.\n" +
                    "`타일봉쇄`를 당한 타일은 해당 스테이지동안 회전하거나 옮길 수 없습니다.\n" +
                    "`전장개조`를 당한 타일 위에서 적의 이동속도가 증가합니다. ",
-                   Color.white,
-                   5);
+                   Color.white);
 
                 break;
         }

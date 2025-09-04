@@ -83,6 +83,7 @@ public class Castle : MonoBehaviour
         Debug.Log("GameOver");
 
         _gameManager.PauseGame();
+        _gameManager.isGameOver = true;
         
         HUDCanvas.Instance._hudResultPanel._gameDefeatPanel.OpenWindow();
     }
