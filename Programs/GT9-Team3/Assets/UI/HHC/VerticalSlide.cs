@@ -23,29 +23,29 @@ public class VerticalSlide : MonoBehaviour
     void Start()
     {
         float screenHeight = Screen.height;
-        float screenWidth = Screen.width;
 
         // Swipe threshold = 10% of screen height
         swipeThreshold = screenHeight * 0.1f;
 
         panelCount = slideContainer.childCount;
 
+        // 이미지 패널 초기화
         for (int i = 0; i < panelCount; i++)
         {
             RectTransform rt = slideContainer.GetChild(i).GetComponent<RectTransform>();
-
             rt.anchorMin = new Vector2(0, 1);
             rt.anchorMax = new Vector2(1, 1);
             rt.pivot = new Vector2(0.5f, 1);
-
             rt.sizeDelta = new Vector2(0, screenHeight);
             rt.anchoredPosition = new Vector2(0, -i * screenHeight);
         }
 
-        // Set initial position
+        // 초기 위치 설정
         targetPosition = slideContainer.anchoredPosition;
 
-        textChanger.UpdateText(0);
+        if (textChanger != null)
+            textChanger.UpdateText(0);
+
         UpdateArrow(0);
     }
 
@@ -54,6 +54,7 @@ public class VerticalSlide : MonoBehaviour
         HandleTouchInput();
         HandleMouseInput();
 
+        // 이미지 그룹 이동
         slideContainer.anchoredPosition = Vector2.Lerp(
             slideContainer.anchoredPosition,
             targetPosition,
@@ -77,7 +78,6 @@ public class VerticalSlide : MonoBehaviour
             Vector2 currentTouchPos = touch.position;
             float deltaY = (currentTouchPos.y - startTouchPos.y) * dragSensitivity;
 
-            // Clamp movement at first and last panel
             int currentIndex = Mathf.RoundToInt(slideContainer.anchoredPosition.y / Screen.height);
             currentIndex = Mathf.Clamp(currentIndex, 0, panelCount - 1);
 
@@ -85,34 +85,13 @@ public class VerticalSlide : MonoBehaviour
             else if (currentIndex == panelCount - 1 && deltaY > 0) deltaY = 0;
 
             slideContainer.anchoredPosition += new Vector2(0, deltaY);
+
             startTouchPos = currentTouchPos;
         }
         else if (touch.phase == TouchPhase.Ended || touch.phase == TouchPhase.Canceled)
         {
             isDragging = false;
-
-            float dragDistance = slideContainer.anchoredPosition.y - targetPosition.y;
-            int currentIndex = Mathf.RoundToInt(targetPosition.y / Screen.height);
-            int nextIndex = currentIndex;
-
-            // Check if swipe exceeded threshold to change panel
-            if (dragDistance > swipeThreshold) nextIndex = currentIndex + 1;   // Swipe down
-            else if (dragDistance < -swipeThreshold) nextIndex = currentIndex - 1; // Swipe up
-
-            nextIndex = Mathf.Clamp(nextIndex, 0, panelCount - 1);
-
-            // Move to target panel
-            targetPosition = new Vector2(0, nextIndex * Screen.height);
-
-            // Update text
-            if (textChanger != null)
-                textChanger.UpdateText(nextIndex);
-
-            // Update arrows
-            UpdateArrow(nextIndex);
-
-            Transform currentPanel = slideContainer.GetChild(nextIndex);
-            Debug.Log("Current panel: " + currentPanel.name);
+            SnapToPanel();
         }
     }
 
@@ -131,55 +110,53 @@ public class VerticalSlide : MonoBehaviour
             int currentIndex = Mathf.RoundToInt(slideContainer.anchoredPosition.y / Screen.height);
             currentIndex = Mathf.Clamp(currentIndex, 0, panelCount - 1);
 
-            // Prevent dragging beyond first and last panels
             if (currentIndex == 0 && deltaY < 0) deltaY = 0;
             else if (currentIndex == panelCount - 1 && deltaY > 0) deltaY = 0;
 
             slideContainer.anchoredPosition += new Vector2(0, deltaY);
+
             startTouchPos = currentPos;
         }
         else if (Input.GetMouseButtonUp(0) && isDragging)
         {
             isDragging = false;
-
-            float dragDistance = slideContainer.anchoredPosition.y - targetPosition.y;
-
-            int currentIndex = Mathf.RoundToInt(targetPosition.y / Screen.height);
-            int nextIndex = currentIndex;
-
-            if (dragDistance > swipeThreshold) nextIndex = currentIndex + 1;   // Swipe down
-            else if (dragDistance < -swipeThreshold) nextIndex = currentIndex - 1; // Swipe up
-
-            nextIndex = Mathf.Clamp(nextIndex, 0, panelCount - 1);
-
-            targetPosition = new Vector2(0, nextIndex * Screen.height);
-
-            Transform currentPanel = slideContainer.GetChild(nextIndex);
-            Debug.Log("Current panel: " + currentPanel.name);
-
-            if (textChanger != null)
-                textChanger.UpdateText(nextIndex);
-
-            // Update arrows
-            UpdateArrow(nextIndex);
+            SnapToPanel();
         }
+    }
+
+    void SnapToPanel()
+    {
+        float dragDistance = slideContainer.anchoredPosition.y - targetPosition.y;
+        int currentIndex = Mathf.RoundToInt(targetPosition.y / Screen.height);
+        int nextIndex = currentIndex;
+
+        if (dragDistance > swipeThreshold) nextIndex = currentIndex + 1;
+        else if (dragDistance < -swipeThreshold) nextIndex = currentIndex - 1;
+
+        nextIndex = Mathf.Clamp(nextIndex, 0, panelCount - 1);
+        targetPosition = new Vector2(0, nextIndex * Screen.height);
+
+        if (textChanger != null)
+            textChanger.UpdateText(nextIndex);
+
+        UpdateArrow(nextIndex);
+
+        Transform currentPanel = slideContainer.GetChild(nextIndex);
+        Debug.Log("Current panel: " + currentPanel.name);
     }
 
     void UpdateArrow(int panelIndex)
     {
-        // First panel
         if (panelIndex == 0)
         {
             if (arrowUp != null) arrowUp.SetActive(false);
             if (arrowDown != null) arrowDown.SetActive(true);
         }
-        // Last panel
         else if (panelIndex == panelCount - 1)
         {
             if (arrowUp != null) arrowUp.SetActive(true);
             if (arrowDown != null) arrowDown.SetActive(false);
         }
-        // Middle panels
         else
         {
             if (arrowUp != null) arrowUp.SetActive(true);
