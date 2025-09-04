@@ -22,8 +22,6 @@ public class HUDCanvas : MonoBehaviour
     // HUDResource
     public HUDResource _hudResource;
 
-   
-
     // WaveStartButton
     [SerializeField] Button pathfinderBtn;
     private Image pathfinderImage;
@@ -37,14 +35,14 @@ public class HUDCanvas : MonoBehaviour
     // GamePause
     [SerializeField] Button pauseBtn;
 
-    // DefeatPanel
-    public GameDefeat _gameDefeatPanel;
-
-    // ResultPanel
-    public GameResult _gameResultPanel;
-
     // ItemHubUI
     public ItemHubUI _itemHudUI;
+
+    // HUDResultPanel
+    public HUDResultPanel _hudResultPanel;
+
+    // HUDMessageUI
+    public HUDMessageUI _hudMessageUI;
 
     public TowerUpgradeUI upgradeUI;
     public TowerSellUI sellUI;
@@ -62,6 +60,9 @@ public class HUDCanvas : MonoBehaviour
         _hudStageInfo = GetComponentInChildren<HUDStageInfo>();
         _hudWaveInfo = GetComponentInChildren<HUDWaveInfo>();
         _hudResource = GetComponentInChildren<HUDResource>();
+        _itemHudUI = GetComponentInChildren<ItemHubUI>();
+        _hudResultPanel = GetComponentInChildren<HUDResultPanel>();
+        _hudMessageUI = GetComponentInChildren<HUDMessageUI>();
     }
 
     private void Start()
@@ -75,12 +76,11 @@ public class HUDCanvas : MonoBehaviour
         _hudStageInfo = GetComponentInChildren<HUDStageInfo>();
         _hudWaveInfo = GetComponentInChildren<HUDWaveInfo>();
         _hudResource = GetComponentInChildren<HUDResource>();
-
-        _gameDefeatPanel = GetComponentInChildren<GameDefeat>();
-        _gameDefeatPanel.Initialize(this);
-        _gameResultPanel = GetComponentInChildren<GameResult>();
-        _gameResultPanel.Initialize(this);
         _itemHudUI = GetComponentInChildren<ItemHubUI>();
+        _hudResultPanel = GetComponentInChildren<HUDResultPanel>();
+        _hudMessageUI = GetComponentInChildren<HUDMessageUI>();
+
+        
 
         if (IsValidate())
         {
@@ -195,5 +195,13 @@ public class HUDCanvas : MonoBehaviour
         gameSpeed5xBtn.gameObject.SetActive(true);
 
         //SetGameSpeed5x();
+        _hudMessageUI.PopupUIShow(
+            "[경고]",
+            "해당 스테이지를 포기하고 바로 로비로 나가시겠습니까?\n" +
+            "스테이지를 포기하면 현재까지 얻은 재화를 얻을 수 없습니다.",
+            "로비로 나가기",
+            "게임으로 돌아가기",
+            () => { SceneLoader.Instance.LoadSceneByIndex(0); },
+            () => { SetGameSpeed5x(); });
     }
 }

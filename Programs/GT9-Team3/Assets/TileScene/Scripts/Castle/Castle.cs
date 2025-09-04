@@ -84,7 +84,7 @@ public class Castle : MonoBehaviour
 
         _gameManager.PauseGame();
         
-        HUDCanvas.Instance._gameDefeatPanel.OpenWindow();
+        HUDCanvas.Instance._hudResultPanel._gameDefeatPanel.OpenWindow();
     }
 
 }

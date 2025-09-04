@@ -25,6 +25,10 @@ public class TileInfo : TileData
         { TowerCategory.Stun, 0 },
         { TowerCategory.Doom, 0 }
     };
+
+    // Tile WorldEffect
+    public bool isTileLocked = false;
+    public bool isBattlefieldModified = false;
     
     protected override void Awake()
     {
@@ -161,4 +165,96 @@ public class TileInfo : TileData
         base.Initialize(pos);
         UpdateSpriteOrder();
     }
+
+    public void WorldTileGimmic(bool isLocked, bool isBattleModify, bool noOne)
+    {
+        if (isLocked) TileLocked();
+        if (isBattleModify) TileBattleFieldModify();
+        if (noOne) return;
+    }
+
+    private void TileLocked()
+    {
+        isTileLocked = true;
+
+        foreach (var blockInfo in blockInfos)
+        {
+            BlockInfo[] biArray = blockInfo.Value;
+            foreach (var bi in biArray)
+            {
+                SpriteRenderer[] spriteRenderers = bi.GetComponentsInChildren<SpriteRenderer>(true);
+                foreach (var sr in spriteRenderers)
+                {
+                    bool isTower = sr.GetComponent<Tower1>() != null;
+                    bool isRange = sr.GetComponent<TowerRange>() != null;
+
+                    if (isTower || isRange)
+                    {
+                        continue;
+                    }
+
+                    StartCoroutine(FadeToGray(sr, 3f));
+                }
+            }
+        }
+    }
+
+    private IEnumerator FadeToGray(SpriteRenderer sr, float duration)
+    {
+        Color startColor = sr.color;
+        Color targetColor = Color.gray;
+        float timer = 0f;
+
+        while (timer < duration)
+        {
+            sr.color = Color.Lerp(startColor, targetColor, timer / duration);
+            timer += Time.deltaTime;
+            yield return null;
+        }
+
+        sr.color = targetColor;
+    }
+
+    private void TileBattleFieldModify()
+    {
+        isBattlefieldModified = true;
+
+        foreach (var blockInfo in blockInfos)
+        {
+            BlockInfo[] biArray = blockInfo.Value;
+            foreach (var bi in biArray)
+            {
+                SpriteRenderer[] spriteRenderers = bi.GetComponentsInChildren<SpriteRenderer>(true);
+                foreach (var sr in spriteRenderers)
+                {
+                    bool isTower = sr.GetComponent<Tower1>() != null;
+                    bool isRange = sr.GetComponent<TowerRange>() != null;
+
+                    if (isTower || isRange)
+                    {
+                        continue;
+                    }
+
+                    StartCoroutine(FadeToRed(sr, 3f));
+                }
+            }
+        }
+    }
+
+    private IEnumerator FadeToRed(SpriteRenderer sr, float duration)
+    {
+        Color startColor = sr.color;
+        Color targetColor = Color.red;
+        float timer = 0f;
+
+        while (timer < duration)
+        {
+            sr.color = Color.Lerp(startColor, targetColor, timer / duration);
+            timer += Time.deltaTime;
+            yield return null;
+        }
+
+        sr.color = targetColor;
+    }
+
 }

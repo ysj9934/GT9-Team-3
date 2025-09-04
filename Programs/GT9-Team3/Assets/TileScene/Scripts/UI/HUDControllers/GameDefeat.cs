@@ -35,7 +35,7 @@ public class GameDefeat : MonoBehaviour
         gameObject.SetActive(false);
 
         // game result 로 이동
-        _hudCanvas._gameResultPanel.OpenWindow(false);
+        _hudCanvas._hudResultPanel._gameResultPanel.OpenWindow(false);
     }
 
     public void OpenWindow()

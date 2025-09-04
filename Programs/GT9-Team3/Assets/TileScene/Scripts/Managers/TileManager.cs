@@ -195,7 +195,7 @@ public class TileManager : MonoBehaviour
     private void SetWorldTile(int level)
     {
         if (isHardMode)
-            level = 1;
+            level = 3;
 
         foreach (var tile in tileAllCategoryList)
         {
@@ -211,6 +211,9 @@ public class TileManager : MonoBehaviour
                 tileData.UpdateWorldLevel(level);
             }
         }
+
+        if (startTile != null)
+            startTile.UpdateWorldLevel(level);
     }
 
     /// <summary>
@@ -257,7 +260,7 @@ public class TileManager : MonoBehaviour
                     if (fallbackTile == null)
                     {
                         TileInfo tileInfo = hit.collider.GetComponent<TileInfo>();
-                        if (tileInfo != null)
+                        if (tileInfo != null && !tileInfo.isTileLocked)
                         {
                             fallbackTile = tileInfo;
                         }
@@ -330,7 +333,7 @@ public class TileManager : MonoBehaviour
             }
         }
 
-        TileUICollider(isUIActive);
+        //TileUICollider(isUIActive);
     }
 
     private void TileUICollider(bool isUIActive)
@@ -593,6 +596,12 @@ public class TileManager : MonoBehaviour
             else
             {
                 Debug.LogWarning("No length has been allocated for this array");
+                HUDCanvas.Instance._hudMessageUI.FloatingUIShow(
+                    "[경고]",
+                    "현재 길이 연결되어 있지 않아 패스파인더를 실행할 수 없습니다.\n" +
+                    "정확한 경로를 확인해 주세요.",
+                    Color.white,
+                    5);
             }
         }
     }

@@ -56,7 +56,7 @@ public class DataManager : MonoBehaviour
         enemySkillTableLoader = new EnemySkillTableLoader();
 
         // Test 
-        SelectedStage(101);
+        SelectedStage(203);
     }
 
     /// <summary>

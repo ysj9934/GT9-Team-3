@@ -118,6 +118,9 @@ public class WaveManager : MonoBehaviour
         this.spawnintervalSec = stageData.SpawnintervalSec;
         this.rewardGold += stageData.RewardGoldAmount;
 
+        // 타일 기믹 적용
+        ActivateWorldEffect(stageData.key);
+
         // UI 갱신
         _gameManager._hudCanvas._hudWaveInfo.ResetEnemyCount();
     }
@@ -261,8 +264,11 @@ public class WaveManager : MonoBehaviour
                 Coroutine spawnroutine = StartCoroutine(SpawnEnemyWithDelay(j * spawnintervalSec[index], enemyId[index]));    
                 enemySpawnRoutines.Add(spawnroutine);
             }
-            
-            index++;
+
+            if (index < 7)
+                index++;
+            else
+                break;
         }
 
         waveRoutine = null;
@@ -343,14 +349,77 @@ public class WaveManager : MonoBehaviour
                 Debug.Log("Victory");
 
                 _gameManager.PauseGame();
-                HUDCanvas.Instance._gameResultPanel.OpenWindow(true);
+                HUDCanvas.Instance._hudResultPanel._gameResultPanel.OpenWindow(true);
             }
         }
         else
         {
             Debug.Log("Victory");
             _gameManager.PauseGame();
-            HUDCanvas.Instance._gameResultPanel.OpenWindow(true);
+            HUDCanvas.Instance._hudResultPanel._gameResultPanel.OpenWindow(true);
+        }
+    }
+
+    private void ActivateWorldEffect(int key)
+    {
+        int numberOfLocks = 0;
+
+        switch (key)
+        {
+            // World 1
+            case 10402:
+            case 10405:
+            case 10502:
+            case 10505:
+                // 타일 봉쇄
+                numberOfLocks = 1;
+                while (numberOfLocks > 0)
+                {
+                    int randomIndex = UnityEngine.Random.Range(1, path.Count - 1);
+                    TileInfo tileInfo = path[randomIndex].gameObject.GetComponent<TileInfo>();
+                    if (!tileInfo.isTileLocked)
+                    {
+                        tileInfo.WorldTileGimmic(true, false, false);
+                        numberOfLocks--;
+                    }
+                }
+
+                HUDCanvas.Instance._hudMessageUI.FloatingUIShow(
+                    "[분노]",
+                    "[월드보스]쌍두 사냥개가 `타일봉쇄`를 사용하였습니다.\n" +
+                    "`타일봉쇄`를 당한 타일은 해당 스테이지동안 회전하거나 옮길 수 없습니다.",
+                    Color.white,
+                    5);
+
+                break;
+            case 20302:
+            case 20305:
+            case 20402:
+            case 20405:
+            case 20502:
+            case 20505:
+                // 타일 봉쇄 & 전장 개조
+                numberOfLocks = 1;
+                while (numberOfLocks > 0)
+                {
+                    int randomIndex = UnityEngine.Random.Range(1, path.Count - 1);
+                    TileInfo tileInfo = path[randomIndex].gameObject.GetComponent<TileInfo>();
+                    if (!tileInfo.isTileLocked)
+                    {
+                        tileInfo.WorldTileGimmic(true, true, false);
+                        numberOfLocks--;
+                    }
+                }
+
+                HUDCanvas.Instance._hudMessageUI.FloatingUIShow(
+                   "[분노]",
+                   "[월드보스]강철 괴수가 `타일봉쇄`, `전장개조`를 사용하였습니다.\n" +
+                   "`타일봉쇄`를 당한 타일은 해당 스테이지동안 회전하거나 옮길 수 없습니다.\n" +
+                   "`전장개조`를 당한 타일 위에서 적의 이동속도가 증가합니다. ",
+                   Color.white,
+                   5);
+
+                break;
         }
     }
 
@@ -382,6 +451,5 @@ public class WaveManager : MonoBehaviour
         this.spawnRepeat = jsonData.SpawnRepeat;
         this.spawnintervalSec = jsonData.SpawnintervalSec;
 
-        
     }
 }
