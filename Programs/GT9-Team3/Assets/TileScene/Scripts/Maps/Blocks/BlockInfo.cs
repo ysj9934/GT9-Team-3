@@ -24,18 +24,10 @@ public class BlockInfo : MonoBehaviour
     [SerializeField] public TowerBuildUI towerUIdnjswls;
     private TowerPlacer towerPlacerdnjswls;
 
-    private void Awake()
+    private void Start()
     {
         _tileInfo = GetComponentInParent<TileInfo>(true);
         towerUIdnjswls = FindObjectOfType<TowerBuildUI>(true);
-    }
-
-    private void Start()
-    {
-        //if (blockCategory == BlockCategory.PlaceTower)
-        //{
-        //    _collider.enabled = true;
-        //}
     }
 
     // 확인 필요한 코드 
@@ -44,14 +36,6 @@ public class BlockInfo : MonoBehaviour
     {
         _tileInfo = GetComponentInParent<TileInfo>(true);
         towerUIdnjswls = FindObjectOfType<TowerBuildUI>(true);
-        //Tower1 tower = GetComponentInChildren<Tower1>();
-        //if (BlockCategory.PlaceTower == blockCategory)
-        //{
-        //    if (tower != null)
-        //        _collider.enabled = false;
-        //    else
-        //        _collider.enabled = true;
-        //}
     }
 
     private void Initialize()
@@ -112,36 +96,6 @@ public class BlockInfo : MonoBehaviour
     }
 
     /// <summary>
-    ///  Set Tower Placement
-    /// Tower 위치 설정
-    /// </summary>
-    /// <param name="bp">타워 청사진</param>
-    //public Tower1 SetTowerPlace(TowerBlueprint bp)
-    //{
-    //    _tileInfo._tilePlaceOnTower.HandleTowerPlacement(blockSerialNumber, hasTower, bp, null);
-
-    //    Vector2 pos = new Vector2(transform.position.x, transform.position.y + 0.37f);
-    //    GameObject go = Instantiate(bp.towerPrefab, pos, Quaternion.identity);
-    //    go.transform.SetParent(transform);
-
-    //    Tower1 tower = go.GetComponent<Tower1>();
-    //    tower.ApplyData(bp);
-    //    tower.ApplyData(bp.data);
-    //    tower.Intialize(this);
-
-    //    TowerSellUI.Instance.Show(tower);
-
-    //    ResourceManager.Instance.Spend(bp.CostType, (float)bp.CostValue / 4);
-    //    HUDCanvas.Instance.ShowTilePiece();
-
-    //    hasTower = true;
-    //    if (hasTower && _collider != null)
-    //        _collider.enabled = false;
-
-    //    return tower;
-    //}
-
-    /// <summary>
     /// Tower Install
     /// 타워 설치
     /// </summary>
@@ -159,22 +113,58 @@ public class BlockInfo : MonoBehaviour
         // Child of the block
         // Block에 귀속
         go.transform.SetParent(transform);
+        int towerOrder = Mathf.RoundToInt(-transform.position.y * 100) + 1000; // Y값 기준으로 반전
+        go.GetComponent<SpriteRenderer>().sortingOrder = towerOrder;
+
         Tower1 tower = go.GetComponent<Tower1>();
         tower.ApplyData(bp);
-        //tower.ApplyData(bp.data);
         tower.Intialize(this);
 
-        //TowerSellUI.Instance.Show(tower);
-        //TowerUpgradeUI ui = FindObjectOfType<TowerUpgradeUI>();
-        //if (ui != null)
-        //{
-        //    ui.SetTargetTower(tower);
-        //}
+        
+
+        string towerName = tower.towerdata.innerName;
+        string towerType = towerName.Substring(1, towerName.IndexOf("_") - 1);
+
+        if (_tileInfo == null)
+            _tileInfo = GetComponentInParent<TileInfo>(true);
+
+        _tileInfo.hasTowerList.Add(tower);
+
+        switch (towerType)
+        {
+            case "Common":
+                if (!_tileInfo.towerInfo.ContainsKey(TowerCategory.Common))
+                    _tileInfo.towerInfo[TowerCategory.Common] = 0;
+                _tileInfo.towerInfo[TowerCategory.Common]++;
+                break;
+            case "Splash":
+                if (!_tileInfo.towerInfo.ContainsKey(TowerCategory.Splash))
+                    _tileInfo.towerInfo[TowerCategory.Splash] = 0;
+                _tileInfo.towerInfo[TowerCategory.Splash]++;
+                break;
+            case "Slow":
+                if (!_tileInfo.towerInfo.ContainsKey(TowerCategory.Slow))
+                    _tileInfo.towerInfo[TowerCategory.Slow] = 0;
+                _tileInfo.towerInfo[TowerCategory.Slow]++;
+                break;
+            case "Stun":
+                if (!_tileInfo.towerInfo.ContainsKey(TowerCategory.Stun))
+                    _tileInfo.towerInfo[TowerCategory.Stun] = 0;
+                _tileInfo.towerInfo[TowerCategory.Stun]++;
+                break;
+            case "Doom":
+                if (!_tileInfo.towerInfo.ContainsKey(TowerCategory.Doom))
+                    _tileInfo.towerInfo[TowerCategory.Doom] = 0;
+                _tileInfo.towerInfo[TowerCategory.Doom]++;
+                break;
+        }
+
+        Debug.Log($"타워 설치 {towerType}");
 
         // Tower Install Cost
         // 타워 설치 비용
         ResourceManager.Instance.Spend(bp.CostType, (float)bp.CostValue / 4);
-        HUDCanvas.Instance.ShowTilePiece();
+        HUDCanvas.Instance._hudResource.ShowTilePiece();
 
         hasTower = true;
 
@@ -193,9 +183,46 @@ public class BlockInfo : MonoBehaviour
     {
         //Debug.Log("타워 제거 및 골드 환급");
         ResourceManager.Instance.Earn(currentTower.towerdata.makeCost, (float)currentTower.towerdata.sellValue / 4);
-        HUDCanvas.Instance.ShowTilePiece();
+        HUDCanvas.Instance._hudResource.ShowTilePiece();
 
         Tower1 tower = GetComponentInChildren<Tower1>(true);
+        _tileInfo.hasTowerList.Remove(tower);
+
+        string towerName = tower.towerdata.innerName;
+        string towerType = towerName.Substring(1, towerName.IndexOf("_") - 1);
+
+        if (_tileInfo == null)
+            _tileInfo = GetComponentInParent<TileInfo>(true);
+
+        switch (towerType)
+        {
+            case "Common":
+                if (!_tileInfo.towerInfo.ContainsKey(TowerCategory.Common))
+                    _tileInfo.towerInfo[TowerCategory.Common] = 0;
+                _tileInfo.towerInfo[TowerCategory.Common]--;
+                break;
+            case "Splash":
+                if (!_tileInfo.towerInfo.ContainsKey(TowerCategory.Splash))
+                    _tileInfo.towerInfo[TowerCategory.Splash] = 0;
+                _tileInfo.towerInfo[TowerCategory.Splash]--;
+                break;
+            case "Slow":
+                if (!_tileInfo.towerInfo.ContainsKey(TowerCategory.Slow))
+                    _tileInfo.towerInfo[TowerCategory.Slow] = 0;
+                _tileInfo.towerInfo[TowerCategory.Slow]--;
+                break;
+            case "Stun":
+                if (!_tileInfo.towerInfo.ContainsKey(TowerCategory.Stun))
+                    _tileInfo.towerInfo[TowerCategory.Stun] = 0;
+                _tileInfo.towerInfo[TowerCategory.Stun]--;
+                break;
+            case "Doom":
+                if (!_tileInfo.towerInfo.ContainsKey(TowerCategory.Doom))
+                    _tileInfo.towerInfo[TowerCategory.Doom] = 0;
+                _tileInfo.towerInfo[TowerCategory.Doom]--;
+                break;
+        }
+
         Destroy(tower.gameObject);
 
         hasTower = false;

@@ -36,6 +36,8 @@ public class EnemyMovement : MonoBehaviour
     {
 
         if (!_enemy.isAlive) return;
+        if (currentPathIndex >= pathPoints.Length) return;
+
 
         if (isStunned)
         {

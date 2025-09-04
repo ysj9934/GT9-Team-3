@@ -220,7 +220,7 @@ public void Shoot(Transform target)
 
         // 리소스 차감
         ResourceManager.Instance.Spend(towerdata.UpgradeCost, towerdata.UpgradeValue);
-        HUDCanvas.Instance.ShowTilePiece();
+        HUDCanvas.Instance._hudResource.ShowTilePiece();
             
         // ID 증가 및 데이터 갱신
         int nextTowerID = towerdata.towerID + 1;

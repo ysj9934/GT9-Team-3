@@ -34,7 +34,6 @@ public class TowerSellUI : MonoBehaviour
     public void Init()
     {
         Instance = this;
-        //Debug.LogError("TowerSellUI Instance awake ");
         Hide();
     }
 

@@ -11,6 +11,8 @@ public class Enemy : MonoBehaviour
     public EnemyHealthHandler _enemyHealthHandler;
     public EnemyMovement _enemyMovement;
     public EnemyAnimationController _enemyAnimationController;
+    public SpriteRenderer[] spriteRenderers;
+
 
     public bool isAlive = false;
 
@@ -22,6 +24,16 @@ public class Enemy : MonoBehaviour
         _enemyStat = GetComponent<EnemyStat>();
         _enemyHealthHandler = GetComponent<EnemyHealthHandler>();
         _enemyMovement = GetComponent<EnemyMovement>();
+    }
+
+
+    private void LateUpdate()
+    {
+        if (spriteRenderers == null) return;
+        foreach (var spriteRenderer in spriteRenderers)
+        {
+            spriteRenderer.sortingOrder = Mathf.RoundToInt(-transform.position.y * 100) + 1000;
+        }
     }
 
     public EnemyAnimationController SetAnimationController(EnemyAnimationController enemyAni)

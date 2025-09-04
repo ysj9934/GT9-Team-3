@@ -50,13 +50,13 @@ public class Castle : MonoBehaviour
 
     public void GetCastleData()
     {
-        _hudCanvas.SetCastleData(this);
+        _hudCanvas._hudResource.SetCastleData(this);
     }
 
     public void ResetButton()
     {
         currentHealth = maxHealth;
-        _hudCanvas.UpdateHPBar();
+        _hudCanvas._hudResource.UpdateHPBar();
         isDead = false;
     }
 
@@ -66,7 +66,7 @@ public class Castle : MonoBehaviour
 
         currentHealth -= damage;
 
-        _hudCanvas.UpdateHPBar();
+        _hudCanvas._hudResource.UpdateHPBar();
 
         if (currentHealth <= 0)
         {
@@ -83,8 +83,9 @@ public class Castle : MonoBehaviour
         Debug.Log("GameOver");
 
         _gameManager.PauseGame();
+        _gameManager.isGameOver = true;
         
-        HUDCanvas.Instance._gameDefeatPanel.OpenWindow();
+        HUDCanvas.Instance._hudResultPanel._gameDefeatPanel.OpenWindow();
     }
 
 }

@@ -48,13 +48,13 @@ public class EnemyConfigManager : MonoBehaviour
         config.enemyDefense = jsonData.Defense;
         config.enemyTilePieceAmount = jsonData.TilePieceAmount;
         config.enemyIgnoreDebuff = jsonData.IgnoreDebuff;
-        config.enemyEnemySkillID = jsonData.Enemy_Skill_ID;
+        config.enemySkillID = jsonData.Enemy_Skill_ID;
         config.enemyPrefabID = jsonData.Prefab_ID;
         config.enemyImage = jsonData.Enemy_Image;
         config.enemySize = jsonData.Enemy_Size;
         config.enemyDescription = jsonData.Enemy_Description;
 
-    config.enemyPrefab = Resources.Load<GameObject>($"Prefabs/Enemy/{config.enemyImage}");
+        config.enemyPrefab = Resources.Load<GameObject>($"Prefabs/Enemy/{config.enemyImage}");
         if (config.enemyPrefab == null)
             Debug.LogError($"Enemy prefab not found for {jsonData.Enemy_Name}");
 
