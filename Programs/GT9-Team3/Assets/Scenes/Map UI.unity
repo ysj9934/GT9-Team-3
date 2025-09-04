@@ -5298,6 +5298,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 17cf93959ce1aef49937588f1934b0c6, type: 3}
+--- !u!114 &401128494 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8654573658463214275, guid: 17cf93959ce1aef49937588f1934b0c6, type: 3}
+  m_PrefabInstance: {fileID: 401128493}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 088031a6723bee048a86d85119633c9c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &401388713
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -22451,8 +22462,24 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4649711771317355909, guid: eb96363cdb1da69488d793baff1283f2, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4649711771317355909, guid: eb96363cdb1da69488d793baff1283f2, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
+      objectReference: {fileID: 401128494}
+    - target: {fileID: 4649711771317355909, guid: eb96363cdb1da69488d793baff1283f2, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: LoadSceneByIndex
+      objectReference: {fileID: 0}
+    - target: {fileID: 4649711771317355909, guid: eb96363cdb1da69488d793baff1283f2, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: SceneLoader, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 4649711771317355909, guid: eb96363cdb1da69488d793baff1283f2, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_IntArgument
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5087445553985958474, guid: eb96363cdb1da69488d793baff1283f2, type: 3}
       propertyPath: m_AnchorMax.y
