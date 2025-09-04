@@ -175,11 +175,11 @@ public class HUDCanvas : MonoBehaviour
         gameSpeed1xBtn.gameObject.SetActive(false);
         gameSpeed2xBtn.gameObject.SetActive(false);
         gameSpeed5xBtn.gameObject.SetActive(true);
-        _gameManager.GameSpeed5x();
+        _gameManager.GameSpeed3x();
         
     }
 
-    public void SetGameSpeed5x()
+    public void SetGameSpeed3x()
     {
         gameSpeed1xBtn.gameObject.SetActive(true);
         gameSpeed2xBtn.gameObject.SetActive(false);
@@ -202,6 +202,6 @@ public class HUDCanvas : MonoBehaviour
             "로비로 나가기",
             "게임으로 돌아가기",
             () => { SceneLoader.Instance.LoadSceneByIndex(0); },
-            () => { SetGameSpeed5x(); });
+            () => { SetGameSpeed3x(); });
     }
 }

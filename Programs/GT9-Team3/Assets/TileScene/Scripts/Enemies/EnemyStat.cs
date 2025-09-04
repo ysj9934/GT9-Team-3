@@ -173,7 +173,7 @@ public class EnemyStat : MonoBehaviour
             if (tileInfo.isBattlefieldModified)
             {
                 originEnemyMovementSpeed = enemyMovementSpeed;
-                enemyMovementSpeed *= (1 + 20 / 100);
+                enemyMovementSpeed *= (1 + 100 / 100);
             }
         }
     }
