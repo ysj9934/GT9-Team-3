@@ -33,6 +33,9 @@ public class TileManager : MonoBehaviour
     public TowerBuildUI towerUIdnjswls;
     public TowerSellUI towerSellUI;
 
+    // Controllers
+    public ShopController _shopController;
+
     // Manager Info
     public readonly float[] tileSize = { 1.4475f, 0.84f };
     public int tileLength = 5;
@@ -77,14 +80,13 @@ public class TileManager : MonoBehaviour
 
         Instance = this;
 
-        //Debug.LogError("TileManager Instance Error"); 
-
         tileAllCategoryList = new List<GameObject>();
     }
 
     private void Start()
     {
         _gameManager = GameManager.Instance;
+        _shopController = GetComponentInChildren<ShopController>();
         towerSellUI = TowerSellUI.Instance;
         towerUIdnjswls = FindObjectOfType<TowerBuildUI>(true);
     }
@@ -193,7 +195,7 @@ public class TileManager : MonoBehaviour
     private void SetWorldTile(int level)
     {
         if (isHardMode)
-            level = 1;
+            level = 3;
 
         foreach (var tile in tileAllCategoryList)
         {
@@ -209,6 +211,9 @@ public class TileManager : MonoBehaviour
                 tileData.UpdateWorldLevel(level);
             }
         }
+
+        if (startTile != null)
+            startTile.UpdateWorldLevel(level);
     }
 
     /// <summary>
@@ -255,7 +260,7 @@ public class TileManager : MonoBehaviour
                     if (fallbackTile == null)
                     {
                         TileInfo tileInfo = hit.collider.GetComponent<TileInfo>();
-                        if (tileInfo != null)
+                        if (tileInfo != null && !tileInfo.isTileLocked)
                         {
                             fallbackTile = tileInfo;
                         }
@@ -310,7 +315,7 @@ public class TileManager : MonoBehaviour
                 {
                     CloseTileUI(fallbackTile._tileUI);
                     _gameManager._hudCanvas.TurnOffStartWave();
-                    fallbackTile._tileUI.tileUI.SetActive(!fallbackTile._tileUI.tileUI.activeSelf);
+                    fallbackTile._tileUI.rotateUI.SetActive(!fallbackTile._tileUI.rotateUI.activeSelf);
                 }
 
                 if (isMoveActive)
@@ -324,10 +329,11 @@ public class TileManager : MonoBehaviour
                 CloseTileUI(null);
                 CloseTowerInstallUI();
                 CloseTowerInfoUI();
+                CloseTowerRangeUI();
             }
         }
 
-        TileUICollider(isUIActive);
+        //TileUICollider(isUIActive);
     }
 
     private void TileUICollider(bool isUIActive)
@@ -554,7 +560,7 @@ public class TileManager : MonoBehaviour
         {
             for (int col = 0; col < tileLength; col++)
             {
-                if (tileMap[row, col] != null)
+                if (tileMap[row, col] != null && !tileMap[row, col].isInInventory)
                 {
                     tileMap[row, col].SetNeighbors(tileMap, tileLength, tileLength);
                 }
@@ -590,6 +596,11 @@ public class TileManager : MonoBehaviour
             else
             {
                 Debug.LogWarning("No length has been allocated for this array");
+                HUDCanvas.Instance._hudMessageUI.FloatingUIShow(
+                    "[경고]",
+                    "현재 길이 연결되어 있지 않아 패스파인더를 실행할 수 없습니다.\n" +
+                    "정확한 경로를 확인해 주세요.",
+                    Color.white);
             }
         }
     }
@@ -671,7 +682,7 @@ public class TileManager : MonoBehaviour
         foreach (var tileInfo in tileInfoList)
         {
             if (tileInfo._tileUI != exceptUI)
-                tileInfo._tileUI.CloseUI();
+                tileInfo._tileUI.CloseRotateUI();
         }
     }
 
@@ -693,25 +704,15 @@ public class TileManager : MonoBehaviour
         TowerSellUI.Instance.Hide();
     }
 
-
-    // Inventory
-    public List<GameObject> inventoryList = new List<GameObject>();
-    [SerializeField] public Transform content;
-    [SerializeField] public GameObject inventoryItemTilePrefab;
-    [SerializeField] public GameObject inventoryItemPrefab;
-    [SerializeField] public GameObject tileItemPrefab;
-
-    public void CreateTile()
-    {
-        GameObject go = Instantiate(inventoryItemTilePrefab, Vector2.zero, Quaternion.identity);
-        go.transform.SetParent(this.transform);
-        
-        go.SetActive(false);
-        GameObject uigo = Instantiate(inventoryItemPrefab, content);
-        UI_Inventory_ItemImage itemImage = uigo.GetComponentInChildren<UI_Inventory_ItemImage>();
-        itemImage.gameObject.SetActive(true);
-        // itemImage.GetComponent<Image>().image = tileItemPrefab.GetComponent<Image>().image;
-        
-        inventoryList.Add(uigo);
+    public void CloseTowerRangeUI()
+    { 
+        foreach (var tileInfo in tileInfoList)
+        {
+            foreach (var tower in tileInfo.hasTowerList)
+            {
+                if (tower.rangeVisual != null)
+                    tower.rangeVisual.SetActive(false);
+            }
+        }
     }
 }

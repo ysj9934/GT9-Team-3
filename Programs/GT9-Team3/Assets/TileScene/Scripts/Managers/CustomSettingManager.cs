@@ -65,5 +65,21 @@ public class CustomSettingManager : MonoBehaviour
         customSettingPrefab.gameObject.SetActive(true);
     }
 
-
+    // Create Tile
+    public void CreateCornerTile()
+    {
+        TileManager.Instance._shopController.CreateCornerTile();
+    }
+    public void CreateCrossTile()
+    {
+        TileManager.Instance._shopController.CreateCrossTile();
+    }
+    public void CreateStraightTile()
+    {
+        TileManager.Instance._shopController.CreateStraightTile();
+    }
+    public void CreateTShapeTile()
+    {
+        TileManager.Instance._shopController.CreateTShapeTile();
+    }
 }

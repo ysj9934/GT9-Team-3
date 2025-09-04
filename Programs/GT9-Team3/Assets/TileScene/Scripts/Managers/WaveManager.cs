@@ -90,7 +90,7 @@ public class WaveManager : MonoBehaviour
             this.stageWaveList = stageData.stageWaveList;
             this.isHardMode = stageData.isHardMode;
             ResourceManager.Instance.resources[ResourceType.Tilepiece] = stageWaveList[0].StageStartTilePiece;
-            HUDCanvas.Instance.ShowTilePiece();
+            HUDCanvas.Instance._hudResource.ShowTilePiece();
             this.rewardGold = 0;
             SetWaveSystem(stageWaveList[0]);
         }
@@ -102,6 +102,8 @@ public class WaveManager : MonoBehaviour
 
     public void SetWaveSystem(Wave_DataTable stageData)
     {
+        if (_gameManager.isGameOver) return;
+
         if (stageData == null)
         {
             Debug.LogError("WaveDataLoader is not initialized.");
@@ -117,6 +119,12 @@ public class WaveManager : MonoBehaviour
         this.spawnRepeat = stageData.SpawnRepeat;
         this.spawnintervalSec = stageData.SpawnintervalSec;
         this.rewardGold += stageData.RewardGoldAmount;
+
+        // 타일 기믹 적용
+        ActivateWorldEffect(stageData.key);
+
+        // UI 갱신
+        _gameManager._hudCanvas._hudWaveInfo.ResetEnemyCount();
     }
 
     // send wave and round data
@@ -127,6 +135,7 @@ public class WaveManager : MonoBehaviour
 
         SendWaveData();
 
+        // 라운드 변경
         if (waveNum % 3 == 1)
         {
             _gameManager._hudCanvas.TurnOnPathfinder();
@@ -135,6 +144,8 @@ public class WaveManager : MonoBehaviour
             _gameManager._tileManager.isMoveActive = true;
 
             path.Clear();
+            // Wave Progress UI 초기화
+            _gameManager._hudCanvas._hudWaveInfo.ResetWavePoint();
         }
         else
         {
@@ -222,8 +233,6 @@ public class WaveManager : MonoBehaviour
 
         path.Clear();
         aliveEnemyCount = 0;
-
-        
     }
 
     public void ReturnAllEnemies()
@@ -255,8 +264,11 @@ public class WaveManager : MonoBehaviour
                 Coroutine spawnroutine = StartCoroutine(SpawnEnemyWithDelay(j * spawnintervalSec[index], enemyId[index]));    
                 enemySpawnRoutines.Add(spawnroutine);
             }
-            
-            index++;
+
+            if (index < 7)
+                index++;
+            else
+                break;
         }
 
         waveRoutine = null;
@@ -280,7 +292,9 @@ public class WaveManager : MonoBehaviour
     }
 
     
-
+    /// <summary>
+    /// 적 유닛 생성
+    /// </summary>
     public void SpawnEnemy(EnemyConfig config)
     {
         GameObject enemyObj = _poolManager.GetEnemy();
@@ -291,8 +305,10 @@ public class WaveManager : MonoBehaviour
             EnemyEnhanced(enemy);
             enemy._enemyMovement.pathPoint(path);
 
+            // 남은 적 유닛 수 체크
             aliveEnemyCount++;
             enemy._enemyHealthHandler.OnDeath += HandleEnemyDeath;
+            _gameManager._hudCanvas._hudWaveInfo.UpdateWaveCount();
 
             activeEnemies.Add(enemyObj);
         }
@@ -307,6 +323,8 @@ public class WaveManager : MonoBehaviour
     private void HandleEnemyDeath()
     { 
         aliveEnemyCount--;
+        // UI 업데이트
+        _gameManager._hudCanvas._hudWaveInfo.UpdateEnemyCount();
 
         if (aliveEnemyCount <= 0 && waveRoutine == null)
         {
@@ -317,8 +335,7 @@ public class WaveManager : MonoBehaviour
     private void EndWave()
     {
         isWaveRoutine = false;
-
-        Debug.Log("WaveEnd");
+        aliveEnemyCount = 0;
 
         if (!isHardMode)
         {
@@ -332,14 +349,128 @@ public class WaveManager : MonoBehaviour
                 Debug.Log("Victory");
 
                 _gameManager.PauseGame();
-                HUDCanvas.Instance._gameResultPanel.OpenWindow(true);
+                HUDCanvas.Instance._hudResultPanel._gameResultPanel.OpenWindow(true);
             }
         }
         else
         {
             Debug.Log("Victory");
             _gameManager.PauseGame();
-            HUDCanvas.Instance._gameResultPanel.OpenWindow(true);
+            HUDCanvas.Instance._hudResultPanel._gameResultPanel.OpenWindow(true);
+        }
+    }
+
+    private void ActivateWorldEffect(int key)
+    {
+        int numberOfLocks = 0;
+
+        switch (key)
+        {
+            // World 1
+            case 10402:
+            case 10405:
+            case 10502:
+            case 10505:
+                // 타일 봉쇄
+                numberOfLocks = 1;
+                while (numberOfLocks > 0)
+                {
+                    int randomIndex = UnityEngine.Random.Range(1, path.Count - 1);
+                    TileInfo tileInfo = path[randomIndex].gameObject.GetComponent<TileInfo>();
+                    if (!tileInfo.isTileLocked)
+                    {
+                        tileInfo.WorldTileGimmic(true, false, false);
+                        numberOfLocks--;
+                    }
+                }
+
+                HUDCanvas.Instance._hudMessageUI.FloatingUIShow(
+                    "[분노]",
+                    "[월드보스]쌍두 사냥개가 `타일봉쇄`를 사용하였습니다.\n" +
+                    "`타일봉쇄`를 당한 타일은 해당 스테이지동안 회전하거나 옮길 수 없습니다.",
+                    Color.white);
+
+                break;
+            case 20302:
+            case 20305:
+            case 20402:
+            case 20405:
+            case 20502:
+            case 20505:
+                // 타일 봉쇄 & 전장 개조
+                numberOfLocks = 1;
+                while (numberOfLocks > 0)
+                {
+                    int randomIndex = UnityEngine.Random.Range(1, path.Count - 1);
+                    TileInfo tileInfo = path[randomIndex].gameObject.GetComponent<TileInfo>();
+                    if (!tileInfo.isTileLocked)
+                    {
+                        tileInfo.WorldTileGimmic(true, true, false);
+                        numberOfLocks--;
+                    }
+                }
+
+                HUDCanvas.Instance._hudMessageUI.FloatingUIShow(
+                   "[분노]",
+                   "[월드보스]강철 괴수가 `타일봉쇄`, `전장개조`를 사용하였습니다.\n" +
+                   "`타일봉쇄`를 당한 타일은 해당 스테이지동안 회전하거나 옮길 수 없습니다.\n" +
+                   "`전장개조`를 당한 타일 위에서 적의 이동속도가 증가합니다. ",
+                   Color.white);
+
+                break;
+
+            case 30202:
+            case 30302:
+            case 30402:
+            case 30502:
+                // 타일 봉쇄 & 전장 개조 & 느린 타워
+                numberOfLocks = 1;
+                while (numberOfLocks > 0)
+                {
+                    int randomIndex = UnityEngine.Random.Range(1, path.Count - 1);
+                    TileInfo tileInfo = path[randomIndex].gameObject.GetComponent<TileInfo>();
+                    if (!tileInfo.isTileLocked)
+                    {
+                        tileInfo.WorldTileGimmic(true, true, true);
+                        numberOfLocks--;
+                    }
+                }
+
+                HUDCanvas.Instance._hudMessageUI.FloatingUIShow(
+                   "[분노]",
+                   "[월드보스]강철 괴수가 `타일봉쇄`, `전장개조`를 사용하였습니다.\n" +
+                   "`타일봉쇄`를 당한 타일은 해당 스테이지동안 회전하거나 옮길 수 없습니다.\n" +
+                   "`전장개조`를 당한 타일 위에서 적의 이동속도가 증가합니다. \n" +
+                   "`느린타워`를 당한 타워는 공격속도가 감소합니다.",
+                   Color.white);
+                break;
+
+            case 30205:
+            case 30305:
+            case 30405:
+            case 30505:
+                // 타일 봉쇄 & 전장 개조 & 느린 타워
+                numberOfLocks = 2;
+                while (numberOfLocks > 0)
+                {
+                    int randomIndex = UnityEngine.Random.Range(1, path.Count - 1);
+                    TileInfo tileInfo = path[randomIndex].gameObject.GetComponent<TileInfo>();
+                    if (!tileInfo.isTileLocked)
+                    {
+                        tileInfo.WorldTileGimmic(true, true, true);
+                        numberOfLocks--;
+                    }
+                }
+
+                HUDCanvas.Instance._hudMessageUI.FloatingUIShow(
+                   "[분노]",
+                   "[월드보스]죽음의 심판자가 `타일봉쇄`, `전장개조`, `느린 타워`를 사용하였습니다.\n" +
+                   "`타일봉쇄`를 당한 타일은 해당 스테이지동안 회전하거나 옮길 수 없습니다.\n" +
+                   "`전장개조`를 당한 타일 위에서 적의 이동속도가 증가합니다.\n" +
+                   "`느린타워`를 당한 타워는 공격속도가 감소합니다.",
+                   Color.white);
+                break;
+
         }
     }
 
@@ -370,5 +501,6 @@ public class WaveManager : MonoBehaviour
         this.spawnBatchSize = jsonData.SpawnBatchSize;
         this.spawnRepeat = jsonData.SpawnRepeat;
         this.spawnintervalSec = jsonData.SpawnintervalSec;
+
     }
 }
