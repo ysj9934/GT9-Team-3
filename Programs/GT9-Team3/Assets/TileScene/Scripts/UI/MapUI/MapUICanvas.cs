@@ -108,4 +108,16 @@ public class MapUICanvas : MonoBehaviour
         }
     }
 
+    public void giveStageMode(int stageID)
+    {
+        if (_resourceManager.CanAfford(ResourceType.Mana, 5))
+        {
+            _resourceManager.Spend(ResourceType.Mana, 5);
+            DataManager.Instance.SelectedStage(stageID);
+        }
+        else
+        {
+            Debug.Log("error");
+        }
+    }
 }
