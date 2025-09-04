@@ -44,7 +44,7 @@ public class GameResult : MonoBehaviour
         
         gameObject.SetActive(true);
 
-        // 게임 데이터 저장
+        // 野껊슣???怨쀬뵠??????
     }
 
     public void ResultText(bool isWin)
@@ -95,7 +95,7 @@ public class GameResult : MonoBehaviour
             ResourceManager.Instance.Spend(ResourceType.Mana, 5);
             
 
-            Debug.Log("게임 재시작");
+            Debug.Log("野껊슣???????");
             ResourceManager.Instance.Earn(ResourceType.Gold, rewardGold);
             Debug.Log($"{ResourceManager.Instance.GetAmount(ResourceType.Gold)}");
             DataManager.Instance.RestartStage(DataManager.Instance.stageId);
@@ -112,7 +112,7 @@ public class GameResult : MonoBehaviour
     public void GameReward2x()
     {
         Debug.Log("Reward2x to go MapUI");
-        // 광고 시청
+        // ?용쵌????뽮퍕
 
 
         CloseWindow();
