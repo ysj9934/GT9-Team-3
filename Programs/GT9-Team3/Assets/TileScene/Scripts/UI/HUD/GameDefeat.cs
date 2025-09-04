@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using static AdsManager;
 
 public class GameDefeat : MonoBehaviour
 {
@@ -73,7 +74,7 @@ public class GameDefeat : MonoBehaviour
         Debug.Log("Adv revive");
 
         // 광고 시청
-        AdsManager.Instance.ShowRewardedAd(() =>
+        AdsManager.Instance.ShowRewardedAd(RewardAdType.Retry, () =>
         {
           
             Debug.Log("광고 시청 완료 - 부활 처리");
@@ -86,7 +87,7 @@ public class GameDefeat : MonoBehaviour
             // 웨이브 다시 시작?
 
             // 속도 초기화
-            HUDCanvas.Instance.SetGameSpeed5x();
+            HUDCanvas.Instance.SetGameSpeed3x();
 
         });
     }
