@@ -1,7 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Resources;
 using TMPro;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 using static AdsManager;
@@ -207,9 +209,20 @@ public class HUDCanvas : MonoBehaviour
             {
                 Debug.Log("광고 시청 완료 -> 3배속");
                 isTripleSpeedUnlocked = true;
-                ActivateTripleSpeed();
+                _gameManager.PauseGame();
+            },
+            () =>
+            {
+                Debug.Log("광고 닫힘 → 게임 재개");
+
+                StartCoroutine(ApplySpeedBoostDelayed());
             });
         }
+    }
+    private IEnumerator ApplySpeedBoostDelayed()
+    {
+        yield return new WaitForEndOfFrame(); // 또는 yield return null;
+        ActivateTripleSpeed(); // 광고 닫힘 이후에 확실히 적용
     }
 
     private void ActivateTripleSpeed()
@@ -248,10 +261,5 @@ public class HUDCanvas : MonoBehaviour
 
     //    Debug.Log("광고 닫힘 후 강제 3배속 적용");
     //}
-
-    public bool IsTripleSpeedUnlocked()
-    {
-        return isTripleSpeedUnlocked;
-    }
 
 }

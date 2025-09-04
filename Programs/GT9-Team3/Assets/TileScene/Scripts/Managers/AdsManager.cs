@@ -67,7 +67,7 @@ public class AdsManager : MonoBehaviour
         });
     }
 
-    public void ShowRewardedAd(RewardAdType type, Action onRewarded)
+    public void ShowRewardedAd(RewardAdType type, Action onRewarded, Action onAdClosed = null)
     {
         string key = type.ToString();
 
@@ -76,10 +76,17 @@ public class AdsManager : MonoBehaviour
             currentAdType = type;
             rewardCallbacks[key] = onRewarded;
 
+            ad.OnAdFullScreenContentClosed += () =>
+            {
+                Debug.Log($"[Ad:{type}] 광고 닫힘");
+                onAdClosed?.Invoke();
+            };
+
             ad.Show(reward =>
             {
                 Debug.Log($"[Ad:{type}] 보상 지급됨: {reward.Amount} {reward.Type}");
                 rewardCallbacks[key]?.Invoke();
+                
             });
         }
         else
