@@ -3,15 +3,15 @@ using TMPro;
 
 public class TextChanger : MonoBehaviour
 {
-    [Header("蹂寃쏀븷 TextMeshProUGUI")]
+    [Header("癰궰野껋?釉?TextMeshProUGUI")]
     public TextMeshProUGUI targetText;
 
-    [Header("媛??⑤꼸???쒖떆???띿뒪??")]
-    public string[] panelTexts; // ?⑤꼸蹂꾨줈 ?쒖떆???띿뒪??
+    [Header("揶???ㅺ섯????뽯뻻????용뮞??")]
+    public string[] panelTexts; // ??ㅺ섯癰귢쑬以???뽯뻻????용뮞??
 
     void Awake()
     {
-        panelTexts = new string[] { "1 - ?섎뒛??", "2 - 諛붾떎??", "3 - ?⑹븫??" };
+        //panelTexts = new string[] { "1 - ??롫뮎??", "2 - 獄쏅뗀???", "3 - ??밸릊??" };
     }
 
     public void UpdateText(int panelIndex)
@@ -25,7 +25,7 @@ public class TextChanger : MonoBehaviour
         else
         {
             targetText.text = "";
-            Debug.LogWarning("panelIndex媛 panelTexts 踰붿쐞瑜?踰쀬뼱?ъ뒿?덈떎.");
+            Debug.LogWarning("panelIndex揶쎛 panelTexts 甕곕뗄?욅몴?甕곗щ선?????덈뼄.");
         }
     }
 }
