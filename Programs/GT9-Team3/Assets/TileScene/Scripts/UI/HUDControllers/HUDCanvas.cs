@@ -246,7 +246,9 @@ public class HUDCanvas : MonoBehaviour
             "스테이지를 포기하면 현재까지 얻은 재화를 얻을 수 없습니다.",
             "로비로 나가기",
             "게임으로 돌아가기",
-            () => { SceneLoader.Instance.LoadSceneByIndex(0); },
+            () => {
+                _gameManager.ResumeGame();
+                SceneLoader.Instance.LoadSceneByIndex(0); },
             () => { SetGameSpeed3x(); });
     }
 }
