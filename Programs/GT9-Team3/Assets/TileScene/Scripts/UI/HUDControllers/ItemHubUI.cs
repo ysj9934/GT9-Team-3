@@ -229,6 +229,12 @@ public class ItemHubUI : MonoBehaviour
             currentSelectedShopItem.Disabled();
         }
 
+        _hudCanvas._hudMessageUI.FloatingUIShow(
+            "[타일 구매 완료]",
+            "타일을 구매 완료하셨습니다.", 
+            Color.cyan
+            );
+
         currentSelectedShopItem.UpdateItemCount();
     }
 

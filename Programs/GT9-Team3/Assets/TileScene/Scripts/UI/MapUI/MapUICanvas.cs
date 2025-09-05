@@ -32,7 +32,7 @@ public class MapUICanvas : MonoBehaviour
         if (_resourceManager.CanAfford(ResourceType.Mana, 5))
         {
             _resourceManager.Spend(ResourceType.Mana, 5);
-            SceneLoader.Instance.LoadSceneByIndex(2);
+            SceneLoader.Instance.LoadSceneByIndex(1);
         }
         else
         {

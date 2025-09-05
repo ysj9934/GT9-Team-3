@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Resources;
 using UnityEngine;
 
@@ -39,7 +40,7 @@ public class WaveManager : MonoBehaviour
         Instance = this;
     }
 
-    private void Start()
+    public void Init()
     {
         _gameManager = GameManager.Instance;
         _poolManager = ObjectPoolManager.Instance;
@@ -146,6 +147,9 @@ public class WaveManager : MonoBehaviour
             path.Clear();
             // Wave Progress UI 초기화
             _gameManager._hudCanvas._hudWaveInfo.ResetWavePoint();
+
+            // 타일 획득
+            GetTileEndRound();
         }
         else
         {
@@ -153,12 +157,12 @@ public class WaveManager : MonoBehaviour
             _gameManager._tileManager.isUIActive = false;
             _gameManager._tileManager.isMoveActive = false;
         }
+
+        
     }
 
     public void SendWaveData()
     {
-        _gameManager = GameManager.Instance;
-
         _gameManager.ReceiveStageDataFromWaveManager(
             new StageData
             (
@@ -194,9 +198,6 @@ public class WaveManager : MonoBehaviour
             _gameManager._tileManager.isMoveActive = true;
             // 3. 웨이브 스폰 시키기
             waveRoutine = StartCoroutine(AwakeWave());
-            // 3-1. 웨이브 패배시 Wave재시작 할 수 있도록..
-            // 4. 웨이브 종료시 다음 웨이브 Setting
-            // 5. Round가 커질 시 tileUI회전 가능하도록
         }
         else
         {
@@ -472,6 +473,63 @@ public class WaveManager : MonoBehaviour
                 break;
 
         }
+    }
+
+    // 라운드 시작시 타일 획득
+    private void GetTileEndRound()
+    {
+        Debug.Log("타일 획득 시간");
+
+        // 타일 1 ~ 3 개 획득 배율은 25 50 25
+        float[] weights = { 0.25f, 0.50f, 0.25f };
+
+        int tileCount = CalculateRandomIndex(weights) + 1;
+        Debug.Log("tilecount : " + tileCount);
+
+        while (tileCount > 0)
+        {
+            int tileIndex = UnityEngine.Random.Range(0, 4);
+
+            switch (tileIndex)
+            {
+                case 0:
+                    _gameManager._tileManager._shopController.CreateCrossTile();
+                    break;
+                case 1:
+                    _gameManager._tileManager._shopController.CreateStraightTile();
+                    break;
+                case 2:
+                    _gameManager._tileManager._shopController.CreateTShapeTile();
+                    break;
+                case 3:
+                    _gameManager._tileManager._shopController.CreateCrossTile();
+                    break;
+            }
+
+            tileCount--;
+        }
+        
+    }
+
+    private int CalculateRandomIndex(float[] weights)
+    {
+        float total = weights.Sum();
+        float randomValue = UnityEngine.Random.Range(0, total);
+
+        int selectedIndex = 0;
+        float cumulative = 0f;
+
+        for (int i = 0; i < weights.Length; i++)
+        {
+            cumulative += weights[i];
+            if (randomValue <= cumulative)
+            {
+                selectedIndex = i;
+                break;
+            }
+        }
+
+        return selectedIndex;
     }
 
     /// <summary>

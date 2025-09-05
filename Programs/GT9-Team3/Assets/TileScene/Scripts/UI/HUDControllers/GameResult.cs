@@ -10,8 +10,11 @@ public class GameResult : MonoBehaviour
 {
     private HUDCanvas _hudCanvas;
 
+    [SerializeField] GameObject resultVictory;
+    [SerializeField] GameObject resultDefeat;
     [SerializeField] TextMeshProUGUI resultText;
     [SerializeField] TextMeshProUGUI staminaAmountText;
+    [SerializeField] GameObject hudStaminaGo;
     [SerializeField] Button staminaShopBtn;
     [SerializeField] TextMeshProUGUI worldStageText;
     [SerializeField] TextMeshProUGUI rewardAmountText;
@@ -52,11 +55,17 @@ public class GameResult : MonoBehaviour
     {
         if (isWin)
         {
-            resultText.text = "Victory";
+            resultVictory.SetActive(true);
+            resultDefeat.SetActive(false);
+            restartGameBtn.gameObject.SetActive(false);
+            hudStaminaGo.SetActive(false);
         }
         else
         {
-            resultText.text = "Defeat";
+            resultVictory.SetActive(false);
+            resultDefeat.SetActive(true);
+            restartGameBtn.gameObject.SetActive(true);
+            hudStaminaGo.SetActive(true);
         }
     }
 
@@ -72,7 +81,7 @@ public class GameResult : MonoBehaviour
 
     public void UpdateWorldStageText()
     {
-        worldStageText.text = $"WORLD {gameWorldLevel} - STAGE {gameStageLevel}";
+        worldStageText.text = $"월드 {gameWorldLevel} - 스테이지 {gameStageLevel}";
     }
 
     public void GameExitButton()
@@ -88,6 +97,7 @@ public class GameResult : MonoBehaviour
 
     public void GameRetry()
     {
+
         Debug.Log("GameRetry");
 
         if (ResourceManager.Instance.CanAfford(ResourceType.Mana, 5))

@@ -13,7 +13,7 @@ OcclusionCullingSettings:
 --- !u!104 &2
 RenderSettings:
   m_ObjectHideFlags: 0
-  serializedVersion: 9
+  serializedVersion: 10
   m_Fog: 0
   m_FogColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   m_FogMode: 3
@@ -42,8 +42,8 @@ RenderSettings:
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
-  serializedVersion: 12
-  m_GIWorkflowMode: 1
+  serializedVersion: 13
+  m_BakeOnSceneLoad: 0
   m_GISettings:
     serializedVersion: 2
     m_BounceScale: 1
@@ -66,9 +66,6 @@ LightmapSettings:
     m_LightmapParameters: {fileID: 0}
     m_LightmapsBakeMode: 1
     m_TextureCompression: 1
-    m_FinalGather: 0
-    m_FinalGatherFiltering: 1
-    m_FinalGatherRayCount: 256
     m_ReflectionCompression: 2
     m_MixedBakeMode: 2
     m_BakeBackend: 1
@@ -184,7 +181,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 542.38
+  orthographic size: 6.5
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -209,9 +206,9 @@ Transform:
   m_GameObject: {fileID: 266231758}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 960, y: 544, z: -10}
-  m_LocalScale: {x: 1064.2999, y: 1064.2999, z: 1064.2999}
-  m_ConstrainProportionsScale: 0
+  m_LocalPosition: {x: 0, y: 0, z: -10}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -224,31 +221,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 266231758}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 72ece51f2901e7445ab60da3685d6b5f, type: 3}
+  m_Script: {fileID: 11500000, guid: f2668f7309c774f46b9be1758d5b9b93, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
-  m_ShowDebugText: 0
-  m_ShowCameraFrustum: 1
-  m_IgnoreTimeScale: 0
-  m_WorldUpOverride: {fileID: 0}
-  m_UpdateMethod: 2
-  m_BlendUpdateMethod: 1
-  m_DefaultBlend:
-    m_Style: 1
-    m_Time: 2
-    m_CustomCurve:
-      serializedVersion: 2
-      m_Curve: []
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
-  m_CustomBlends: {fileID: 0}
-  m_CameraCutEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_CameraActivatedEvent:
-    m_PersistentCalls:
-      m_Calls: []
+  m_EditorClassIdentifier: Assembly-CSharp::Camara
 --- !u!1 &591316206
 GameObject:
   m_ObjectHideFlags: 0
@@ -953,15 +928,15 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8691758894971130439, guid: b747aa6e848008e47a3fe6d7abb62767, type: 3}
-      propertyPath: panelTexts.Array.data[0]
+      propertyPath: 'panelTexts.Array.data[0]'
       value: "1 - \uD558\uB298\uC12C"
       objectReference: {fileID: 0}
     - target: {fileID: 8691758894971130439, guid: b747aa6e848008e47a3fe6d7abb62767, type: 3}
-      propertyPath: panelTexts.Array.data[1]
+      propertyPath: 'panelTexts.Array.data[1]'
       value: "2 - \uBC14\uB2E4\uC12C"
       objectReference: {fileID: 0}
     - target: {fileID: 8691758894971130439, guid: b747aa6e848008e47a3fe6d7abb62767, type: 3}
-      propertyPath: panelTexts.Array.data[2]
+      propertyPath: 'panelTexts.Array.data[2]'
       value: "3 - \uC6A9\uC554\uC12C"
       objectReference: {fileID: 0}
     - target: {fileID: 8874322919616578145, guid: b747aa6e848008e47a3fe6d7abb62767, type: 3}
