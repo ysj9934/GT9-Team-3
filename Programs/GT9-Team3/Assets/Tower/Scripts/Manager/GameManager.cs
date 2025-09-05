@@ -28,6 +28,7 @@ public class GameManager : MonoBehaviour
     public int gameRoundLevel;
     public int gameWaveLevel;
     public List<Wave_DataTable> stageWaveList = new List<Wave_DataTable>();
+    [SerializeField] public BackgroundData background;
 
     // 게임 일시정지 및 재개
     public bool isGamePaused = false;
@@ -45,7 +46,7 @@ public class GameManager : MonoBehaviour
         Instance = this;
     }
 
-    private void Start()
+    public void Init()
     {
         // Initialize Manager
         _tileManager = TileManager.Instance;
@@ -57,11 +58,11 @@ public class GameManager : MonoBehaviour
         // Initialize MapUICanvas
         _hudCanvas = HUDCanvas.Instance;
 
-        if (IsValidate())
-        {
-            // Load Data from DataManager
-            ReceiveStageData();
-        }
+        //if (IsValidate())
+        //{
+        //    // Load Data from DataManager
+        //    ReceiveStageData();
+        //}
     }
 
     private bool IsValidate()
@@ -138,6 +139,8 @@ public class GameManager : MonoBehaviour
             SendStageDataToTileManager();
             // 1. HUDCanvas에 스테이지 정보 전달
             SendStageDataToHUD();
+
+            background.UpdateWorldLevel(gameWorldLevel);
 
             // 4. TileManager 세팅
             //_tileManager.Initialize();

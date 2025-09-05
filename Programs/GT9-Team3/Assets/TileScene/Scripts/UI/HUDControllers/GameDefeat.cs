@@ -15,8 +15,6 @@ public class GameDefeat : MonoBehaviour
     [SerializeField] private Button watchADvReviveBtn;
     [SerializeField] private Button giveCryReviveBtn;
 
-    
-
     private void Awake()
     {
         _hudCanvas = GetComponentInParent<HUDCanvas>();

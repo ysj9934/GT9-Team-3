@@ -39,7 +39,7 @@ public class WaveManager : MonoBehaviour
         Instance = this;
     }
 
-    private void Start()
+    public void Init()
     {
         _gameManager = GameManager.Instance;
         _poolManager = ObjectPoolManager.Instance;

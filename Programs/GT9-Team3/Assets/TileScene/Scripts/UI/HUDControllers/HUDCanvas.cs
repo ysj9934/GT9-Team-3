@@ -70,7 +70,7 @@ public class HUDCanvas : MonoBehaviour
         _hudMessageUI = GetComponentInChildren<HUDMessageUI>();
     }
 
-    private void Start()
+    public void Init()
     {
         _gameManager = GameManager.Instance;
         _tileManager = TileManager.Instance;

@@ -54,7 +54,7 @@ public class BlockInfo : MonoBehaviour
         if (level < 4)
             spriteRenderer.sprite = _blockData.sprites[level - 1];
         else
-            spriteRenderer.sprite = _blockData.sprites[0];
+            spriteRenderer.sprite = _blockData.sprites[2];
     }
 
     /// <summary>

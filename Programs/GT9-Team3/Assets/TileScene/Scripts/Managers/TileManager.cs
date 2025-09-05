@@ -1,16 +1,6 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using Cinemachine;
-using TMPro;
-using Unity.Burst.CompilerServices;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.UIElements;
-using Random = UnityEngine.Random;
 
 
 /// <summary>
@@ -83,7 +73,7 @@ public class TileManager : MonoBehaviour
         tileAllCategoryList = new List<GameObject>();
     }
 
-    private void Start()
+    public void Init()
     {
         _gameManager = GameManager.Instance;
         _shopController = GetComponentInChildren<ShopController>();

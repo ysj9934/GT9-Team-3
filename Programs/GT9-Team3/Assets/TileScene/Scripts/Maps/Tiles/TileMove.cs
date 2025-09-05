@@ -1,7 +1,3 @@
-using Cinemachine;
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -13,7 +9,7 @@ public class TileMove : MonoBehaviour
 
 
     // Object Structure
-    private Camera _camera;
+    //private Camera _camera;
     private TileData _tileData;
     private TileInfo _tileInfo;
     private Collider2D _collider;
@@ -36,7 +32,7 @@ public class TileMove : MonoBehaviour
     {
         _tileManager = TileManager.Instance;
         _hudCanvas = HUDCanvas.Instance;
-        _camera = Camera.main;
+        //_camera = Camera.main;
 
         _tileData = GetComponent<TileData>();
         _tileInfo = GetComponent<TileInfo>();
