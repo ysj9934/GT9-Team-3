@@ -115,6 +115,7 @@ public class TileUIObject : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
         if (isNewTile)
             tileObject.Initialize(link);
         tileObject._tileMove.isDragging = true;
+        tileObject.UpdateWorldLevel(GameManager.Instance.gameWorldLevel);
         tileObject._tileLink = link;
         tileObject._tileLink.linkedUIObject = link.linkedUIObject;
         tileObject.collider2D.enabled = true;
