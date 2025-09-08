@@ -14,7 +14,7 @@ public class EnemyConfigManager : MonoBehaviour
         Instance = this;
     }
 
-    private void Start()
+    public void Init()
     {
         _gameManager = GameManager.Instance;
     }

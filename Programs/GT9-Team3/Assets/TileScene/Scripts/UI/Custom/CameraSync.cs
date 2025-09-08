@@ -1,9 +1,9 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class Camara : MonoBehaviour
+public class CameraSync : MonoBehaviour
 {
-    private static Camara instance;
+    private static CameraSync instance;
 
     void Awake()
     {

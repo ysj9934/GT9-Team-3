@@ -23,7 +23,7 @@ public class ObjectPoolManager : MonoBehaviour
 
     public Queue<GameObject> pool = new();
 
-    void Start()
+    public void Init()
     {
         for (int i = 0; i < poolSize; i++)
         {

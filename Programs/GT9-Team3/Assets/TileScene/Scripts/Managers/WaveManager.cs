@@ -103,6 +103,8 @@ public class WaveManager : MonoBehaviour
 
     public void SetWaveSystem(Wave_DataTable stageData)
     {
+        _gameManager = GameManager.Instance;
+
         if (_gameManager.isGameOver) return;
 
         if (stageData == null)
@@ -125,7 +127,7 @@ public class WaveManager : MonoBehaviour
         ActivateWorldEffect(stageData.key);
 
         // UI 갱신
-        _gameManager._hudCanvas._hudWaveInfo.ResetEnemyCount();
+        HUDCanvas.Instance._hudWaveInfo.ResetEnemyCount();
     }
 
     // send wave and round data
@@ -139,23 +141,23 @@ public class WaveManager : MonoBehaviour
         // 라운드 변경
         if (waveNum % 3 == 1)
         {
-            _gameManager._hudCanvas.TurnOnPathfinder();
-            _gameManager._hudCanvas.TurnOffStartWave();
-            _gameManager._tileManager.isUIActive = true;
-            _gameManager._tileManager.isMoveActive = true;
+            HUDCanvas.Instance.TurnOnPathfinder();
+            HUDCanvas.Instance.TurnOffStartWave();
+            TileManager.Instance.isUIActive = true;
+            TileManager.Instance.isMoveActive = true;
 
             path.Clear();
             // Wave Progress UI 초기화
-            _gameManager._hudCanvas._hudWaveInfo.ResetWavePoint();
+            HUDCanvas.Instance._hudWaveInfo.ResetWavePoint();
 
             // 타일 획득
             GetTileEndRound();
         }
         else
         {
-            _gameManager._hudCanvas.TurnOnStartWave();
-            _gameManager._tileManager.isUIActive = false;
-            _gameManager._tileManager.isMoveActive = false;
+            HUDCanvas.Instance.TurnOnStartWave();
+            TileManager.Instance.isUIActive = false;
+            TileManager.Instance.isMoveActive = false;
         }
 
         
@@ -163,7 +165,7 @@ public class WaveManager : MonoBehaviour
 
     public void SendWaveData()
     {
-        _gameManager.ReceiveStageDataFromWaveManager(
+        GameManager.Instance.ReceiveStageDataFromWaveManager(
             new StageData
             (
                 currentWaveLevel,
@@ -182,6 +184,8 @@ public class WaveManager : MonoBehaviour
     /// </summary>
     public void StartWave()
     {
+        TileManager _tileManager = TileManager.Instance;
+
         if (path.Count < 1 || path[0] == null)
         {
             Debug.LogError("path is valid");
@@ -194,17 +198,17 @@ public class WaveManager : MonoBehaviour
             // wave start 버튼 켜기
             aliveEnemyCount = 0;
             // 2. TileUI (회전 불가하도록 수정)
-            _gameManager._tileManager.isUIActive = true;
-            _gameManager._tileManager.isMoveActive = true;
+            _tileManager.isUIActive = true;
+            _tileManager.isMoveActive = true;
             // 3. 웨이브 스폰 시키기
             waveRoutine = StartCoroutine(AwakeWave());
         }
         else
         {
             // wave시작 버튼 끄기
-            _gameManager._hudCanvas.TurnOffStartWave();
-            _gameManager._tileManager.isUIActive = false;
-            _gameManager._tileManager.isMoveActive = false;
+            HUDCanvas.Instance.TurnOffStartWave();
+            _tileManager.isUIActive = false;
+            _tileManager.isMoveActive = false;
         }
     }
 
@@ -248,11 +252,12 @@ public class WaveManager : MonoBehaviour
 
     IEnumerator AwakeWave()
     {
+        TileManager _tileManager = TileManager.Instance;
         int index = 0;
         isWaveRoutine = true;
-        _gameManager._tileManager.isUIActive = false;
-        _gameManager._tileManager.isMoveActive = false;
-        _gameManager._hudCanvas.TurnOffStartWave();
+        _tileManager.isUIActive = false;
+        _tileManager.isMoveActive = false;
+        HUDCanvas.Instance.TurnOffStartWave();
         enemySpawnRoutines = new List<Coroutine>();
 
         while (spawnStartTime[index] > -1)
@@ -309,7 +314,7 @@ public class WaveManager : MonoBehaviour
             // 남은 적 유닛 수 체크
             aliveEnemyCount++;
             enemy._enemyHealthHandler.OnDeath += HandleEnemyDeath;
-            _gameManager._hudCanvas._hudWaveInfo.UpdateWaveCount();
+            HUDCanvas.Instance._hudWaveInfo.UpdateWaveCount();
 
             activeEnemies.Add(enemyObj);
         }
@@ -325,7 +330,7 @@ public class WaveManager : MonoBehaviour
     { 
         aliveEnemyCount--;
         // UI 업데이트
-        _gameManager._hudCanvas._hudWaveInfo.UpdateEnemyCount();
+        HUDCanvas.Instance._hudWaveInfo.UpdateEnemyCount();
 
         if (aliveEnemyCount <= 0 && waveRoutine == null)
         {
@@ -479,6 +484,7 @@ public class WaveManager : MonoBehaviour
     private void GetTileEndRound()
     {
         Debug.Log("타일 획득 시간");
+        TileManager _tileManager = TileManager.Instance;
 
         // 타일 1 ~ 3 개 획득 배율은 25 50 25
         float[] weights = { 0.25f, 0.50f, 0.25f };
@@ -493,16 +499,16 @@ public class WaveManager : MonoBehaviour
             switch (tileIndex)
             {
                 case 0:
-                    _gameManager._tileManager._shopController.CreateCrossTile();
+                    _tileManager._shopController.CreateCrossTile();
                     break;
                 case 1:
-                    _gameManager._tileManager._shopController.CreateStraightTile();
+                    _tileManager._shopController.CreateStraightTile();
                     break;
                 case 2:
-                    _gameManager._tileManager._shopController.CreateTShapeTile();
+                    _tileManager._shopController.CreateTShapeTile();
                     break;
                 case 3:
-                    _gameManager._tileManager._shopController.CreateCrossTile();
+                    _tileManager._shopController.CreateCrossTile();
                     break;
             }
 
@@ -546,8 +552,10 @@ public class WaveManager : MonoBehaviour
     // Test WaveSystem UI에 연동되어 있음.
     public void WaveSystem(int waveID)
     {
+        DataManager _dataManager= DataManager.Instance;
+
         Debug.Log($"WaveSystem 버튼 연동으로 들어왔습니다. : {waveID}");
-        var jsonData = _gameManager._dataManager.WaveDataLoader.GetByKey(waveID);
+        var jsonData = _dataManager.WaveDataLoader.GetByKey(waveID);
 
         if (jsonData == null)
         {
