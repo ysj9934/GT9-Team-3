@@ -37,6 +37,9 @@ public class DataManager : MonoBehaviour
     public int stageCode;
     public bool isHardMode = false;
 
+    public delegate void OnStageChanged();
+    public event OnStageChanged StageChanged;
+
     private void Awake()
     {
         if (Instance != null)
@@ -82,6 +85,8 @@ public class DataManager : MonoBehaviour
         Debug.Log("selected Stage_ID: " + stageId);
         //if (GameManager.Instance != null)
         //    GameManager.Instance.ResumeGame();
+
+        StageChanged?.Invoke();
     }
 
     public void RestartStage(int stageId)

@@ -3,15 +3,22 @@ using TMPro;
 
 public class TextChanger : MonoBehaviour
 {
-    [Header("癰궰野껋?釉?TextMeshProUGUI")]
+    [Header("변경할 TextMeshProUGUI")]
     public TextMeshProUGUI targetText;
 
-    [Header("揶???ㅺ섯????뽯뻻????용뮞??")]
-    public string[] panelTexts; // ??ㅺ섯癰귢쑬以???뽯뻻????용뮞??
+    [Header("패널별로 표시할 텍스트 목록")]
+    public string[] panelTexts;
 
-    void Awake()
+    private void OnEnable()
     {
-        //panelTexts = new string[] { "1 - ??롫뮎??", "2 - 獄쏅뗀???", "3 - ??밸릊??" };
+        if (DataManager.Instance != null)
+            DataManager.Instance.StageChanged += ShowStageInfo;
+    }
+
+    private void OnDisable()
+    {
+        if (DataManager.Instance != null)
+            DataManager.Instance.StageChanged -= ShowStageInfo;
     }
 
     public void UpdateText(int panelIndex)
@@ -25,7 +32,15 @@ public class TextChanger : MonoBehaviour
         else
         {
             targetText.text = "";
-            Debug.LogWarning("panelIndex揶쎛 panelTexts 甕곕뗄?욅몴?甕곗щ선?????덈뼄.");
+            Debug.LogWarning("panelIndex가 panelTexts 범위를 벗어났습니다.");
         }
+    }
+
+    public void ShowStageInfo()
+    {
+        if (targetText == null || DataManager.Instance == null) return;
+
+        targetText.text = "월드 " + DataManager.Instance.worldCode +
+                          " - 스테이지 " + DataManager.Instance.stageCode;
     }
 }
