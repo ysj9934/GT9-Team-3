@@ -41,12 +41,12 @@ public class MapUICanvas : MonoBehaviour
             
     }
 
-    public void TextWorldStageInfo(int stageId)
-    {
-        int worldText = stageId / 100;
-        int stageText = stageId % 10;
-        worldStageInfoText.text = $"World {worldText} - Stage {stageText}";
-    }
+    //public void TextWorldStageInfo(int stageId)
+    //{
+    //    int worldText = stageId / 100;
+    //    int stageText = stageId % 10;
+    //    worldStageInfoText.text = $"World {worldText} - Stage {stageText}";
+    //}
 
 
     public float ShowResourceAmount(ResourceType type)
