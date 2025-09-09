@@ -17,7 +17,7 @@ public class EnemyConfig : ScriptableObject
     public float enemyDefense;
     public int enemyTilePieceAmount;
     public string enemyIgnoreDebuff;
-    public float enemyEnemySkillID;
+    public float enemySkillID;
     public float enemyPrefabID;
     public string enemyImage;
     public float enemySize;

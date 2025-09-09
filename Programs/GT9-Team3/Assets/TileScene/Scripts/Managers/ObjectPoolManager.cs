@@ -21,9 +21,9 @@ public class ObjectPoolManager : MonoBehaviour
     [SerializeField] private GameObject enemyPrefab;
     [SerializeField] private int poolSize = 20;
 
-    private Queue<GameObject> pool = new();
+    public Queue<GameObject> pool = new();
 
-    void Start()
+    public void Init()
     {
         for (int i = 0; i < poolSize; i++)
         {

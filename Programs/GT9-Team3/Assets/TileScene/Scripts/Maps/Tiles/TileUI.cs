@@ -1,9 +1,5 @@
-using Cinemachine;
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 /// <summary>
 /// TileUI
@@ -16,11 +12,13 @@ using UnityEngine.EventSystems;
 public class TileUI : MonoBehaviour
 {
     private TileInfo _tileInfo;
-    [SerializeField] public GameObject tileUI;
-    
+    [SerializeField] public GameObject rotateUI;
+    [SerializeField] public Image holdCircle;
+
     private void Awake()
     {
-        tileUI.SetActive(false);
+        CloseRotateUI();
+        CloseLoadingUI();
     }
 
     private void Start()
@@ -28,65 +26,19 @@ public class TileUI : MonoBehaviour
         _tileInfo = GetComponent<TileInfo>();
     }
 
-    // 타일 선택시 Update의 GetMouseButtonDown으로 작업시 RaycastHit에서 모든 TileInfo를 호출하려한다.
-    // 그래서 하나에서 관리하도록한다.
-
-    //  private void OnMouseDown()
-    // {
-    //     if (EventSystem.current.IsPointerOverGameObject())
-    //         return;
-    //
-    //     _tileInfo._tileManager.CloseTileUI(this);
-    //
-    //     tileUI.SetActive(!tileUI.activeSelf);
-    //     SettingCanvas.Instance.customSetting.waveSystembutton.interactable = false;
-    // }
-
-    // private void Update()
-    // {
-    //     if (Input.GetMouseButtonDown(0))
-    //     {
-    //         if (EventSystem.current.IsPointerOverGameObject())
-    //             return;
-    //         
-    //         int layerMask = LayerMask.GetMask("Ground");
-    //         
-    //         Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-    //         RaycastHit2D hit = Physics2D.Raycast(mousePos, Vector2.zero, Mathf.Infinity, layerMask);
-    //         
-    //         // Debug.DrawRay(mousePos, Vector2.zero, Color.red, 1f);
-    //         //
-    //         // Debug.Log("Mouse Pos: " + mousePos);
-    //         // if (hit.collider != null)
-    //         // {
-    //         //     Debug.Log("Hit: " + hit.collider.name);
-    //         // }
-    //         // else
-    //         // {
-    //         //     Debug.Log("No hit detected");
-    //         // }
-    //
-    //         if (hit.collider != null)
-    //         {
-    //             Debug.Log("Hit: " + hit.collider.name);
-    //             
-    //             TileInfo tileInfo = hit.collider.GetComponent<TileInfo>();
-    //             // Debug.Log
-    //             if (tileInfo != null)
-    //             {
-    //                 _tileInfo._tileManager.CloseTileUI(this);
-    //                 this.tileUI.SetActive(!tileUI.activeSelf);
-    //             }
-    //         }
-    //         else
-    //         {
-    //             _tileInfo._tileManager.CloseTileUI(null);
-    //         }
-    //     }
-    // }
-
-    public void CloseUI()
+    public void CloseRotateUI()
     {
-        tileUI.SetActive(false);
+        rotateUI.SetActive(false);
+
+    }
+
+    public void OpenLoadingUI()
+    {
+        holdCircle.gameObject.SetActive(true);
+    }
+
+    public void CloseLoadingUI()
+    {
+        holdCircle.gameObject.SetActive(false);
     }
 }

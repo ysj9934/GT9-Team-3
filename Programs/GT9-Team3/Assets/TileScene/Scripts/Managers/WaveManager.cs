@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Resources;
 using UnityEngine;
 
@@ -39,7 +40,7 @@ public class WaveManager : MonoBehaviour
         Instance = this;
     }
 
-    private void Start()
+    public void Init()
     {
         _gameManager = GameManager.Instance;
         _poolManager = ObjectPoolManager.Instance;
@@ -90,7 +91,7 @@ public class WaveManager : MonoBehaviour
             this.stageWaveList = stageData.stageWaveList;
             this.isHardMode = stageData.isHardMode;
             ResourceManager.Instance.resources[ResourceType.Tilepiece] = stageWaveList[0].StageStartTilePiece;
-            HUDCanvas.Instance.ShowTilePiece();
+            HUDCanvas.Instance._hudResource.ShowTilePiece();
             this.rewardGold = 0;
             SetWaveSystem(stageWaveList[0]);
         }
@@ -102,6 +103,10 @@ public class WaveManager : MonoBehaviour
 
     public void SetWaveSystem(Wave_DataTable stageData)
     {
+        _gameManager = GameManager.Instance;
+
+        if (_gameManager.isGameOver) return;
+
         if (stageData == null)
         {
             Debug.LogError("WaveDataLoader is not initialized.");
@@ -117,6 +122,12 @@ public class WaveManager : MonoBehaviour
         this.spawnRepeat = stageData.SpawnRepeat;
         this.spawnintervalSec = stageData.SpawnintervalSec;
         this.rewardGold += stageData.RewardGoldAmount;
+
+        // 타일 기믹 적용
+        ActivateWorldEffect(stageData.key);
+
+        // UI 갱신
+        HUDCanvas.Instance._hudWaveInfo.ResetEnemyCount();
     }
 
     // send wave and round data
@@ -127,28 +138,34 @@ public class WaveManager : MonoBehaviour
 
         SendWaveData();
 
+        // 라운드 변경
         if (waveNum % 3 == 1)
         {
-            _gameManager._hudCanvas.TurnOnPathfinder();
-            _gameManager._hudCanvas.TurnOffStartWave();
-            _gameManager._tileManager.isUIActive = true;
-            _gameManager._tileManager.isMoveActive = true;
+            HUDCanvas.Instance.TurnOnPathfinder();
+            HUDCanvas.Instance.TurnOffStartWave();
+            TileManager.Instance.isUIActive = true;
+            TileManager.Instance.isMoveActive = true;
 
             path.Clear();
+            // Wave Progress UI 초기화
+            HUDCanvas.Instance._hudWaveInfo.ResetWavePoint();
+
+            // 타일 획득
+            GetTileEndRound();
         }
         else
         {
-            _gameManager._hudCanvas.TurnOnStartWave();
-            _gameManager._tileManager.isUIActive = false;
-            _gameManager._tileManager.isMoveActive = false;
+            HUDCanvas.Instance.TurnOnStartWave();
+            TileManager.Instance.isUIActive = false;
+            TileManager.Instance.isMoveActive = false;
         }
+
+        
     }
 
     public void SendWaveData()
     {
-        _gameManager = GameManager.Instance;
-
-        _gameManager.ReceiveStageDataFromWaveManager(
+        GameManager.Instance.ReceiveStageDataFromWaveManager(
             new StageData
             (
                 currentWaveLevel,
@@ -167,6 +184,8 @@ public class WaveManager : MonoBehaviour
     /// </summary>
     public void StartWave()
     {
+        TileManager _tileManager = TileManager.Instance;
+
         if (path.Count < 1 || path[0] == null)
         {
             Debug.LogError("path is valid");
@@ -179,20 +198,17 @@ public class WaveManager : MonoBehaviour
             // wave start 버튼 켜기
             aliveEnemyCount = 0;
             // 2. TileUI (회전 불가하도록 수정)
-            _gameManager._tileManager.isUIActive = true;
-            _gameManager._tileManager.isMoveActive = true;
+            _tileManager.isUIActive = true;
+            _tileManager.isMoveActive = true;
             // 3. 웨이브 스폰 시키기
             waveRoutine = StartCoroutine(AwakeWave());
-            // 3-1. 웨이브 패배시 Wave재시작 할 수 있도록..
-            // 4. 웨이브 종료시 다음 웨이브 Setting
-            // 5. Round가 커질 시 tileUI회전 가능하도록
         }
         else
         {
             // wave시작 버튼 끄기
-            _gameManager._hudCanvas.TurnOffStartWave();
-            _gameManager._tileManager.isUIActive = false;
-            _gameManager._tileManager.isMoveActive = false;
+            HUDCanvas.Instance.TurnOffStartWave();
+            _tileManager.isUIActive = false;
+            _tileManager.isMoveActive = false;
         }
     }
 
@@ -222,8 +238,6 @@ public class WaveManager : MonoBehaviour
 
         path.Clear();
         aliveEnemyCount = 0;
-
-        
     }
 
     public void ReturnAllEnemies()
@@ -238,11 +252,12 @@ public class WaveManager : MonoBehaviour
 
     IEnumerator AwakeWave()
     {
+        TileManager _tileManager = TileManager.Instance;
         int index = 0;
         isWaveRoutine = true;
-        _gameManager._tileManager.isUIActive = false;
-        _gameManager._tileManager.isMoveActive = false;
-        _gameManager._hudCanvas.TurnOffStartWave();
+        _tileManager.isUIActive = false;
+        _tileManager.isMoveActive = false;
+        HUDCanvas.Instance.TurnOffStartWave();
         enemySpawnRoutines = new List<Coroutine>();
 
         while (spawnStartTime[index] > -1)
@@ -255,8 +270,11 @@ public class WaveManager : MonoBehaviour
                 Coroutine spawnroutine = StartCoroutine(SpawnEnemyWithDelay(j * spawnintervalSec[index], enemyId[index]));    
                 enemySpawnRoutines.Add(spawnroutine);
             }
-            
-            index++;
+
+            if (index < 7)
+                index++;
+            else
+                break;
         }
 
         waveRoutine = null;
@@ -280,7 +298,9 @@ public class WaveManager : MonoBehaviour
     }
 
     
-
+    /// <summary>
+    /// 적 유닛 생성
+    /// </summary>
     public void SpawnEnemy(EnemyConfig config)
     {
         GameObject enemyObj = _poolManager.GetEnemy();
@@ -291,8 +311,10 @@ public class WaveManager : MonoBehaviour
             EnemyEnhanced(enemy);
             enemy._enemyMovement.pathPoint(path);
 
+            // 남은 적 유닛 수 체크
             aliveEnemyCount++;
             enemy._enemyHealthHandler.OnDeath += HandleEnemyDeath;
+            HUDCanvas.Instance._hudWaveInfo.UpdateWaveCount();
 
             activeEnemies.Add(enemyObj);
         }
@@ -307,6 +329,8 @@ public class WaveManager : MonoBehaviour
     private void HandleEnemyDeath()
     { 
         aliveEnemyCount--;
+        // UI 업데이트
+        HUDCanvas.Instance._hudWaveInfo.UpdateEnemyCount();
 
         if (aliveEnemyCount <= 0 && waveRoutine == null)
         {
@@ -317,8 +341,7 @@ public class WaveManager : MonoBehaviour
     private void EndWave()
     {
         isWaveRoutine = false;
-
-        Debug.Log("WaveEnd");
+        aliveEnemyCount = 0;
 
         if (!isHardMode)
         {
@@ -332,15 +355,187 @@ public class WaveManager : MonoBehaviour
                 Debug.Log("Victory");
 
                 _gameManager.PauseGame();
-                HUDCanvas.Instance._gameResultPanel.OpenWindow(true);
+                HUDCanvas.Instance._hudResultPanel._gameResultPanel.OpenWindow(true);
             }
         }
         else
         {
             Debug.Log("Victory");
             _gameManager.PauseGame();
-            HUDCanvas.Instance._gameResultPanel.OpenWindow(true);
+            HUDCanvas.Instance._hudResultPanel._gameResultPanel.OpenWindow(true);
         }
+    }
+
+    private void ActivateWorldEffect(int key)
+    {
+        int numberOfLocks = 0;
+
+        switch (key)
+        {
+            // World 1
+            case 10402:
+            case 10405:
+            case 10502:
+            case 10505:
+                // 타일 봉쇄
+                numberOfLocks = 1;
+                while (numberOfLocks > 0)
+                {
+                    int randomIndex = UnityEngine.Random.Range(1, path.Count - 1);
+                    TileInfo tileInfo = path[randomIndex].gameObject.GetComponent<TileInfo>();
+                    if (!tileInfo.isTileLocked)
+                    {
+                        tileInfo.WorldTileGimmic(true, false, false);
+                        numberOfLocks--;
+                    }
+                }
+
+                HUDCanvas.Instance._hudMessageUI.FloatingUIShow(
+                    "[분노]",
+                    "[월드보스]쌍두 사냥개가 `타일봉쇄`를 사용하였습니다.\n" +
+                    "`타일봉쇄`를 당한 타일은 해당 스테이지동안 회전하거나 옮길 수 없습니다.",
+                    Color.white);
+
+                break;
+            case 20302:
+            case 20305:
+            case 20402:
+            case 20405:
+            case 20502:
+            case 20505:
+                // 타일 봉쇄 & 전장 개조
+                numberOfLocks = 1;
+                while (numberOfLocks > 0)
+                {
+                    int randomIndex = UnityEngine.Random.Range(1, path.Count - 1);
+                    TileInfo tileInfo = path[randomIndex].gameObject.GetComponent<TileInfo>();
+                    if (!tileInfo.isTileLocked)
+                    {
+                        tileInfo.WorldTileGimmic(true, true, false);
+                        numberOfLocks--;
+                    }
+                }
+
+                HUDCanvas.Instance._hudMessageUI.FloatingUIShow(
+                   "[분노]",
+                   "[월드보스]강철 괴수가 `타일봉쇄`, `전장개조`를 사용하였습니다.\n" +
+                   "`타일봉쇄`를 당한 타일은 해당 스테이지동안 회전하거나 옮길 수 없습니다.\n" +
+                   "`전장개조`를 당한 타일 위에서 적의 이동속도가 증가합니다. ",
+                   Color.white);
+
+                break;
+
+            case 30202:
+            case 30302:
+            case 30402:
+            case 30502:
+                // 타일 봉쇄 & 전장 개조 & 느린 타워
+                numberOfLocks = 1;
+                while (numberOfLocks > 0)
+                {
+                    int randomIndex = UnityEngine.Random.Range(1, path.Count - 1);
+                    TileInfo tileInfo = path[randomIndex].gameObject.GetComponent<TileInfo>();
+                    if (!tileInfo.isTileLocked)
+                    {
+                        tileInfo.WorldTileGimmic(true, true, true);
+                        numberOfLocks--;
+                    }
+                }
+
+                HUDCanvas.Instance._hudMessageUI.FloatingUIShow(
+                   "[분노]",
+                   "[월드보스]죽음의 심판자가 `타일봉쇄`, `전장개조`를 사용하였습니다.\n" +
+                   "`타일봉쇄`를 당한 타일은 해당 스테이지동안 회전하거나 옮길 수 없습니다.\n" +
+                   "`전장개조`를 당한 타일 위에서 적의 이동속도가 증가합니다. \n" +
+                   "`느린타워`를 당한 타워는 공격속도가 감소합니다.",
+                   Color.white);
+                break;
+
+            case 30205:
+            case 30305:
+            case 30405:
+            case 30505:
+                // 타일 봉쇄 & 전장 개조 & 느린 타워
+                numberOfLocks = 2;
+                while (numberOfLocks > 0)
+                {
+                    int randomIndex = UnityEngine.Random.Range(1, path.Count - 1);
+                    TileInfo tileInfo = path[randomIndex].gameObject.GetComponent<TileInfo>();
+                    if (!tileInfo.isTileLocked)
+                    {
+                        tileInfo.WorldTileGimmic(true, true, true);
+                        numberOfLocks--;
+                    }
+                }
+
+                HUDCanvas.Instance._hudMessageUI.FloatingUIShow(
+                   "[분노]",
+                   "[월드보스]죽음의 심판자가 `타일봉쇄`, `전장개조`, `느린 타워`를 사용하였습니다.\n" +
+                   "`타일봉쇄`를 당한 타일은 해당 스테이지동안 회전하거나 옮길 수 없습니다.\n" +
+                   "`전장개조`를 당한 타일 위에서 적의 이동속도가 증가합니다.\n" +
+                   "`느린타워`를 당한 타워는 공격속도가 감소합니다.",
+                   Color.white);
+                break;
+
+        }
+    }
+
+    // 라운드 시작시 타일 획득
+    private void GetTileEndRound()
+    {
+        Debug.Log("타일 획득 시간");
+        TileManager _tileManager = TileManager.Instance;
+
+        // 타일 1 ~ 3 개 획득 배율은 25 50 25
+        float[] weights = { 0.25f, 0.50f, 0.25f };
+
+        int tileCount = CalculateRandomIndex(weights) + 1;
+        Debug.Log("tilecount : " + tileCount);
+
+        while (tileCount > 0)
+        {
+            int tileIndex = UnityEngine.Random.Range(0, 4);
+
+            switch (tileIndex)
+            {
+                case 0:
+                    _tileManager._shopController.CreateCrossTile();
+                    break;
+                case 1:
+                    _tileManager._shopController.CreateStraightTile();
+                    break;
+                case 2:
+                    _tileManager._shopController.CreateTShapeTile();
+                    break;
+                case 3:
+                    _tileManager._shopController.CreateCrossTile();
+                    break;
+            }
+
+            tileCount--;
+        }
+        
+    }
+
+    private int CalculateRandomIndex(float[] weights)
+    {
+        float total = weights.Sum();
+        float randomValue = UnityEngine.Random.Range(0, total);
+
+        int selectedIndex = 0;
+        float cumulative = 0f;
+
+        for (int i = 0; i < weights.Length; i++)
+        {
+            cumulative += weights[i];
+            if (randomValue <= cumulative)
+            {
+                selectedIndex = i;
+                break;
+            }
+        }
+
+        return selectedIndex;
     }
 
     /// <summary>
@@ -357,8 +552,10 @@ public class WaveManager : MonoBehaviour
     // Test WaveSystem UI에 연동되어 있음.
     public void WaveSystem(int waveID)
     {
+        DataManager _dataManager= DataManager.Instance;
+
         Debug.Log($"WaveSystem 버튼 연동으로 들어왔습니다. : {waveID}");
-        var jsonData = _gameManager._dataManager.WaveDataLoader.GetByKey(waveID);
+        var jsonData = _dataManager.WaveDataLoader.GetByKey(waveID);
 
         if (jsonData == null)
         {
@@ -370,5 +567,6 @@ public class WaveManager : MonoBehaviour
         this.spawnBatchSize = jsonData.SpawnBatchSize;
         this.spawnRepeat = jsonData.SpawnRepeat;
         this.spawnintervalSec = jsonData.SpawnintervalSec;
+
     }
 }

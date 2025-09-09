@@ -28,10 +28,12 @@ public class GameManager : MonoBehaviour
     public int gameRoundLevel;
     public int gameWaveLevel;
     public List<Wave_DataTable> stageWaveList = new List<Wave_DataTable>();
+    [SerializeField] public BackgroundData background;
 
     // 게임 일시정지 및 재개
     public bool isGamePaused = false;
     public bool isHardMode;
+    public bool isGameOver = false;
 
     private void Awake()
     {
@@ -44,7 +46,7 @@ public class GameManager : MonoBehaviour
         Instance = this;
     }
 
-    private void Start()
+    public void Init()
     {
         // Initialize Manager
         _tileManager = TileManager.Instance;
@@ -56,11 +58,11 @@ public class GameManager : MonoBehaviour
         // Initialize MapUICanvas
         _hudCanvas = HUDCanvas.Instance;
 
-        if (IsValidate())
-        {
-            // Load Data from DataManager
-            ReceiveStageData();
-        }
+        //if (IsValidate())
+        //{
+        //    // Load Data from DataManager
+        //    ReceiveStageData();
+        //}
     }
 
     private bool IsValidate()
@@ -138,6 +140,8 @@ public class GameManager : MonoBehaviour
             // 1. HUDCanvas에 스테이지 정보 전달
             SendStageDataToHUD();
 
+            background.UpdateWorldLevel(gameWorldLevel);
+
             // 4. TileManager 세팅
             //_tileManager.Initialize();
         }
@@ -151,7 +155,7 @@ public class GameManager : MonoBehaviour
     {
         // 이전 데이터 초기화하기 
         ClearGameManager();
-        _hudCanvas.SetGameSpeed5x();
+        _hudCanvas.SetGameSpeed3x();
 
         ReceiveStageData();
     }
@@ -167,7 +171,7 @@ public class GameManager : MonoBehaviour
 
     public void SendStageDataToHUD()
     {
-        _hudCanvas.ReceiveStageData(
+        _hudCanvas._hudStageInfo.ReceiveStageData(
             new StageData
                 (
                     gameWorldLevel,
@@ -259,9 +263,9 @@ public class GameManager : MonoBehaviour
         isGamePaused = false;
     }
 
-    public void GameSpeed5x()
+    public void GameSpeed3x()
     {
-        Time.timeScale = 5f;
+        Time.timeScale = 3f;
         isGamePaused = false;
     }
 
@@ -297,13 +301,13 @@ public class GameManager : MonoBehaviour
     public void Earn50G()
     {
         _resourceManager.Earn(ResourceType.Tilepiece, 50);
-        _hudCanvas.ShowTilePiece();
+        _hudCanvas._hudResource.ShowTilePiece();
     }
 
     public void Earn0G(int amount)
     {
         _resourceManager.Earn(ResourceType.Tilepiece, amount);
-        _hudCanvas.ShowTilePiece();
+        _hudCanvas._hudResource.ShowTilePiece();
 
     }
 

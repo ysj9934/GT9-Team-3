@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2373705106479648748}
+  - component: {fileID: 149365817192276623}
   - component: {fileID: 8290062743954730223}
   - component: {fileID: 4351577047798166079}
   m_Layer: 0
@@ -43,6 +44,55 @@ Transform:
   - {fileID: 7764114421392830172}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!60 &149365817192276623
+PolygonCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2012721464780551075}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: 0, y: 1.01}
+      - {x: -1.44, y: 0.18}
+      - {x: 0, y: -0.66}
+      - {x: 1.44, y: 0.18}
+  m_UseDelaunayMesh: 0
 --- !u!114 &8290062743954730223
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -56,10 +106,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _tileManager: {fileID: 0}
-  _tileRoadConnector: {fileID: 0}
   _tileUI: {fileID: 0}
+  _tileMove: {fileID: 0}
+  _tileRoadConnector: {fileID: 0}
+  _tileLink: {fileID: 0}
   tileCategory: 2
   tileShape: 0
+  tileIndex: 0
+  originTileCol: 0
+  originTileRow: 0
+  tileCol: 0
+  tileRow: 0
+  isInInventory: 0
   up: {fileID: 0}
   down: {fileID: 0}
   left: {fileID: 0}
@@ -68,11 +126,6 @@ MonoBehaviour:
   connectedDown: 1
   connectedLeft: 1
   connectedRight: 1
-  tileIndex: 0
-  originTileCol: 0
-  originTileRow: 0
-  tileCol: 0
-  tileRow: 0
   blockInfos:
   - {fileID: 0}
   - {fileID: 0}

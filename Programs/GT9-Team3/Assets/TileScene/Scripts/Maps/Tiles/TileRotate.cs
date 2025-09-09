@@ -34,6 +34,8 @@ public class TileRotate : MonoBehaviour
         _tileInfo.rotatedPrefabs[index].SetActive(true);
         Vector2 pos = _tileInfo.transform.position;
         _tileInfo.UpdateSpriteOrder();
+
+        _tileInfo._tileManager.CloseTowerRangeUI(); ;
     }
 
     private void CloseTile()

@@ -31,7 +31,7 @@ public class TowerSellUI : MonoBehaviour
     public TextMeshProUGUI ccTimeText;
     public TextMeshProUGUI tileRangeText;
 
-    void Awake()
+    public void Init()
     {
         Instance = this;
         Hide();

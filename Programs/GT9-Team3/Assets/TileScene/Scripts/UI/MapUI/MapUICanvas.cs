@@ -32,7 +32,7 @@ public class MapUICanvas : MonoBehaviour
         if (_resourceManager.CanAfford(ResourceType.Mana, 5))
         {
             _resourceManager.Spend(ResourceType.Mana, 5);
-            SceneLoader.Instance.LoadSceneByName("PresentationScene");
+            SceneLoader.Instance.LoadSceneByIndex(1);
         }
         else
         {
@@ -108,4 +108,16 @@ public class MapUICanvas : MonoBehaviour
         }
     }
 
+    public void giveStageMode(int stageID)
+    {
+        if (_resourceManager.CanAfford(ResourceType.Mana, 5))
+        {
+            _resourceManager.Spend(ResourceType.Mana, 5);
+            DataManager.Instance.SelectedStage(stageID);
+        }
+        else
+        {
+            Debug.Log("error");
+        }
+    }
 }
