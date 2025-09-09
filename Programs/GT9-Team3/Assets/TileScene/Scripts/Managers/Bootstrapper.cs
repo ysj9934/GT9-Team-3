@@ -6,13 +6,13 @@ public class Bootstrapper : MonoBehaviour
     [SerializeField] private WaveManager waveManager;
     [SerializeField] private TileManager tileManager;
     [SerializeField] private HUDCanvas hudCanvas;
-    [SerializeField] private EnemyConfigManager enemyConfigManager;
-    [SerializeField] private ObjectPoolManager objectPoolManager;
+    //[SerializeField] private EnemyConfigController enemyConfigManager;
+    [SerializeField] private EnemyManager objectPoolManager;
 
     void Start()
     {
         gameManager.Init();
-        enemyConfigManager.Init();
+        //enemyConfigManager.Init();
         objectPoolManager.Init();
         tileManager.Init();
         hudCanvas.Init();

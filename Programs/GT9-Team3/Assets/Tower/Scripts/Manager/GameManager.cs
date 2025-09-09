@@ -12,7 +12,7 @@ public class GameManager : MonoBehaviour
     // Manager
     public TileManager _tileManager;
     public WaveManager _waveManager;
-    public ObjectPoolManager _poolManager;
+    public EnemyManager _poolManager;
     public DataManager _dataManager;
     public ResourceManager _resourceManager;
 
@@ -51,7 +51,7 @@ public class GameManager : MonoBehaviour
         // Initialize Manager
         _tileManager = TileManager.Instance;
         _waveManager = WaveManager.Instance;
-        _poolManager = ObjectPoolManager.Instance;
+        _poolManager = EnemyManager.Instance;
         _dataManager = DataManager.Instance;
         _resourceManager = ResourceManager.Instance;
 
@@ -285,7 +285,7 @@ public class GameManager : MonoBehaviour
                 MovementSpeed = 3.5f
             };
 
-            //var config = EnemyConfigManager.Instance.CreateConfigFromJson(testJson);
+            //var config = EnemyConfigController.Instance.CreateConfigFromJson(testJson);
             //var enemy = Instantiate(config.enemyPrefab);
             //enemyObj.GetComponent<Enemy>().Setup(config);
         }

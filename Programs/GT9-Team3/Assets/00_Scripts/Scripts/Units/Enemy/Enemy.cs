@@ -4,35 +4,34 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    public GameManager _gameManager;
-    public ObjectPoolManager _poolManager;
-
+    // Object Structure
     public EnemyStat _enemyStat;
     public EnemyHealthHandler _enemyHealthHandler;
     public EnemyMovement _enemyMovement;
     public EnemyAnimationController _enemyAnimationController;
+
+    public Dictionary<SpriteRenderer, int> originSpriteOrder = new Dictionary<SpriteRenderer, int>();
     public SpriteRenderer[] spriteRenderers;
 
 
+    // Object Info
     public bool isAlive = false;
 
     private void Awake()
     {
-        _gameManager = GameManager.Instance;
-        _poolManager = ObjectPoolManager.Instance;
-
         _enemyStat = GetComponent<EnemyStat>();
         _enemyHealthHandler = GetComponent<EnemyHealthHandler>();
         _enemyMovement = GetComponent<EnemyMovement>();
     }
 
-
     private void LateUpdate()
     {
-        if (spriteRenderers == null) return;
-        foreach (var spriteRenderer in spriteRenderers)
+        if (!isAlive) return;
+
+        foreach (SpriteRenderer sr in spriteRenderers)
         {
-            spriteRenderer.sortingOrder = Mathf.RoundToInt(-transform.position.y * 100) + 1000;
+            int baseOrder = originSpriteOrder.ContainsKey(sr) ? originSpriteOrder[sr] : 0;
+            sr.sortingOrder = baseOrder + Mathf.RoundToInt(-transform.position.y * 100);
         }
     }
 

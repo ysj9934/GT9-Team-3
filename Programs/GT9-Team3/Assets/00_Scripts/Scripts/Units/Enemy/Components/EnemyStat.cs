@@ -5,8 +5,13 @@ using UnityEngine;
 
 public class EnemyStat : MonoBehaviour
 {
+    // Object Manager
+    private GameManager _gameManager;
+
+    // Object Structure
     private Enemy _enemy;
 
+    // Object Info
     public int keycode;
     public string enemyName;
     public string enemyType;
@@ -26,13 +31,14 @@ public class EnemyStat : MonoBehaviour
     public float enemySize;
     public string enemyDescription;
 
+    // Object Setting
     [SerializeField] private Transform visualRoot;
 
+    // Object Skills
     private List<EnemySkillTable> activeSkills = new List<EnemySkillTable>();
     private Dictionary<int, float> cooldownTimers = new Dictionary<int, float>();
     private Dictionary<int, float> intervalTimers = new Dictionary<int, float>();
-    private HashSet<int> skillFlags = new HashSet<int>(); // 한 번만 발동되는 스킬 체크용
-
+    private HashSet<int> skillFlags = new HashSet<int>();
 
     private void Awake()
     {
@@ -44,6 +50,7 @@ public class EnemyStat : MonoBehaviour
         if (!_enemy.isAlive) return;
 
 
+        // 적 보유 스킬 처리
         foreach (var skill in activeSkills)
         {
             cooldownTimers[skill.key] += Time.deltaTime;
@@ -57,18 +64,16 @@ public class EnemyStat : MonoBehaviour
                 /// <summary>
                 /// 체력회복 
                 /// 10초마다 체력 20(상수) 회복
+                /// 대상: 단일
                 /// </summary>
                 case 2000:
-                    // 완료
-
                     if (intervalTimers[skill.key] < intervalValue) continue;
 
                     if (cooldownTimers[skill.key] >= coolDownValue)
                     {
                         cooldownTimers[skill.key] = 0f;
                         // 체력 회복
-                        _enemy._enemyHealthHandler.EnemyHeal(effectValue);
-                        Debug.LogWarning("Heal " + effectValue);
+                        _enemy._enemyHealthHandler.EnemyHeal(effectValue, false);
                     }
                     break;
 
@@ -78,13 +83,19 @@ public class EnemyStat : MonoBehaviour
                 /// 액션: 이동속도 30% 증가
                 /// </summary>
                 case 2003:
-                    // 완료
                     float currentHealth = _enemy._enemyHealthHandler.currentHealth;
 
-                    if (!skillFlags.Contains(skill.key) && currentHealth <= enemyMaxHP / 2)
+                    if (!skillFlags.Contains(skill.key) && 
+                        currentHealth <= enemyMaxHP / 2)
                     {
                         enemyMovementSpeed *= (1 + effectValue / 100);
-                        skillFlags.Add(skill.key); // 한 번 발동되었음을 기록
+                        skillFlags.Add(skill.key);
+
+                        // [이펙트효과]: 이동속도 증가 이펙트
+                        Debug.LogWarning("[Effect] MoveSpeed Effect");
+
+                        // [사운드효과]: 이동속도 증가 사운드
+                        Debug.LogWarning("[Sound] MoveSpeed Sound");
                     }
                     break;
 
@@ -97,18 +108,23 @@ public class EnemyStat : MonoBehaviour
                 /// </summary>
                 case 2004:
                     // 완료
-                    if (skillFlags.Contains(skill.key)) break; // 이미 발동했으면 스킵
+                    if (skillFlags.Contains(skill.key)) break;
 
-                    GameManager.Instance._waveManager.activeEnemies.ForEach(enemy =>
+                    _gameManager._waveManager.activeEnemies.ForEach(enemy =>
                     {
                         if (enemy.TryGetComponent<EnemyStat>(out var enemyStat))
                         {
-                            Debug.LogWarning("Speed Boost " + effectValue);
                             enemyStat.enemyMovementSpeed *= (1 + effectValue / 100);
+
+                            // [이펙트효과]: 이동속도 증가 이펙트
+                            Debug.LogWarning("[Effect] MoveSpeed Effect");
                         }
                     });
 
-                    skillFlags.Add(skill.key); // 한 번 발동되었음을 기록
+                    // [사운드효과]: 이동속도 증가 사운드
+                    Debug.LogWarning("[Sound] MoveSpeed Sound");
+
+                    skillFlags.Add(skill.key);
                     break;
 
                 /// <summary>
@@ -119,18 +135,23 @@ public class EnemyStat : MonoBehaviour
                 /// 액션: 이동속도 증가
                 /// </summary>
                 case 2005:
-                    if (skillFlags.Contains(skill.key)) break; // 이미 발동했으면 스킵
+                    if (skillFlags.Contains(skill.key)) break;
 
-                    GameManager.Instance._waveManager.activeEnemies.ForEach(enemy =>
+                    _gameManager._waveManager.activeEnemies.ForEach(enemy =>
                     {
                         if (enemy.TryGetComponent<EnemyStat>(out var enemyStat))
                         {
                             enemyStat.enemyMovementSpeed *= (1 + effectValue / 100);
-                            Debug.LogWarning("Speed Boost " + effectValue);
+
+                            // [이펙트효과]: 이동속도 증가 이펙트
+                            Debug.LogWarning("[Effect] MoveSpeed Effect");
                         }
                     });
 
-                    skillFlags.Add(skill.key); // 한 번 발동되었음을 기록
+                    // [사운드효과]: 이동속도 증가 사운드
+                    Debug.LogWarning("[Sound] MoveSpeed Sound");
+
+                    skillFlags.Add(skill.key);
 
                     break;
 
@@ -148,13 +169,15 @@ public class EnemyStat : MonoBehaviour
                     if (cooldownTimers[skill.key] >= coolDownValue)
                     {
                         cooldownTimers[skill.key] = 0f;
-                        
-                        GameManager.Instance._waveManager.activeEnemies.ForEach(enemy =>
+
+                        _gameManager._waveManager.activeEnemies.ForEach(enemy =>
                         {
                             // 체력 회복
-                            _enemy._enemyHealthHandler.EnemyHeal(effectValue);
-                            Debug.LogWarning("Heal " + effectValue);
+                            _enemy._enemyHealthHandler.EnemyHeal(effectValue, true);
                         });
+
+                        // [사운드효과]: 체력 회복 사운드
+                        Debug.LogWarning("[Sound] Heal Sound");
                     }
                     break;
             }
@@ -163,23 +186,31 @@ public class EnemyStat : MonoBehaviour
 
     }
 
+
+    /// <summary>
+    /// 월드 기믹 효과
+    /// </summary>
     private float originEnemyMovementSpeed = 0;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        // 월드 기믹: 전장 가속
+        // 적이 전장 가속 타일에 들어왔을 때 이동속도 30% 증가
         TileInfo tileInfo = collision.GetComponent<TileInfo>();
         if (tileInfo != null)
         {
             if (tileInfo.isBattlefieldModified)
             {
                 originEnemyMovementSpeed = enemyMovementSpeed;
-                enemyMovementSpeed *= (1 + 100 / 100);
+                enemyMovementSpeed *= (1 + 30 / 100);
             }
         }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
+        // 월드 기믹: 전장 가속
+        // 적이 전장 가속 타일에서 나갔을 때 이동속도 원래대로 복구
         TileInfo tileInfo = collision.GetComponent<TileInfo>();
         if (tileInfo != null)
         {
@@ -190,10 +221,13 @@ public class EnemyStat : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 적 유닛 설정
+    /// </summary>
     public void Setup(EnemyConfig config)
     {
-        _enemy.isAlive = true;
-
+        _gameManager = GameManager.Instance;
+        DataManager _dataManager = DataManager.Instance;
         foreach (Transform child in visualRoot)
         {
             Destroy(child.gameObject);
@@ -219,27 +253,22 @@ public class EnemyStat : MonoBehaviour
         this.enemyDescription = config.enemyDescription;
 
         // 외형 변경
-        GameObject visual = Instantiate(config.enemyPrefab, visualRoot);
-        visual.transform.localPosition = Vector2.zero;
+        UpdateVisual(config);
 
-        _enemy.spriteRenderers = visual.GetComponentsInChildren<SpriteRenderer>();
-
-        // 크기 변경
-        visual.transform.localScale = new Vector2(this.enemySize, this.enemySize);
-
+        // 체력 초기화
         _enemy._enemyHealthHandler.InitializeHealth();
 
+        // 보유 스킬 초기화
         if (enemySkillID > 0)
-        //ApplyEnemySkills(enemySkillID);
         {
             int key = Mathf.FloorToInt(config.enemySkillID);
-            if (_enemy._gameManager._dataManager.EnemySkillListTableLoader.ItemsDict.TryGetValue(key, out var skillList))
+            if (_dataManager.EnemySkillListTableLoader.ItemsDict.TryGetValue(key, out var skillList))
             {
                 foreach (var skillId in skillList.Skill_ID)
                 {
                     Debug.LogWarning("skillId " + skillId);
 
-                    if (_enemy._gameManager._dataManager.EnemySkillTableLoader.ItemsDict.TryGetValue(skillId, out var skillData))
+                    if (_dataManager.EnemySkillTableLoader.ItemsDict.TryGetValue(skillId, out var skillData))
                     {
                         activeSkills.Add(skillData);
                         cooldownTimers[skillId] = 0f;
@@ -247,44 +276,39 @@ public class EnemyStat : MonoBehaviour
                     }
                 }
             }
-
         }
-        
     }
 
-    
-    public void Skill_2000(EnemySkillTable skillData)
+    /// <summary>
+    /// 외형 변경
+    /// </summary>
+    /// <param name="config"></param>
+    private void UpdateVisual(EnemyConfig config)
     {
+        // 외형 변경
+        GameObject visual = Instantiate(config.enemyPrefab, visualRoot);
+        visual.transform.localPosition = Vector2.zero;
+
+        // 외형 정보 캐싱
+        _enemy.spriteRenderers = null;
+        _enemy.originSpriteOrder = new Dictionary<SpriteRenderer, int>();
+        _enemy.spriteRenderers = visual.GetComponentsInChildren<SpriteRenderer>();
         
-        
+        foreach (SpriteRenderer sr in _enemy.spriteRenderers)
+        {
+            _enemy.originSpriteOrder[sr] = sr.sortingOrder;
+        }
+
+        // 크기 변경
+        visual.transform.localScale = new Vector2(this.enemySize, this.enemySize);
     }
 
-    public void Skill_2001(EnemySkillTable skillData)
+    private void OnDestroy()
     {
-        
-    }
-
-    
-    public void Skill_2003(EnemySkillTable skillData)
-    {
-        
-    }
-
-    
-    public void Skill_2004(EnemySkillTable skillData)
-    {
-        
-    }
-
-    
-    /// <param name="skillData"></param>
-    public void Skill_2005(EnemySkillTable skillData)
-    {
-        
-    }
-
-    public void Skill_2006(EnemySkillTable skillData)
-    {
-        
+        _enemy.isAlive = false;
+        activeSkills.Clear();
+        cooldownTimers.Clear();
+        intervalTimers.Clear();
+        skillFlags.Clear();
     }
 }

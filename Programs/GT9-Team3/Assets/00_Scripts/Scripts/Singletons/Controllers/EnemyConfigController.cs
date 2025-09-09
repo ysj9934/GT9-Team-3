@@ -2,26 +2,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyConfigManager : MonoBehaviour
+public class EnemyConfigController : MonoBehaviour
 {
-    public static EnemyConfigManager Instance { get; private set; }
-
-    private GameManager _gameManager;
-
+    public static EnemyConfigController Instance { get; private set; }
 
     private void Awake()
     {
         Instance = this;
     }
 
-    public void Init()
-    {
-        _gameManager = GameManager.Instance;
-    }
-
+    /// <summary>
+    /// 적 유닛 설정 가져오기
+    /// </summary>
+    /// <param name="monsterID">적 유닛 ID</param>
+    /// <returns></returns>
     public EnemyConfig GetConfig(int monsterID)
     {
-        var jsonData = _gameManager._dataManager.EnemyDataLoader.GetByKey(monsterID);
+        var jsonData = DataManager.Instance.EnemyDataLoader.GetByKey(monsterID);
         if (jsonData == null)
         {
             Debug.LogError($"몬스터 ID {monsterID}에 대한 JSON 데이터 없음");
@@ -31,7 +28,11 @@ public class EnemyConfigManager : MonoBehaviour
         return CreateConfigFromJson(jsonData);
     }
 
-
+    /// <summary>
+    /// 적 유닛 설정 생성
+    /// </summary>
+    /// <param name="jsonData"></param>
+    /// <returns></returns>
     public EnemyConfig CreateConfigFromJson(Enemy_DataTable jsonData)
     {
         var config = ScriptableObject.CreateInstance<EnemyConfig>();
@@ -54,6 +55,7 @@ public class EnemyConfigManager : MonoBehaviour
         config.enemySize = jsonData.Enemy_Size;
         config.enemyDescription = jsonData.Enemy_Description;
 
+        // 적 유닛 외형 정보 로드
         config.enemyPrefab = Resources.Load<GameObject>($"Prefabs/Enemy/{config.enemyImage}");
         if (config.enemyPrefab == null)
             Debug.LogError($"Enemy prefab not found for {jsonData.Enemy_Name}");
@@ -61,6 +63,9 @@ public class EnemyConfigManager : MonoBehaviour
         return config;
     }
 
+    /// <summary>
+    /// 테스트용 적 유닛 생성 코드
+    /// </summary>
 #if UNITY_EDITOR
     [ContextMenu("Test Enemy Config")]
     void TestConfig()

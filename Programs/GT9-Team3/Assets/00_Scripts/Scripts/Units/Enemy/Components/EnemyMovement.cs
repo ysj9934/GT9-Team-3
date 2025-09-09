@@ -4,20 +4,25 @@ using UnityEngine;
 
 public class EnemyMovement : MonoBehaviour
 {
+    // Object Structure
     private Enemy _enemy;
 
+    // Object Data
     private Transform[] pathPoints;
     private int currentPathIndex = 0;
 
-    // 스턴
+    // Object Effect
     private bool isStunned = false;
     private float stunTimer = 0f;
 
-    private void Start()
+    private void Awake()
     {
         _enemy = GetComponent<Enemy>();
     }
 
+    /// <summary>
+    /// 길 찾기
+    /// </summary>
     public void pathPoint(List<Transform> path)
     {
         gameObject.transform.position = path[0].transform.position + new Vector3(0f, 0.16f, 0f);
@@ -34,11 +39,11 @@ public class EnemyMovement : MonoBehaviour
 
     private void Update()
     {
-
         if (!_enemy.isAlive) return;
+
         if (currentPathIndex >= pathPoints.Length) return;
 
-
+        // 스턴
         if (isStunned)
         {
             stunTimer -= Time.deltaTime;
@@ -46,9 +51,10 @@ public class EnemyMovement : MonoBehaviour
             {
                 isStunned = false;
             }
-            return; // 스턴 중엔 이동 스킵
+            return;
         }
 
+        // 길찾기
         Transform target = pathPoints[currentPathIndex];
 
         // MoveTowards를 사용해 목표점까지 정확히 이동
@@ -60,11 +66,6 @@ public class EnemyMovement : MonoBehaviour
         {
             currentPathIndex++;
         }
-
-        //if (currentPathIndex >= pathPoints.Length)
-        //{
-        //    currentPathIndex = 0;
-        //}
 
     }
 

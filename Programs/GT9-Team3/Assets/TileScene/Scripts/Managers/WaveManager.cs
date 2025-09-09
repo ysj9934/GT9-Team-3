@@ -11,7 +11,7 @@ public class WaveManager : MonoBehaviour
 
     // Managers
     private GameManager _gameManager;
-    public ObjectPoolManager _poolManager;
+    public EnemyManager _poolManager;
 
     public List<Transform> path = new List<Transform>();
     public List<Wave_DataTable> stageWaveList = new List<Wave_DataTable>();
@@ -43,7 +43,7 @@ public class WaveManager : MonoBehaviour
     public void Init()
     {
         _gameManager = GameManager.Instance;
-        _poolManager = ObjectPoolManager.Instance;
+        _poolManager = EnemyManager.Instance;
 
         if (IsValidate())
         {
@@ -287,7 +287,7 @@ public class WaveManager : MonoBehaviour
 
         if (!isWaveRoutine) yield break;
 
-        var config = EnemyConfigManager.Instance.GetConfig(monsterID);
+        var config = EnemyManager.Instance.enemyConfigController.GetConfig(monsterID);
         if (config == null)
         {
             Debug.LogError($"EnemyConfig 생성 실패: monsterID {monsterID}");
