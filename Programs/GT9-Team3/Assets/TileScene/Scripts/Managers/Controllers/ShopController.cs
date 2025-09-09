@@ -31,8 +31,8 @@ public class ShopController : MonoBehaviour
         int selectedIndex = CalculateRandomIndex(weights);
 
         GameObject tileItem = Instantiate(
-            tilePrefabsCorner[selectedIndex], 
-            _hudCanvas._itemHudUI.inventoryContent);
+            tilePrefabsCorner[selectedIndex],
+            HUDCanvas.Instance._itemHudUI.inventoryContent);
 
         ItemSetting(tileItem);
 
@@ -47,7 +47,7 @@ public class ShopController : MonoBehaviour
 
         GameObject tileItem = Instantiate(
             tilePrefabsCross[selectedIndex],
-            _hudCanvas._itemHudUI.inventoryContent);
+            HUDCanvas.Instance._itemHudUI.inventoryContent);
 
         ItemSetting(tileItem);
 
@@ -62,7 +62,7 @@ public class ShopController : MonoBehaviour
 
         GameObject tileItem = Instantiate(
             tilePrefabsStraight[selectedIndex],
-            _hudCanvas._itemHudUI.inventoryContent);
+            HUDCanvas.Instance._itemHudUI.inventoryContent);
 
         ItemSetting(tileItem);
 
@@ -77,7 +77,7 @@ public class ShopController : MonoBehaviour
 
         GameObject tileItem = Instantiate(
             tilePrefabsTShape[selectedIndex],
-            _hudCanvas._itemHudUI.inventoryContent);
+            HUDCanvas.Instance._itemHudUI.inventoryContent);
 
         ItemSetting(tileItem);
 

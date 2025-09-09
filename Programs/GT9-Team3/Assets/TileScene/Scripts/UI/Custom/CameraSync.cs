@@ -1,9 +1,9 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class Camara : MonoBehaviour
+public class CameraSync : MonoBehaviour
 {
-    private static Camara instance;
+    private static CameraSync instance;
 
     void Awake()
     {
@@ -28,22 +28,41 @@ public class Camara : MonoBehaviour
 
     void ApplyAspect()
     {
+        //float targetAspect = 16f / 9f;
+        //float windowAspect = (float)Screen.width / (float)Screen.height;
+        //float scaleHeight = windowAspect / targetAspect;
+
+        //Camera camera = Camera.main;
+        //if (camera == null) return;
+
+        //if (scaleHeight < 1.0f)
+        //{
+        //    camera.rect = new Rect(0, (1.0f - scaleHeight) / 2.0f, 1, scaleHeight);
+        //}
+        //else
+        //{
+        //    float scaleWidth = 1.0f / scaleHeight;
+        //    camera.rect = new Rect((1.0f - scaleWidth) / 2.0f, 0, scaleWidth, 1);
+        //}
         float targetAspect = 16f / 9f;
         float windowAspect = (float)Screen.width / (float)Screen.height;
         float scaleHeight = windowAspect / targetAspect;
 
-        Camera camera = Camera.main;
-        if (camera == null) return;
+        Camera cam = Camera.main;
+        if (cam == null) return;
 
         if (scaleHeight < 1.0f)
         {
-            camera.rect = new Rect(0, (1.0f - scaleHeight) / 2.0f, 1, scaleHeight);
+            float inset = (1.0f - scaleHeight) / 2.0f;
+            cam.rect = new Rect(0, inset, 1, scaleHeight);
         }
         else
         {
             float scaleWidth = 1.0f / scaleHeight;
-            camera.rect = new Rect((1.0f - scaleWidth) / 2.0f, 0, scaleWidth, 1);
+            float inset = (1.0f - scaleWidth) / 2.0f;
+            cam.rect = new Rect(inset, 0, scaleWidth, 1);
         }
+
     }
 
     void RemoveDuplicateCameras()

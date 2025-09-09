@@ -71,12 +71,14 @@ public class TileManager : MonoBehaviour
         Instance = this;
 
         tileAllCategoryList = new List<GameObject>();
+
+        _shopController = GetComponentInChildren<ShopController>();
     }
 
     public void Init()
     {
         _gameManager = GameManager.Instance;
-        _shopController = GetComponentInChildren<ShopController>();
+        
         towerSellUI = TowerSellUI.Instance;
         towerUIdnjswls = FindObjectOfType<TowerBuildUI>(true);
     }
@@ -304,7 +306,7 @@ public class TileManager : MonoBehaviour
                 if (isUIActive)
                 {
                     CloseTileUI(fallbackTile._tileUI);
-                    _gameManager._hudCanvas.TurnOffStartWave();
+                    HUDCanvas.Instance.TurnOffStartWave();
                     fallbackTile._tileUI.rotateUI.SetActive(!fallbackTile._tileUI.rotateUI.activeSelf);
                 }
 
@@ -326,13 +328,13 @@ public class TileManager : MonoBehaviour
         //TileUICollider(isUIActive);
     }
 
-    private void TileUICollider(bool isUIActive)
-    { 
-        foreach (var tileInfo in tileInfoList)
-        {
-            tileInfo.collider2D.enabled = isUIActive;
-        }
-    }
+    //private void TileUICollider(bool isUIActive)
+    //{ 
+    //    foreach (var tileInfo in tileInfoList)
+    //    {
+    //        tileInfo.collider2D.enabled = isUIActive;
+    //    }
+    //}
 
     /// <summary>
     /// Save Tile Data 
