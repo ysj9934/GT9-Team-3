@@ -8,7 +8,7 @@ public class TowerSellUI : MonoBehaviour
 {
     private Tower1 currentTarget;
     public RectTransform root;      // 패널 루트
-    public Vector2 anchoredPosition = new Vector2(0, 0);  // 왼쪽 위치 고정
+    //public Vector2 anchoredPosition = new Vector2(0, 0);  // 왼쪽 위치 고정
 
     public static TowerSellUI Instance;
 
@@ -60,7 +60,7 @@ public class TowerSellUI : MonoBehaviour
         root.gameObject.SetActive(true);
 
         // 왼쪽 고정 위치로 이동
-        root.anchoredPosition = anchoredPosition;
+        //root.anchoredPosition = anchoredPosition;
 
         TowerData d = tower.towerdata;
 
@@ -115,8 +115,8 @@ public class TowerSellUI : MonoBehaviour
         Debug.Log("판매 버튼 눌림");
 
         currentTower.blockInfo._tileInfo._tilePlaceOnTower.HandleTowerPlacement(
-            currentTower.blockInfo.blockSerialNumber, 
-            true, 
+            currentTower.blockInfo.blockSerialNumber,
+            true,
             null,
             currentTower,
             false);
