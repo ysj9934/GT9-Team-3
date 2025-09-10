@@ -23,9 +23,18 @@ public class ResourceManager : MonoBehaviour
 
         // Initialize resources
         Initialize();
+
         Add(ResourceType.Tilepiece, 5000);
         //Add(ResourceType.Crystal, 100);
         Add(ResourceType.Mana, 50);
+    }
+
+    void Start()
+    {
+        if (SaveManager.Instance != null)
+        {
+            resources[ResourceType.Gold] = SaveManager.Instance.data.gold;
+        }
     }
 
     private void Initialize()
@@ -64,6 +73,12 @@ public class ResourceManager : MonoBehaviour
 
         resources[type] += amount;
         Debug.Log($"[자원] {type} +{amount} 획득, 현재: {resources[type]}");
+
+        if (type == ResourceType.Gold)
+        {
+            SaveManager.Instance.data.gold += (int)amount;
+            SaveManager.Instance.Save();
+        }
     }
 
 }

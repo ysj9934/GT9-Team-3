@@ -352,18 +352,45 @@ public class WaveManager : MonoBehaviour
             else
             {
                 // HUD에서 승리 panel
-                Debug.Log("Victory");
-
-                _gameManager.PauseGame();
-                HUDCanvas.Instance._hudResultPanel._gameResultPanel.OpenWindow(true);
+                HandleVictory();
             }
         }
         else
         {
-            Debug.Log("Victory");
-            _gameManager.PauseGame();
-            HUDCanvas.Instance._hudResultPanel._gameResultPanel.OpenWindow(true);
+            HandleVictory();
         }
+    }
+
+    private void HandleVictory()
+    {
+        Debug.Log("Victory");
+        _gameManager.PauseGame();
+        HUDCanvas.Instance._hudResultPanel._gameResultPanel.OpenWindow(true);
+
+        // 스테이지 클리어 별 세팅
+        SetStageClearStar();
+    }
+
+    private void SetStageClearStar()
+    {
+        if (HUDCanvas.Instance == null || HUDCanvas.Instance._hudResource == null) return;
+
+        float healthPercent = HUDCanvas.Instance._hudResource.HealthPercent;
+        ClearStar star;
+
+        if (healthPercent > 0.8f)
+            star = ClearStar.Three;
+        else if (healthPercent > 0.5f)
+            star = ClearStar.Two;
+        else
+            star = ClearStar.One;
+
+        int safeIndex = Mathf.Clamp(waveIndex, 0, stageWaveList.Count - 1);
+        int stageID = stageWaveList[safeIndex].Stage_ID;    // 현재 스테이지 ID 가져오기
+
+        SaveManager.Instance.SaveStageClearStar(stageID, star);
+
+        Debug.Log($"Stage {stageID} cleared with {star} star(s).");
     }
 
     private void ActivateWorldEffect(int key)

@@ -1,11 +1,20 @@
 using System.IO;
 using UnityEngine;
+using System.Collections.Generic;   // List<> 사용
 
 //list to save
 [System.Serializable]
 public class SaveData
 {
-    public int gold;
+    [ReadOnly] public int gold;
+    [ReadOnly] public List<StageClearStar> stageClearStars = new List<StageClearStar>();  // Stage_ID별 ClearStar 저장
+}
+
+[System.Serializable]
+public class StageClearStar
+{
+    public int stageID;
+    public ClearStar clearStar; // HUD에서 전달받아 저장.ClearStar는 HUDresource.cs에 정의되어 있음
 }
 
 public class SaveManager : MonoBehaviour
@@ -21,6 +30,7 @@ public class SaveManager : MonoBehaviour
             Instance = this;
             DontDestroyOnLoad(gameObject);
             savePath = Application.persistentDataPath + "/save.json";
+            //savePath = Path.Combine(Application.dataPath, "Save/save.json"); 에디터용
             Load();
             Debug.Log("Save Path: " + savePath);
             Debug.Log(data.gold);
@@ -35,7 +45,7 @@ public class SaveManager : MonoBehaviour
     {
         string json = JsonUtility.ToJson(data, true);
 
-        // ??????????곸몵筌???밴쉐
+        // 디렉토리가 존재하지 않으면 생성
         string directory = Path.GetDirectoryName(savePath);
         if (!Directory.Exists(directory))
         {
@@ -55,8 +65,30 @@ public class SaveManager : MonoBehaviour
         }
         else
         {
-            data.gold = 0; // 筌ㅼ뮇????쎈뻬 疫꿸퀡??첎?
+            data.gold = 0; // 저장 파일이 없으면 기본값 0 설정
         }
+    }
+
+    public void SaveStageClearStar(int stageID, ClearStar star)
+    {
+        // 이미 저장되어 있으면 업데이트
+        var existing = data.stageClearStars.Find(s => s.stageID == stageID);
+        if (existing != null)
+        {
+            existing.clearStar = star;
+        }
+        else
+        {
+            data.stageClearStars.Add(new StageClearStar { stageID = stageID, clearStar = star });
+        }
+        Save();
+    }
+
+    public ClearStar GetStageClearStar(int stageID)
+    {
+        var existing = data.stageClearStars.Find(s => s.stageID == stageID);
+        if (existing != null) return existing.clearStar;
+        return ClearStar.One; // 기본값
     }
 
     private void OnApplicationQuit()

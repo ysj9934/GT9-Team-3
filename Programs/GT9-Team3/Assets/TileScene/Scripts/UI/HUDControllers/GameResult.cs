@@ -90,6 +90,7 @@ public class GameResult : MonoBehaviour
 
         CloseWindow();
         ResourceManager.Instance.Earn(ResourceType.Gold, rewardGold);
+
         Debug.Log($"{ResourceManager.Instance.GetAmount(ResourceType.Gold)}");
         SceneLoader.Instance.LoadSceneByName("Map UI");
         _hudCanvas.SetGameSpeed3x();

@@ -1,15 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement; // Required for SceneManager
-using System.Text;  // Required for StringBuilder
+using UnityEngine.SceneManagement; // 씬 관리
+using System.Text;  // 텍스트 관리
+using TMPro; // TextMeshPro 사용
 
 public class Debug_HHC : MonoBehaviour
 {
     private static Debug_HHC instance;
 
-    [Header("Canvas Name to Check in Scene")]
-    public string canvasName = "LobbyScreen"; // Canvas name to find in Hierarchy
+    [Header("연결된 캔버스")]
+    public string canvasName = "LobbyScreen"; 
+
+    [Header("연결된 UI 텍스트")]
+    [SerializeField] private TextMeshProUGUI goldText;
+    [SerializeField] private TextMeshProUGUI crystalText;
 
     private void Awake()
     {
@@ -69,6 +74,13 @@ public class Debug_HHC : MonoBehaviour
 
     void Update()
     {
-        // Optional update logic
+        if (ResourceManager.Instance == null) return;
+
+        // ResourceManager 에서 현재 자원값 읽어서 UI에 표시
+        float gold = ResourceManager.Instance.GetAmount(ResourceType.Gold);
+        float crystal = ResourceManager.Instance.GetAmount(ResourceType.Crystal);
+
+        //goldText.text = $"Gold: {gold}";
+        //crystalText.text = $"Crystal: {crystal}";
     }
 }
