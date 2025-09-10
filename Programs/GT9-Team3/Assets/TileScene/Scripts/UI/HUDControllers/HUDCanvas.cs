@@ -156,6 +156,9 @@ public class HUDCanvas : MonoBehaviour
     public void SetPathfinder()
     {
         GameManager.Instance._tileController.ShowConnectedPath();
+
+        // [사운드효과]: 패스파인더
+        Debug.LogWarning("[Sound]: Pathfinder Sound");
     }
 
     // WaveStartButton
@@ -163,6 +166,9 @@ public class HUDCanvas : MonoBehaviour
     { 
         TurnOffPathfinder();
         GameManager.Instance._waveController.StartWave();
+
+        // [사운드효과]: 버튼 클릭
+        Debug.LogWarning("[Sound]: Button Click Sound");
 
     }
 
@@ -174,7 +180,9 @@ public class HUDCanvas : MonoBehaviour
         gameSpeed3xBtn.gameObject.SetActive(false);
         //gameSpeed5xBtn.gameObject.SetActive(false);
         _gameManager.GameSpeed2x();
-        
+
+        // [사운드효과]: 버튼 클릭
+        Debug.LogWarning("[Sound]: Button Click Sound");
     }
 
     //public void SetGameSpeed2x()
@@ -220,6 +228,9 @@ public class HUDCanvas : MonoBehaviour
         gameSpeed3xBtn.gameObject.SetActive(true);
 
         _gameManager.GameSpeed3x();
+
+        // [사운드효과]: 버튼 클릭
+        Debug.LogWarning("[Sound]: Button Click Sound");
     }
 
     public void SetGameSpeed3x()
@@ -229,6 +240,9 @@ public class HUDCanvas : MonoBehaviour
         gameSpeed3xBtn.gameObject.SetActive(false);
         //gameSpeed5xBtn.gameObject.SetActive(false);
         _gameManager.ResumeGame();
+
+        // [사운드효과]: 버튼 클릭
+        Debug.LogWarning("[Sound]: Button Click Sound");
     }
     // GamePause
     public void SetGamePause()
@@ -238,6 +252,9 @@ public class HUDCanvas : MonoBehaviour
         gameSpeed2xBtn.gameObject.SetActive(false);
         gameSpeed3xBtn.gameObject.SetActive(true);
         //gameSpeed5xBtn.gameObject.SetActive(true);
+
+        // [사운드효과]: 버튼 클릭
+        Debug.LogWarning("[Sound]: Button Click Sound");
 
         //SetGameSpeed5x();
         _hudMessageUI.PopupUIShow(

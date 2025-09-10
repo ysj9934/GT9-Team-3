@@ -6,9 +6,6 @@ using UnityEngine.UI;
 
 public class Castle : MonoBehaviour
 {
-    public GameManager _gameManager;
-    public HUDCanvas _hudCanvas;
-
     public int currentHealth;
     public int maxHealth = 100;
 
@@ -16,25 +13,8 @@ public class Castle : MonoBehaviour
 
     private void Awake()
     {
-        _gameManager = GameManager.Instance;
-
-        if (IsValidate())
-        {
-            GetCastleData();
-            ResetButton();
-        }
-    }
-    private bool IsValidate()
-    {
-        if (_gameManager == null)
-        {
-            ValidateMessage(_gameManager.name);
-            return false;
-        }
-        else
-        {
-            return true;
-        }
+        GetCastleData();
+        ResetButton();
     }
 
     private void ValidateMessage(string obj)
@@ -72,14 +52,7 @@ public class Castle : MonoBehaviour
     {
         isDead = true;
 
-        _gameManager._waveController.StopWave();
-
-        Debug.Log("GameOver");
-
-        _gameManager.PauseGame();
-        _gameManager.isGameOver = true;
-        
-        HUDCanvas.Instance._hudResultPanel._gameDefeatPanel.OpenWindow();
+        GameManager.Instance.GameDefeat();
     }
 
 }

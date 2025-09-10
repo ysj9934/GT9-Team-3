@@ -238,6 +238,33 @@ public class GameManager : MonoBehaviour
         isGamePaused = false;
     }
 
+    // ==================== 게임 결과 ==================== //
+
+    public void GameVictory()
+    {
+        Debug.Log("Victory");
+
+        PauseGame();
+        HUDCanvas.Instance._hudResultPanel._gameResultPanel.OpenWindow(true);
+
+        // [사운드효과]: 게임 승리
+        Debug.LogWarning("[Sound]: Game Victory Sound");
+    }
+
+    public void GameDefeat()
+    {
+        Debug.Log("GameOver");
+
+        _waveController.StopWave();
+
+        PauseGame();
+        isGameOver = true;
+
+        HUDCanvas.Instance._hudResultPanel._gameDefeatPanel.OpenWindow();
+        // [사운드효과]: 게임 패배
+        Debug.LogWarning("[Sound]: Game Defeat Sound");
+    }
+
     // 적 베이스 찾기 (김원진)
     // Find the enemy base transform in the scene
     public Vector3 BasePosition => baseTransform != null ? baseTransform.position : Vector3.zero;

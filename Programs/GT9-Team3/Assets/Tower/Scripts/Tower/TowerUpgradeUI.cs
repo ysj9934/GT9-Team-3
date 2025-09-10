@@ -35,6 +35,9 @@ public class TowerUpgradeUI : MonoBehaviour
             // UI 정보 새로고침
             HUDCanvas.Instance.sellUI.Refresh(selectedTower);
             TowerSellUI.Instance.Hide();
+
+            // [사운드효과]: 타워 업그레이드
+            Debug.LogWarning("[Sound]: Tower Upgrade Sound");
         }
         else
         {

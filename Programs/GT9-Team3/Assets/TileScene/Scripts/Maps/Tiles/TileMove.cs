@@ -342,6 +342,9 @@ public class TileMove : MonoBehaviour
         isPressing = false;
         pressTime = 0;
         UpdateGridPosition();
+
+        // [사운드효과]: 타일 배치
+        Debug.LogWarning("[Sound]: Tile Pos Sound");
     }
     
     private void UpdateGridPosition()

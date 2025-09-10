@@ -38,6 +38,9 @@ public class GameResult : MonoBehaviour
     public void CloseWindow()
     {
         gameObject.SetActive(false);
+
+        // [사운드효과]: 버튼 클릭
+        Debug.LogWarning("[Sound]: Button Click Sound");
     }
 
     public void OpenWindow(bool isWin)
@@ -77,6 +80,10 @@ public class GameResult : MonoBehaviour
     public void GoShop()
     {
         Debug.Log("Go Shop");
+
+        // [사운드효과]: 버튼 클릭
+        Debug.LogWarning("[Sound]: Button Click Sound");
+
     }
 
     public void UpdateWorldStageText()
@@ -87,6 +94,9 @@ public class GameResult : MonoBehaviour
     public void GameExitButton()
     {
         Debug.Log("GameExit to go MapUI");
+
+        // [사운드효과]: 버튼 클릭
+        Debug.LogWarning("[Sound]: Button Click Sound");
 
         CloseWindow();
         ResourceManager.Instance.Earn(ResourceType.Gold, rewardGold);
@@ -99,6 +109,9 @@ public class GameResult : MonoBehaviour
     {
 
         Debug.Log("GameRetry");
+
+        // [사운드효과]: 버튼 클릭
+        Debug.LogWarning("[Sound]: Button Click Sound");
 
         if (ResourceManager.Instance.CanAfford(ResourceType.Mana, 5))
         {
@@ -123,6 +136,9 @@ public class GameResult : MonoBehaviour
     public void GameReward2x()
     {
         Debug.Log("Reward2x to go MapUI");
+
+        // [사운드효과]: 버튼 클릭
+        Debug.LogWarning("[Sound]: Button Click Sound");
 
         // 광고 시청
         AdsManager.Instance.ShowRewardedAd(RewardAdType.Result2x, () =>

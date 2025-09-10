@@ -285,6 +285,9 @@ public class TileController : MonoBehaviour
                     CloseTileUI(fallbackTile._tileUI);
                     HUDCanvas.Instance.TurnOffStartWave();
                     fallbackTile._tileUI.rotateUI.SetActive(!fallbackTile._tileUI.rotateUI.activeSelf);
+
+                    // [사운드효과]: 타일 선택
+                    Debug.LogWarning("[Sound]: Tile Click Sound");
                 }
 
                 if (isMoveActive)

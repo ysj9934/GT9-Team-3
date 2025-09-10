@@ -65,10 +65,32 @@ public class EnemyHealthHandler : MonoBehaviour
             {
                 _enemy._enemyMovement.ApplyStun(projectileData.stunTime);
             }
+
+
+            int projectileID = projectileData.projectileID;
+            // [사운드효과]: 피격시 사운드 / 사운드 효과 적게
+            switch (projectileID)
+            {
+                case 7001:
+                    Debug.LogWarning("[Sound] Common Sound");
+                    break;
+                case 7015:
+                    Debug.LogWarning("[Sound] Slow Sound");
+                    break;
+                case 7029:
+                    Debug.LogWarning("[Sound] Doom Sound");
+                    break;
+                case 7008:
+                    Debug.LogWarning("[Sound] Splash Sound");
+                    break;
+                case 7022:
+                    Debug.LogWarning("[Sound] Stun Sound");
+                    break;
+
+            }
+            
         }
 
-        // [사운드효과]: 피격시 사운드 / 사운드 효과 적게
-        Debug.LogWarning("[Sound] Damage Sound");
 
         if (currentHealth <= 0)
         {

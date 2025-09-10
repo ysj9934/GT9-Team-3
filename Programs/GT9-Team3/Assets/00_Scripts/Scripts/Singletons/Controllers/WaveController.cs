@@ -336,18 +336,15 @@ public class WaveController : MonoBehaviour
             }
             else
             {
-                // HUD에서 승리 panel
-                Debug.Log("Victory");
+                _gameManager.GameVictory();
 
-                _gameManager.PauseGame();
-                HUDCanvas.Instance._hudResultPanel._gameResultPanel.OpenWindow(true);
+                // HUD에서 승리 panel
+                
             }
         }
         else
         {
-            Debug.Log("Victory");
-            _gameManager.PauseGame();
-            HUDCanvas.Instance._hudResultPanel._gameResultPanel.OpenWindow(true);
+            _gameManager.GameVictory();
         }
     }
 
