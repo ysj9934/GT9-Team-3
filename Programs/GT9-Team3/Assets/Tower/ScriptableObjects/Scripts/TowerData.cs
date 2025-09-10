@@ -13,7 +13,7 @@ public class TowerData : ScriptableObject
 
     public AttackType attackType;
     public float attackRadius;      // 공격이 적중하는 범위를 정의하는 데이터
-    public int targetCount;         // 공격이 적중하는 범위를 정의하는 데이터
+    public int targetCount;         
     public float attackRange;
 
     public EnemyType attackEnemyType1;
