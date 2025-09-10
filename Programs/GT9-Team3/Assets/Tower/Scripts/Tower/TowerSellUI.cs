@@ -100,8 +100,8 @@ public class TowerSellUI : MonoBehaviour
         else
             attackTypeText.text = d.attackType.ToString();
 
-        sellValueText.text = $"Cost : {d.sellValue}";
-        upgradeValueText.text = $"Cost : {d.UpgradeValue}";
+        sellValueText.text = $"얻는 타일 조각 : {d.sellValue}";
+        upgradeValueText.text = $"타일 조각 소모 : {d.UpgradeValue}";
 
         ProjectileData p = tower.towerdata.projectileData;
 
@@ -201,8 +201,8 @@ public class TowerSellUI : MonoBehaviour
         else
             attackTypeText.text = d.attackType.ToString();
 
-        sellValueText.text = $"Cost : {d.sellValue}";
-        upgradeValueText.text = $"Cost : {d.UpgradeValue}";
+        sellValueText.text = $"얻는 타일 조각 : {d.sellValue}";
+        upgradeValueText.text = $"타일 조각 소모 : {d.UpgradeValue}";
 
         ProjectileData p = d.projectileData;
 

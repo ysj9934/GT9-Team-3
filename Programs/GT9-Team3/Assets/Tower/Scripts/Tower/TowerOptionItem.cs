@@ -21,7 +21,13 @@ public class TowerOptionItem : MonoBehaviour
 
         icon.sprite = bp.icon;
         nameText.text = bp.displayName;
-        costText.text = $"{bp.CostType} : {bp.CostValue}";
+
+        string localizedCostType = bp.CostType.ToString();
+        if (localizedCostType == "Tilepiece")
+            localizedCostType = "타일 조각";
+
+        costText.text = $"{localizedCostType} : {bp.CostValue}";
+
         buildButton.interactable = canAfford;
 
         buildButton.onClick.RemoveAllListeners();
@@ -35,7 +41,13 @@ public class TowerOptionItem : MonoBehaviour
 
         icon.sprite = bp.icon;
         nameText.text = bp.displayName;
-        costText.text = $"{bp.CostType} : {bp.CostValue}";
+
+        string localizedCostType = bp.CostType.ToString();
+        if (localizedCostType == "Tilepiece")
+            localizedCostType = "타일 조각";
+
+        costText.text = $"{localizedCostType} : {bp.CostValue}";
+
         buildButton.interactable = canAfford;
 
         buildButton.onClick.RemoveAllListeners();
