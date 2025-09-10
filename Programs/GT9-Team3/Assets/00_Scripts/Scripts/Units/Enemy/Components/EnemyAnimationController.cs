@@ -30,7 +30,7 @@ public class EnemyAnimationController : MonoBehaviour
 
     void Update()
     {
-        if (TileManager.Instance == null || TileManager.Instance.endTile == null)
+        if (TileController.Instance == null || TileController.Instance.endTile == null)
         {
             Debug.LogWarning("TileManager �Ǵ� endTileRoad�� �Ҵ���� �ʾҽ��ϴ�.");
             return;
@@ -46,7 +46,7 @@ public class EnemyAnimationController : MonoBehaviour
             return;
         }
 
-        Vector3 centerPos = TileManager.Instance.endTile.transform.position;
+        Vector3 centerPos = TileController.Instance.endTile.transform.position;
         float distance = Vector3.Distance(transform.position, centerPos);
 
         if (distance < 0.1f)

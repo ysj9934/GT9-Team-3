@@ -4,7 +4,7 @@ using UnityEngine.EventSystems;
 public class TileMove : MonoBehaviour
 {
     // Managers
-    private TileManager _tileManager;
+    private TileController _tileManager;
     private HUDCanvas _hudCanvas;
 
 
@@ -30,7 +30,7 @@ public class TileMove : MonoBehaviour
 
     private void Awake()
     {
-        _tileManager = TileManager.Instance;
+        _tileManager = TileController.Instance;
         _hudCanvas = HUDCanvas.Instance;
         //_camera = Camera.main;
 

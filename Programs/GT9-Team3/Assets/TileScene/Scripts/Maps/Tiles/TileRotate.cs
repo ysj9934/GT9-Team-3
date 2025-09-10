@@ -15,14 +15,14 @@ public class TileRotate : MonoBehaviour
     // 다음 각도의 맵 타일 생성하기
     public void RotateLeft()
     {
-        int newIndex = ((int)_tileInfo.tileDirector - 1 + 4) % 4;
-        
+        int newIndex = ((int)_tileInfo.tileDirector + 1) % 4;
+
         RotateTile(newIndex);
     }
 
     public void RotateRight()
     {
-        int newIndex = ((int)_tileInfo.tileDirector + 1) % 4;
+        int newIndex = ((int)_tileInfo.tileDirector - 1 + 4) % 4;
 
         RotateTile(newIndex);
     }

@@ -67,6 +67,9 @@ public class EnemyHealthHandler : MonoBehaviour
             }
         }
 
+        // [사운드효과]: 피격시 사운드 / 사운드 효과 적게
+        Debug.LogWarning("[Sound] Damage Sound");
+
         if (currentHealth <= 0)
         {
             EnemyDeath(HitTarget.Projectile);
@@ -76,7 +79,7 @@ public class EnemyHealthHandler : MonoBehaviour
     private void EnemyDeath(HitTarget target)
     {
         OnDeath?.Invoke();
-        GameManager.Instance._waveManager.activeEnemies.Remove(this.gameObject);
+        GameManager.Instance._waveController.activeEnemies.Remove(this.gameObject);
         OnDeath = null;
 
         switch (target)

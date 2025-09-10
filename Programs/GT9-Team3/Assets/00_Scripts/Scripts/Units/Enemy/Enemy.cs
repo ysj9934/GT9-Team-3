@@ -13,7 +13,6 @@ public class Enemy : MonoBehaviour
     public Dictionary<SpriteRenderer, int> originSpriteOrder = new Dictionary<SpriteRenderer, int>();
     public SpriteRenderer[] spriteRenderers;
 
-
     // Object Info
     public bool isAlive = false;
 
@@ -31,7 +30,7 @@ public class Enemy : MonoBehaviour
         foreach (SpriteRenderer sr in spriteRenderers)
         {
             int baseOrder = originSpriteOrder.ContainsKey(sr) ? originSpriteOrder[sr] : 0;
-            sr.sortingOrder = baseOrder + Mathf.RoundToInt(-transform.position.y * 100);
+            sr.sortingOrder = baseOrder + Mathf.RoundToInt(-transform.position.y * 100) + 1000;
         }
     }
 

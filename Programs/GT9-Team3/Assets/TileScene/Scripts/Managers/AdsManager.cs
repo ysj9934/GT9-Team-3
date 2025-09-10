@@ -57,12 +57,6 @@ public class AdsManager : MonoBehaviour
             {
                 Debug.Log($"[Ad:{type}] 닫힘 → 재로드");
                 LoadRewardedAd(type);
-
-                //// 광고 닫힘 후 강제 속도 적용
-                //if (type == RewardAdType.SpeedBoost && HUDCanvas.Instance != null)
-                //{
-                //    HUDCanvas.Instance.ForceTripleSpeed();
-                //}
             };
         });
     }

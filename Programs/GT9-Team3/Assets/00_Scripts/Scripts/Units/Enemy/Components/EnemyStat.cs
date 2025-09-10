@@ -110,7 +110,7 @@ public class EnemyStat : MonoBehaviour
                     // 완료
                     if (skillFlags.Contains(skill.key)) break;
 
-                    _gameManager._waveManager.activeEnemies.ForEach(enemy =>
+                    _gameManager._waveController.activeEnemies.ForEach(enemy =>
                     {
                         if (enemy.TryGetComponent<EnemyStat>(out var enemyStat))
                         {
@@ -137,7 +137,7 @@ public class EnemyStat : MonoBehaviour
                 case 2005:
                     if (skillFlags.Contains(skill.key)) break;
 
-                    _gameManager._waveManager.activeEnemies.ForEach(enemy =>
+                    _gameManager._waveController.activeEnemies.ForEach(enemy =>
                     {
                         if (enemy.TryGetComponent<EnemyStat>(out var enemyStat))
                         {
@@ -170,7 +170,7 @@ public class EnemyStat : MonoBehaviour
                     {
                         cooldownTimers[skill.key] = 0f;
 
-                        _gameManager._waveManager.activeEnemies.ForEach(enemy =>
+                        _gameManager._waveController.activeEnemies.ForEach(enemy =>
                         {
                             // 체력 회복
                             _enemy._enemyHealthHandler.EnemyHeal(effectValue, true);
@@ -277,6 +277,8 @@ public class EnemyStat : MonoBehaviour
                 }
             }
         }
+
+        _enemy.isAlive = true;
     }
 
     /// <summary>

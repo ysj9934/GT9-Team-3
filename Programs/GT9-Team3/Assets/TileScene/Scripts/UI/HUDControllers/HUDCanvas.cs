@@ -10,7 +10,7 @@ public class HUDCanvas : MonoBehaviour
 {
     // Managers
     public GameManager _gameManager;
-    public TileManager _tileManager;
+    public TileController _tileManager;
 
     public static HUDCanvas Instance { get; private set; }
 
@@ -73,7 +73,7 @@ public class HUDCanvas : MonoBehaviour
     public void Init()
     {
         _gameManager = GameManager.Instance;
-        _tileManager = TileManager.Instance;
+        _tileManager = TileController.Instance;
 
         gameSpeed2xBtn.gameObject.SetActive(false);
         gameSpeed3xBtn.gameObject.SetActive(false);
@@ -155,14 +155,14 @@ public class HUDCanvas : MonoBehaviour
     // PathfindereButton
     public void SetPathfinder()
     {
-        _gameManager._tileManager.ShowConnectedPath();
+        GameManager.Instance._tileController.ShowConnectedPath();
     }
 
     // WaveStartButton
     public void StartWave()
     { 
         TurnOffPathfinder();
-        _gameManager._waveManager.StartWave();
+        GameManager.Instance._waveController.StartWave();
 
     }
 

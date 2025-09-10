@@ -42,7 +42,7 @@ public class GameResult : MonoBehaviour
 
     public void OpenWindow(bool isWin)
     {
-        rewardGold = WaveManager.Instance.rewardGold;
+        rewardGold = GameManager.Instance._waveController.rewardGold;
         ResultText(isWin);
         rewardAmountText.text = $"{rewardGold}";
         
