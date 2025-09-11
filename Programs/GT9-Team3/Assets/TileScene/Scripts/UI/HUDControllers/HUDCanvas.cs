@@ -4,14 +4,18 @@ using System.Resources;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using static AdsManager;
 
 public class HUDCanvas : MonoBehaviour
 {
     // Managers
     public GameManager _gameManager;
-    public TileManager _tileManager;
+    public TileController _tileManager;
 
     public static HUDCanvas Instance { get; private set; }
+
+    // Object Data
+    private bool isTripleSpeedUnlocked = false;
 
     // StageInfoHUD
     public HUDStageInfo _hudStageInfo;
@@ -31,7 +35,8 @@ public class HUDCanvas : MonoBehaviour
     // GameSpeed
     [SerializeField] Button gameSpeed1xBtn;
     [SerializeField] Button gameSpeed2xBtn;
-    [SerializeField] Button gameSpeed5xBtn;
+    [SerializeField] Button gameSpeed3xBtn;
+    //[SerializeField] Button gameSpeed5xBtn;
     // GamePause
     [SerializeField] Button pauseBtn;
 
@@ -65,13 +70,14 @@ public class HUDCanvas : MonoBehaviour
         _hudMessageUI = GetComponentInChildren<HUDMessageUI>();
     }
 
-    private void Start()
+    public void Init()
     {
         _gameManager = GameManager.Instance;
-        _tileManager = TileManager.Instance;
+        _tileManager = TileController.Instance;
 
         gameSpeed2xBtn.gameObject.SetActive(false);
-        gameSpeed5xBtn.gameObject.SetActive(false);
+        gameSpeed3xBtn.gameObject.SetActive(false);
+        //gameSpeed5xBtn.gameObject.SetActive(false);
 
         _hudStageInfo = GetComponentInChildren<HUDStageInfo>();
         _hudWaveInfo = GetComponentInChildren<HUDWaveInfo>();
@@ -149,14 +155,20 @@ public class HUDCanvas : MonoBehaviour
     // PathfindereButton
     public void SetPathfinder()
     {
-        _gameManager._tileManager.ShowConnectedPath();
+        GameManager.Instance._tileController.ShowConnectedPath();
+
+        // [사운드효과]: 패스파인더
+        Debug.LogWarning("[Sound]: Pathfinder Sound");
     }
 
     // WaveStartButton
     public void StartWave()
     { 
         TurnOffPathfinder();
-        _gameManager._waveManager.StartWave();
+        GameManager.Instance._waveController.StartWave();
+
+        // [사운드효과]: 버튼 클릭
+        Debug.LogWarning("[Sound]: Button Click Sound");
 
     }
 
@@ -165,26 +177,72 @@ public class HUDCanvas : MonoBehaviour
     {
         gameSpeed1xBtn.gameObject.SetActive(false);
         gameSpeed2xBtn.gameObject.SetActive(true);
-        gameSpeed5xBtn.gameObject.SetActive(false);
+        gameSpeed3xBtn.gameObject.SetActive(false);
+        //gameSpeed5xBtn.gameObject.SetActive(false);
         _gameManager.GameSpeed2x();
-        
+
+        // [사운드효과]: 버튼 클릭
+        Debug.LogWarning("[Sound]: Button Click Sound");
     }
 
+    //public void SetGameSpeed2x()
+    //{
+    //    gameSpeed1xBtn.gameObject.SetActive(false);
+    //    gameSpeed2xBtn.gameObject.SetActive(false);
+    //    gameSpeed5xBtn.gameObject.SetActive(true);
+    //    _gameManager.GameSpeed3x();
+        
+    //}
     public void SetGameSpeed2x()
+    {
+        if (isTripleSpeedUnlocked)
+        {
+            ActivateTripleSpeed();
+        }
+        else
+        {
+            AdsManager.Instance.ShowRewardedAd(RewardAdType.SpeedBoost, () =>
+            {
+                Debug.Log("광고 시청 완료 -> 3배속");
+                isTripleSpeedUnlocked = true;
+                _gameManager.PauseGame();
+            },
+            () =>
+            {
+                Debug.Log("광고 닫힘 → 게임 재개");
+
+                StartCoroutine(ApplySpeedBoostDelayed());
+            });
+        }
+    }
+    private IEnumerator ApplySpeedBoostDelayed()
+    {
+        yield return new WaitForEndOfFrame(); // 또는 yield return null;
+        ActivateTripleSpeed(); // 광고 닫힘 이후에 확실히 적용
+    }
+
+    private void ActivateTripleSpeed()
     {
         gameSpeed1xBtn.gameObject.SetActive(false);
         gameSpeed2xBtn.gameObject.SetActive(false);
-        gameSpeed5xBtn.gameObject.SetActive(true);
-        _gameManager.GameSpeed5x();
-        
+        gameSpeed3xBtn.gameObject.SetActive(true);
+
+        _gameManager.GameSpeed3x();
+
+        // [사운드효과]: 버튼 클릭
+        Debug.LogWarning("[Sound]: Button Click Sound");
     }
 
-    public void SetGameSpeed5x()
+    public void SetGameSpeed3x()
     {
         gameSpeed1xBtn.gameObject.SetActive(true);
         gameSpeed2xBtn.gameObject.SetActive(false);
-        gameSpeed5xBtn.gameObject.SetActive(false);
+        gameSpeed3xBtn.gameObject.SetActive(false);
+        //gameSpeed5xBtn.gameObject.SetActive(false);
         _gameManager.ResumeGame();
+
+        // [사운드효과]: 버튼 클릭
+        Debug.LogWarning("[Sound]: Button Click Sound");
     }
     // GamePause
     public void SetGamePause()
@@ -192,7 +250,11 @@ public class HUDCanvas : MonoBehaviour
         _gameManager.PauseGame();
         gameSpeed1xBtn.gameObject.SetActive(false);
         gameSpeed2xBtn.gameObject.SetActive(false);
-        gameSpeed5xBtn.gameObject.SetActive(true);
+        gameSpeed3xBtn.gameObject.SetActive(true);
+        //gameSpeed5xBtn.gameObject.SetActive(true);
+
+        // [사운드효과]: 버튼 클릭
+        Debug.LogWarning("[Sound]: Button Click Sound");
 
         //SetGameSpeed5x();
         _hudMessageUI.PopupUIShow(
@@ -201,7 +263,9 @@ public class HUDCanvas : MonoBehaviour
             "스테이지를 포기하면 현재까지 얻은 재화를 얻을 수 없습니다.",
             "로비로 나가기",
             "게임으로 돌아가기",
-            () => { SceneLoader.Instance.LoadSceneByIndex(0); },
-            () => { SetGameSpeed5x(); });
+            () => {
+                _gameManager.ResumeGame();
+                SceneLoader.Instance.LoadSceneByIndex(0); },
+            () => { SetGameSpeed3x(); });
     }
 }

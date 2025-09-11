@@ -4,13 +4,17 @@ using JetBrains.Annotations;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using static AdsManager;
 
 public class GameResult : MonoBehaviour
 {
     private HUDCanvas _hudCanvas;
 
+    [SerializeField] GameObject resultVictory;
+    [SerializeField] GameObject resultDefeat;
     [SerializeField] TextMeshProUGUI resultText;
     [SerializeField] TextMeshProUGUI staminaAmountText;
+    [SerializeField] GameObject hudStaminaGo;
     [SerializeField] Button staminaShopBtn;
     [SerializeField] TextMeshProUGUI worldStageText;
     [SerializeField] TextMeshProUGUI rewardAmountText;
@@ -34,11 +38,14 @@ public class GameResult : MonoBehaviour
     public void CloseWindow()
     {
         gameObject.SetActive(false);
+
+        // [사운드효과]: 버튼 클릭
+        Debug.LogWarning("[Sound]: Button Click Sound");
     }
 
     public void OpenWindow(bool isWin)
     {
-        rewardGold = WaveManager.Instance.rewardGold;
+        rewardGold = GameManager.Instance._waveController.rewardGold;
         ResultText(isWin);
         rewardAmountText.text = $"{rewardGold}";
         
@@ -51,11 +58,17 @@ public class GameResult : MonoBehaviour
     {
         if (isWin)
         {
-            resultText.text = "Victory";
+            resultVictory.SetActive(true);
+            resultDefeat.SetActive(false);
+            restartGameBtn.gameObject.SetActive(false);
+            hudStaminaGo.SetActive(false);
         }
         else
         {
-            resultText.text = "Defeat";
+            resultVictory.SetActive(false);
+            resultDefeat.SetActive(true);
+            restartGameBtn.gameObject.SetActive(true);
+            hudStaminaGo.SetActive(true);
         }
     }
 
@@ -67,27 +80,38 @@ public class GameResult : MonoBehaviour
     public void GoShop()
     {
         Debug.Log("Go Shop");
+
+        // [사운드효과]: 버튼 클릭
+        Debug.LogWarning("[Sound]: Button Click Sound");
+
     }
 
     public void UpdateWorldStageText()
     {
-        worldStageText.text = $"WORLD {gameWorldLevel} - STAGE {gameStageLevel}";
+        worldStageText.text = $"월드 {gameWorldLevel} - 스테이지 {gameStageLevel}";
     }
 
     public void GameExitButton()
     {
         Debug.Log("GameExit to go MapUI");
 
+        // [사운드효과]: 버튼 클릭
+        Debug.LogWarning("[Sound]: Button Click Sound");
+
         CloseWindow();
         ResourceManager.Instance.Earn(ResourceType.Gold, rewardGold);
         Debug.Log($"{ResourceManager.Instance.GetAmount(ResourceType.Gold)}");
         SceneLoader.Instance.LoadSceneByName("Map UI");
-        _hudCanvas.SetGameSpeed5x();
+        _hudCanvas.SetGameSpeed3x();
     }
 
     public void GameRetry()
     {
+
         Debug.Log("GameRetry");
+
+        // [사운드효과]: 버튼 클릭
+        Debug.LogWarning("[Sound]: Button Click Sound");
 
         if (ResourceManager.Instance.CanAfford(ResourceType.Mana, 5))
         {
@@ -99,7 +123,7 @@ public class GameResult : MonoBehaviour
             ResourceManager.Instance.Earn(ResourceType.Gold, rewardGold);
             Debug.Log($"{ResourceManager.Instance.GetAmount(ResourceType.Gold)}");
             DataManager.Instance.RestartStage(DataManager.Instance.stageId);
-            _hudCanvas.SetGameSpeed5x();
+            _hudCanvas.SetGameSpeed3x();
             CloseWindow();
             restartGameBtn.enabled = true;
         }
@@ -112,13 +136,24 @@ public class GameResult : MonoBehaviour
     public void GameReward2x()
     {
         Debug.Log("Reward2x to go MapUI");
+
+        // [사운드효과]: 버튼 클릭
+        Debug.LogWarning("[Sound]: Button Click Sound");
+
         // 광고 시청
+        AdsManager.Instance.ShowRewardedAd(RewardAdType.Result2x, () =>
+        {
+            CloseWindow();
 
+            // 광고 시청 성공 시 2배 보상
+            ResourceManager.Instance.Earn(ResourceType.Gold, rewardGold * 2);
+            Debug.Log($"{ResourceManager.Instance.GetAmount(ResourceType.Gold)}");
 
-        CloseWindow();
-        ResourceManager.Instance.Earn(ResourceType.Gold, rewardGold * 2);
-        Debug.Log($"{ResourceManager.Instance.GetAmount(ResourceType.Gold)}");
-        _hudCanvas.SetGameSpeed5x();
-        SceneLoader.Instance.LoadSceneByName("Map UI");
+        },
+        () => {
+            _hudCanvas._gameManager.ResumeGame();
+
+            SceneLoader.Instance.LoadSceneByName("Map UI");
+        });
     }
 }

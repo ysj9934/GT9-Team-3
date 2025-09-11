@@ -102,18 +102,18 @@ public class WaveDataManager : MonoBehaviour
         //    return;
         //}
 
-        //if (TileManager.Instance == null || TileManager.Instance.startTile == null)
+        //if (TileController.Instance == null || TileController.Instance.startTile == null)
         //{
-        //    Debug.LogWarning("TileManager 또는 startTile이 비어있습니다. 스폰 불가");
+        //    Debug.LogWarning("TileController 또는 startTile이 비어있습니다. 스폰 불가");
         //    return;
         //}
 
-        //Transform spawnPoint = TileManager.Instance.startTile.transform;
+        //Transform spawnPoint = TileController.Instance.startTile.transform;
         //Instantiate(prefab, spawnPoint.position, spawnPoint.rotation);
         //Debug.Log($"스포너에서 적 {enemyID} 생성");
 
-        path = TileManager.Instance.path;
-        Transform spawnPoint = TileManager.Instance.startTile.transform;
+        path = TileController.Instance.path;
+        Transform spawnPoint = TileController.Instance.startTile.transform;
         GameObject go = Instantiate(enemyPrefabs[Random.Range(0, enemyPrefabs.Length)], spawnPoint.position, spawnPoint.rotation);
         Enemy enemy = go.GetComponent<Enemy>();
         //enemy.SetPath(path);

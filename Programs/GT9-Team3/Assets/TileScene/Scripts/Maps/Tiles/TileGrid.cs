@@ -7,7 +7,7 @@ using UnityEngine;
 public class TileGrid : MonoBehaviour
 {
     // Managers
-    public TileManager _tileManager;
+    public TileController _tileManager;
 
     // Tile Component
     [SerializeField] public TileCategory tileCategory;
@@ -25,7 +25,7 @@ public class TileGrid : MonoBehaviour
 
     private void Awake()
     {
-        _tileManager = TileManager.Instance;
+        _tileManager = TileController.Instance;
 
         IsValidate();
     }

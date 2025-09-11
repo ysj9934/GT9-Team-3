@@ -276,7 +276,7 @@ public class TileInfo : TileData
                     if (isTower)
                     {
                         Tower1 tower = sr.GetComponent<Tower1>();
-                        tower.towerdata.attackSpeed *= 80 / 100;
+                        tower.towerdata.attackSpeed *= 0.8f;
                         StartCoroutine(FadeToBlue(sr, 3f));
                     }
 
@@ -289,7 +289,7 @@ public class TileInfo : TileData
     private IEnumerator FadeToBlue(SpriteRenderer sr, float duration)
     {
         Color startColor = sr.color;
-        Color targetColor = Color.red;
+        Color targetColor = Color.blue;
         float timer = 0f;
 
         while (timer < duration)

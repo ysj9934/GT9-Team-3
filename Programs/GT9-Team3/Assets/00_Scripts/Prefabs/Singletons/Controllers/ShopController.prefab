@@ -1,0 +1,70 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &835020490654804451
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7005869462102339907}
+  - component: {fileID: 631051749206194994}
+  m_Layer: 0
+  m_Name: ShopController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7005869462102339907
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 835020490654804451}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &631051749206194994
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 835020490654804451}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28be645a7044bbf4dbb7db62278e73a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tilePrefabsCorner:
+  - {fileID: 5086349439914438355, guid: cda3e503193859346b80aec839c35cc7, type: 3}
+  - {fileID: 5086349439914438355, guid: c8424c02b60def540bb4fb35447e9c7a, type: 3}
+  - {fileID: 5086349439914438355, guid: f3ec8652ac8bba24e9d50a9751948296, type: 3}
+  - {fileID: 5086349439914438355, guid: 4a311f167af27d341a82ddc16f5ad2c3, type: 3}
+  - {fileID: 5086349439914438355, guid: 20554ec389c3aa94a887f15150cd90ae, type: 3}
+  tilePrefabsCross:
+  - {fileID: 5912126955129273633, guid: 41110092ba9b2254ba9b3fd60d4513f2, type: 3}
+  - {fileID: 5912126955129273633, guid: 0c976f9f8e648f7429180efb979a8d5f, type: 3}
+  - {fileID: 5912126955129273633, guid: e55e5d348ec9e384f8423dad387101cc, type: 3}
+  - {fileID: 5912126955129273633, guid: 933c8b1975aae8c4e8a3ad4549569485, type: 3}
+  tilePrefabsStraight:
+  - {fileID: 2264427235679468497, guid: 94c8ff3c752c7c14b8ed1524e0d9cefa, type: 3}
+  - {fileID: 2264427235679468497, guid: cb2d824ebd78f0243ab69051a38601ae, type: 3}
+  - {fileID: 2264427235679468497, guid: 9faf82ae07958ad409588f39ab57ec88, type: 3}
+  - {fileID: 2264427235679468497, guid: d6731a44895e83f4dbc54305a597941e, type: 3}
+  - {fileID: 2264427235679468497, guid: 83af2f7d2773e9a42ba5a7abc117f11f, type: 3}
+  tilePrefabsTShape:
+  - {fileID: 8155511771961487980, guid: a9beebfe201d46845a3a38a04d53358b, type: 3}
+  - {fileID: 8155511771961487980, guid: 24eb01f8c5124504cab3af6f53ec007e, type: 3}
+  - {fileID: 8155511771961487980, guid: ac13760c11fffb449be6b3250b071d01, type: 3}
+  - {fileID: 8155511771961487980, guid: b37e4dc0c7e9482409615c675ff85b9c, type: 3}
+  - {fileID: 8155511771961487980, guid: 1cdc5999dacfac443a2422a6bbd8ddc2, type: 3}
+  inventoryContent: {fileID: 0}

@@ -1,19 +1,15 @@
-using Cinemachine;
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class TileMove : MonoBehaviour
 {
     // Managers
-    private TileManager _tileManager;
+    private TileController _tileManager;
     private HUDCanvas _hudCanvas;
 
 
     // Object Structure
-    private Camera _camera;
+    //private Camera _camera;
     private TileData _tileData;
     private TileInfo _tileInfo;
     private Collider2D _collider;
@@ -34,9 +30,9 @@ public class TileMove : MonoBehaviour
 
     private void Awake()
     {
-        _tileManager = TileManager.Instance;
+        _tileManager = TileController.Instance;
         _hudCanvas = HUDCanvas.Instance;
-        _camera = Camera.main;
+        //_camera = Camera.main;
 
         _tileData = GetComponent<TileData>();
         _tileInfo = GetComponent<TileInfo>();
@@ -346,6 +342,9 @@ public class TileMove : MonoBehaviour
         isPressing = false;
         pressTime = 0;
         UpdateGridPosition();
+
+        // [사운드효과]: 타일 배치
+        Debug.LogWarning("[Sound]: Tile Pos Sound");
     }
     
     private void UpdateGridPosition()
