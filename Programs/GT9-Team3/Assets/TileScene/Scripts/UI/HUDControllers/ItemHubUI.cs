@@ -194,6 +194,8 @@ public class ItemHubUI : MonoBehaviour
 
     public void PurchaseTile()
     {
+        ShopController _shopController = GameManager.Instance._shopController;
+
         if (currentSelectedShopItem == null)
         { 
             DisselectedItem();
@@ -210,16 +212,16 @@ public class ItemHubUI : MonoBehaviour
         switch (tileShape)
         {
             case TileShape.Corner:
-                _hudCanvas._tileManager._shopController.CreateCornerTile();
+                _shopController.CreateCornerTile();
                 break;
             case TileShape.TShape:
-                _hudCanvas._tileManager._shopController.CreateTShapeTile();
+                _shopController.CreateTShapeTile();
                 break;
             case TileShape.Straight:
-                _hudCanvas._tileManager._shopController.CreateStraightTile();
+                _shopController.CreateStraightTile();
                 break;
             case TileShape.Cross:
-                _hudCanvas._tileManager._shopController.CreateCrossTile();
+                _shopController.CreateCrossTile();
                 break;
         }
 
@@ -228,6 +230,12 @@ public class ItemHubUI : MonoBehaviour
         {
             currentSelectedShopItem.Disabled();
         }
+
+        _hudCanvas._hudMessageUI.FloatingUIShow(
+            "[타일 구매 완료]",
+            "타일을 구매 완료하셨습니다.", 
+            Color.cyan
+            );
 
         currentSelectedShopItem.UpdateItemCount();
     }

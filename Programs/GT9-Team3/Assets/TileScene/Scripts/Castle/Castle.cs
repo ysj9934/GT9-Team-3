@@ -6,9 +6,6 @@ using UnityEngine.UI;
 
 public class Castle : MonoBehaviour
 {
-    public GameManager _gameManager;
-    public HUDCanvas _hudCanvas;
-
     public int currentHealth;
     public int maxHealth = 100;
 
@@ -16,31 +13,8 @@ public class Castle : MonoBehaviour
 
     private void Awake()
     {
-        _gameManager = GameManager.Instance;
-        _hudCanvas = _gameManager._hudCanvas;
-
-        if (IsValidate())
-        {
-            GetCastleData();
-            ResetButton();
-        }
-    }
-    private bool IsValidate()
-    {
-        if (_gameManager == null)
-        {
-            ValidateMessage(_gameManager.name);
-            return false;
-        }
-        else if (_hudCanvas == null)
-        {
-            ValidateMessage(_hudCanvas.name);
-            return false;
-        }
-        else
-        {
-            return true;
-        }
+        GetCastleData();
+        ResetButton();
     }
 
     private void ValidateMessage(string obj)
@@ -50,13 +24,13 @@ public class Castle : MonoBehaviour
 
     public void GetCastleData()
     {
-        _hudCanvas._hudResource.SetCastleData(this);
+        HUDCanvas.Instance._hudResource.SetCastleData(this);
     }
 
     public void ResetButton()
     {
         currentHealth = maxHealth;
-        _hudCanvas._hudResource.UpdateHPBar();
+        HUDCanvas.Instance._hudResource.UpdateHPBar();
         isDead = false;
     }
 
@@ -66,7 +40,7 @@ public class Castle : MonoBehaviour
 
         currentHealth -= damage;
 
-        _hudCanvas._hudResource.UpdateHPBar();
+        HUDCanvas.Instance._hudResource.UpdateHPBar();
 
         if (currentHealth <= 0)
         {
@@ -78,14 +52,7 @@ public class Castle : MonoBehaviour
     {
         isDead = true;
 
-        _gameManager._waveManager.StopWave();
-
-        Debug.Log("GameOver");
-
-        _gameManager.PauseGame();
-        _gameManager.isGameOver = true;
-        
-        HUDCanvas.Instance._hudResultPanel._gameDefeatPanel.OpenWindow();
+        GameManager.Instance.GameDefeat();
     }
 
 }

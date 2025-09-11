@@ -7,40 +7,53 @@ using UnityEngine.UI;
 public class HUDWaveInfo : MonoBehaviour
 {
     // Object Structure
-    [SerializeField] public Slider waveProgressBar;
+    [SerializeField] public Slider waveProgressBar01;
+    [SerializeField] public Slider waveProgressBar02;
+    [SerializeField] public Slider waveProgressBar03;
     [SerializeField] public TextMeshProUGUI enemyCountText;
 
     // Object Data
     private float currentWavePoint = 0;
-    private readonly float totalRoundPoint = 90;
+    private float totalWavePoint = 0;
     private int enemyleftCount = 0;
-    private int enemyMaxCount = 30;
+    private int enemyMaxCount = 0;
 
     private void Awake()
     {
-        UpdateWaveProgress();
-        ResetEnemyCount();
     }
 
 
     // 적을 소환할 때마다 호출되어 ProgressBar를 업데이트
-    private void UpdateWaveProgress()
+    private void UpdateWaveProgress(int index)
     {
-        waveProgressBar.value = currentWavePoint / totalRoundPoint;
-        Debug.LogWarning($"waveProgressBar: {waveProgressBar.value} / currentWavePoint: {currentWavePoint} / totalRounddPoint: {totalRoundPoint}");
+        switch (index)
+        {
+            case 1:
+                waveProgressBar01.value = currentWavePoint / totalWavePoint;
+                Debug.LogWarning($"waveProgressBar: {waveProgressBar01.value} / currentWavePoint: {currentWavePoint} / totalRounddPoint: {totalWavePoint}");
+                break;
+            case 2:
+                waveProgressBar02.value = currentWavePoint / totalWavePoint;
+                Debug.LogWarning($"waveProgressBar: {waveProgressBar02.value} / currentWavePoint: {currentWavePoint} / totalRounddPoint: {totalWavePoint}");
+                break;
+            case 3:
+                waveProgressBar03.value = currentWavePoint / totalWavePoint;
+                Debug.LogWarning($"waveProgressBar: {waveProgressBar03.value} / currentWavePoint: {currentWavePoint} / totalRounddPoint: {totalWavePoint}");
+                break;
+        }
     }
 
-    public void UpdateWaveCount()
+    public void UpdateWaveCount(int index)
     {
         currentWavePoint++;
-        UpdateWaveProgress();
+        UpdateWaveProgress(index);
     }
 
-    // 라운드가 종료되면 0으로 초기화
-    public void ResetWavePoint()
+    // Wave세팅시 최대 갯수 초기화
+    public void ResetWavePoint(int totalWavePoint)
     {
+        this.totalWavePoint = totalWavePoint;
         currentWavePoint = 0;
-        UpdateWaveProgress();
     }
 
     // 적을 죽일 때마다 호출되어 CountText를 업데이트
@@ -56,10 +69,19 @@ public class HUDWaveInfo : MonoBehaviour
         UpdateEnemyCountText();
     }
 
+
     // 웨이브가 종료되면 30으로 초기화
-    public void ResetEnemyCount()
+    public void ResetEnemyCount(int enemyMaxCount)
     {
-        enemyleftCount = enemyMaxCount;
+        this.enemyMaxCount = enemyMaxCount;
+        enemyleftCount = this.enemyMaxCount;
         UpdateEnemyCountText();
+    }
+
+    public void ResetAllWavePoint()
+    {
+        waveProgressBar01.value = 0;
+        waveProgressBar02.value = 0;
+        waveProgressBar03.value = 0;
     }
 }

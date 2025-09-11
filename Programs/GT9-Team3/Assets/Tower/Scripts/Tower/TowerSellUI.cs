@@ -123,6 +123,9 @@ public class TowerSellUI : MonoBehaviour
 
         panel.SetActive(false);
 
+        // [사운드효과]: 타워 철거
+        Debug.LogWarning("[Sound]: Tower Selling Sound");
+
         //if (currentTower != null)
         //{
         //    Debug.Log("타워 제거 및 골드 환급");

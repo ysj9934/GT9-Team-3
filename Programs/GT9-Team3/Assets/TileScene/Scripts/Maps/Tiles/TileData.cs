@@ -14,7 +14,7 @@ using UnityEngine.Tilemaps;
 public class TileData : MonoBehaviour
 {
     // Managers
-    public TileManager _tileManager;
+    public TileController _tileManager;
 
     // Tile Component
     public TileUI _tileUI;
@@ -47,7 +47,7 @@ public class TileData : MonoBehaviour
 
     protected virtual void Awake()
     {
-        _tileManager = TileManager.Instance;
+        _tileManager = TileController.Instance;
     }
 
     protected virtual void Start()

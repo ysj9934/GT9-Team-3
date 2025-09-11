@@ -99,6 +99,9 @@ public class TowerBuildUI : MonoBehaviour
 
         Hide();
 
+        // [사운드효과]: 타워 설치
+        Debug.LogWarning("[Sound]: Tower Install Sound");
+
         //HUDCanvas.Instance.upgradeUI.SetTargetTower(newTower);
         //HUDCanvas.Instance.sellUI.Refresh(newTower);
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using static AdsManager;
 
 public class GameDefeat : MonoBehaviour
 {
@@ -34,6 +35,9 @@ public class GameDefeat : MonoBehaviour
     { 
         gameObject.SetActive(false);
 
+        // [사운드효과]: 버튼 클릭
+        Debug.LogWarning("[Sound]: Button Click Sound");
+
         // game result 로 이동
         _hudCanvas._hudResultPanel._gameResultPanel.OpenWindow(false);
     }
@@ -59,6 +63,10 @@ public class GameDefeat : MonoBehaviour
     public void GoShop()
     {
         Debug.Log("Go Shop");
+
+        // [사운드효과]: 버튼 클릭
+        Debug.LogWarning("[Sound]: Button Click Sound");
+
         // Go Crystal Shop
     }
 
@@ -69,6 +77,27 @@ public class GameDefeat : MonoBehaviour
     public void ReviveToADv()
     {
         Debug.Log("Adv revive");
+
+        // [사운드효과]: 버튼 클릭
+        Debug.LogWarning("[Sound]: Button Click Sound");
+
+        // 광고 시청
+        AdsManager.Instance.ShowRewardedAd(RewardAdType.Retry, () =>
+        {
+          
+            Debug.Log("광고 시청 완료 - 부활 처리");
+
+            // 패널 닫기
+            gameObject.SetActive(false);
+
+            // castle 체력 초기화
+
+            // 웨이브 다시 시작?
+
+            // 속도 초기화
+            HUDCanvas.Instance.SetGameSpeed3x();
+
+        });
     }
 
     /// <summary>
@@ -77,6 +106,9 @@ public class GameDefeat : MonoBehaviour
     /// </summary>
     public void ReviveToCry()
     {
+        // [사운드효과]: 버튼 클릭
+        Debug.LogWarning("[Sound]: Button Click Sound");
+
         Debug.Log("Cry revive");
 
         if (ResourceManager.Instance.CanAfford(ResourceType.Crystal, 50))
