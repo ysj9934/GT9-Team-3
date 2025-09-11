@@ -158,6 +158,7 @@ public class HUDCanvas : MonoBehaviour
         GameManager.Instance._tileController.ShowConnectedPath();
 
         // [사운드효과]: 패스파인더
+        SoundManager.Instance.Play("success_bell-6776", SoundType.UI, 1f);
         Debug.LogWarning("[Sound]: Pathfinder Sound");
     }
 
@@ -168,6 +169,7 @@ public class HUDCanvas : MonoBehaviour
         GameManager.Instance._waveController.StartWave();
 
         // [사운드효과]: 버튼 클릭
+        SoundManager.Instance.Play("minimal-pop-click-ui-14-198314", SoundType.UI, 1f);
         Debug.LogWarning("[Sound]: Button Click Sound");
 
     }
@@ -182,6 +184,7 @@ public class HUDCanvas : MonoBehaviour
         _gameManager.GameSpeed2x();
 
         // [사운드효과]: 버튼 클릭
+        SoundManager.Instance.Play("button-press-382713", SoundType.UI, 1f);
         Debug.LogWarning("[Sound]: Button Click Sound");
     }
 
@@ -230,6 +233,7 @@ public class HUDCanvas : MonoBehaviour
         _gameManager.GameSpeed3x();
 
         // [사운드효과]: 버튼 클릭
+        SoundManager.Instance.Play("button-press-382713", SoundType.UI, 1f);
         Debug.LogWarning("[Sound]: Button Click Sound");
     }
 
@@ -242,6 +246,7 @@ public class HUDCanvas : MonoBehaviour
         _gameManager.ResumeGame();
 
         // [사운드효과]: 버튼 클릭
+        SoundManager.Instance.Play("button-press-382713", SoundType.UI, 1f);
         Debug.LogWarning("[Sound]: Button Click Sound");
     }
     // GamePause
@@ -254,6 +259,7 @@ public class HUDCanvas : MonoBehaviour
         //gameSpeed5xBtn.gameObject.SetActive(true);
 
         // [사운드효과]: 버튼 클릭
+        SoundManager.Instance.Play("button-press-382713", SoundType.UI, 1f);
         Debug.LogWarning("[Sound]: Button Click Sound");
 
         //SetGameSpeed5x();

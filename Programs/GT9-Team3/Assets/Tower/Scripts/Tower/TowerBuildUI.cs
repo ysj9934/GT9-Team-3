@@ -100,6 +100,7 @@ public class TowerBuildUI : MonoBehaviour
         Hide();
 
         // [사운드효과]: 타워 설치
+        SoundManager.Instance.Play("stick-hitting-a-dreadlock-small-thud-83297", SoundType.SFX, 1f);
         Debug.LogWarning("[Sound]: Tower Install Sound");
 
         //HUDCanvas.Instance.upgradeUI.SetTargetTower(newTower);

@@ -248,6 +248,7 @@ public class GameManager : MonoBehaviour
         HUDCanvas.Instance._hudResultPanel._gameResultPanel.OpenWindow(true);
 
         // [사운드효과]: 게임 승리
+        SoundManager.Instance.Play("11l-victory_sound_with_t-1749487402950-357606", SoundType.UI, 1f);
         Debug.LogWarning("[Sound]: Game Victory Sound");
     }
 
@@ -262,6 +263,7 @@ public class GameManager : MonoBehaviour
 
         HUDCanvas.Instance._hudResultPanel._gameDefeatPanel.OpenWindow();
         // [사운드효과]: 게임 패배
+        SoundManager.Instance.Play("open-new-level-143027", SoundType.UI, 1f);
         Debug.LogWarning("[Sound]: Game Defeat Sound");
     }
 

@@ -124,6 +124,7 @@ public class TowerSellUI : MonoBehaviour
         panel.SetActive(false);
 
         // [사운드효과]: 타워 철거
+        SoundManager.Instance.Play("코인획득5", SoundType.SFX, 1f);
         Debug.LogWarning("[Sound]: Tower Selling Sound");
 
         //if (currentTower != null)
