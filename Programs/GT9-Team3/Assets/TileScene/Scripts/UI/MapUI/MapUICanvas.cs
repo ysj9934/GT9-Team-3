@@ -92,6 +92,14 @@ public class MapUICanvas : MonoBehaviour
 
     public void EnterHardMode()
     {
+        if (ResourceManager.Instance == null)
+        {
+            Debug.Log("ResourceManager.Instance is null");
+            return;
+        }
+
+        float currentMana = ResourceManager.Instance.GetAmount(ResourceType.Mana);
+
         if (ResourceManager.Instance.CanAfford(ResourceType.Mana, 10))
         {
             ResourceManager.Instance.Spend(ResourceType.Mana, 10);
@@ -100,19 +108,7 @@ public class MapUICanvas : MonoBehaviour
         }
         else
         {
-            Debug.Log("Not enought Stamina");
-        }
-    }
-
-    public void giveStageMode(int stageID)
-    {
-        if (_resourceManager.CanAfford(ResourceType.Mana, 5))
-        {
-            DataManager.Instance.SelectedStage(stageID);
-        }
-        else
-        {
-            Debug.Log("error");
+            Debug.Log("스태미너 부족"); // 5. else 확인
         }
     }
 }
