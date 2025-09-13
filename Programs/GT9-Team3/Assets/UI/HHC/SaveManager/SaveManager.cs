@@ -29,8 +29,16 @@ public class SaveManager : MonoBehaviour
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
-            savePath = Application.persistentDataPath + "/save.json";
-            //savePath = Path.Combine(Application.dataPath, "Save/save.json"); 에디터용
+
+            //savePath = Application.persistentDataPath + "/save.json";
+            //플랫폼에 따라 OS에서 제공하는 앱 전용 저장소 경로
+            //읽기/쓰기 모두 가능하고, 앱 삭제 전까지 보존됨
+            //APK(안드로이드)에서 실행 → 반드시 Application.persistentDataPath 사용해야 함
+
+            // 저장 경로를 Assets/Resources/Save 폴더로 지정
+            savePath = Path.Combine(Application.dataPath, "Resources/Save/save.json");
+            //Android 빌드 후 APK 내부 Assets 폴더를 가리키는데, 읽기 전용입니다.
+
             Load();
             Debug.Log("Save Path: " + savePath);
             Debug.Log(data.gold);

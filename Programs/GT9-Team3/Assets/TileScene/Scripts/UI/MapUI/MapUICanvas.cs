@@ -9,8 +9,8 @@ public class MapUICanvas : MonoBehaviour
 {
     public ResourceManager _resourceManager;
 
-    [SerializeField] private Button Startbutton;
-    [SerializeField] private TextMeshProUGUI worldStageInfoText;
+    //[SerializeField] private Button Startbutton;
+    //[SerializeField] private TextMeshProUGUI worldStageInfoText;
     [SerializeField] private TextMeshProUGUI staminaHoldingAmountText;
     [SerializeField] private TextMeshProUGUI goldHoldingAmountText;
     [SerializeField] private TextMeshProUGUI diaHoldingAmountText;
@@ -32,13 +32,9 @@ public class MapUICanvas : MonoBehaviour
         if (_resourceManager.CanAfford(ResourceType.Mana, 5))
         {
             _resourceManager.Spend(ResourceType.Mana, 5);
+            Debug.Log("Mana spent 5");
             SceneLoader.Instance.LoadSceneByIndex(1);
         }
-        else
-        {
-            Debug.Log("Not enought Stamina");
-        }
-            
     }
 
     //public void TextWorldStageInfo(int stageId)
@@ -112,7 +108,6 @@ public class MapUICanvas : MonoBehaviour
     {
         if (_resourceManager.CanAfford(ResourceType.Mana, 5))
         {
-            _resourceManager.Spend(ResourceType.Mana, 5);
             DataManager.Instance.SelectedStage(stageID);
         }
         else
