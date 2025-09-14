@@ -6,6 +6,7 @@ using System.Collections.Generic;   // List<> 사용
 [System.Serializable]
 public class SaveData
 {
+    [ReadOnly] public int mana;  
     [ReadOnly] public int gold;
     [ReadOnly] public List<StageClearStar> stageClearStars = new List<StageClearStar>();  // Stage_ID별 ClearStar 저장
 }
@@ -73,6 +74,7 @@ public class SaveManager : MonoBehaviour
         }
         else
         {
+            data.mana = 0;
             data.gold = 0; // 저장 파일이 없으면 기본값 0 설정
         }
     }
@@ -97,6 +99,15 @@ public class SaveManager : MonoBehaviour
         var existing = data.stageClearStars.Find(s => s.stageID == stageID);
         if (existing != null) return existing.clearStar;
         return ClearStar.One; // 기본값
+    }
+
+    private void OnApplicationPause(bool pause)
+    {
+        if (pause)
+        {
+            Debug.Log("App Paused - Saving data");
+            Save();
+        }
     }
 
     private void OnApplicationQuit()

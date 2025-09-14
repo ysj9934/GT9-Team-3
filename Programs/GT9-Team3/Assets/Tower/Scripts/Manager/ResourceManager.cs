@@ -26,7 +26,7 @@ public class ResourceManager : MonoBehaviour
 
         Add(ResourceType.Tilepiece, 5000);
         //Add(ResourceType.Crystal, 100);
-        Add(ResourceType.Mana, 50);
+        //Add(ResourceType.Mana, 50);
     }
 
     void Start()
@@ -34,6 +34,7 @@ public class ResourceManager : MonoBehaviour
         if (SaveManager.Instance != null)
         {
             resources[ResourceType.Gold] = SaveManager.Instance.data.gold;
+            resources[ResourceType.Mana] = SaveManager.Instance.data.mana;
         }
     }
 
@@ -53,7 +54,20 @@ public class ResourceManager : MonoBehaviour
     public void Spend(ResourceType type, float amount)
     {
         if (CanAfford(type, amount))
+        {
             resources[type] -= amount;
+
+            if (type == ResourceType.Gold)
+            {
+                SaveManager.Instance.data.gold = (int)resources[type];
+                SaveManager.Instance.Save();
+            }
+            else if (type == ResourceType.Mana)
+            {
+                SaveManager.Instance.data.mana = (int)resources[type];
+                SaveManager.Instance.Save();
+            }
+        }
     }
 
     public void Add(ResourceType type, float amount)
@@ -79,6 +93,10 @@ public class ResourceManager : MonoBehaviour
             SaveManager.Instance.data.gold += (int)amount;
             SaveManager.Instance.Save();
         }
+        else if (type == ResourceType.Mana)
+        {
+            SaveManager.Instance.data.mana = (int)resources[type]; // 갱신
+            SaveManager.Instance.Save();
+        }
     }
-
 }

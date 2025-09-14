@@ -142,7 +142,7 @@ public class VerticalSlide : MonoBehaviour
         UpdateArrow(nextIndex);
 
         Transform currentPanel = slideContainer.GetChild(nextIndex);
-        Debug.Log("Current panel: " + currentPanel.name);
+        Debug.Log("현재 패널 : " + currentPanel.name);
     }
 
     void UpdateArrow(int panelIndex)
