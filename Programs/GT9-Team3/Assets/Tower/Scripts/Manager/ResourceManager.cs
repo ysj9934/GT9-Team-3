@@ -8,6 +8,7 @@ public class ResourceManager : MonoBehaviour
     public static ResourceManager Instance { get; private set; }
 
     public Dictionary<ResourceType, float> resources = new Dictionary<ResourceType, float>();
+    public event Action<ResourceType, float> OnResourceChanged;
 
     void Awake()
     {
@@ -27,15 +28,23 @@ public class ResourceManager : MonoBehaviour
         Add(ResourceType.Tilepiece, 5000);
         //Add(ResourceType.Crystal, 100);
         //Add(ResourceType.Mana, 50);
-    }
 
-    void Start()
-    {
         if (SaveManager.Instance != null)
         {
             resources[ResourceType.Gold] = SaveManager.Instance.data.gold;
             resources[ResourceType.Mana] = SaveManager.Instance.data.mana;
+            resources[ResourceType.Crystal] = SaveManager.Instance.data.crystal;
+
+            // UI 초기값 반영
+            OnResourceChanged?.Invoke(ResourceType.Mana, resources[ResourceType.Mana]);
+            OnResourceChanged?.Invoke(ResourceType.Gold, resources[ResourceType.Gold]);
+            OnResourceChanged?.Invoke(ResourceType.Crystal, resources[ResourceType.Crystal]);
         }
+    }
+
+    void Start()
+    {
+
     }
 
     private void Initialize()
@@ -87,6 +96,8 @@ public class ResourceManager : MonoBehaviour
 
         resources[type] += amount;
         Debug.Log($"[자원] {type} +{amount} 획득, 현재: {resources[type]}");
+
+        OnResourceChanged?.Invoke(type, resources[type]); // 이벤트 호출
 
         if (type == ResourceType.Gold)
         {

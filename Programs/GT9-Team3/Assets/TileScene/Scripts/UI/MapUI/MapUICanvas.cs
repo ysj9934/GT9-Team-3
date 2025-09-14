@@ -18,13 +18,46 @@ public class MapUICanvas : MonoBehaviour
     [SerializeField] private Button goldAddButton;
     [SerializeField] private Button diaAddButton;
 
+    private void Awake()
+    {
+        //_resourceManager = ResourceManager.Instance;
+
+        //if (_resourceManager == null)
+        //    Debug.LogError("ResourceManager.Instance가 존재하지 않습니다!");
+    }
+
     private void Start()
     {
         _resourceManager = ResourceManager.Instance;
 
-        ShowStaminaAmount();
-        ShowGoldAmount();
-        ShowDiaAmount();
+        if (_resourceManager != null)
+        {
+            UpdateUI(ResourceType.Mana, _resourceManager.GetAmount(ResourceType.Mana));
+            UpdateUI(ResourceType.Gold, _resourceManager.GetAmount(ResourceType.Gold));
+            UpdateUI(ResourceType.Crystal, _resourceManager.GetAmount(ResourceType.Crystal));
+        }
+    }
+
+    private void OnEnable()
+    {
+        if (_resourceManager != null)
+            _resourceManager.OnResourceChanged += UpdateUI;
+    }
+
+    private void OnDisable()
+    {
+        if (_resourceManager != null)
+            _resourceManager.OnResourceChanged -= UpdateUI;
+    }
+
+    private void UpdateUI(ResourceType type, float value)
+    {
+        switch (type)
+        {
+            case ResourceType.Mana: ShowStaminaAmount(); break;
+            case ResourceType.Gold: ShowGoldAmount(); break;
+            case ResourceType.Crystal: ShowDiaAmount(); break;
+        }
     }
 
     public void StageStartButton()
@@ -67,6 +100,7 @@ public class MapUICanvas : MonoBehaviour
 
     public void AddStaminaAmount()
     {
+        if (_resourceManager == null) return; // 안전 장치
         Debug.Log("Stamiana Add");
 
         if (_resourceManager.GetAmount(ResourceType.Mana) < 99)

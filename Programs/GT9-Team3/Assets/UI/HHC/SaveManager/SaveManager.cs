@@ -8,6 +8,7 @@ public class SaveData
 {
     [ReadOnly] public int mana;  
     [ReadOnly] public int gold;
+    [ReadOnly] public int crystal;
     [ReadOnly] public List<StageClearStar> stageClearStars = new List<StageClearStar>();  // Stage_ID별 ClearStar 저장
 }
 
@@ -31,18 +32,16 @@ public class SaveManager : MonoBehaviour
             Instance = this;
             DontDestroyOnLoad(gameObject);
 
-            //savePath = Application.persistentDataPath + "/save.json";
+            savePath = Application.persistentDataPath + "/save.json";
             //플랫폼에 따라 OS에서 제공하는 앱 전용 저장소 경로
             //읽기/쓰기 모두 가능하고, 앱 삭제 전까지 보존됨
             //APK(안드로이드)에서 실행 → 반드시 Application.persistentDataPath 사용해야 함
 
-            // 저장 경로를 Assets/Resources/Save 폴더로 지정
-            savePath = Path.Combine(Application.dataPath, "Resources/Save/save.json");
+            //savePath = Path.Combine(Application.dataPath, "Resources/Save/save.json");
             //Android 빌드 후 APK 내부 Assets 폴더를 가리키는데, 읽기 전용입니다.
 
             Load();
-            Debug.Log("Save Path: " + savePath);
-            Debug.Log(data.gold);
+            Debug.Log("저장 경로: " + savePath);
         }
         else
         {
@@ -67,15 +66,23 @@ public class SaveManager : MonoBehaviour
 
     public void Load()
     {
+        Debug.Log("[SaveManager] Load() 호출됨");
+        Debug.Log("[SaveManager] 저장 경로 = " + savePath);
+
         if (File.Exists(savePath))
         {
             string json = File.ReadAllText(savePath);
             data = JsonUtility.FromJson<SaveData>(json);
+            Debug.Log("[SaveManager] mana = " + data.mana);
+            Debug.Log("[SaveManager] gold = " + data.gold);
+            Debug.Log("[SaveManager] crystal = " + data.crystal);
         }
         else
         {
             data.mana = 0;
             data.gold = 0; // 저장 파일이 없으면 기본값 0 설정
+            data.crystal = 0;
+            Debug.Log("[SaveManager] save.json 없음");
         }
     }
 
