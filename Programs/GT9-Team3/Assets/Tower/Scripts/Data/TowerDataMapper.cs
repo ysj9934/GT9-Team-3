@@ -28,6 +28,7 @@ public class TowerDataMapper
         so.towerID = row.key;
         so.innerName = row.Inner_Name;
         so.towerLevel = row.Tower_Grade;
+        so.attackRange = row.Attack_Range;
         so.useProjectile = row.Use_Projectile;
 
         so.targetOrder = BuildPriorityArray(row.Target_Order1, row.Target_Order2, row.Target_Order3, row.Target_Order4);

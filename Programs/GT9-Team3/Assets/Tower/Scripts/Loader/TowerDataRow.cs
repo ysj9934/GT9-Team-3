@@ -54,7 +54,7 @@ public class TowerDataRow
     /// <summary>
     /// Attack_Range
     /// </summary>
-    public int Attack_Range;
+    public float Attack_Range;
 
     /// <summary>
     /// Attack_Speed
