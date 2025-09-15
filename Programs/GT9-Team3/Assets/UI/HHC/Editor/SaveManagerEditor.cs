@@ -14,10 +14,10 @@ public class SaveManagerEditor : Editor
         EditorGUILayout.LabelField("Stage Clear Stars", EditorStyles.boldLabel);
         if (sm.data.stageClearStars != null)
         {
-            foreach (var stage in sm.data.stageClearStars)
+            foreach (var kvp in sm.data.stageClearStars)
             {
                 EditorGUILayout.LabelField(
-                    $"StageID: {stage.stageID}  Star: {stage.clearStar}");
+                    $"StageID: {kvp.Key}  Star: {kvp.Value}");
             }
         }
         else

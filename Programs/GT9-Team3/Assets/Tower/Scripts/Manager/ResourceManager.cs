@@ -62,21 +62,9 @@ public class ResourceManager : MonoBehaviour
 
     public void Spend(ResourceType type, float amount)
     {
-        if (CanAfford(type, amount))
-        {
-            resources[type] -= amount;
-
-            if (type == ResourceType.Gold)
-            {
-                SaveManager.Instance.data.gold = (int)resources[type];
-                SaveManager.Instance.Save();
-            }
-            else if (type == ResourceType.Mana)
-            {
-                SaveManager.Instance.data.mana = (int)resources[type];
-                SaveManager.Instance.Save();
-            }
-        }
+        if (!CanAfford(type, amount)) return;
+        resources[type] -= amount;
+        OnResourceChanged?.Invoke(type, resources[type]);
     }
 
     public void Add(ResourceType type, float amount)
@@ -89,6 +77,7 @@ public class ResourceManager : MonoBehaviour
         return resources[type];
     }
 
+    // ResourceManager는 저장 책임 제거
     public void Earn(ResourceType type, float amount)
     {
         if (!resources.ContainsKey(type))
@@ -96,18 +85,6 @@ public class ResourceManager : MonoBehaviour
 
         resources[type] += amount;
         Debug.Log($"[자원] {type} +{amount} 획득, 현재: {resources[type]}");
-
-        OnResourceChanged?.Invoke(type, resources[type]); // 이벤트 호출
-
-        if (type == ResourceType.Gold)
-        {
-            SaveManager.Instance.data.gold += (int)amount;
-            SaveManager.Instance.Save();
-        }
-        else if (type == ResourceType.Mana)
-        {
-            SaveManager.Instance.data.mana = (int)resources[type]; // 갱신
-            SaveManager.Instance.Save();
-        }
+        OnResourceChanged?.Invoke(type, resources[type]);
     }
 }

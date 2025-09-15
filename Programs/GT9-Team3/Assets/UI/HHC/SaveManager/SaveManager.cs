@@ -1,6 +1,7 @@
 using System.IO;
 using UnityEngine;
 using System.Collections.Generic;   // List<> 사용
+using System; // [NonSerialized] 사용을 위해 필요
 
 //list to save
 [System.Serializable]
@@ -9,7 +10,32 @@ public class SaveData
     [ReadOnly] public int mana;  
     [ReadOnly] public int gold;
     [ReadOnly] public int crystal;
-    [ReadOnly] public List<StageClearStar> stageClearStars = new List<StageClearStar>();  // Stage_ID별 ClearStar 저장
+
+    // 직렬화용 리스트
+    [SerializeField] private StageClearStarListWrapper stageClearStarsWrapper = new StageClearStarListWrapper();
+
+    // 런타임 Dictionary
+    [NonSerialized] public Dictionary<int, ClearStar> stageClearStars = new Dictionary<int, ClearStar>();
+
+    // 직렬화 전 변환
+    public void PrepareForSave()
+    {
+        stageClearStarsWrapper.items.Clear();
+        foreach (var kvp in stageClearStars)
+        {
+            stageClearStarsWrapper.items.Add(new StageClearStar { stageID = kvp.Key, clearStar = kvp.Value });
+        }
+    }
+
+    // 로드 후 변환
+    public void LoadFromSerialized()
+    {
+        stageClearStars.Clear();
+        foreach (var scs in stageClearStarsWrapper.items)
+        {
+            stageClearStars[scs.stageID] = scs.clearStar;
+        }
+    }
 }
 
 [System.Serializable]
@@ -17,6 +43,12 @@ public class StageClearStar
 {
     public int stageID;
     public ClearStar clearStar; // HUD에서 전달받아 저장.ClearStar는 HUDresource.cs에 정의되어 있음
+}
+
+[System.Serializable]
+public class StageClearStarListWrapper
+{
+    public List<StageClearStar> items = new List<StageClearStar>();
 }
 
 public class SaveManager : MonoBehaviour
@@ -38,7 +70,7 @@ public class SaveManager : MonoBehaviour
             //APK(안드로이드)에서 실행 → 반드시 Application.persistentDataPath 사용해야 함
 
             //savePath = Path.Combine(Application.dataPath, "Resources/Save/save.json");
-            //Android 빌드 후 APK 내부 Assets 폴더를 가리키는데, 읽기 전용입니다.
+            //Editor에서 실행
 
             Load();
             Debug.Log("저장 경로: " + savePath);
@@ -49,19 +81,51 @@ public class SaveManager : MonoBehaviour
         }
     }
 
+    void OnEnable()
+    {
+        ResourceManager.Instance.OnResourceChanged += HandleResourceChanged;
+        ResourceManager.Instance.OnResourceChanged += (type, value) => Save();
+    }
+
+    void OnDisable()
+    {
+        ResourceManager.Instance.OnResourceChanged -= HandleResourceChanged;
+    }
+
+    private void HandleResourceChanged(ResourceType type, float value)
+    {
+        switch (type)
+        {
+            case ResourceType.Gold:
+                data.gold = (int)value;
+                break;
+            case ResourceType.Mana:
+                data.mana = (int)value;
+                break;
+            case ResourceType.Crystal:
+                data.crystal = (int)value;
+                break;
+        }
+        Save();
+    }
+
     public void Save()
     {
+        //string json = JsonUtility.ToJson(data, true);
+
+        //// 디렉토리가 존재하지 않으면 생성
+        //string directory = Path.GetDirectoryName(savePath);
+        //if (!Directory.Exists(directory))
+        //{
+        //    Directory.CreateDirectory(directory);
+        //}
+
+        //File.WriteAllText(savePath, json);
+        //Debug.Log("Saved to: " + savePath);
+
+        data.PrepareForSave(); // Dictionary → List
         string json = JsonUtility.ToJson(data, true);
-
-        // 디렉토리가 존재하지 않으면 생성
-        string directory = Path.GetDirectoryName(savePath);
-        if (!Directory.Exists(directory))
-        {
-            Directory.CreateDirectory(directory);
-        }
-
         File.WriteAllText(savePath, json);
-        Debug.Log("Saved to: " + savePath);
     }
 
     public void Load()
@@ -76,6 +140,7 @@ public class SaveManager : MonoBehaviour
             Debug.Log("[SaveManager] mana = " + data.mana);
             Debug.Log("[SaveManager] gold = " + data.gold);
             Debug.Log("[SaveManager] crystal = " + data.crystal);
+            data.LoadFromSerialized(); // List → Dictionary
         }
         else
         {
@@ -86,25 +151,38 @@ public class SaveManager : MonoBehaviour
         }
     }
 
+    // 기존에 리스트를 순회하며 찾던 방식(9월 14일 이전)
+    //public void SaveStageClearStar(int stageID, ClearStar star)
+    //{
+    //    // 이미 저장되어 있으면 업데이트
+    //    var existing = data.stageClearStars.Find(s => s.stageID == stageID);
+    //    if (existing != null)
+    //    {
+    //        existing.clearStar = star;
+    //    }
+    //    else
+    //    {
+    //        data.stageClearStars.Add(new StageClearStar { stageID = stageID, clearStar = star });
+    //    }
+    //    Save();
+    //}
+
+    // Dictionary를 사용하여 바로 매핑하는 방식(9월 14일 이후) O(n) → O(1)로 최적화
+    // 저장/업데이트
     public void SaveStageClearStar(int stageID, ClearStar star)
     {
-        // 이미 저장되어 있으면 업데이트
-        var existing = data.stageClearStars.Find(s => s.stageID == stageID);
-        if (existing != null)
-        {
-            existing.clearStar = star;
-        }
-        else
-        {
-            data.stageClearStars.Add(new StageClearStar { stageID = stageID, clearStar = star });
-        }
+        // 존재 여부 상관없이 바로 저장/업데이트
+        data.stageClearStars[stageID] = star;
+
+        // 변경 즉시 저장
         Save();
     }
 
     public ClearStar GetStageClearStar(int stageID)
     {
-        var existing = data.stageClearStars.Find(s => s.stageID == stageID);
-        if (existing != null) return existing.clearStar;
+        if (data.stageClearStars.TryGetValue(stageID, out var star))
+            return star;
+
         return ClearStar.One; // 기본값
     }
 

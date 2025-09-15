@@ -18,10 +18,9 @@ public class LobbyScreenManager : MonoBehaviour
     {
         foreach (var s in stageStars)
         {
-            var data = SaveManager.Instance.data.stageClearStars.Find(d => d.stageID == s.stageID);
-            if (data != null)
+            if (SaveManager.Instance.data.stageClearStars.TryGetValue(s.stageID, out var clearStar))
             {
-                int starCount = (int)data.clearStar;
+                int starCount = (int)clearStar;
                 s.UpdateStarUI(starCount + 1);
             }
             else
