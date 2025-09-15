@@ -28,23 +28,26 @@ public class ResourceManager : MonoBehaviour
         Add(ResourceType.Tilepiece, 5000);
         //Add(ResourceType.Crystal, 100);
         //Add(ResourceType.Mana, 50);
-
-        if (SaveManager.Instance != null)
-        {
-            resources[ResourceType.Gold] = SaveManager.Instance.data.gold;
-            resources[ResourceType.Mana] = SaveManager.Instance.data.mana;
-            resources[ResourceType.Crystal] = SaveManager.Instance.data.crystal;
-
-            // UI 초기값 반영
-            OnResourceChanged?.Invoke(ResourceType.Mana, resources[ResourceType.Mana]);
-            OnResourceChanged?.Invoke(ResourceType.Gold, resources[ResourceType.Gold]);
-            OnResourceChanged?.Invoke(ResourceType.Crystal, resources[ResourceType.Crystal]);
-        }
     }
 
     void Start()
     {
+        // Start 시점에는 SaveManager.Instance가 반드시 존재
+        if (SaveManager.Instance != null)
+            SaveManager.Instance.OnLoaded += ApplySavedResources;
+    }
 
+    public void ApplySavedResources()
+    {
+        if (SaveManager.Instance == null) return;
+
+        resources[ResourceType.Gold] = SaveManager.Instance.data.gold;
+        resources[ResourceType.Mana] = SaveManager.Instance.data.mana;
+        resources[ResourceType.Crystal] = SaveManager.Instance.data.crystal;
+
+        OnResourceChanged?.Invoke(ResourceType.Mana, resources[ResourceType.Mana]);
+        OnResourceChanged?.Invoke(ResourceType.Gold, resources[ResourceType.Gold]);
+        OnResourceChanged?.Invoke(ResourceType.Crystal, resources[ResourceType.Crystal]);
     }
 
     private void Initialize()

@@ -57,6 +57,8 @@ public class SaveManager : MonoBehaviour
     private string savePath;
     public SaveData data = new SaveData();
 
+    public event Action OnLoaded; // SaveManager에서 Load가 끝난 뒤에 호출
+
     private void Awake()
     {
         if (Instance == null)
@@ -142,13 +144,18 @@ public class SaveManager : MonoBehaviour
             Debug.Log("[SaveManager] crystal = " + data.crystal);
             data.LoadFromSerialized(); // List → Dictionary
         }
-        else
-        {
-            data.mana = 0;
-            data.gold = 0; // 저장 파일이 없으면 기본값 0 설정
-            data.crystal = 0;
-            Debug.Log("[SaveManager] save.json 없음");
-        }
+        //else
+        //{
+        //    data.mana = 0;
+        //    data.gold = 0; // 저장 파일이 없으면 기본값 0 설정
+        //    data.crystal = 0;
+        //    Debug.Log("[SaveManager] save.json 없음");
+        //}
+        OnLoaded?.Invoke();
+
+        // ResourceManager가 null이 아니면 바로 적용
+        if (ResourceManager.Instance != null)
+            ResourceManager.Instance.ApplySavedResources();
     }
 
     // 기존에 리스트를 순회하며 찾던 방식(9월 14일 이전)
