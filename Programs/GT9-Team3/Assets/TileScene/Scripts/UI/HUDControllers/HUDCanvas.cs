@@ -18,13 +18,13 @@ public class HUDCanvas : MonoBehaviour
     private bool isTripleSpeedUnlocked = false;
 
     // StageInfoHUD
-    public HUDStageInfo _hudStageInfo;
+    public StagePanel _hudStageInfo;
 
-    // HUDWaveInfo
-    public HUDWaveInfo _hudWaveInfo;
+    // WavePanel
+    public WavePanel _hudWaveInfo;
 
-    // HUDResource
-    public HUDResource _hudResource;
+    // ResourcePanel
+    public ResourcePanel _hudResource;
 
     // WaveStartButton
     [SerializeField] Button pathfinderBtn;
@@ -62,9 +62,9 @@ public class HUDCanvas : MonoBehaviour
         pathfinderImage = pathfinderBtn.GetComponent<Image>();
         waveStartImage = waveStartBtn.GetComponent<Image>();
 
-        _hudStageInfo = GetComponentInChildren<HUDStageInfo>();
-        _hudWaveInfo = GetComponentInChildren<HUDWaveInfo>();
-        _hudResource = GetComponentInChildren<HUDResource>();
+        _hudStageInfo = GetComponentInChildren<StagePanel>();
+        _hudWaveInfo = GetComponentInChildren<WavePanel>();
+        _hudResource = GetComponentInChildren<ResourcePanel>();
         _itemHudUI = GetComponentInChildren<ItemHubUI>();
         _hudResultPanel = GetComponentInChildren<HUDResultPanel>();
         _hudMessageUI = GetComponentInChildren<HUDMessageUI>();
@@ -79,9 +79,9 @@ public class HUDCanvas : MonoBehaviour
         gameSpeed3xBtn.gameObject.SetActive(false);
         //gameSpeed5xBtn.gameObject.SetActive(false);
 
-        _hudStageInfo = GetComponentInChildren<HUDStageInfo>();
-        _hudWaveInfo = GetComponentInChildren<HUDWaveInfo>();
-        _hudResource = GetComponentInChildren<HUDResource>();
+        _hudStageInfo = GetComponentInChildren<StagePanel>();
+        _hudWaveInfo = GetComponentInChildren<WavePanel>();
+        _hudResource = GetComponentInChildren<ResourcePanel>();
         _itemHudUI = GetComponentInChildren<ItemHubUI>();
         _hudResultPanel = GetComponentInChildren<HUDResultPanel>();
         _hudMessageUI = GetComponentInChildren<HUDMessageUI>();

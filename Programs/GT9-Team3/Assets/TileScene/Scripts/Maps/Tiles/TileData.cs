@@ -97,6 +97,8 @@ public class TileData : MonoBehaviour
     /// <param name="pos">타일 위치 정보</param>
     public virtual void UpdateMapping(Vector2 pos)
     {
+        ClearNeighbors();
+
         float originX = 0f;
         float originY = _tileManager.tileSize[1] * 2 + (_tileManager.tileSize[1] * 2 * _tileManager.mapExtendLevel);
 
@@ -241,4 +243,13 @@ public class TileData : MonoBehaviour
     /// <param name="level">월드 레벨</param>
     public virtual void UpdateWorldLevel(int level)
     {}
+
+
+    private void ClearNeighbors()
+    {
+        this.up = null;
+        this.down = null;
+        this.left = null;
+        this.right = null;
+    }
 }

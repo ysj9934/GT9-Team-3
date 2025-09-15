@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class HUDStageInfo : MonoBehaviour
+public class StagePanel : MonoBehaviour
 {
     // Object Data
     [SerializeField] private TextMeshProUGUI worldPanelText;

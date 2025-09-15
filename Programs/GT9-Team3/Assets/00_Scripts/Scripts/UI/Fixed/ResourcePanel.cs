@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class HUDResource : MonoBehaviour
+public class ResourcePanel : MonoBehaviour
 {
     // Object Data
     private Castle _castle;

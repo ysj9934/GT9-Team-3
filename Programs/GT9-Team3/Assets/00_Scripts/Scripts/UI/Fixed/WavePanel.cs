@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class HUDWaveInfo : MonoBehaviour
+public class WavePanel : MonoBehaviour
 {
     // Object Structure
     [SerializeField] public Slider waveProgressBar01;
@@ -20,6 +20,7 @@ public class HUDWaveInfo : MonoBehaviour
 
     private void Awake()
     {
+        ResetAllWavePoint();
     }
 
 
@@ -70,7 +71,7 @@ public class HUDWaveInfo : MonoBehaviour
     }
 
 
-    // 웨이브가 종료되면 30으로 초기화
+    // 웨이브가 종료되면 Wave의 총 적유닛 수로 초기화
     public void ResetEnemyCount(int enemyMaxCount)
     {
         this.enemyMaxCount = enemyMaxCount;
@@ -78,6 +79,10 @@ public class HUDWaveInfo : MonoBehaviour
         UpdateEnemyCountText();
     }
 
+    /// <summary>
+    /// WavePoint Reset
+    /// WaveController에서 제어한다
+    /// </summary>
     public void ResetAllWavePoint()
     {
         waveProgressBar01.value = 0;
