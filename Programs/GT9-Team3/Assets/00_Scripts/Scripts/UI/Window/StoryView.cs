@@ -1,16 +1,19 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class StoryView : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    [SerializeField] public Image image;
+    [SerializeField] private Button skipButton;
+    [SerializeField] private Button nextButton;
+
+    public void CloseWindow()
     {
-        
+        gameObject.SetActive(false);
     }
 
-    // Update is called once per frame
-    void Update()
+    public void OpenWindow()
     {
-        
+        gameObject.SetActive(true);
     }
 }
