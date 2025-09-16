@@ -1172,7 +1172,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 5255980349982002804}
         m_TargetAssemblyTypeName: PopUp, Assembly-CSharp
-        m_MethodName: HidePopup
+        m_MethodName: HideSinglePopup
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4708,7 +4708,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 9015708804631877108}
         m_TargetAssemblyTypeName: PopUp, Assembly-CSharp
-        m_MethodName: ShowPopup
+        m_MethodName: ShowSinglePopup
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -5323,7 +5323,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 9015708804631877108}
         m_TargetAssemblyTypeName: PopUp, Assembly-CSharp
-        m_MethodName: ShowPopup
+        m_MethodName: ShowSinglePopup
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -6224,7 +6224,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 9015708804631877108}
         m_TargetAssemblyTypeName: PopUp, Assembly-CSharp
-        m_MethodName: ShowPopup
+        m_MethodName: ShowSinglePopup
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -7746,6 +7746,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   popupPanel: {fileID: 1523835645652068054}
+  popupPanels: []
 --- !u!1 &1527975505345247940
 GameObject:
   m_ObjectHideFlags: 0
@@ -8185,6 +8186,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PopUp
   popupPanel: {fileID: 1727886895844544514}
+  popupPanels: []
 --- !u!1 &1730106158779057395
 GameObject:
   m_ObjectHideFlags: 0
@@ -9859,7 +9861,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 5255980349982002804}
         m_TargetAssemblyTypeName: PopUp, Assembly-CSharp
-        m_MethodName: ShowPopup
+        m_MethodName: ShowSinglePopup
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -11243,7 +11245,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 9015708804631877108}
         m_TargetAssemblyTypeName: PopUp, Assembly-CSharp
-        m_MethodName: ShowPopup
+        m_MethodName: ShowSinglePopup
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -12522,6 +12524,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   popupPanel: {fileID: 2665149994959607345}
+  popupPanels: []
 --- !u!1 &2666415150991815595
 GameObject:
   m_ObjectHideFlags: 0
@@ -13274,7 +13277,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 9015708804631877108}
         m_TargetAssemblyTypeName: PopUp, Assembly-CSharp
-        m_MethodName: ShowPopup
+        m_MethodName: ShowSinglePopup
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -14293,7 +14296,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 3926101163712945120}
         m_TargetAssemblyTypeName: PopUp, Assembly-CSharp
-        m_MethodName: ShowPopup
+        m_MethodName: ShowSinglePopup
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -14934,6 +14937,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   popupPanel: {fileID: 3223055334075541471}
+  popupPanels: []
 --- !u!1 &3226500053118101574
 GameObject:
   m_ObjectHideFlags: 0
@@ -15555,7 +15559,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 9015708804631877108}
         m_TargetAssemblyTypeName: PopUp, Assembly-CSharp
-        m_MethodName: ShowPopup
+        m_MethodName: ShowSinglePopup
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -15670,6 +15674,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   popupPanel: {fileID: 3293309553665061993}
+  popupPanels: []
 --- !u!1 &3324096721028009549
 GameObject:
   m_ObjectHideFlags: 0
@@ -18576,7 +18581,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 6791935896886242459}
         m_TargetAssemblyTypeName: PopUp, Assembly-CSharp
-        m_MethodName: ShowPopup
+        m_MethodName: ShowSinglePopup
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -20912,6 +20917,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   popupPanel: {fileID: 4511240421326389780}
+  popupPanels: []
 --- !u!1 &4530586474061144092
 GameObject:
   m_ObjectHideFlags: 0
@@ -21513,7 +21519,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 9015708804631877108}
         m_TargetAssemblyTypeName: PopUp, Assembly-CSharp
-        m_MethodName: ShowPopup
+        m_MethodName: ShowSinglePopup
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -23157,7 +23163,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 6791935896886242459}
         m_TargetAssemblyTypeName: PopUp, Assembly-CSharp
-        m_MethodName: HidePopup
+        m_MethodName: HideSinglePopup
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -24464,7 +24470,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 9015708804631877108}
         m_TargetAssemblyTypeName: PopUp, Assembly-CSharp
-        m_MethodName: ShowPopup
+        m_MethodName: ShowSinglePopup
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -24749,6 +24755,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   popupPanel: {fileID: 5408594968634797320}
+  popupPanels: []
 --- !u!1 &5414420828564597381
 GameObject:
   m_ObjectHideFlags: 0
@@ -28880,7 +28887,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 9015708804631877108}
         m_TargetAssemblyTypeName: PopUp, Assembly-CSharp
-        m_MethodName: ShowPopup
+        m_MethodName: ShowSinglePopup
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -29025,7 +29032,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 9015708804631877108}
         m_TargetAssemblyTypeName: PopUp, Assembly-CSharp
-        m_MethodName: HidePopup
+        m_MethodName: HideSinglePopup
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -29163,6 +29170,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   popupPanel: {fileID: 6780575069532670153}
+  popupPanels: []
 --- !u!1 &6799906595318665090
 GameObject:
   m_ObjectHideFlags: 0
@@ -29389,6 +29397,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   popupPanel: {fileID: 6812146229581468217}
+  popupPanels: []
 --- !u!1 &6901347820484485741
 GameObject:
   m_ObjectHideFlags: 0
@@ -31258,7 +31267,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 9015708804631877108}
         m_TargetAssemblyTypeName: PopUp, Assembly-CSharp
-        m_MethodName: ShowPopup
+        m_MethodName: ShowSinglePopup
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -31861,7 +31870,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 9015708804631877108}
         m_TargetAssemblyTypeName: PopUp, Assembly-CSharp
-        m_MethodName: ShowPopup
+        m_MethodName: ShowSinglePopup
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -33266,7 +33275,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 9015708804631877108}
         m_TargetAssemblyTypeName: PopUp, Assembly-CSharp
-        m_MethodName: ShowPopup
+        m_MethodName: ShowSinglePopup
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -34124,7 +34133,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 9015708804631877108}
         m_TargetAssemblyTypeName: PopUp, Assembly-CSharp
-        m_MethodName: ShowPopup
+        m_MethodName: ShowSinglePopup
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -37454,7 +37463,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 9015708804631877108}
         m_TargetAssemblyTypeName: PopUp, Assembly-CSharp
-        m_MethodName: ShowPopup
+        m_MethodName: ShowSinglePopup
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -37712,7 +37721,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 9015708804631877108}
         m_TargetAssemblyTypeName: PopUp, Assembly-CSharp
-        m_MethodName: ShowPopup
+        m_MethodName: ShowSinglePopup
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
