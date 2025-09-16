@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class TileUIObject : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IBeginDragHandler, IEndDragHandler
 {
     // Managers
-    private TileManager _tileManager;
+    private TileController _tileManager;
     private HUDCanvas _hudCanvas => HUDCanvas.Instance;
 
     // Object Structure
@@ -29,7 +29,7 @@ public class TileUIObject : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
 
     private void Awake()
     {
-        _tileManager = TileManager.Instance;
+        _tileManager = TileController.Instance;
         canvasGroup = GetComponent<CanvasGroup>();
         link = GetComponent<TileLink>();
     }
@@ -41,6 +41,8 @@ public class TileUIObject : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
 
     void Update()
     {
+        if (!GameManager.Instance._tileController.isUIActive) return;
+
         if (isHolding)
         {
             // Object UX
@@ -115,7 +117,7 @@ public class TileUIObject : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
         if (isNewTile)
             tileObject.Initialize(link);
         tileObject._tileMove.isDragging = true;
-        tileObject.UpdateWorldLevel(GameManager.Instance.gameWorldLevel);
+        tileObject.UpdateWorldLevel(GameManager.Instance.worldLevel);
         tileObject._tileLink = link;
         tileObject._tileLink.linkedUIObject = link.linkedUIObject;
         tileObject.collider2D.enabled = true;

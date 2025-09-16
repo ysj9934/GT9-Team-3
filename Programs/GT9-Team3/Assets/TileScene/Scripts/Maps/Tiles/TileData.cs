@@ -14,7 +14,7 @@ using UnityEngine.Tilemaps;
 public class TileData : MonoBehaviour
 {
     // Managers
-    public TileManager _tileManager;
+    public TileController _tileManager;
 
     // Tile Component
     public TileUI _tileUI;
@@ -47,7 +47,7 @@ public class TileData : MonoBehaviour
 
     protected virtual void Awake()
     {
-        _tileManager = TileManager.Instance;
+        _tileManager = TileController.Instance;
     }
 
     protected virtual void Start()
@@ -97,6 +97,8 @@ public class TileData : MonoBehaviour
     /// <param name="pos">타일 위치 정보</param>
     public virtual void UpdateMapping(Vector2 pos)
     {
+        ClearNeighbors();
+
         float originX = 0f;
         float originY = _tileManager.tileSize[1] * 2 + (_tileManager.tileSize[1] * 2 * _tileManager.mapExtendLevel);
 
@@ -241,4 +243,13 @@ public class TileData : MonoBehaviour
     /// <param name="level">월드 레벨</param>
     public virtual void UpdateWorldLevel(int level)
     {}
+
+
+    private void ClearNeighbors()
+    {
+        this.up = null;
+        this.down = null;
+        this.left = null;
+        this.right = null;
+    }
 }

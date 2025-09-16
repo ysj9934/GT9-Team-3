@@ -30,7 +30,7 @@ public class TowerBuildUI : MonoBehaviour
         var towerTable = TowerDataTableLoader.Instance.ItemsDict;
         var projectileTable = ProjectileDataLoader.Instance.ItemsDict;
 
-        _towerSellUI.Init();
+        GameUIManager.Instance.canvasWindow.towerSellUI.Init();
 
         foreach (var bp in options)
         {
@@ -98,6 +98,10 @@ public class TowerBuildUI : MonoBehaviour
         //Tower1 newTower = _blockInfo.SetTowerPlace(bp);
 
         Hide();
+
+        // [사운드효과]: 타워 설치
+        SoundManager.Instance.Play("stick-hitting-a-dreadlock-small-thud-83297", SoundType.SFX, 1f);
+        Debug.LogWarning("[Sound]: Tower Install Sound");
 
         //HUDCanvas.Instance.upgradeUI.SetTargetTower(newTower);
         //HUDCanvas.Instance.sellUI.Refresh(newTower);

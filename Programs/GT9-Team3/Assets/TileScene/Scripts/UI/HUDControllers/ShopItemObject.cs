@@ -6,7 +6,6 @@ using UnityEngine.UI;
 
 public class ShopItemObject : MonoBehaviour
 {
-    private HUDCanvas _hudCanvas;
 
     // Object Structure
     [SerializeField] private TextMeshProUGUI itemCountText;
@@ -28,16 +27,12 @@ public class ShopItemObject : MonoBehaviour
         UpdateItemCount();
     }
 
-    private void Start()
-    {
-        _hudCanvas = GetComponentInParent<HUDCanvas>();
-    }
 
     public void SelelctedShopItem()
     {
-        _hudCanvas._itemHudUI.DisselectedItem();
+        GameUIManager.Instance.canvasWindow.itemHubUI.DisselectedItem();
 
-        _hudCanvas._itemHudUI.currentSelectedShopItem = this;
+        GameUIManager.Instance.canvasWindow.itemHubUI.currentSelectedShopItem = this;
         SelectedImage.SetActive(true);
     }
 

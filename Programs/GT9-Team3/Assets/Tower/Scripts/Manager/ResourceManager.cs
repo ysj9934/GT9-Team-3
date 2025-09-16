@@ -23,8 +23,6 @@ public class ResourceManager : MonoBehaviour
 
         // Initialize resources
         Initialize();
-        Add(ResourceType.Tilepiece, 5000);
-        //Add(ResourceType.Crystal, 100);
         Add(ResourceType.Mana, 50);
     }
 

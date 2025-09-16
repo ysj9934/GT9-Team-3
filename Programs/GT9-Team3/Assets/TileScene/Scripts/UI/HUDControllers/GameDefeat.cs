@@ -7,7 +7,7 @@ using static AdsManager;
 
 public class GameDefeat : MonoBehaviour
 {
-    private HUDCanvas _hudCanvas;
+    private GameUIManager _UIManager;
 
     [SerializeField] private Button closeWindowBtn;
     [SerializeField] private TextMeshProUGUI holdDiaAmountText;
@@ -17,14 +17,10 @@ public class GameDefeat : MonoBehaviour
 
     private void Awake()
     {
-        _hudCanvas = GetComponentInParent<HUDCanvas>();
-    }
+        _UIManager = GetComponentInParent<GameUIManager>();
 
-    public HUDCanvas Initialize(HUDCanvas hudCanvas)
-    {
         gameObject.SetActive(false);
         ViewHoldingCrystal();
-        return _hudCanvas = hudCanvas;
     }
 
     /// <summary>
@@ -35,13 +31,21 @@ public class GameDefeat : MonoBehaviour
     { 
         gameObject.SetActive(false);
 
+        // [사운드효과]: 버튼 클릭
+        SoundManager.Instance.Play("minimal-pop-click-ui-14-198314", SoundType.UI, 1f);
+        Debug.LogWarning("[Sound]: Button Click Sound");
+
         // game result 로 이동
-        _hudCanvas._hudResultPanel._gameResultPanel.OpenWindow(false);
+        _UIManager.canvasPopup.gameResultPanel.OpenWindow(false);
     }
 
     public void OpenWindow()
     {
         gameObject.SetActive(true);
+
+        _UIManager.canvasTower.Hide();
+        _UIManager.canvasWindow.towerSellUI.Hide();
+        _UIManager.canvasWindow.itemHubUI.CloseHubTab();
     }
 
     /// <summary>
@@ -60,6 +64,11 @@ public class GameDefeat : MonoBehaviour
     public void GoShop()
     {
         Debug.Log("Go Shop");
+
+        // [사운드효과]: 버튼 클릭
+        SoundManager.Instance.Play("minimal-pop-click-ui-14-198314", SoundType.UI, 1f);
+        Debug.LogWarning("[Sound]: Button Click Sound");
+
         // Go Crystal Shop
     }
 
@@ -70,6 +79,10 @@ public class GameDefeat : MonoBehaviour
     public void ReviveToADv()
     {
         Debug.Log("Adv revive");
+
+        // [사운드효과]: 버튼 클릭
+        SoundManager.Instance.Play("minimal-pop-click-ui-14-198314", SoundType.UI, 1f);
+        Debug.LogWarning("[Sound]: Button Click Sound");
 
         // 광고 시청
         AdsManager.Instance.ShowRewardedAd(RewardAdType.Retry, () =>
@@ -96,6 +109,10 @@ public class GameDefeat : MonoBehaviour
     /// </summary>
     public void ReviveToCry()
     {
+        // [사운드효과]: 버튼 클릭
+        SoundManager.Instance.Play("minimal-pop-click-ui-14-198314", SoundType.UI, 1f);
+        Debug.LogWarning("[Sound]: Button Click Sound");
+
         Debug.Log("Cry revive");
 
         if (ResourceManager.Instance.CanAfford(ResourceType.Crystal, 50))

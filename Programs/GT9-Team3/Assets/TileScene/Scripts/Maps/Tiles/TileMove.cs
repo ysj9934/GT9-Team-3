@@ -4,8 +4,7 @@ using UnityEngine.EventSystems;
 public class TileMove : MonoBehaviour
 {
     // Managers
-    private TileManager _tileManager;
-    private HUDCanvas _hudCanvas;
+    private TileController _tileManager;
 
 
     // Object Structure
@@ -30,8 +29,7 @@ public class TileMove : MonoBehaviour
 
     private void Awake()
     {
-        _tileManager = TileManager.Instance;
-        _hudCanvas = HUDCanvas.Instance;
+        _tileManager = TileController.Instance;
         //_camera = Camera.main;
 
         _tileData = GetComponent<TileData>();
@@ -41,7 +39,7 @@ public class TileMove : MonoBehaviour
 
     private void Start()
     {
-        inventoryContent = _hudCanvas._itemHudUI.inventoryContent;
+        inventoryContent = GameUIManager.Instance.canvasWindow.itemHubUI.inventoryContent;
     }
     
     public void TileMovePress()
@@ -342,6 +340,10 @@ public class TileMove : MonoBehaviour
         isPressing = false;
         pressTime = 0;
         UpdateGridPosition();
+
+        // [사운드효과]: 타일 배치
+        SoundManager.Instance.Play("DA - Book Drop - 4", SoundType.SFX, 1f);
+        Debug.LogWarning("[Sound]: Tile Pos Sound");
     }
     
     private void UpdateGridPosition()

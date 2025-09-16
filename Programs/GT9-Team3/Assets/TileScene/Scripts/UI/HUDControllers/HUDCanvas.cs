@@ -10,7 +10,7 @@ public class HUDCanvas : MonoBehaviour
 {
     // Managers
     public GameManager _gameManager;
-    public TileManager _tileManager;
+    public TileController _tileManager;
 
     public static HUDCanvas Instance { get; private set; }
 
@@ -18,13 +18,13 @@ public class HUDCanvas : MonoBehaviour
     private bool isTripleSpeedUnlocked = false;
 
     // StageInfoHUD
-    public HUDStageInfo _hudStageInfo;
+    public StagePanel _hudStageInfo;
 
-    // HUDWaveInfo
-    public HUDWaveInfo _hudWaveInfo;
+    // WavePanel
+    public WavePanel _hudWaveInfo;
 
-    // HUDResource
-    public HUDResource _hudResource;
+    // ResourcePanel
+    public ResourcePanel _hudResource;
 
     // WaveStartButton
     [SerializeField] Button pathfinderBtn;
@@ -62,9 +62,9 @@ public class HUDCanvas : MonoBehaviour
         pathfinderImage = pathfinderBtn.GetComponent<Image>();
         waveStartImage = waveStartBtn.GetComponent<Image>();
 
-        _hudStageInfo = GetComponentInChildren<HUDStageInfo>();
-        _hudWaveInfo = GetComponentInChildren<HUDWaveInfo>();
-        _hudResource = GetComponentInChildren<HUDResource>();
+        _hudStageInfo = GetComponentInChildren<StagePanel>();
+        _hudWaveInfo = GetComponentInChildren<WavePanel>();
+        _hudResource = GetComponentInChildren<ResourcePanel>();
         _itemHudUI = GetComponentInChildren<ItemHubUI>();
         _hudResultPanel = GetComponentInChildren<HUDResultPanel>();
         _hudMessageUI = GetComponentInChildren<HUDMessageUI>();
@@ -73,15 +73,15 @@ public class HUDCanvas : MonoBehaviour
     public void Init()
     {
         _gameManager = GameManager.Instance;
-        _tileManager = TileManager.Instance;
+        _tileManager = TileController.Instance;
 
         gameSpeed2xBtn.gameObject.SetActive(false);
         gameSpeed3xBtn.gameObject.SetActive(false);
         //gameSpeed5xBtn.gameObject.SetActive(false);
 
-        _hudStageInfo = GetComponentInChildren<HUDStageInfo>();
-        _hudWaveInfo = GetComponentInChildren<HUDWaveInfo>();
-        _hudResource = GetComponentInChildren<HUDResource>();
+        _hudStageInfo = GetComponentInChildren<StagePanel>();
+        _hudWaveInfo = GetComponentInChildren<WavePanel>();
+        _hudResource = GetComponentInChildren<ResourcePanel>();
         _itemHudUI = GetComponentInChildren<ItemHubUI>();
         _hudResultPanel = GetComponentInChildren<HUDResultPanel>();
         _hudMessageUI = GetComponentInChildren<HUDMessageUI>();
@@ -155,14 +155,20 @@ public class HUDCanvas : MonoBehaviour
     // PathfindereButton
     public void SetPathfinder()
     {
-        _gameManager._tileManager.ShowConnectedPath();
+        GameManager.Instance._tileController.ShowConnectedPath();
+
+        // [사운드효과]: 패스파인더
+        Debug.LogWarning("[Sound]: Pathfinder Sound");
     }
 
     // WaveStartButton
     public void StartWave()
     { 
         TurnOffPathfinder();
-        _gameManager._waveManager.StartWave();
+        GameManager.Instance._waveController.StartWave();
+
+        // [사운드효과]: 버튼 클릭
+        Debug.LogWarning("[Sound]: Button Click Sound");
 
     }
 
@@ -174,7 +180,9 @@ public class HUDCanvas : MonoBehaviour
         gameSpeed3xBtn.gameObject.SetActive(false);
         //gameSpeed5xBtn.gameObject.SetActive(false);
         _gameManager.GameSpeed2x();
-        
+
+        // [사운드효과]: 버튼 클릭
+        Debug.LogWarning("[Sound]: Button Click Sound");
     }
 
     //public void SetGameSpeed2x()
@@ -220,6 +228,9 @@ public class HUDCanvas : MonoBehaviour
         gameSpeed3xBtn.gameObject.SetActive(true);
 
         _gameManager.GameSpeed3x();
+
+        // [사운드효과]: 버튼 클릭
+        Debug.LogWarning("[Sound]: Button Click Sound");
     }
 
     public void SetGameSpeed3x()
@@ -229,6 +240,9 @@ public class HUDCanvas : MonoBehaviour
         gameSpeed3xBtn.gameObject.SetActive(false);
         //gameSpeed5xBtn.gameObject.SetActive(false);
         _gameManager.ResumeGame();
+
+        // [사운드효과]: 버튼 클릭
+        Debug.LogWarning("[Sound]: Button Click Sound");
     }
     // GamePause
     public void SetGamePause()
@@ -238,6 +252,9 @@ public class HUDCanvas : MonoBehaviour
         gameSpeed2xBtn.gameObject.SetActive(false);
         gameSpeed3xBtn.gameObject.SetActive(true);
         //gameSpeed5xBtn.gameObject.SetActive(true);
+
+        // [사운드효과]: 버튼 클릭
+        Debug.LogWarning("[Sound]: Button Click Sound");
 
         //SetGameSpeed5x();
         _hudMessageUI.PopupUIShow(

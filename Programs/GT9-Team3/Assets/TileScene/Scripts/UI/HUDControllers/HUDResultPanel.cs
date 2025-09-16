@@ -16,7 +16,5 @@ public class HUDResultPanel : MonoBehaviour
     {
         _hudCanvas = GetComponentInParent<HUDCanvas>();
 
-        _gameDefeatPanel.Initialize(_hudCanvas);
-        _gameResultPanel.Initialize(_hudCanvas);
     }
 }
