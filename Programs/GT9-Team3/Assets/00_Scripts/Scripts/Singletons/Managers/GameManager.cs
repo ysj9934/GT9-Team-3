@@ -15,6 +15,7 @@ public class GameManager : MonoBehaviour
     public ShopController _shopController;
 
     public Transform baseTransform;
+    public StoryLoader _storyLoader;
 
     // Object Info
     public int worldLevel;
@@ -78,12 +79,13 @@ public class GameManager : MonoBehaviour
             stageWaveList = stageData.stageWaveList;
             isHardMode = stageData.isHardMode;
 
-            // send stage data to HUDCanvas
+            // send stage data to GameUIManager
+            SendStageDataToStoryLoader();
             // 1. WaveController에 스테이지 정보 전달
             SendStageDataToWaveController();
             // 2. TileController에 스테이지 정보 전달
             SendStageDataToTileController();
-            // 3. HUDCanvas에 스테이지 정보 전달
+            // 3. GameUIManager에 스테이지 정보 전달
             SendStageDataToUIManager();
 
             // 4. 월드 레벨별 배경화면 변경
@@ -93,6 +95,16 @@ public class GameManager : MonoBehaviour
         {
             Debug.LogError("StageData is Null");
         }
+    }
+
+    /// <summary>
+    /// 스테이지 정보 전달
+    /// </summary>
+    public void SendStageDataToStoryLoader()
+    {
+        StoryLoader storyLoader = Instantiate(_storyLoader);
+
+        storyLoader.SetStoryImage(worldLevel, stageLevel);
     }
 
     /// <summary>
@@ -189,7 +201,7 @@ public class GameManager : MonoBehaviour
         ResetStageGameManager();
 
         // 2. 게임 재게
-        HUDCanvas.Instance.SetGameSpeed3x();
+        GameUIManager.Instance.canvasFixed.GameSpeedButton.UpdateGameSpeed(1);
 
         ReceiveStageData();
     }
@@ -245,9 +257,10 @@ public class GameManager : MonoBehaviour
         Debug.Log("Victory");
 
         PauseGame();
-        HUDCanvas.Instance._hudResultPanel._gameResultPanel.OpenWindow(true);
+        GameUIManager.Instance.canvasPopup.gameResultPanel.OpenWindow(true);
 
         // [사운드효과]: 게임 승리
+        SoundManager.Instance.Play("11l-victory_sound_with_t-1749487402950-357606", SoundType.UI, 1f);
         Debug.LogWarning("[Sound]: Game Victory Sound");
     }
 
@@ -260,8 +273,9 @@ public class GameManager : MonoBehaviour
         PauseGame();
         isGameOver = true;
 
-        HUDCanvas.Instance._hudResultPanel._gameDefeatPanel.OpenWindow();
+        GameUIManager.Instance.canvasPopup.gameDefeatPanel.OpenWindow();
         // [사운드효과]: 게임 패배
+        SoundManager.Instance.Play("open-new-level-143027", SoundType.UI, 1f);
         Debug.LogWarning("[Sound]: Game Defeat Sound");
     }
 
@@ -275,13 +289,13 @@ public class GameManager : MonoBehaviour
     public void Earn50G()
     {
         ResourceManager.Instance.Earn(ResourceType.Tilepiece, 50);
-        HUDCanvas.Instance._hudResource.ShowTilePiece();
+        GameUIManager.Instance.canvasFixed.ResourcePanel.ShowTilePiece();
     }
 
     public void Earn0G(int amount)
     {
         ResourceManager.Instance.Earn(ResourceType.Tilepiece, amount);
-        HUDCanvas.Instance._hudResource.ShowTilePiece();
+        GameUIManager.Instance.canvasFixed.ResourcePanel.ShowTilePiece();
     }
 
 }

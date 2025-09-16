@@ -16,7 +16,22 @@ public class GameSpeed : MonoBehaviour
     {
         GameManager _gameManager = GameManager.Instance;
 
-        switch (gameSpeed)
+        SoundManager.Instance.Play("button-press-382713", SoundType.UI, 1f);
+
+        int speedIndex = gameSpeed;
+
+        if (speedIndex < 1)
+        {
+            this.gameSpeed++;
+            if (this.gameSpeed > 3)
+            {
+                this.gameSpeed = 1;
+            }
+
+            speedIndex = this.gameSpeed;
+        }
+
+        switch (speedIndex)
         {
             case 1:
                 this.gameSpeed = 1;

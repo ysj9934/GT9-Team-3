@@ -9,7 +9,6 @@ using UnityEngine.UI;
 public class ItemHubUI : MonoBehaviour
 {
     // Object Managers
-    private HUDCanvas _hudCanvas;
     private ResourceManager _resourceManager;
 
     // Object Struture
@@ -45,7 +44,6 @@ public class ItemHubUI : MonoBehaviour
 
     private void Start()
     {
-        _hudCanvas = GetComponentInParent<HUDCanvas>();
         _resourceManager = ResourceManager.Instance;
     }
 
@@ -92,7 +90,7 @@ public class ItemHubUI : MonoBehaviour
         };
 
         List<RaycastResult> results = new List<RaycastResult>();
-        GraphicRaycaster raycaster = _hudCanvas.GetComponent<GraphicRaycaster>();
+        GraphicRaycaster raycaster = GameUIManager.Instance.GetComponent<GraphicRaycaster>();
         raycaster.Raycast(pointerData, results);
 
         foreach (RaycastResult result in results)
@@ -205,7 +203,7 @@ public class ItemHubUI : MonoBehaviour
         if (!_resourceManager.CanAfford(ResourceType.Tilepiece, 200)) return;
 
         _resourceManager.Spend(ResourceType.Tilepiece, 200);
-        _hudCanvas._hudResource.ShowTilePiece();
+        GameUIManager.Instance.canvasFixed.ResourcePanel.ShowTilePiece();
 
         TileShape tileShape = currentSelectedShopItem.itemShape;
 
@@ -231,7 +229,7 @@ public class ItemHubUI : MonoBehaviour
             currentSelectedShopItem.Disabled();
         }
 
-        _hudCanvas._hudMessageUI.FloatingUIShow(
+        GameUIManager.Instance.canvasPopup.toastMessage.FloatingUIShow(
             "[타일 구매 완료]",
             "타일을 구매 완료하셨습니다.", 
             Color.cyan

@@ -107,6 +107,7 @@ public class WaveController : MonoBehaviour
             GameUIManager.Instance.canvasFixed.WavePanel.ResetEnemyCount(enemySpawnCount);
 
             // [사운드효과]: 다음 웨이브로 이동 사운드
+            SoundManager.Instance.Play("medieval-opener-270568", SoundType.BGM, 0.05f);
             Debug.LogWarning("[Sound]: Next Wave Sound");
         }
         else
@@ -238,6 +239,7 @@ public class WaveController : MonoBehaviour
         GameUIManager.Instance.canvasFixed.TurnOffStartWave();
 
         // [사운드효과]: 웨이브 시작
+        SoundManager.Instance.Play("fallen-in-battle-261253 (2)", SoundType.BGM, 0.2f);
         Debug.LogWarning("[Sound] Wave Start Sound");
 
         enemySpawnRoutines = new List<Coroutine>();

@@ -1268,6 +1268,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc577fcd8a5b77944bac689316744d52, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CanvasWindow
+  towerSellUI: {fileID: 0}
+  itemHubUI: {fileID: 0}
 --- !u!1 &656412267231044461
 GameObject:
   m_ObjectHideFlags: 0
@@ -6172,6 +6174,10 @@ MonoBehaviour:
   WavePanel: {fileID: 4518393767989128859}
   ResourcePanel: {fileID: 170016176698155878}
   GameSpeedButton: {fileID: 8761004505953895524}
+  pathfinderBtn: {fileID: 0}
+  pathfinderImage: {fileID: 0}
+  waveStartBtn: {fileID: 0}
+  waveStartImage: {fileID: 0}
 --- !u!1 &4186741771958022052
 GameObject:
   m_ObjectHideFlags: 0
@@ -10606,10 +10612,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d34adcc266047354dbb6c26f6f4a1cfc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameUIManager
-  canvasFixed: {fileID: 4159575221377281485}
-  canvasWindow: {fileID: 643780081987972355}
-  canvasPopup: {fileID: 7184138454208141993}
-  canvasTower: {fileID: 7714349986547331526}
+  canvasFixed: {fileID: 2758006007961127866}
+  canvasWindow: {fileID: 2704292944937914004}
+  canvasPopup: {fileID: 1563838403143391280}
+  canvasTower: {fileID: 6068564065849986661}
 --- !u!1 &6744010613450438224
 GameObject:
   m_ObjectHideFlags: 0
@@ -11410,6 +11416,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6edfe27518e987a4990664d961805edb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CanvasPopup
+  toastMessage: {fileID: 0}
+  confirmMessage: {fileID: 0}
+  gameDefeatPanel: {fileID: 0}
+  gameResultPanel: {fileID: 0}
 --- !u!1 &7219947924943302391
 GameObject:
   m_ObjectHideFlags: 0
@@ -15683,11 +15693,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9ec92b775f7f89b4f81af50a6f7691a7, type: 3}
---- !u!1 &7714349986547331526 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4353950579565183189, guid: 9ec92b775f7f89b4f81af50a6f7691a7, type: 3}
+--- !u!114 &6068564065849986661 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 240212877403225974, guid: 9ec92b775f7f89b4f81af50a6f7691a7, type: 3}
   m_PrefabInstance: {fileID: 6296795938705355027}
   m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e29c3d9f03eaf5441b77171c618a5a93, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &8666838139968930135 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 3396978376198615108, guid: 9ec92b775f7f89b4f81af50a6f7691a7, type: 3}

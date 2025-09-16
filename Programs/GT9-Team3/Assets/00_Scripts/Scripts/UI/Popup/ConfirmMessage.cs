@@ -28,6 +28,8 @@ public class ConfirmMessage : MonoBehaviour
         this.confirmText.text = confirmText;
         this.cancelText.text = cancelText;
 
+        GameManager.Instance.PauseGame();
+
         onConfirm = confirmAction;
         onCancel = cancelAction;
 

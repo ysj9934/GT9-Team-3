@@ -33,10 +33,11 @@ public class TowerUpgradeUI : MonoBehaviour
             selectedTower.UpdateTowerVisual(selectedTower.towerdata.towerLevel);
             selectedTower.blockInfo.SetTowerUpgrade(selectedTower);
             // UI 정보 새로고침
-            HUDCanvas.Instance.sellUI.Refresh(selectedTower);
+            GameUIManager.Instance.canvasWindow.towerSellUI.Refresh(selectedTower);
             TowerSellUI.Instance.Hide();
 
             // [사운드효과]: 타워 업그레이드
+            SoundManager.Instance.Play("MainTheme", SoundType.SFX, 1f);
             Debug.LogWarning("[Sound]: Tower Upgrade Sound");
         }
         else

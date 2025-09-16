@@ -69,6 +69,7 @@ public class EnemyHealthHandler : MonoBehaviour
 
             int projectileID = projectileData.projectileID;
             // [사운드효과]: 피격시 사운드 / 사운드 효과 적게
+            SoundManager.Instance.Play("arrow-cutting-through-the-air-39540-잘라쓰기", SoundType.SFX, 1f);
             switch (projectileID)
             {
                 case 7001:
@@ -114,7 +115,7 @@ public class EnemyHealthHandler : MonoBehaviour
 
                 // 처치 보상
                 ResourceManager.Instance.Earn(ResourceType.Tilepiece, _enemy._enemyStat.enemyTilePieceAmount);
-                HUDCanvas.Instance._hudResource.ShowTilePiece();
+                GameUIManager.Instance.canvasFixed.ResourcePanel.ShowTilePiece();
                 break;
         }
 

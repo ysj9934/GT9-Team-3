@@ -60,7 +60,7 @@ public class TowerSellUI : MonoBehaviour
         root.gameObject.SetActive(true);
 
         // 왼쪽 고정 위치로 이동
-        root.anchoredPosition = anchoredPosition;
+        //root.anchoredPosition = anchoredPosition;
 
         TowerData d = tower.towerdata;
 
@@ -124,6 +124,7 @@ public class TowerSellUI : MonoBehaviour
         panel.SetActive(false);
 
         // [사운드효과]: 타워 철거
+        SoundManager.Instance.Play("코인획득5", SoundType.SFX, 1f);
         Debug.LogWarning("[Sound]: Tower Selling Sound");
 
         //if (currentTower != null)

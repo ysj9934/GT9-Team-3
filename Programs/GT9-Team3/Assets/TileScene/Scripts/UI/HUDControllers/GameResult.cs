@@ -8,7 +8,7 @@ using static AdsManager;
 
 public class GameResult : MonoBehaviour
 {
-    private HUDCanvas _hudCanvas;
+    private GameUIManager _UIManager;
 
     [SerializeField] GameObject resultVictory;
     [SerializeField] GameObject resultDefeat;
@@ -29,6 +29,8 @@ public class GameResult : MonoBehaviour
     private void Awake()
     {
         gameObject.SetActive(false);
+        _UIManager = GetComponentInParent<GameUIManager>();
+
         ViewHoldingStamina();
         UpdateWorldStageText();
     }
@@ -38,6 +40,7 @@ public class GameResult : MonoBehaviour
         gameObject.SetActive(false);
 
         // [사운드효과]: 버튼 클릭
+        SoundManager.Instance.Play("minimal-pop-click-ui-14-198314", SoundType.UI, 1f);
         Debug.LogWarning("[Sound]: Button Click Sound");
     }
 
@@ -48,7 +51,11 @@ public class GameResult : MonoBehaviour
         rewardGold = GameManager.Instance._waveController.rewardGold;
         ResultText(isWin);
         rewardAmountText.text = $"{rewardGold}";
-        
+
+        _UIManager.canvasTower.Hide();
+        _UIManager.canvasWindow.towerSellUI.Hide();
+        _UIManager.canvasWindow.itemHubUI.CloseHubTab();
+
         gameObject.SetActive(true);
 
         // 게임 데이터 저장
@@ -82,6 +89,7 @@ public class GameResult : MonoBehaviour
         Debug.Log("Go Shop");
 
         // [사운드효과]: 버튼 클릭
+        SoundManager.Instance.Play("minimal-pop-click-ui-14-198314", SoundType.UI, 1f);
         Debug.LogWarning("[Sound]: Button Click Sound");
 
     }
@@ -96,13 +104,14 @@ public class GameResult : MonoBehaviour
         Debug.Log("GameExit to go MapUI");
 
         // [사운드효과]: 버튼 클릭
+        SoundManager.Instance.Play("minimal-pop-click-ui-14-198314", SoundType.UI, 1f);
         Debug.LogWarning("[Sound]: Button Click Sound");
 
         CloseWindow();
         ResourceManager.Instance.Earn(ResourceType.Gold, rewardGold);
         Debug.Log($"{ResourceManager.Instance.GetAmount(ResourceType.Gold)}");
         SceneLoader.Instance.LoadSceneByName("Map UI");
-        _hudCanvas.SetGameSpeed3x();
+        _UIManager.canvasFixed.GameSpeedButton.UpdateGameSpeed(1);
     }
 
     public void GameRetry()
@@ -111,6 +120,7 @@ public class GameResult : MonoBehaviour
         Debug.Log("GameRetry");
 
         // [사운드효과]: 버튼 클릭
+        SoundManager.Instance.Play("minimal-pop-click-ui-14-198314", SoundType.UI, 1f);
         Debug.LogWarning("[Sound]: Button Click Sound");
 
         if (ResourceManager.Instance.CanAfford(ResourceType.Mana, 5))
@@ -123,7 +133,7 @@ public class GameResult : MonoBehaviour
             ResourceManager.Instance.Earn(ResourceType.Gold, rewardGold);
             Debug.Log($"{ResourceManager.Instance.GetAmount(ResourceType.Gold)}");
             DataManager.Instance.RestartStage(DataManager.Instance.stageId);
-            _hudCanvas.SetGameSpeed3x();
+            _UIManager.canvasFixed.GameSpeedButton.UpdateGameSpeed(1);
             CloseWindow();
             restartGameBtn.enabled = true;
         }
@@ -138,6 +148,7 @@ public class GameResult : MonoBehaviour
         Debug.Log("Reward2x to go MapUI");
 
         // [사운드효과]: 버튼 클릭
+        SoundManager.Instance.Play("minimal-pop-click-ui-14-198314", SoundType.UI, 1f);
         Debug.LogWarning("[Sound]: Button Click Sound");
 
         // 광고 시청
