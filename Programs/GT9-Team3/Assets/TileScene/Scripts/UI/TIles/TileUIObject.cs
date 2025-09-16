@@ -8,7 +8,6 @@ public class TileUIObject : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
 {
     // Managers
     private TileController _tileManager;
-    private HUDCanvas _hudCanvas => HUDCanvas.Instance;
 
     // Object Structure
     public TileLink link;
@@ -134,14 +133,14 @@ public class TileUIObject : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
         if (link.linkedWorldObject != null)
         {
             TileInfo tileInfo = link.linkedWorldObject.GetComponent<TileInfo>();
-            _hudCanvas._itemHudUI.SetTowerInfo(tileInfo, mousePosition);
+            GameUIManager.Instance.canvasWindow.itemHubUI.SetTowerInfo(tileInfo, mousePosition);
         }
         else
         {
-            _hudCanvas._itemHudUI.SetTowerInfo(null, mousePosition);
+            GameUIManager.Instance.canvasWindow.itemHubUI.SetTowerInfo(null, mousePosition);
         }
 
-        _hudCanvas._itemHudUI.OpenTowerInfoPanel();
+        GameUIManager.Instance.canvasWindow.itemHubUI.OpenTowerInfoPanel();
     }
 
 }
