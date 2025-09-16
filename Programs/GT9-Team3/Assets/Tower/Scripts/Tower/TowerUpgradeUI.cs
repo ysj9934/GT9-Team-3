@@ -37,7 +37,7 @@ public class TowerUpgradeUI : MonoBehaviour
             TowerSellUI.Instance.Hide();
 
             // [사운드효과]: 타워 업그레이드
-            SoundManager.Instance.Play("MainTheme", SoundType.SFX, 1f);
+            SoundManager.Instance.Play("코인획득20", SoundType.SFX, 1f);
             Debug.LogWarning("[Sound]: Tower Upgrade Sound");
         }
         else
