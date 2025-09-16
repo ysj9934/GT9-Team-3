@@ -32,7 +32,7 @@ public class GameResult : MonoBehaviour
         _UIManager = GetComponentInParent<GameUIManager>();
 
         ViewHoldingStamina();
-        UpdateWorldStageText();
+        
     }
 
     public void CloseWindow()
@@ -46,9 +46,10 @@ public class GameResult : MonoBehaviour
 
     public void OpenWindow(bool isWin)
     {
-        gameWorldLevel = DataManager.Instance.stageId / 100;
-        gameStageLevel = DataManager.Instance.stageId % 10;
+        gameWorldLevel = GameManager.Instance.worldLevel;
+        gameStageLevel = GameManager.Instance.stageLevel;
         rewardGold = GameManager.Instance._waveController.rewardGold;
+        UpdateWorldStageText();
         ResultText(isWin);
         rewardAmountText.text = $"{rewardGold}";
 

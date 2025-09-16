@@ -16,10 +16,19 @@ public class StoryLoader : MonoBehaviour
 
     public void SetStoryImage(int worldLevel, int stageLevel)
     {
-        string worldStr = "World0" + worldLevel;
-        string stageStr = "Stage0" + stageLevel;
+        this.worldLevel = worldLevel;
+        this.stageLevel = stageLevel;
+        string worldStr = "World0" + this.worldLevel;
+        string stageStr = "Stage0" + this.stageLevel;
         filePath = "Story/" + worldStr + "/" + stageStr;
         sprites = Resources.LoadAll<Sprite>(filePath);
         sprites.OrderBy(s => s.name).ToArray();
+
+        SendData();
+    }
+
+    public void SendData()
+    {
+        GameUIManager.Instance.canvasWindow.storyView.RecieveData(sprites, worldLevel, stageLevel);
     }
 }

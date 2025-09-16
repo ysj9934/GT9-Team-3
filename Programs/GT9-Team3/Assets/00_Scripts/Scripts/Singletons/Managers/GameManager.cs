@@ -256,12 +256,24 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("Victory");
 
-        PauseGame();
-        GameUIManager.Instance.canvasPopup.gameResultPanel.OpenWindow(true);
+        // 스토리 보기
+        if (worldLevel == 1 &&
+            stageLevel == 5)
+        {
+            GameUIManager.Instance.canvasWindow.storyView.OpenWindow();
 
-        // [사운드효과]: 게임 승리
-        SoundManager.Instance.Play("11l-victory_sound_with_t-1749487402950-357606", SoundType.UI, 1f);
-        Debug.LogWarning("[Sound]: Game Victory Sound");
+            PauseGame();
+            GameUIManager.Instance.canvasPopup.gameResultPanel.OpenWindow(true);
+        }
+        else
+        {
+            PauseGame();
+            GameUIManager.Instance.canvasPopup.gameResultPanel.OpenWindow(true);
+
+            // [사운드효과]: 게임 승리
+            SoundManager.Instance.Play("11l-victory_sound_with_t-1749487402950-357606", SoundType.UI, 1f);
+            Debug.LogWarning("[Sound]: Game Victory Sound");
+        }
     }
 
     public void GameDefeat()
