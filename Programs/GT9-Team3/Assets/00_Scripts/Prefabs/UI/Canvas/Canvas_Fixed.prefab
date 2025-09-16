@@ -154,10 +154,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3dacda07a65f984d86fecef1148b224, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CanvasFixed
-  StagePanel: {fileID: 8110925594037469719}
-  WavePanel: {fileID: 6084878824999101310}
-  ResourcePanel: {fileID: 7537159853230485123}
-  GameSpeedButton: {fileID: 1391626655917672833}
+  StagePanel: {fileID: 1873490603169928496}
+  WavePanel: {fileID: 4352798737571832113}
+  ResourcePanel: {fileID: 4207973115485395551}
+  GameSpeedButton: {fileID: 3147716732399791617}
+  pathfinderBtn: {fileID: 0}
+  pathfinderImage: {fileID: 0}
+  waveStartBtn: {fileID: 0}
+  waveStartImage: {fileID: 0}
 --- !u!1 &8902480858863304276
 GameObject:
   m_ObjectHideFlags: 0
@@ -291,11 +295,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 72f2c37d2d933ed438674de59b8527d3, type: 3}
---- !u!1 &1391626655917672833 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1265519849626312225, guid: 72f2c37d2d933ed438674de59b8527d3, type: 3}
+--- !u!114 &3147716732399791617 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2985575648734525857, guid: 72f2c37d2d933ed438674de59b8527d3, type: 3}
   m_PrefabInstance: {fileID: 198169976272492448}
   m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05a036d4d2a515f428d6ec815179d622, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GameSpeed
 --- !u!224 &8158060843226699463 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 8356230742171418983, guid: 72f2c37d2d933ed438674de59b8527d3, type: 3}
@@ -538,14 +548,20 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 46bd417bf08b02b4dabbb93b77b3a74d, type: 3}
+--- !u!114 &1873490603169928496 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4077337590043436434, guid: 46bd417bf08b02b4dabbb93b77b3a74d, type: 3}
+  m_PrefabInstance: {fileID: 2407848175271096482}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2d526510373a864a96b5922248a9d9a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StagePanel
 --- !u!224 &4644121238805940254 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6996727405397883068, guid: 46bd417bf08b02b4dabbb93b77b3a74d, type: 3}
-  m_PrefabInstance: {fileID: 2407848175271096482}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &8110925594037469719 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5901315244501856949, guid: 46bd417bf08b02b4dabbb93b77b3a74d, type: 3}
   m_PrefabInstance: {fileID: 2407848175271096482}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &4720689030142682907
@@ -653,14 +669,20 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 06857d151fe5d4d49878b58563ce816e, type: 3}
+--- !u!114 &4207973115485395551 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8928096993408613700, guid: 06857d151fe5d4d49878b58563ce816e, type: 3}
+  m_PrefabInstance: {fileID: 4720689030142682907}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86005ff843683764aba7c325ed436b82, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ResourcePanel
 --- !u!224 &6972121920502444088 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 2396674055676614435, guid: 06857d151fe5d4d49878b58563ce816e, type: 3}
-  m_PrefabInstance: {fileID: 4720689030142682907}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &7537159853230485123 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2961714178833746328, guid: 06857d151fe5d4d49878b58563ce816e, type: 3}
   m_PrefabInstance: {fileID: 4720689030142682907}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &5468847110154760658
@@ -777,8 +799,14 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 4953346722557975116, guid: 95a611436b080954095b5488e929bed0, type: 3}
   m_PrefabInstance: {fileID: 5468847110154760658}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &6084878824999101310 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2275701503499702956, guid: 95a611436b080954095b5488e929bed0, type: 3}
+--- !u!114 &4352798737571832113 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8614541780073763043, guid: 95a611436b080954095b5488e929bed0, type: 3}
   m_PrefabInstance: {fileID: 5468847110154760658}
   m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d749502b8ac47cf48876df080b7899f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WavePanel

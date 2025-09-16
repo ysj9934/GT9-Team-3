@@ -24,7 +24,11 @@ public class StoryLoader : MonoBehaviour
         sprites = Resources.LoadAll<Sprite>(filePath);
         sprites.OrderBy(s => s.name).ToArray();
 
-        SendData();
+        if (sprites != null && sprites.Length > 0)
+        {
+            SendData();
+        }
+        
     }
 
     public void SendData()
