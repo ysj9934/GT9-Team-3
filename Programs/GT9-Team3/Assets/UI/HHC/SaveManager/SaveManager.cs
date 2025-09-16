@@ -11,6 +11,14 @@ public class SaveData
     [ReadOnly] public int gold;
     [ReadOnly] public int crystal;
 
+    public long lastSaveTime; // 마지막 저장 시각 (UnixTime)
+
+    // 마지막 저장 시각을 현재 시간으로 갱신
+    public void UpdateLastSaveTime()
+    {
+        lastSaveTime = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+    }
+
     // 직렬화용 리스트
     [SerializeField] private StageClearStarListWrapper stageClearStarsWrapper = new StageClearStarListWrapper();
 
@@ -85,13 +93,19 @@ public class SaveManager : MonoBehaviour
 
     void OnEnable()
     {
-        ResourceManager.Instance.OnResourceChanged += HandleResourceChanged;
-        ResourceManager.Instance.OnResourceChanged += (type, value) => Save();
+        if (ResourceManager.Instance != null)
+        {
+            ResourceManager.Instance.OnResourceChanged += HandleResourceChanged;
+            ResourceManager.Instance.OnResourceChanged += (type, value) => Save();
+        }
     }
 
     void OnDisable()
     {
-        ResourceManager.Instance.OnResourceChanged -= HandleResourceChanged;
+        if (ResourceManager.Instance != null)
+        {
+            ResourceManager.Instance.OnResourceChanged -= HandleResourceChanged;
+        }
     }
 
     private void HandleResourceChanged(ResourceType type, float value)
@@ -124,7 +138,7 @@ public class SaveManager : MonoBehaviour
 
         //File.WriteAllText(savePath, json);
         //Debug.Log("Saved to: " + savePath);
-
+        data.UpdateLastSaveTime(); 
         data.PrepareForSave(); // Dictionary → List
         string json = JsonUtility.ToJson(data, true);
         File.WriteAllText(savePath, json);
@@ -142,15 +156,19 @@ public class SaveManager : MonoBehaviour
             Debug.Log("[SaveManager] mana = " + data.mana);
             Debug.Log("[SaveManager] gold = " + data.gold);
             Debug.Log("[SaveManager] crystal = " + data.crystal);
+            Debug.Log("[SaveManager] lastSaveTime = " + data.lastSaveTime);
             data.LoadFromSerialized(); // List → Dictionary
         }
-        //else
-        //{
-        //    data.mana = 0;
-        //    data.gold = 0; // 저장 파일이 없으면 기본값 0 설정
-        //    data.crystal = 0;
-        //    Debug.Log("[SaveManager] save.json 없음");
-        //}
+        else
+        {
+            // 앱 첫 실행 (세이브 파일 없음)
+            data.mana = 50;      // 기본값
+            data.gold = 0;
+            data.crystal = 0;
+            Debug.Log("[SaveManager] 첫 실행 - 기본값 설정 (mana=50, gold=0, crystal=0)");
+
+            Save(); // 기본값 저장
+        }
         OnLoaded?.Invoke();
 
         // ResourceManager가 null이 아니면 바로 적용

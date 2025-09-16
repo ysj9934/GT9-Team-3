@@ -9,8 +9,6 @@ public class MapUICanvas : MonoBehaviour
 {
     public ResourceManager _resourceManager;
 
-    //[SerializeField] private Button Startbutton;
-    //[SerializeField] private TextMeshProUGUI worldStageInfoText;
     [SerializeField] private TextMeshProUGUI staminaHoldingAmountText;
     [SerializeField] private TextMeshProUGUI goldHoldingAmountText;
     [SerializeField] private TextMeshProUGUI diaHoldingAmountText;
@@ -20,15 +18,14 @@ public class MapUICanvas : MonoBehaviour
 
     private void Awake()
     {
-        //_resourceManager = ResourceManager.Instance;
-
-        //if (_resourceManager == null)
-        //    Debug.LogError("ResourceManager.Instance가 존재하지 않습니다!");
     }
 
     private void Start()
     {
         _resourceManager = ResourceManager.Instance;
+
+        // 이벤트 구독
+        _resourceManager.OnResourceChanged += UpdateUI;
 
         if (_resourceManager != null)
         {
@@ -38,13 +35,7 @@ public class MapUICanvas : MonoBehaviour
         }
     }
 
-    private void OnEnable()
-    {
-        if (_resourceManager != null)
-            _resourceManager.OnResourceChanged += UpdateUI;
-    }
-
-    private void OnDisable()
+    private void OnDestroy()
     {
         if (_resourceManager != null)
             _resourceManager.OnResourceChanged -= UpdateUI;
@@ -54,9 +45,15 @@ public class MapUICanvas : MonoBehaviour
     {
         switch (type)
         {
-            case ResourceType.Mana: ShowStaminaAmount(); break;
-            case ResourceType.Gold: ShowGoldAmount(); break;
-            case ResourceType.Crystal: ShowDiaAmount(); break;
+            case ResourceType.Mana:
+                staminaHoldingAmountText.text = $"{(int)value} / 99";
+                break;
+            case ResourceType.Gold:
+                goldHoldingAmountText.text = $"{(int)value}";
+                break;
+            case ResourceType.Crystal:
+                diaHoldingAmountText.text = $"{(int)value}";
+                break;
         }
     }
 
@@ -69,14 +66,6 @@ public class MapUICanvas : MonoBehaviour
             SceneLoader.Instance.LoadSceneByIndex(1);
         }
     }
-
-    //public void TextWorldStageInfo(int stageId)
-    //{
-    //    int worldText = stageId / 100;
-    //    int stageText = stageId % 10;
-    //    worldStageInfoText.text = $"World {worldText} - Stage {stageText}";
-    //}
-
 
     public float ShowResourceAmount(ResourceType type)
     {
@@ -106,22 +95,22 @@ public class MapUICanvas : MonoBehaviour
         if (_resourceManager.GetAmount(ResourceType.Mana) < 99)
         {
             Debug.Log("Stamiana earn");
-            _resourceManager.Earn(ResourceType.Mana, 1);
+            _resourceManager.Earn(ResourceType.Mana, 10);
         }
 
-        ShowStaminaAmount();
+        //ShowStaminaAmount();
     }
 
     public void AddGoldAmount()
     {
         Debug.Log("Gold Add");
-        ShowGoldAmount();
+        //ShowGoldAmount();
     }
 
     public void AddDiaAmount()
     {
         Debug.Log("Diamond Add");
-        ShowDiaAmount();
+        //ShowDiaAmount();
     }
 
     public void EnterHardMode()

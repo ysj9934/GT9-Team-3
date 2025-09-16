@@ -10,31 +10,50 @@ public class ResourceManager : MonoBehaviour
     public Dictionary<ResourceType, float> resources = new Dictionary<ResourceType, float>();
     public event Action<ResourceType, float> OnResourceChanged;
 
+    // 회복 관련
+    private const int ManaRecoveryIntervalSeconds = 300; // 5분 = 300초
+    private const int ManaRecoveryAmount = 1;
+    private bool manaRecoveryRunning = false;
+
     void Awake()
     {
         if (Instance != null)
         {
             Destroy(gameObject);
-        }
-        else
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
+            return;
         }
 
-        // Initialize resources
-        Initialize();
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
+
+        // 모든 ResourceType 초기화
+        foreach (ResourceType type in Enum.GetValues(typeof(ResourceType)))
+        {
+            resources[type] = 0f;
+        }
+
+        // 씬 이동에도 한 번만 오프라인 회복 및 코루틴 시작
+        if (!manaRecoveryRunning)
+        {
+            StartCoroutine(ManaRecoveryCoroutine());
+            manaRecoveryRunning = true;
+        }
+
+        if (SaveManager.Instance != null)
+        {
+            SaveManager.Instance.OnLoaded += () =>
+            {
+                ApplySavedResources();    // 기존 저장값 적용
+            };
+        }
 
         Add(ResourceType.Tilepiece, 5000);
-        //Add(ResourceType.Crystal, 100);
-        //Add(ResourceType.Mana, 50);
     }
 
     void Start()
     {
         // Start 시점에는 SaveManager.Instance가 반드시 존재
-        if (SaveManager.Instance != null)
-            SaveManager.Instance.OnLoaded += ApplySavedResources;
+        ApplyOfflineRecovery();   // 오프라인 회복 적용
     }
 
     public void ApplySavedResources()
@@ -45,17 +64,53 @@ public class ResourceManager : MonoBehaviour
         resources[ResourceType.Mana] = SaveManager.Instance.data.mana;
         resources[ResourceType.Crystal] = SaveManager.Instance.data.crystal;
 
+        Debug.Log($"[ApplySavedResources] Mana: " +
+            $"{resources[ResourceType.Mana]}, Gold: {resources[ResourceType.Gold]}, Crystal: {resources[ResourceType.Crystal]}");
+
         OnResourceChanged?.Invoke(ResourceType.Mana, resources[ResourceType.Mana]);
         OnResourceChanged?.Invoke(ResourceType.Gold, resources[ResourceType.Gold]);
         OnResourceChanged?.Invoke(ResourceType.Crystal, resources[ResourceType.Crystal]);
     }
 
-    private void Initialize()
+    private void ApplyOfflineRecovery()
     {
-        resources[ResourceType.Gold] = 0;
-        resources[ResourceType.Mana] = 0;
-        resources[ResourceType.Crystal] = 0;
-        resources[ResourceType.Tilepiece] = 0;
+        if (SaveManager.Instance == null) return;
+
+        var lastSave = SaveManager.Instance.data.lastSaveTime;
+        var now = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+        long elapsedSeconds = now - lastSave;
+
+        // 디버그 출력
+        Debug.Log($"[OfflineRecovery] 이전 저장 시각: {lastSave} (UnixTime)");
+        Debug.Log($"[OfflineRecovery] 현재 시각: {now} (UnixTime)");
+        Debug.Log($"[OfflineRecovery] 경과 시간: {elapsedSeconds}초");
+
+        int recoveredMana = (int)(elapsedSeconds / ManaRecoveryIntervalSeconds) * ManaRecoveryAmount;
+
+        Debug.Log($"[OfflineRecovery] 회복 예정 마나: {recoveredMana}");
+
+        if (recoveredMana > 0)
+        {
+            Earn(ResourceType.Mana, recoveredMana);
+            SaveManager.Instance.Save(); // 즉시 저장
+        }
+    }
+
+    private IEnumerator ManaRecoveryCoroutine()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(ManaRecoveryIntervalSeconds);
+
+            // 최대 마나 99 제한
+            if (resources[ResourceType.Mana] < 99)
+            {
+                float recoverAmount = Mathf.Min(ManaRecoveryAmount, 99 - resources[ResourceType.Mana]);
+                Earn(ResourceType.Mana, recoverAmount);
+            }
+
+            SaveManager.Instance?.Save();
+        }
     }
 
     public bool CanAfford(ResourceType type, float cost)
@@ -87,6 +142,10 @@ public class ResourceManager : MonoBehaviour
             resources[type] = 0;
 
         resources[type] += amount;
+
+        if (type == ResourceType.Mana && resources[type] > 99)
+            resources[type] = 99;
+
         Debug.Log($"[자원] {type} +{amount} 획득, 현재: {resources[type]}");
         OnResourceChanged?.Invoke(type, resources[type]);
     }
