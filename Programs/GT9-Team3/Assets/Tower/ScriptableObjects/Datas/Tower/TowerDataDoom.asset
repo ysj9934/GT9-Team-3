@@ -12,24 +12,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f8ae5f2e0569794b8c8c767992ae704, type: 3}
   m_Name: TowerDataDoom
   m_EditorClassIdentifier: 
-  towerID: 0
-  innerName: 
-  towerLevel: 0
+  towerID: 5006
+  innerName: 1Doom_Tower
+  towerLevel: 1
   useProjectile: 
   attackType: 0
   attackRadius: 0
-  targetCount: 0
-  attackRange: 0
+  targetCount: 1
+  attackRange: 2
   attackEnemyType1: 0
   attackEnemyType2: 0
-  targetOrder: 
-  makeCost: 0
-  makeValue: 0
-  sellCost: 0
-  sellValue: 0
-  UpgradeCost: 0
+  targetOrder: 00000000010000000200000003000000
+  makeCost: 3
+  makeValue: 50
+  sellCost: 3
+  sellValue: 20
+  UpgradeCost: 3
   UpgradeValue: 0
   damage: 0
-  attackSpeed: 0
-  projectilePrefab: {fileID: 0}
-  projectileData: {fileID: 0}
+  attackSpeed: 0.7
+  projectilePrefab: {fileID: 4557226460097302839, guid: 6252c1bc86edd894798691e8908d3f79, type: 3}
+  projectileData: {fileID: 11400000, guid: 852ef89ca9294ad49963d39981a074c8, type: 2}
