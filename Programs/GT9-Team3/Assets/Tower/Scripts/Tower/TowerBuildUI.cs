@@ -30,7 +30,7 @@ public class TowerBuildUI : MonoBehaviour
         var towerTable = TowerDataTableLoader.Instance.ItemsDict;
         var projectileTable = ProjectileDataLoader.Instance.ItemsDict;
 
-        _towerSellUI.Init();
+        GameUIManager.Instance.canvasWindow.towerSellUI.Init();
 
         foreach (var bp in options)
         {

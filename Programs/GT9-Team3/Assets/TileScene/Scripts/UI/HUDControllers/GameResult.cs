@@ -25,14 +25,12 @@ public class GameResult : MonoBehaviour
     private int gameStageLevel;
     private int rewardGold;
 
-    public HUDCanvas Initialize(HUDCanvas hudCanvas)
+
+    private void Awake()
     {
-        CloseWindow();
+        gameObject.SetActive(false);
         ViewHoldingStamina();
-        gameWorldLevel = DataManager.Instance.stageId / 100;
-        gameStageLevel = DataManager.Instance.stageId % 10;
         UpdateWorldStageText();
-        return _hudCanvas = hudCanvas;
     }
 
     public void CloseWindow()
@@ -45,6 +43,8 @@ public class GameResult : MonoBehaviour
 
     public void OpenWindow(bool isWin)
     {
+        gameWorldLevel = DataManager.Instance.stageId / 100;
+        gameStageLevel = DataManager.Instance.stageId % 10;
         rewardGold = GameManager.Instance._waveController.rewardGold;
         ResultText(isWin);
         rewardAmountText.text = $"{rewardGold}";
@@ -151,7 +151,7 @@ public class GameResult : MonoBehaviour
 
         },
         () => {
-            _hudCanvas._gameManager.ResumeGame();
+            GameManager.Instance.ResumeGame();
 
             SceneLoader.Instance.LoadSceneByName("Map UI");
         });

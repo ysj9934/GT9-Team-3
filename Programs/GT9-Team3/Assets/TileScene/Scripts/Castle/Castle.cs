@@ -24,13 +24,13 @@ public class Castle : MonoBehaviour
 
     public void GetCastleData()
     {
-        HUDCanvas.Instance._hudResource.SetCastleData(this);
+        GameUIManager.Instance.canvasFixed.ResourcePanel.SetCastleData(this);
     }
 
     public void ResetButton()
     {
         currentHealth = maxHealth;
-        HUDCanvas.Instance._hudResource.UpdateHPBar();
+        GameUIManager.Instance.canvasFixed.ResourcePanel.UpdateHPBar();
         isDead = false;
     }
 
@@ -40,7 +40,7 @@ public class Castle : MonoBehaviour
 
         currentHealth -= damage;
 
-        HUDCanvas.Instance._hudResource.UpdateHPBar();
+        GameUIManager.Instance.canvasFixed.ResourcePanel.UpdateHPBar();
 
         if (currentHealth <= 0)
         {

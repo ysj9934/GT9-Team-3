@@ -133,7 +133,7 @@ public class GameManager : MonoBehaviour
 
     public void SendStageDataToUIManager()
     {
-        HUDCanvas.Instance._hudStageInfo.ReceiveStageData(
+        GameUIManager.Instance.canvasFixed.StagePanel.ReceiveStageData(
             new StageData
                 (
                     0,

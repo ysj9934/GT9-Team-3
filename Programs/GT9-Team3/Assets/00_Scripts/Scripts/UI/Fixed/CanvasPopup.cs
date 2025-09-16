@@ -2,15 +2,8 @@ using UnityEngine;
 
 public class CanvasPopup : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    [SerializeField] public ToastMessage toastMessage;
+    [SerializeField] public ConfirmMessage confirmMessage;
+    [SerializeField] public GameDefeat gameDefeatPanel;
+    [SerializeField] public GameResult gameResultPanel;
 }

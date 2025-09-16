@@ -59,7 +59,7 @@ public class WaveController : MonoBehaviour
             SetWaveData(stageWaveList[0]);
 
             ResourceManager.Instance.resources[ResourceType.Tilepiece] = stageWaveList[0].StageStartTilePiece;
-            HUDCanvas.Instance._hudResource.ShowTilePiece();
+            GameUIManager.Instance.canvasFixed.ResourcePanel.ShowTilePiece();
             this.rewardGold = 0;
         }
         else
@@ -103,8 +103,8 @@ public class WaveController : MonoBehaviour
             }
 
             aliveEnemyCount = 0;
-            HUDCanvas.Instance._hudWaveInfo.ResetWavePoint(enemySpawnCount);
-            HUDCanvas.Instance._hudWaveInfo.ResetEnemyCount(enemySpawnCount);
+            GameUIManager.Instance.canvasFixed.WavePanel.ResetWavePoint(enemySpawnCount);
+            GameUIManager.Instance.canvasFixed.WavePanel.ResetEnemyCount(enemySpawnCount);
 
             // [사운드효과]: 다음 웨이브로 이동 사운드
             Debug.LogWarning("[Sound]: Next Wave Sound");
@@ -134,16 +134,16 @@ public class WaveController : MonoBehaviour
             _gameManager._tileController.isUIActive = true;
             _gameManager._tileController.isMoveActive = true;
             // 4. UI 버튼
-            HUDCanvas.Instance.TurnOnPathfinder();
-            HUDCanvas.Instance.TurnOffStartWave();
+            GameUIManager.Instance.canvasFixed.TurnOnPathfinder();
+            GameUIManager.Instance.canvasFixed.TurnOffStartWave();
 
             // Wave Progress UI 초기화
-            HUDCanvas.Instance._hudWaveInfo.ResetAllWavePoint();
+            GameUIManager.Instance.canvasFixed.WavePanel.ResetAllWavePoint();
 
             // 5. 플로팅 메세지
             if (waveIndex != 1)
             {
-                HUDCanvas.Instance._hudMessageUI.FloatingUIShow(
+                GameUIManager.Instance.canvasPopup.toastMessage.FloatingUIShow(
                     $"[{this.currentRoundLevel} 라운드 종료]",
                     "라운드가 종료되어 타일을 획득하였습니다.\n" +
                     "길찾기가 초기화되고, 이제 타일을 움직일 수 있습니다.",
@@ -157,7 +157,7 @@ public class WaveController : MonoBehaviour
             _gameManager._tileController.isUIActive = false;
             _gameManager._tileController.isMoveActive = false;
 
-            HUDCanvas.Instance.TurnOnStartWave();
+            GameUIManager.Instance.canvasFixed.TurnOnStartWave();
         }
     }
 
@@ -193,7 +193,7 @@ public class WaveController : MonoBehaviour
         if (path.Count < 1 || path[0] == null)
         {
             Debug.LogError("path is valid");
-            HUDCanvas.Instance._hudMessageUI.FloatingUIShow(
+            GameUIManager.Instance.canvasPopup.toastMessage.FloatingUIShow(
                 "[오류]",
                 "정상적인 길을 배정받지 못하였습니다. \n" +
                 "패스파인더를 다시 확인해주세요.",
@@ -217,7 +217,7 @@ public class WaveController : MonoBehaviour
         else
         {
             // wave시작 버튼 끄기
-            HUDCanvas.Instance.TurnOffStartWave();
+            GameUIManager.Instance.canvasFixed.TurnOffStartWave();
             _tileController.isUIActive = false;
             _tileController.isMoveActive = false;
         }
@@ -235,7 +235,7 @@ public class WaveController : MonoBehaviour
 
         _tileController.isUIActive = false;
         _tileController.isMoveActive = false;
-        HUDCanvas.Instance.TurnOffStartWave();
+        GameUIManager.Instance.canvasFixed.TurnOffStartWave();
 
         // [사운드효과]: 웨이브 시작
         Debug.LogWarning("[Sound] Wave Start Sound");
@@ -299,7 +299,7 @@ public class WaveController : MonoBehaviour
             enemy._enemyHealthHandler.OnDeath += HandleEnemyDeath;
             aliveEnemyCount++;
             int index = waveIndex % 3 == 0 ? 3 : waveIndex % 3;
-            HUDCanvas.Instance._hudWaveInfo.UpdateWaveCount(index);
+            GameUIManager.Instance.canvasFixed.WavePanel.UpdateWaveCount(index);
 
             activeEnemies.Add(enemyObj);
         }
@@ -315,7 +315,7 @@ public class WaveController : MonoBehaviour
     { 
         aliveEnemyCount--;
         // UI 업데이트
-        HUDCanvas.Instance._hudWaveInfo.UpdateEnemyCount();
+        GameUIManager.Instance.canvasFixed.WavePanel.UpdateEnemyCount();
 
         if (aliveEnemyCount <= 0 && waveRoutine == null)
         {
@@ -418,7 +418,7 @@ public class WaveController : MonoBehaviour
                     }
                 }
 
-                HUDCanvas.Instance._hudMessageUI.FloatingUIShow(
+                GameUIManager.Instance.canvasPopup.toastMessage.FloatingUIShow(
                     "[분노]",
                     "[월드보스]쌍두 사냥개가 `타일봉쇄`를 사용하였습니다.\n" +
                     "`타일봉쇄`를 당한 타일은 해당 스테이지동안 회전하거나 옮길 수 없습니다.",
@@ -445,7 +445,7 @@ public class WaveController : MonoBehaviour
                     }
                 }
 
-                HUDCanvas.Instance._hudMessageUI.FloatingUIShow(
+                GameUIManager.Instance.canvasPopup.toastMessage.FloatingUIShow(
                    "[분노]",
                    "[월드보스]강철 괴수가 `타일봉쇄`, `전장개조`를 사용하였습니다.\n" +
                    "`타일봉쇄`를 당한 타일은 해당 스테이지동안 회전하거나 옮길 수 없습니다.\n" +
@@ -471,7 +471,7 @@ public class WaveController : MonoBehaviour
                     }
                 }
 
-                HUDCanvas.Instance._hudMessageUI.FloatingUIShow(
+                GameUIManager.Instance.canvasPopup.toastMessage.FloatingUIShow(
                    "[분노]",
                    "[월드보스]죽음의 심판자가 `타일봉쇄`, `전장개조`를 사용하였습니다.\n" +
                    "`타일봉쇄`를 당한 타일은 해당 스테이지동안 회전하거나 옮길 수 없습니다.\n" +
@@ -497,7 +497,7 @@ public class WaveController : MonoBehaviour
                     }
                 }
 
-                HUDCanvas.Instance._hudMessageUI.FloatingUIShow(
+                GameUIManager.Instance.canvasPopup.toastMessage.FloatingUIShow(
                    "[분노]",
                    "[월드보스]죽음의 심판자가 `타일봉쇄`, `전장개조`, `느린 타워`를 사용하였습니다.\n" +
                    "`타일봉쇄`를 당한 타일은 해당 스테이지동안 회전하거나 옮길 수 없습니다.\n" +
@@ -545,7 +545,7 @@ public class WaveController : MonoBehaviour
 
         if (waveIndex != 1)
         {
-            HUDCanvas.Instance._hudMessageUI.FloatingUIShow(
+            GameUIManager.Instance.canvasPopup.toastMessage.FloatingUIShow(
                 "[습득]",
                 "타일을 습득하셨습니다.",
                 Color.white

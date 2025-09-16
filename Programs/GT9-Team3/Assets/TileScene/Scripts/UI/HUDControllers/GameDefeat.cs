@@ -7,7 +7,7 @@ using static AdsManager;
 
 public class GameDefeat : MonoBehaviour
 {
-    private HUDCanvas _hudCanvas;
+    private GameUIManager _UIManager;
 
     [SerializeField] private Button closeWindowBtn;
     [SerializeField] private TextMeshProUGUI holdDiaAmountText;
@@ -17,14 +17,10 @@ public class GameDefeat : MonoBehaviour
 
     private void Awake()
     {
-        _hudCanvas = GetComponentInParent<HUDCanvas>();
-    }
+        _UIManager = GetComponentInParent<GameUIManager>();
 
-    public HUDCanvas Initialize(HUDCanvas hudCanvas)
-    {
         gameObject.SetActive(false);
         ViewHoldingCrystal();
-        return _hudCanvas = hudCanvas;
     }
 
     /// <summary>
@@ -39,7 +35,7 @@ public class GameDefeat : MonoBehaviour
         Debug.LogWarning("[Sound]: Button Click Sound");
 
         // game result 로 이동
-        _hudCanvas._hudResultPanel._gameResultPanel.OpenWindow(false);
+        _UIManager.canvasPopup.gameResultPanel.OpenWindow(false);
     }
 
     public void OpenWindow()

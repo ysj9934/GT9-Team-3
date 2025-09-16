@@ -14,6 +14,11 @@ public class ToastMessage : MonoBehaviour
 
     private Action onComplete;
 
+    private void Awake()
+    {
+        CloseFloatingUI();
+    }
+
     public void FloatingUIShow(string messageTitle, string messageDesc, Color color, Action onFinish = null)
     {
         gameObject.SetActive(true);
@@ -60,6 +65,11 @@ public class ToastMessage : MonoBehaviour
 
         canvasGroup.alpha = 0f;
         onComplete?.Invoke();
+        gameObject.SetActive(false);
+    }
+
+    private void CloseFloatingUI()
+    {
         gameObject.SetActive(false);
     }
 }

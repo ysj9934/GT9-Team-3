@@ -5,7 +5,6 @@ public class TileMove : MonoBehaviour
 {
     // Managers
     private TileController _tileManager;
-    private HUDCanvas _hudCanvas;
 
 
     // Object Structure
@@ -31,7 +30,6 @@ public class TileMove : MonoBehaviour
     private void Awake()
     {
         _tileManager = TileController.Instance;
-        _hudCanvas = HUDCanvas.Instance;
         //_camera = Camera.main;
 
         _tileData = GetComponent<TileData>();
@@ -41,7 +39,7 @@ public class TileMove : MonoBehaviour
 
     private void Start()
     {
-        inventoryContent = _hudCanvas._itemHudUI.inventoryContent;
+        inventoryContent = GameUIManager.Instance.canvasWindow.itemHubUI.inventoryContent;
     }
     
     public void TileMovePress()

@@ -104,7 +104,7 @@ public class TileController : MonoBehaviour
         else
         {
             Debug.LogError("StageData is Null");
-            HUDCanvas.Instance._hudMessageUI.FloatingUIShow(
+            GameUIManager.Instance.canvasPopup.toastMessage.FloatingUIShow(
                 "[오류]",
                 "StageData is Null",
                 Color.red
@@ -283,7 +283,7 @@ public class TileController : MonoBehaviour
                 if (isUIActive)
                 {
                     CloseTileUI(fallbackTile._tileUI);
-                    HUDCanvas.Instance.TurnOffStartWave();
+                    GameUIManager.Instance.canvasFixed.TurnOffStartWave();
                     fallbackTile._tileUI.rotateUI.SetActive(!fallbackTile._tileUI.rotateUI.activeSelf);
 
                     // [사운드효과]: 타일 선택
@@ -694,7 +694,7 @@ public class TileController : MonoBehaviour
             else
             {
                 Debug.LogWarning("No length has been allocated for this array");
-                HUDCanvas.Instance._hudMessageUI.FloatingUIShow(
+                GameUIManager.Instance.canvasPopup.toastMessage.FloatingUIShow(
                     "[경고]",
                     "현재 길이 연결되어 있지 않아 패스파인더를 실행할 수 없습니다.\n" +
                     "정확한 경로를 확인해 주세요.",
@@ -767,7 +767,7 @@ public class TileController : MonoBehaviour
         }
 
         GameManager.Instance._waveController.SetPath(pathTrans);
-        HUDCanvas.Instance.TurnOnStartWave();
+        GameUIManager.Instance.canvasFixed.TurnOnStartWave();
     }
 
     /// <summary>
