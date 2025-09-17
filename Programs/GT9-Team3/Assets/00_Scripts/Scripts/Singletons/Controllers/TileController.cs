@@ -792,7 +792,7 @@ public class TileController : MonoBehaviour
     /// </summary>
     public void CloseTowerInstallUI()
     {
-        TowerSellUI.Instance.Hide();
+        GameUIManager.Instance.canvasTower.Hide();
     }
 
     /// <summary>
