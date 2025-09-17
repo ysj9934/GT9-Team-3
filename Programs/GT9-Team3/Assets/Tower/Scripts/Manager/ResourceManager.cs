@@ -96,8 +96,6 @@ public class ResourceManager : MonoBehaviour
 
     public bool CanAfford(ResourceType type, float cost)
     {
-        if (!resources.ContainsKey(type))
-            resources[type] = 0f; // 없으면 0으로 초기화
         return resources[type] >= cost;
     }
  

@@ -89,13 +89,6 @@ public class MapUICanvas : MonoBehaviour
 
     public void giveStageMode(int stageID)
     {
-        if (_resourceManager.CanAfford(ResourceType.Mana, 5))
-        {
-            DataManager.Instance.SelectedStage(stageID);
-        }
-        else
-        {
-            Debug.Log("스태미너 부족"); // 5. else 확인
-        }
+        DataManager.Instance.SelectedStage(stageID);
     }
 }

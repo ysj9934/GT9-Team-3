@@ -15,7 +15,10 @@ public class GameInitializer : MonoBehaviour
 
         instance = this;
         DontDestroyOnLoad(gameObject);
+    }
 
+    void Start()
+    {
         InitializeGame();
     }
 
