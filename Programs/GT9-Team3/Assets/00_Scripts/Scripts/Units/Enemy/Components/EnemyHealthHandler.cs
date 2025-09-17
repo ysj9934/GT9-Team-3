@@ -69,7 +69,7 @@ public class EnemyHealthHandler : MonoBehaviour
 
             int projectileID = projectileData.projectileID;
             // [사운드효과]: 피격시 사운드 / 사운드 효과 적게
-            SoundManager.Instance.Play("arrow-cutting-through-the-air-39540-잘라쓰기", SoundType.SFX, 1f);
+            SoundManager.Instance.Play("arrow-cutting-through-the-air-39540-잘라쓰기", SoundType.SFX, 0.3f);
             switch (projectileID)
             {
                 case 7001:

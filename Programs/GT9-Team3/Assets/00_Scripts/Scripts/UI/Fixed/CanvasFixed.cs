@@ -68,7 +68,7 @@ public class CanvasFixed : MonoBehaviour
         GameManager.Instance._waveController.StartWave();
 
         // [사운드효과]: 버튼 클릭
-        SoundManager.Instance.Play("minimal-pop-click-ui-14-198314", SoundType.UI, 1f);
+        SoundManager.Instance.Play("minimal-pop-click-ui-14-198314", SoundType.UI, 0.3f);
         Debug.LogWarning("[Sound]: Button Click Sound");
     }
 

@@ -342,7 +342,7 @@ public class TileMove : MonoBehaviour
         UpdateGridPosition();
 
         // [사운드효과]: 타일 배치
-        SoundManager.Instance.Play("DA - Book Drop - 4", SoundType.SFX, 1f);
+        SoundManager.Instance.Play("DA - Book Drop - 4", SoundType.SFX, 0.5f);
         Debug.LogWarning("[Sound]: Tile Pos Sound");
     }
     

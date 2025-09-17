@@ -139,6 +139,7 @@ public class TileController : MonoBehaviour
         SetMapResize(tileLength);
         SetTileGrid(tileLength);
         SetSpawnerPosition();
+        SetWorldTile(gameWorldLevel);
 
         foreach (var tileInfo in tileInfoList)
         {
@@ -287,7 +288,7 @@ public class TileController : MonoBehaviour
                     fallbackTile._tileUI.rotateUI.SetActive(!fallbackTile._tileUI.rotateUI.activeSelf);
 
                     // [사운드효과]: 타일 선택
-                    SoundManager.Instance.Play("DA - Book Drop - 3");
+                    SoundManager.Instance.Play("DA - Book Drop - 3", SoundType.SFX, 0.5f);
                     Debug.LogWarning("[Sound]: Tile Click Sound");
                 }
 
