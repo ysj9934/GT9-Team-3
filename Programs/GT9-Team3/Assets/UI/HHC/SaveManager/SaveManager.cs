@@ -81,9 +81,7 @@ public class SaveManager : MonoBehaviour
 
             //savePath = Path.Combine(Application.dataPath, "Resources/Save/save.json");
             //Editor에서 실행
-
-            Load();
-            Debug.Log("저장 경로: " + savePath);
+            //Debug.Log("저장 경로: " + savePath);
         }
         else
         {
@@ -96,8 +94,12 @@ public class SaveManager : MonoBehaviour
         if (ResourceManager.Instance != null)
         {
             ResourceManager.Instance.OnResourceChanged += HandleResourceChanged;
-            ResourceManager.Instance.OnResourceChanged += (type, value) => Save();
         }
+    }
+
+    void Start()
+    {
+        Load();
     }
 
     void OnDisable()
@@ -127,17 +129,6 @@ public class SaveManager : MonoBehaviour
 
     public void Save()
     {
-        //string json = JsonUtility.ToJson(data, true);
-
-        //// 디렉토리가 존재하지 않으면 생성
-        //string directory = Path.GetDirectoryName(savePath);
-        //if (!Directory.Exists(directory))
-        //{
-        //    Directory.CreateDirectory(directory);
-        //}
-
-        //File.WriteAllText(savePath, json);
-        //Debug.Log("Saved to: " + savePath);
         data.UpdateLastSaveTime(); 
         data.PrepareForSave(); // Dictionary → List
         string json = JsonUtility.ToJson(data, true);
@@ -146,17 +137,12 @@ public class SaveManager : MonoBehaviour
 
     public void Load()
     {
-        Debug.Log("[SaveManager] Load() 호출됨");
-        Debug.Log("[SaveManager] 저장 경로 = " + savePath);
-
         if (File.Exists(savePath))
         {
             string json = File.ReadAllText(savePath);
             data = JsonUtility.FromJson<SaveData>(json);
-            Debug.Log("[SaveManager] mana = " + data.mana);
-            Debug.Log("[SaveManager] gold = " + data.gold);
-            Debug.Log("[SaveManager] crystal = " + data.crystal);
-            Debug.Log("[SaveManager] lastSaveTime = " + data.lastSaveTime);
+            Debug.Log("[SaveManager] mana = " + data.mana + ", gold = " + data.gold +
+                ", crystal = " + data.crystal + ", lastSaveTime = " + data.lastSaveTime);
             data.LoadFromSerialized(); // List → Dictionary
         }
         else
@@ -170,27 +156,7 @@ public class SaveManager : MonoBehaviour
             Save(); // 기본값 저장
         }
         OnLoaded?.Invoke();
-
-        // ResourceManager가 null이 아니면 바로 적용
-        if (ResourceManager.Instance != null)
-            ResourceManager.Instance.ApplySavedResources();
     }
-
-    // 기존에 리스트를 순회하며 찾던 방식(9월 14일 이전)
-    //public void SaveStageClearStar(int stageID, ClearStar star)
-    //{
-    //    // 이미 저장되어 있으면 업데이트
-    //    var existing = data.stageClearStars.Find(s => s.stageID == stageID);
-    //    if (existing != null)
-    //    {
-    //        existing.clearStar = star;
-    //    }
-    //    else
-    //    {
-    //        data.stageClearStars.Add(new StageClearStar { stageID = stageID, clearStar = star });
-    //    }
-    //    Save();
-    //}
 
     // Dictionary를 사용하여 바로 매핑하는 방식(9월 14일 이후) O(n) → O(1)로 최적화
     // 저장/업데이트
@@ -215,14 +181,18 @@ public class SaveManager : MonoBehaviour
     {
         if (pause)
         {
-            Debug.Log("App Paused - Saving data");
             Save();
         }
     }
 
     private void OnApplicationQuit()
     {
-        Debug.Log("write");
+        if (ResourceManager.Instance != null)
+        {
+            data.mana = (int)ResourceManager.Instance.GetAmount(ResourceType.Mana);
+            data.gold = (int)ResourceManager.Instance.GetAmount(ResourceType.Gold);
+            data.crystal = (int)ResourceManager.Instance.GetAmount(ResourceType.Crystal);
+        }
         Save();
     }
 }

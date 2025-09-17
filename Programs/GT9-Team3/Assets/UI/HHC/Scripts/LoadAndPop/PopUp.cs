@@ -18,8 +18,8 @@ public class PopUp : MonoBehaviour
             {
                 if (popupPanels[i] != null)
                 {
-                    popupPanels[i].SetActive(false);
-                    Debug.Log($"Start() 숨김: popupPanels[{i}] = {popupPanels[i].name}");
+                    popupPanels[i].SetActive(i == 0); // 0번만 true
+                    //Debug.Log($"Start() 숨김: popupPanels[{i}] = {popupPanels[i].name}");
                 }
                 else
                 {
@@ -73,12 +73,7 @@ public class PopUp : MonoBehaviour
         {
             if (popupPanels[i] != null)
             {
-                bool shouldBeActive = (i == index);
-                popupPanels[i].SetActive(shouldBeActive);
-
-                Debug.Log(shouldBeActive
-                    ? $"패널 활성화: popupPanels[{i}] = {popupPanels[i].name}"
-                    : $"패널 비활성화: popupPanels[{i}] = {popupPanels[i].name}");
+                popupPanels[i].SetActive(i == index); 
             }
         }
 
@@ -99,5 +94,21 @@ public class PopUp : MonoBehaviour
                 Debug.Log($"HideAllPanels() 닫기: {panel.name}");
             }
         }
+    }
+
+    public void ClosePopup()
+    {
+        if (popupPanel == null) return;
+
+        CanvasGroup cg = popupPanel.GetComponent<CanvasGroup>();
+        if (cg == null) cg = popupPanel.AddComponent<CanvasGroup>();
+
+        // 1. UI 완전히 안 보이도록 설정
+        cg.alpha = 0;               // 투명
+        cg.interactable = false;    // 클릭 막기
+        cg.blocksRaycasts = false;  // 입력 이벤트 무시
+
+        // 2. GameObject 비활성화
+        popupPanel.SetActive(false);
     }
 }

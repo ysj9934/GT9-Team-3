@@ -9,53 +9,9 @@ public class MapUICanvas : MonoBehaviour
 {
     public ResourceManager _resourceManager;
 
-    [SerializeField] private TextMeshProUGUI staminaHoldingAmountText;
-    [SerializeField] private TextMeshProUGUI goldHoldingAmountText;
-    [SerializeField] private TextMeshProUGUI diaHoldingAmountText;
     [SerializeField] private Button stamainAddButton;
     [SerializeField] private Button goldAddButton;
     [SerializeField] private Button diaAddButton;
-
-    private void Awake()
-    {
-    }
-
-    private void Start()
-    {
-        _resourceManager = ResourceManager.Instance;
-
-        // 이벤트 구독
-        _resourceManager.OnResourceChanged += UpdateUI;
-
-        if (_resourceManager != null)
-        {
-            UpdateUI(ResourceType.Mana, _resourceManager.GetAmount(ResourceType.Mana));
-            UpdateUI(ResourceType.Gold, _resourceManager.GetAmount(ResourceType.Gold));
-            UpdateUI(ResourceType.Crystal, _resourceManager.GetAmount(ResourceType.Crystal));
-        }
-    }
-
-    private void OnDestroy()
-    {
-        if (_resourceManager != null)
-            _resourceManager.OnResourceChanged -= UpdateUI;
-    }
-
-    private void UpdateUI(ResourceType type, float value)
-    {
-        switch (type)
-        {
-            case ResourceType.Mana:
-                staminaHoldingAmountText.text = $"{(int)value} / 99";
-                break;
-            case ResourceType.Gold:
-                goldHoldingAmountText.text = $"{(int)value}";
-                break;
-            case ResourceType.Crystal:
-                diaHoldingAmountText.text = $"{(int)value}";
-                break;
-        }
-    }
 
     public void StageStartButton()
     {
@@ -65,26 +21,6 @@ public class MapUICanvas : MonoBehaviour
             Debug.Log("Mana spent 5");
             SceneLoader.Instance.LoadSceneByIndex(1);
         }
-    }
-
-    public float ShowResourceAmount(ResourceType type)
-    {
-        return _resourceManager.GetAmount(type);
-    }
-
-    public void ShowStaminaAmount()
-    {
-        staminaHoldingAmountText.text = $"{(int) ShowResourceAmount(ResourceType.Mana)} / 99";
-    }
-
-    public void ShowGoldAmount()
-    {
-        goldHoldingAmountText.text = $"{ShowResourceAmount(ResourceType.Gold)}";
-    }
-
-    public void ShowDiaAmount()
-    {
-        diaHoldingAmountText.text = $"{ShowResourceAmount(ResourceType.Crystal)}";
     }
 
     public void AddStaminaAmount()

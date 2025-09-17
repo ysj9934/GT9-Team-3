@@ -11,7 +11,7 @@ public class ResourceManager : MonoBehaviour
     public event Action<ResourceType, float> OnResourceChanged;
 
     // 회복 관련
-    private const int ManaRecoveryIntervalSeconds = 300; // 5분 = 300초
+    private const int ManaRecoveryIntervalSeconds = 2; // 5분 = 300초
     private const int ManaRecoveryAmount = 1;
     private bool manaRecoveryRunning = false;
 
@@ -27,10 +27,7 @@ public class ResourceManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
 
         // 모든 ResourceType 초기화
-        foreach (ResourceType type in Enum.GetValues(typeof(ResourceType)))
-        {
-            resources[type] = 0f;
-        }
+        foreach (ResourceType type in Enum.GetValues(typeof(ResourceType))) resources[type] = 0f;
 
         // 씬 이동에도 한 번만 오프라인 회복 및 코루틴 시작
         if (!manaRecoveryRunning)
@@ -39,21 +36,7 @@ public class ResourceManager : MonoBehaviour
             manaRecoveryRunning = true;
         }
 
-        if (SaveManager.Instance != null)
-        {
-            SaveManager.Instance.OnLoaded += () =>
-            {
-                ApplySavedResources();    // 기존 저장값 적용
-            };
-        }
-
         Add(ResourceType.Tilepiece, 5000);
-    }
-
-    void Start()
-    {
-        // Start 시점에는 SaveManager.Instance가 반드시 존재
-        ApplyOfflineRecovery();   // 오프라인 회복 적용
     }
 
     public void ApplySavedResources()
@@ -72,22 +55,18 @@ public class ResourceManager : MonoBehaviour
         OnResourceChanged?.Invoke(ResourceType.Crystal, resources[ResourceType.Crystal]);
     }
 
-    private void ApplyOfflineRecovery()
+    public void ApplyOfflineRecovery()
     {
         if (SaveManager.Instance == null) return;
 
         var lastSave = SaveManager.Instance.data.lastSaveTime;
         var now = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
         long elapsedSeconds = now - lastSave;
-
-        // 디버그 출력
-        Debug.Log($"[OfflineRecovery] 이전 저장 시각: {lastSave} (UnixTime)");
-        Debug.Log($"[OfflineRecovery] 현재 시각: {now} (UnixTime)");
-        Debug.Log($"[OfflineRecovery] 경과 시간: {elapsedSeconds}초");
-
         int recoveredMana = (int)(elapsedSeconds / ManaRecoveryIntervalSeconds) * ManaRecoveryAmount;
 
-        Debug.Log($"[OfflineRecovery] 회복 예정 마나: {recoveredMana}");
+        // 디버그 출력
+        Debug.Log($"[OfflineRecovery] 이전 저장 시각: {lastSave} (UnixTime), 현재 시각: {now} (UnixTime), 경과 시간: {elapsedSeconds}초" +
+            $"[OfflineRecovery] 회복 예정 마나: {recoveredMana}");
 
         if (recoveredMana > 0)
         {
@@ -108,8 +87,6 @@ public class ResourceManager : MonoBehaviour
                 float recoverAmount = Mathf.Min(ManaRecoveryAmount, 99 - resources[ResourceType.Mana]);
                 Earn(ResourceType.Mana, recoverAmount);
             }
-
-            SaveManager.Instance?.Save();
         }
     }
 
@@ -117,7 +94,7 @@ public class ResourceManager : MonoBehaviour
     {
         return resources[type] >= cost;
     }
-
+ 
     public void Spend(ResourceType type, float amount)
     {
         if (!CanAfford(type, amount)) return;
