@@ -32,7 +32,7 @@ public class GameDefeat : MonoBehaviour
         gameObject.SetActive(false);
 
         // [사운드효과]: 버튼 클릭
-        SoundManager.Instance.Play("minimal-pop-click-ui-14-198314", SoundType.UI, 1f);
+        SoundManager.Instance.Play("minimal-pop-click-ui-14-198314", SoundType.UI, 0.3f);
         Debug.LogWarning("[Sound]: Button Click Sound");
 
         // game result 로 이동
@@ -66,7 +66,7 @@ public class GameDefeat : MonoBehaviour
         Debug.Log("Go Shop");
 
         // [사운드효과]: 버튼 클릭
-        SoundManager.Instance.Play("minimal-pop-click-ui-14-198314", SoundType.UI, 1f);
+        SoundManager.Instance.Play("minimal-pop-click-ui-14-198314", SoundType.UI, 0.3f);
         Debug.LogWarning("[Sound]: Button Click Sound");
 
         // Go Crystal Shop
@@ -81,7 +81,7 @@ public class GameDefeat : MonoBehaviour
         Debug.Log("Adv revive");
 
         // [사운드효과]: 버튼 클릭
-        SoundManager.Instance.Play("minimal-pop-click-ui-14-198314", SoundType.UI, 1f);
+        SoundManager.Instance.Play("minimal-pop-click-ui-14-198314", SoundType.UI, 0.3f);
         Debug.LogWarning("[Sound]: Button Click Sound");
 
         // 광고 시청
@@ -110,7 +110,7 @@ public class GameDefeat : MonoBehaviour
     public void ReviveToCry()
     {
         // [사운드효과]: 버튼 클릭
-        SoundManager.Instance.Play("minimal-pop-click-ui-14-198314", SoundType.UI, 1f);
+        SoundManager.Instance.Play("minimal-pop-click-ui-14-198314", SoundType.UI, 0.3f);
         Debug.LogWarning("[Sound]: Button Click Sound");
 
         Debug.Log("Cry revive");

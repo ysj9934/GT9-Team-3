@@ -73,7 +73,7 @@ public class TowerSellUI : MonoBehaviour
         else if (d.innerName.Contains("Splash_Tower"))
             towerNameText.text = "스플래시 타워";
         else if (d.innerName.Contains("Slow_Tower"))
-            towerNameText.text = "슬로우    타워";
+            towerNameText.text = "슬로우 타워";
         else if (d.innerName.Contains("Stun_Tower"))
             towerNameText.text = "스턴 타워";
         else if (d.innerName.Contains("Doom_Tower"))
@@ -174,7 +174,7 @@ public class TowerSellUI : MonoBehaviour
         else if (d.innerName.Contains("Splash_Tower"))
             towerNameText.text = "스플래시 타워";
         else if (d.innerName.Contains("Slow_Tower"))
-            towerNameText.text = "슬로우   타워";
+            towerNameText.text = "슬로우 타워";
         else if (d.innerName.Contains("Stun_Tower"))
             towerNameText.text = "스턴 타워";
         else if (d.innerName.Contains("Doom_Tower"))

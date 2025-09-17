@@ -40,7 +40,7 @@ public class GameResult : MonoBehaviour
         gameObject.SetActive(false);
 
         // [사운드효과]: 버튼 클릭
-        SoundManager.Instance.Play("minimal-pop-click-ui-14-198314", SoundType.UI, 1f);
+        SoundManager.Instance.Play("minimal-pop-click-ui-14-198314", SoundType.UI, 0.3f);
         Debug.LogWarning("[Sound]: Button Click Sound");
     }
 
@@ -90,7 +90,7 @@ public class GameResult : MonoBehaviour
         Debug.Log("Go Shop");
 
         // [사운드효과]: 버튼 클릭
-        SoundManager.Instance.Play("minimal-pop-click-ui-14-198314", SoundType.UI, 1f);
+        SoundManager.Instance.Play("minimal-pop-click-ui-14-198314", SoundType.UI, 0.3f);
         Debug.LogWarning("[Sound]: Button Click Sound");
 
     }
@@ -105,7 +105,7 @@ public class GameResult : MonoBehaviour
         Debug.Log("GameExit to go MapUI");
 
         // [사운드효과]: 버튼 클릭
-        SoundManager.Instance.Play("minimal-pop-click-ui-14-198314", SoundType.UI, 1f);
+        SoundManager.Instance.Play("minimal-pop-click-ui-14-198314", SoundType.UI, 0.3f);
         Debug.LogWarning("[Sound]: Button Click Sound");
 
         CloseWindow();
@@ -122,7 +122,7 @@ public class GameResult : MonoBehaviour
         Debug.Log("GameRetry");
 
         // [사운드효과]: 버튼 클릭
-        SoundManager.Instance.Play("minimal-pop-click-ui-14-198314", SoundType.UI, 1f);
+        SoundManager.Instance.Play("minimal-pop-click-ui-14-198314", SoundType.UI, 0.3f);
         Debug.LogWarning("[Sound]: Button Click Sound");
 
         if (ResourceManager.Instance.CanAfford(ResourceType.Mana, 5))
@@ -150,7 +150,7 @@ public class GameResult : MonoBehaviour
         Debug.Log("Reward2x to go MapUI");
 
         // [사운드효과]: 버튼 클릭
-        SoundManager.Instance.Play("minimal-pop-click-ui-14-198314", SoundType.UI, 1f);
+        SoundManager.Instance.Play("minimal-pop-click-ui-14-198314", SoundType.UI, 0.3f);
         Debug.LogWarning("[Sound]: Button Click Sound");
 
         // 광고 시청

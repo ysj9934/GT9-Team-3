@@ -237,7 +237,7 @@ public class WaveController : MonoBehaviour
         GameUIManager.Instance.canvasFixed.TurnOffStartWave();
 
         // [사운드효과]: 웨이브 시작
-        SoundManager.Instance.Play("fallen-in-battle-261253 (2)", SoundType.BGM, 0.2f);
+        SoundManager.Instance.Play("fallen-in-battle-261253 (2)", SoundType.BGM, 0.15f);
         Debug.LogWarning("[Sound] Wave Start Sound");
 
         enemySpawnRoutines = new List<Coroutine>();
