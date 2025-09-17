@@ -661,6 +661,14 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
       objectReference: {fileID: 1195364439}
+    - target: {fileID: 3523739446956564479, guid: b747aa6e848008e47a3fe6d7abb62767, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1348788185}
+    - target: {fileID: 3523739446956564479, guid: b747aa6e848008e47a3fe6d7abb62767, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: StageStartButton
+      objectReference: {fileID: 0}
     - target: {fileID: 3753432327995936152, guid: b747aa6e848008e47a3fe6d7abb62767, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
@@ -669,6 +677,10 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
       objectReference: {fileID: 1195364439}
+    - target: {fileID: 5201085278501755955, guid: b747aa6e848008e47a3fe6d7abb62767, type: 3}
+      propertyPath: _resourceManager
+      value: 
+      objectReference: {fileID: 1207184249}
     - target: {fileID: 5365522798944332922, guid: b747aa6e848008e47a3fe6d7abb62767, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
@@ -1242,6 +1254,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a3e57b8ef897f543a27cde1ba980845, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1207184249 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 657918115164167659, guid: 86984fc15b81a7a44948e482649a45a2, type: 3}
+  m_PrefabInstance: {fileID: 7211202305753815914}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3553896f4b14c44e91fdae655aa3195, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1334834343
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1299,6 +1322,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 55d26c2f0bf3aa04c8f01f190f16a538, type: 3}
+--- !u!114 &1348788185 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5201085278501755955, guid: b747aa6e848008e47a3fe6d7abb62767, type: 3}
+  m_PrefabInstance: {fileID: 954723411}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a026d5a6783cc004d9ec0f6e009845f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MapUICanvas
 --- !u!1001 &1536419460
 PrefabInstance:
   m_ObjectHideFlags: 0

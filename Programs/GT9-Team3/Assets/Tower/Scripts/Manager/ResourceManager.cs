@@ -11,7 +11,7 @@ public class ResourceManager : MonoBehaviour
     public event Action<ResourceType, float> OnResourceChanged;
 
     // 회복 관련
-    private const int ManaRecoveryIntervalSeconds = 2; // 5분 = 300초
+    private const int ManaRecoveryIntervalSeconds = 300; // 5분 = 300초
     private const int ManaRecoveryAmount = 1;
     private bool manaRecoveryRunning = false;
 
