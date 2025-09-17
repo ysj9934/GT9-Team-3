@@ -14,6 +14,14 @@ public class ResourcePanel : MonoBehaviour
 
     [SerializeField] TextMeshProUGUI resourceTilePieceAmountText;
 
+    public float HealthPercent => healthPercent;
+    //private float healthPercent;  실제 데이터를 저장하는 필드
+
+    //public float HealthPercent   외부에서 읽기만 가능한 프로퍼티
+    //{
+    //    get { return healthPercent; }
+    //} 와 같은 내용
+
 
     // Castle & Resource
     public Castle SetCastleData(Castle castle)
@@ -33,4 +41,11 @@ public class ResourcePanel : MonoBehaviour
         resourceTilePieceAmountText.text = $"{ResourceManager.Instance.GetAmount(ResourceType.Tilepiece)}";
     }
 
+}
+
+public enum ClearStar
+{
+    One,
+    Two,
+    Three,
 }

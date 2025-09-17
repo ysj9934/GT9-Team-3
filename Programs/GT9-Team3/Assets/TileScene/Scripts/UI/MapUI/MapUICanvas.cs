@@ -9,93 +9,56 @@ public class MapUICanvas : MonoBehaviour
 {
     public ResourceManager _resourceManager;
 
-    [SerializeField] private Button Startbutton;
-    [SerializeField] private TextMeshProUGUI worldStageInfoText;
-    [SerializeField] private TextMeshProUGUI staminaHoldingAmountText;
-    [SerializeField] private TextMeshProUGUI goldHoldingAmountText;
-    [SerializeField] private TextMeshProUGUI diaHoldingAmountText;
     [SerializeField] private Button stamainAddButton;
     [SerializeField] private Button goldAddButton;
     [SerializeField] private Button diaAddButton;
-
-    private void Start()
-    {
-        _resourceManager = ResourceManager.Instance;
-
-        ShowStaminaAmount();
-        ShowGoldAmount();
-        ShowDiaAmount();
-    }
 
     public void StageStartButton()
     {
         if (_resourceManager.CanAfford(ResourceType.Mana, 5))
         {
             _resourceManager.Spend(ResourceType.Mana, 5);
+            Debug.Log("Mana spent 5");
             SceneLoader.Instance.LoadSceneByIndex(1);
         }
-        else
-        {
-            Debug.Log("Not enought Stamina");
-        }
-            
-    }
-
-    public void TextWorldStageInfo(int stageId)
-    {
-        int worldText = stageId / 100;
-        int stageText = stageId % 10;
-        worldStageInfoText.text = $"World {worldText} - Stage {stageText}";
-    }
-
-
-    public float ShowResourceAmount(ResourceType type)
-    {
-        return _resourceManager.GetAmount(type);
-    }
-
-    public void ShowStaminaAmount()
-    {
-        staminaHoldingAmountText.text = $"{(int) ShowResourceAmount(ResourceType.Mana)} / 99";
-    }
-
-    public void ShowGoldAmount()
-    {
-        goldHoldingAmountText.text = $"{ShowResourceAmount(ResourceType.Gold)}";
-    }
-
-    public void ShowDiaAmount()
-    {
-        diaHoldingAmountText.text = $"{ShowResourceAmount(ResourceType.Crystal)}";
     }
 
     public void AddStaminaAmount()
     {
+        if (_resourceManager == null) return; // 안전 장치
         Debug.Log("Stamiana Add");
 
         if (_resourceManager.GetAmount(ResourceType.Mana) < 99)
         {
             Debug.Log("Stamiana earn");
-            _resourceManager.Earn(ResourceType.Mana, 1);
+            _resourceManager.Earn(ResourceType.Mana, 10);
         }
 
-        ShowStaminaAmount();
+        //ShowStaminaAmount();
     }
 
     public void AddGoldAmount()
     {
         Debug.Log("Gold Add");
-        ShowGoldAmount();
+        //ShowGoldAmount();
     }
 
     public void AddDiaAmount()
     {
         Debug.Log("Diamond Add");
-        ShowDiaAmount();
+        //ShowDiaAmount();
     }
 
     public void EnterHardMode()
     {
+        if (ResourceManager.Instance == null)
+        {
+            Debug.Log("ResourceManager.Instance is null");
+            return;
+        }
+
+        float currentMana = ResourceManager.Instance.GetAmount(ResourceType.Mana);
+
         if (ResourceManager.Instance.CanAfford(ResourceType.Mana, 10))
         {
             ResourceManager.Instance.Spend(ResourceType.Mana, 10);
@@ -104,20 +67,7 @@ public class MapUICanvas : MonoBehaviour
         }
         else
         {
-            Debug.Log("Not enought Stamina");
-        }
-    }
-
-    public void giveStageMode(int stageID)
-    {
-        if (_resourceManager.CanAfford(ResourceType.Mana, 5))
-        {
-            _resourceManager.Spend(ResourceType.Mana, 5);
-            DataManager.Instance.SelectedStage(stageID);
-        }
-        else
-        {
-            Debug.Log("error");
+            Debug.Log("스태미너 부족"); // 5. else 확인
         }
     }
 }

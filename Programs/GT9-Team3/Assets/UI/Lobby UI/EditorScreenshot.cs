@@ -1,5 +1,4 @@
 #if UNITY_EDITOR
-
 using UnityEngine;
 using UnityEditor;
 
@@ -11,31 +10,33 @@ public class EditorScreenshot
         var sceneView = SceneView.lastActiveSceneView;
         if (sceneView == null)
         {
-            Debug.LogError("SceneView°¡ ¾ø½À´Ï´Ù!");
+            Debug.LogError("SceneViewê°€ ì—†ìŠµë‹ˆë‹¤!");
             return;
         }
 
-        // RenderTexture ÁØºñ
-        var camera = sceneView.camera;
-        var rt = new RenderTexture((int)sceneView.position.width, (int)sceneView.position.height, 24);
-        camera.targetTexture = rt;
-        camera.Render();
+        // RenderTexture ì¤€ë¹„
+        int width = (int)sceneView.position.width;
+        int height = (int)sceneView.position.height;
+        var rt = new RenderTexture(width, height, 24);
 
-        // Texture2D·Î º¯È¯
+        // SceneViewë¥¼ RenderTextureë¡œ ë Œë”ë§
+        sceneView.camera.targetTexture = rt;
+        sceneView.Repaint();                 // ì”¬ë·° ê°•ì œ ë Œë”
+        sceneView.camera.Render();
+
+        // Texture2Dë¡œ ë³€í™˜
         RenderTexture.active = rt;
-        var tex = new Texture2D(rt.width, rt.height, TextureFormat.RGB24, false);
-        tex.ReadPixels(new Rect(0, 0, rt.width, rt.height), 0, 0);
+        var tex = new Texture2D(width, height, TextureFormat.RGB24, false);
+        tex.ReadPixels(new Rect(0, 0, width, height), 0, 0);
         tex.Apply();
 
-        // PNG ÀúÀå
-        byte[] bytes = tex.EncodeToPNG();
+        // PNG ì €ì¥
         string path = Application.dataPath + "/../SceneViewScreenshot.png";
-        System.IO.File.WriteAllBytes(path, bytes);
+        System.IO.File.WriteAllBytes(path, tex.EncodeToPNG());
+        Debug.Log("SceneView ìŠ¤í¬ë¦°ìƒ· ì €ì¥ë¨: " + path);
 
-        Debug.Log("SceneView ½ºÅ©¸°¼¦ ÀúÀåµÊ: " + path);
-
-        // ¸®¼Ò½º ÇØÁ¦
-        camera.targetTexture = null;
+        // ë¦¬ì†ŒìŠ¤ í•´ì œ
+        sceneView.camera.targetTexture = null;
         RenderTexture.active = null;
         Object.DestroyImmediate(rt);
         Object.DestroyImmediate(tex);

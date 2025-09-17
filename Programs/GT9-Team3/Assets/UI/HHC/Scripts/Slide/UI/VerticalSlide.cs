@@ -51,8 +51,7 @@ public class VerticalSlide : MonoBehaviour
 
     void Update()
     {
-        HandleTouchInput();
-        HandleMouseInput();
+        HandleInput();
 
         // 이미지 그룹 이동
         slideContainer.anchoredPosition = Vector2.Lerp(
@@ -62,62 +61,43 @@ public class VerticalSlide : MonoBehaviour
         );
     }
 
-    void HandleTouchInput()
+    void HandleInput()
     {
-        if (Input.touchCount == 0) return;
+        Vector2 currentPos = Vector2.zero;
+        bool inputBegan = false;
+        bool inputEnded = false;
+        bool inputMoved = false;
 
-        Touch touch = Input.GetTouch(0);
-
-        if (touch.phase == TouchPhase.Began)
+        // 터치 입력
+        if (Input.touchCount > 0)
         {
-            startTouchPos = touch.position;
+            Touch touch = Input.GetTouch(0);
+            currentPos = touch.position;
+
+            if (touch.phase == TouchPhase.Began) inputBegan = true;
+            else if (touch.phase == TouchPhase.Moved) inputMoved = true;
+            else if (touch.phase == TouchPhase.Ended || touch.phase == TouchPhase.Canceled) inputEnded = true;
+        }
+        // 마우스 입력
+        else
+        {
+            if (Input.GetMouseButtonDown(0)) { currentPos = Input.mousePosition; inputBegan = true; }
+            else if (Input.GetMouseButton(0)) { currentPos = Input.mousePosition; inputMoved = true; }
+            else if (Input.GetMouseButtonUp(0)) { currentPos = Input.mousePosition; inputEnded = true; }
+        }
+
+        if (inputBegan)
+        {
+            startTouchPos = currentPos;
             isDragging = true;
         }
-        else if (touch.phase == TouchPhase.Moved && isDragging)
+        else if (inputMoved && isDragging)
         {
-            Vector2 currentTouchPos = touch.position;
-            float deltaY = (currentTouchPos.y - startTouchPos.y) * dragSensitivity;
-
-            int currentIndex = Mathf.RoundToInt(slideContainer.anchoredPosition.y / Screen.height);
-            currentIndex = Mathf.Clamp(currentIndex, 0, panelCount - 1);
-
-            if (currentIndex == 0 && deltaY < 0) deltaY = 0;
-            else if (currentIndex == panelCount - 1 && deltaY > 0) deltaY = 0;
-
-            slideContainer.anchoredPosition += new Vector2(0, deltaY);
-
-            startTouchPos = currentTouchPos;
-        }
-        else if (touch.phase == TouchPhase.Ended || touch.phase == TouchPhase.Canceled)
-        {
-            isDragging = false;
-            SnapToPanel();
-        }
-    }
-
-    void HandleMouseInput()
-    {
-        if (Input.GetMouseButtonDown(0))
-        {
-            startTouchPos = Input.mousePosition;
-            isDragging = true;
-        }
-        else if (Input.GetMouseButton(0) && isDragging)
-        {
-            Vector2 currentPos = (Vector2)Input.mousePosition;
             float deltaY = (currentPos.y - startTouchPos.y) * dragSensitivity;
-
-            int currentIndex = Mathf.RoundToInt(slideContainer.anchoredPosition.y / Screen.height);
-            currentIndex = Mathf.Clamp(currentIndex, 0, panelCount - 1);
-
-            if (currentIndex == 0 && deltaY < 0) deltaY = 0;
-            else if (currentIndex == panelCount - 1 && deltaY > 0) deltaY = 0;
-
             slideContainer.anchoredPosition += new Vector2(0, deltaY);
-
             startTouchPos = currentPos;
         }
-        else if (Input.GetMouseButtonUp(0) && isDragging)
+        else if (inputEnded && isDragging)
         {
             isDragging = false;
             SnapToPanel();
@@ -142,7 +122,7 @@ public class VerticalSlide : MonoBehaviour
         UpdateArrow(nextIndex);
 
         Transform currentPanel = slideContainer.GetChild(nextIndex);
-        Debug.Log("Current panel: " + currentPanel.name);
+        Debug.Log("현재 패널 : " + currentPanel.name);
     }
 
     void UpdateArrow(int panelIndex)
