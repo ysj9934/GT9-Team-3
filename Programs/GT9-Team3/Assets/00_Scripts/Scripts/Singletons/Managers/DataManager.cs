@@ -40,6 +40,9 @@ public class DataManager : MonoBehaviour
     public bool isBossMode = false;
     public List<Wave_DataTable> stageWaveIdList;
 
+    public delegate void OnStageChanged();
+    public event OnStageChanged StageChanged;
+
     private void Awake()
     {
         if (Instance != null)
@@ -85,6 +88,8 @@ public class DataManager : MonoBehaviour
 
             SetStageWaveList(this.stageId);
         }
+
+        StageChanged?.Invoke();
     }
 
     /// <summary>
