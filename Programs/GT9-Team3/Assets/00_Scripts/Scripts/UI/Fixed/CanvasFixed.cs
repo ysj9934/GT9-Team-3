@@ -64,17 +64,12 @@ public class CanvasFixed : MonoBehaviour
     /// </summary>
     public void StartWave()
     {
-        GameManager.Instance.GameVictory();
+        TurnOffPathfinder();
+        GameManager.Instance._waveController.StartWave();
 
-        //TurnOffPathfinder();
-        //GameManager.Instance._waveController.StartWave();
-
-        //// [사운드효과]: 버튼 클릭
-        //SoundManager.Instance.Play("minimal-pop-click-ui-14-198314", SoundType.UI, 1f);
-        //Debug.LogWarning("[Sound]: Button Click Sound");
-
-
-        
+        // [사운드효과]: 버튼 클릭
+        SoundManager.Instance.Play("minimal-pop-click-ui-14-198314", SoundType.UI, 1f);
+        Debug.LogWarning("[Sound]: Button Click Sound");
     }
 
     public void TurnOnPathfinder()

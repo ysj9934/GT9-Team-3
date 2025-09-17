@@ -39,8 +39,6 @@ public class WaveController : MonoBehaviour
     }
 
     // ==================== 웨이브 세팅 ==================== // 
-
-    // [미확인]
     public void SetPath(List<Transform> path)
     {
         this.path = path;
