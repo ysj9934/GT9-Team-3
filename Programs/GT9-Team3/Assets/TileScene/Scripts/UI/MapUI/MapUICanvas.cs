@@ -29,14 +29,14 @@ public class MapUICanvas : MonoBehaviour
         {
             Debug.Log("Mana 충분, 5 소비");
             ResourceManager.Instance.Spend(ResourceType.Mana, 5);
+
+            Debug.Log("씬 전환 시도");
+            SceneLoader.Instance.LoadSceneByIndex(1);
         }
         else
         {
             Debug.LogWarning("Mana 부족!");
         }
-
-        Debug.Log("씬 전환 시도");
-        SceneLoader.Instance.LoadSceneByIndex(1);
     }
     
     public void AddStaminaAmount()
