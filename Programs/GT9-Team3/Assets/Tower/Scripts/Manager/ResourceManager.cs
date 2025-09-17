@@ -39,9 +39,13 @@ public class ResourceManager : MonoBehaviour
         Add(ResourceType.Tilepiece, 5000);
     }
 
-    public void ApplySavedResources()
+    public void ApplySavedResources()   // SaveManager의 저장된 자원 적용
     {
-        if (SaveManager.Instance == null) return;
+        if (SaveManager.Instance == null)
+        {
+            Debug.Log("[ApplySavedResources] SaveManager가 없음");
+            return;
+        }
 
         resources[ResourceType.Gold] = SaveManager.Instance.data.gold;
         resources[ResourceType.Mana] = SaveManager.Instance.data.mana;

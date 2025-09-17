@@ -15,14 +15,30 @@ public class MapUICanvas : MonoBehaviour
 
     public void StageStartButton()
     {
-        if (_resourceManager.CanAfford(ResourceType.Mana, 5))
-        {
-            _resourceManager.Spend(ResourceType.Mana, 5);
-            Debug.Log("Mana spent 5");
-            SceneLoader.Instance.LoadSceneByIndex(1);
-        }
-    }
+        Debug.Log("버튼 클릭!");
 
+        if (ResourceManager.Instance == null)
+        {
+            Debug.LogError("ResourceManager가 없음");
+            return;
+        }
+
+        Debug.Log($"Mana 현재: {ResourceManager.Instance.GetAmount(ResourceType.Mana)}");
+
+        if (ResourceManager.Instance.CanAfford(ResourceType.Mana, 5))
+        {
+            Debug.Log("Mana 충분, 5 소비");
+            ResourceManager.Instance.Spend(ResourceType.Mana, 5);
+        }
+        else
+        {
+            Debug.LogWarning("Mana 부족!");
+        }
+
+        Debug.Log("씬 전환 시도");
+        SceneLoader.Instance.LoadSceneByIndex(1);
+    }
+    
     public void AddStaminaAmount()
     {
         if (_resourceManager == null) return; // 안전 장치
@@ -69,5 +85,10 @@ public class MapUICanvas : MonoBehaviour
         {
             Debug.Log("스태미너 부족"); // 5. else 확인
         }
+    }
+
+    public void giveStageMode(int stageID)
+    {
+        DataManager.Instance.SelectedStage(stageID);
     }
 }
