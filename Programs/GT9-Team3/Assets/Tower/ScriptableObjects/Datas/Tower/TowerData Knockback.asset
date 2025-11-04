@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3f8ae5f2e0569794b8c8c767992ae704, type: 3}
+  m_Name: TowerData Knockback
+  m_EditorClassIdentifier: 
+  towerID: 5077
+  innerName: 1Knockback_Tower
+  towerLevel: 2
+  useProjectile: Knockback_Projectile1
+  attackType: 0
+  attackRadius: 0
+  targetCount: 0
+  attackRange: 1.8
+  attackEnemyType1: 0
+  attackEnemyType2: 0
+  targetOrder: 0000000002000000
+  makeCost: 3
+  makeValue: 120
+  sellCost: 3
+  sellValue: 70
+  UpgradeCost: 3
+  UpgradeValue: 120
+  damage: 0
+  attackSpeed: 0.9
+  projectilePrefab: {fileID: 4557226460097302839, guid: a59a548919460a94696ba279946a8db9, type: 3}
+  projectileData: {fileID: 11400000, guid: 8073b5e4f30008d4ebbf9d90735c5072, type: 2}
