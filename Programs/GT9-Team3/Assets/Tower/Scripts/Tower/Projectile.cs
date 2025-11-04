@@ -51,7 +51,6 @@ public class Projectile : MonoBehaviour
                 Enemy1 enemy = collider.GetComponent<Enemy1>();
                 if (enemy != null)
                 {
-                    enemy.TakeDamage(data.damage, data);
                     Debug.Log($"스플래시 적중: {enemy.name} / 데미지: {data.damage}");
                 }
 
@@ -62,7 +61,9 @@ public class Projectile : MonoBehaviour
             Enemy1 enemy = target.GetComponent<Enemy1>();
             if (enemy != null)
             {
-                enemy.TakeDamage(data.damage, data);
+                Debug.Log("[KB] Projectile -> Enemy.TakeDamage(dmg, data, hitOrigin) 호출");
+                enemy.TakeDamage(data.damage, data, transform.position);
+                
             }
         }
 

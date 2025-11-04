@@ -21,4 +21,6 @@ public class ProjectileData : ScriptableObject
     public float slowEffect;
     public float slowTime;
     public float stunTime;
+    public float knockbackDistance = 0f;
+    public float knockbackDuration = 0.2f;
 }

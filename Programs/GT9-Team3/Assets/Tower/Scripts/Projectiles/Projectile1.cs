@@ -46,9 +46,9 @@ public class Projectile1 : MonoBehaviour
             Instantiate(data.impactEffectPrefab, transform.position, Quaternion.identity);
         }
 
-        if (target.TryGetComponent(out Enemy1 enemy))
+        if (target.TryGetComponent(out Enemy enemy))
         {
-            enemy.TakeDamage(data.damage, data);
+            enemy.TakeDamage(data.damage, data, transform.position);
         }
 
         Destroy(gameObject);

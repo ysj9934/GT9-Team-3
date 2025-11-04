@@ -66,7 +66,6 @@ public class EnemyHealthHandler : MonoBehaviour
                 _enemy._enemyMovement.ApplyStun(projectileData.stunTime);
             }
 
-
             int projectileID = projectileData.projectileID;
             // [사운드효과]: 피격시 사운드 / 사운드 효과 적게
             SoundManager.Instance.Play("arrow-cutting-through-the-air-39540-잘라쓰기", SoundType.SFX, 0.3f);
@@ -152,7 +151,39 @@ public class EnemyHealthHandler : MonoBehaviour
             currentHealth = maxHealth;
         }
     }
+    //넉백주석
+    public void TakeDamage(int damage, ProjectileData projectileData, Vector3 hitOrigin)
+    {
+        if (!_enemy.isAlive) return;
 
+        currentHealth -= damage;
+
+        if (projectileData != null)
+        {
+            if (projectileData.knockbackDistance > 0f)
+            {
+                _enemy._enemyMovement?.KnockbackAlongPath(projectileData.knockbackDistance);
+
+                // 선택: 바로 전진 방지를 위한 짧은 스턴
+                _enemy._enemyMovement?.ApplyStun(0.15f);
+            }
+        }
+        //넉백 테스트
+        if (projectileData.knockbackDistance > 0f)
+        {
+            Debug.Log($"[Knockback] 적용됨! 거리={projectileData.knockbackDistance}");
+
+            var rb = _enemy.GetComponent<Rigidbody2D>();
+            if (rb != null)
+            {
+                Vector2 dir = ((Vector2)transform.position - (Vector2)hitOrigin).normalized;
+                rb.AddForce(dir * projectileData.knockbackDistance, ForceMode2D.Impulse);
+            }
+        }
+
+        if (currentHealth <= 0)
+            EnemyDeath(HitTarget.Projectile);
+    }
 }
 
 

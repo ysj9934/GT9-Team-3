@@ -38,6 +38,9 @@ public class Enemy : MonoBehaviour
     {
         return _enemyAnimationController = enemyAni;
     }
+    public void TakeDamage(int damage, ProjectileData projectileData, Vector3 hitOrigin)
+    {
+        _enemyHealthHandler.TakeDamage(damage, projectileData, hitOrigin);
+    }
 
-    
 }
